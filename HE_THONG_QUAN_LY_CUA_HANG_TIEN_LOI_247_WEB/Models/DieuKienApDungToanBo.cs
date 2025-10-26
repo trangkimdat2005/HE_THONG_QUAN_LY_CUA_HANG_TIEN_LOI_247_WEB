@@ -9,7 +9,7 @@ public partial class DieuKienApDungToanBo
 
     public string DieuKienId { get; set; } = null!;
 
-    public string GhiChu { get; set; } = null!;
+    public string? GhiChu { get; set; }
 
     public bool IsDelete { get; set; }
 
