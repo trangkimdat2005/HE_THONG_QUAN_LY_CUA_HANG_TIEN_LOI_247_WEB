@@ -9,7 +9,7 @@ public partial class HoaDon
 
     public DateTime NgayLap { get; set; }
 
-    public decimal TongTien { get; set; }
+    public decimal? TongTien { get; set; }
 
     public string NhanVienId { get; set; } = null!;
 
@@ -28,8 +28,6 @@ public partial class HoaDon
     public virtual DonHangOnline? DonHangOnline { get; set; }
 
     public virtual ICollection<GiaoDichThanhToan> GiaoDichThanhToans { get; set; } = new List<GiaoDichThanhToan>();
-
-    public virtual ICollection<HoaDonKhuyenMai> HoaDonKhuyenMais { get; set; } = new List<HoaDonKhuyenMai>();
 
     public virtual KhachHang KhachHang { get; set; } = null!;
 

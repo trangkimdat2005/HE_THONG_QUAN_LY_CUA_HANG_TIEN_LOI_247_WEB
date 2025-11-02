@@ -26,6 +26,4 @@ public partial class MaKhuyenMai
     public virtual ICollection<ChiTietHoaDonKhuyenMai> ChiTietHoaDonKhuyenMais { get; set; } = new List<ChiTietHoaDonKhuyenMai>();
 
     public virtual ChuongTrinhKhuyenMai ChuongTrinh { get; set; } = null!;
-
-    public virtual ICollection<HoaDonKhuyenMai> HoaDonKhuyenMais { get; set; } = new List<HoaDonKhuyenMai>();
 }

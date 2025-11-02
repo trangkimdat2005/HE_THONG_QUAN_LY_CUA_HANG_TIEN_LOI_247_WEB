@@ -66,9 +66,11 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<GiaoDichThanhToan> GiaoDichThanhToans { get; set; }
 
-    public virtual DbSet<HoaDon> HoaDons { get; set; }
+    public virtual DbSet<GioHang> GioHangs { get; set; }
 
-    public virtual DbSet<HoaDonKhuyenMai> HoaDonKhuyenMais { get; set; }
+    public virtual DbSet<HinhAnh> HinhAnhs { get; set; }
+
+    public virtual DbSet<HoaDon> HoaDons { get; set; }
 
     public virtual DbSet<KenhThanhToan> KenhThanhToans { get; set; }
 
@@ -935,6 +937,49 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK_GDTT_KTT");
         });
 
+        modelBuilder.Entity<GioHang>(entity =>
+        {
+            entity.HasKey(e => new { e.TaiKhoanId, e.SanPhamDonViId });
+
+            entity.ToTable("GioHang", "core");
+
+            entity.Property(e => e.TaiKhoanId)
+                .HasMaxLength(50)
+                .HasColumnName("taiKhoanId");
+            entity.Property(e => e.SanPhamDonViId)
+                .HasMaxLength(50)
+                .HasColumnName("sanPhamDonViId");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("createdAt");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.SoLuong).HasColumnName("soLuong");
+            entity.Property(e => e.UpdatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("updatedAt");
+
+            entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.GioHangs)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(d => d.SanPhamDonViId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GioHang_SanPhamDonVi");
+
+            entity.HasOne(d => d.TaiKhoan).WithMany(p => p.GioHangs)
+                .HasForeignKey(d => d.TaiKhoanId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_GioHang_TaiKhoan");
+        });
+
+        modelBuilder.Entity<HinhAnh>(entity =>
+        {
+            entity.ToTable("HinhAnh");
+
+            entity.Property(e => e.Id).HasMaxLength(50);
+            entity.Property(e => e.TenAnh).HasMaxLength(100);
+        });
+
         modelBuilder.Entity<HoaDon>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__HoaDon__3213E83F5212F956");
@@ -974,48 +1019,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasForeignKey(d => d.NhanVienId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_HoaDon_NhanVien");
-        });
-
-        modelBuilder.Entity<HoaDonKhuyenMai>(entity =>
-        {
-            entity.HasKey(e => new { e.HoaDonId, e.MaKhuyenMaiId });
-
-            entity.ToTable("HoaDonKhuyenMai", "core", tb =>
-                {
-                    tb.HasTrigger("trg_HDKM_AIU_UpdateHoaDonNet");
-                    tb.HasTrigger("trg_HDKM_AU_AdjustUsageOnFlip");
-                    tb.HasTrigger("trg_HDKM_IOD_SoftDelete_UpdateHoaDonNet");
-                });
-
-            entity.HasIndex(e => e.MaKhuyenMaiId, "IX_HoaDonKhuyenMai_maKhuyenMaiId");
-
-            entity.HasIndex(e => e.Id, "UQ__HoaDonKh__3213E83E84F7A872")
-                .IsUnique()
-                .HasFilter("([id] IS NOT NULL)");
-
-            entity.Property(e => e.HoaDonId)
-                .HasMaxLength(50)
-                .HasColumnName("hoaDonId");
-            entity.Property(e => e.MaKhuyenMaiId)
-                .HasMaxLength(50)
-                .HasColumnName("maKhuyenMaiId");
-            entity.Property(e => e.GiaTriApDung)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("giaTriApDung");
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
-
-            entity.HasOne(d => d.HoaDon).WithMany(p => p.HoaDonKhuyenMais)
-                .HasForeignKey(d => d.HoaDonId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HDKM_HoaDon");
-
-            entity.HasOne(d => d.MaKhuyenMai).WithMany(p => p.HoaDonKhuyenMais)
-                .HasForeignKey(d => d.MaKhuyenMaiId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_HDKM_MKM");
         });
 
         modelBuilder.Entity<KenhThanhToan>(entity =>
@@ -1067,6 +1070,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(200)
                 .HasColumnName("email");
+            entity.Property(e => e.GioiTinh).HasColumnName("gioiTinh");
             entity.Property(e => e.HoTen)
                 .HasMaxLength(200)
                 .HasColumnName("hoTen");
@@ -1328,6 +1332,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(200)
                 .HasColumnName("email");
+            entity.Property(e => e.GioiTinh).HasColumnName("gioiTinh");
             entity.Property(e => e.HoTen)
                 .HasMaxLength(200)
                 .HasColumnName("hoTen");

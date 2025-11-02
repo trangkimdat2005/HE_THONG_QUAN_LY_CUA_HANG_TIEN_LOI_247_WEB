@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8baaec995d1daeaba6a789b3e1633f4dbf447fee")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9df2f6b4dfc51bc837f9e1c0e4c3832710b74c3e")]
 [assembly: System.Reflection.AssemblyProductAttribute("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

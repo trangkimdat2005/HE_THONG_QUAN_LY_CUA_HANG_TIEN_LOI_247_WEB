@@ -21,6 +21,8 @@ public partial class KhachHang
 
     public bool IsDelete { get; set; }
 
+    public bool GioiTinh { get; set; }
+
     public virtual ICollection<DonHangOnline> DonHangOnlines { get; set; } = new List<DonHangOnline>();
 
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();

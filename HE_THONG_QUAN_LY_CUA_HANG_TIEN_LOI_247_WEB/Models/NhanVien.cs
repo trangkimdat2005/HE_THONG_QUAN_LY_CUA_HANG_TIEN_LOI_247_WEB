@@ -25,6 +25,8 @@ public partial class NhanVien
 
     public bool IsDelete { get; set; }
 
+    public bool GioiTinh { get; set; }
+
     public virtual ICollection<ChamCong> ChamCongs { get; set; } = new List<ChamCong>();
 
     public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
