@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
