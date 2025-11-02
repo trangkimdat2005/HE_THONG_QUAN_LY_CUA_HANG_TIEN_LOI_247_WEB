@@ -855,7 +855,7 @@ CREATE INDEX [IX_UserRole_roleId] ON [core].[UserRole] ([roleId]);
 CREATE UNIQUE INDEX [UQ__UserRole__3213E83E44209D3B] ON [core].[UserRole] ([id]) WHERE ([id] IS NOT NULL);
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20251102090114_v0', N'9.0.10');
+VALUES (N'20251102120905_v1', N'9.0.10');
 
 COMMIT;
 GO
