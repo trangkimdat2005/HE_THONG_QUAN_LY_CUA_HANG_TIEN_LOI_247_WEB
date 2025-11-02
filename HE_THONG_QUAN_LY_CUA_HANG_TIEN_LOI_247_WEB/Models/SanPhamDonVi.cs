@@ -31,6 +31,8 @@ public partial class SanPhamDonVi
 
     public virtual DonViDoLuong DonVi { get; set; } = null!;
 
+    public virtual ICollection<GioHang> GioHangs { get; set; } = new List<GioHang>();
+
     public virtual ICollection<MaDinhDanhSanPham> MaDinhDanhSanPhams { get; set; } = new List<MaDinhDanhSanPham>();
 
     public virtual ICollection<PhieuDoiTra> PhieuDoiTras { get; set; } = new List<PhieuDoiTra>();

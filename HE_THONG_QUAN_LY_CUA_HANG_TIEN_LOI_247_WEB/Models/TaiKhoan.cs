@@ -17,6 +17,8 @@ public partial class TaiKhoan
 
     public bool IsDelete { get; set; }
 
+    public virtual ICollection<GioHang> GioHangs { get; set; } = new List<GioHang>();
+
     public virtual ICollection<NhatKyHoatDong> NhatKyHoatDongs { get; set; } = new List<NhatKyHoatDong>();
 
     public virtual TaiKhoanKhachHang? TaiKhoanKhachHang { get; set; }
