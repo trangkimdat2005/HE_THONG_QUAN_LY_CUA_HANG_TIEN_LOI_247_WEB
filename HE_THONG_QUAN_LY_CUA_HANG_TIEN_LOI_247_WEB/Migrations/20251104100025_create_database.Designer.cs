@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251102123855_add_database")]
-    partial class add_database
+    [Migration("20251104100025_create_database")]
+    partial class create_database
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
