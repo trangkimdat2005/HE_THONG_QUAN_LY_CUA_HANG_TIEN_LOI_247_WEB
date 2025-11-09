@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class ChinhSachHoanTra
 {
@@ -9,11 +9,11 @@ public partial class ChinhSachHoanTra
 
     public string TenChinhSach { get; set; } = null!;
 
-    public int ThoiHan { get; set; }
+    public int? ThoiHan { get; set; }
 
     public string DieuKien { get; set; } = null!;
 
-    public bool ApDungToanBo { get; set; }
+    public bool? ApDungToanBo { get; set; }
 
     public DateOnly ApDungTuNgay { get; set; }
 

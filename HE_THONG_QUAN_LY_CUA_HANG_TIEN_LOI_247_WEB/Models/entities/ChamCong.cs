@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class ChamCong
 {
@@ -15,7 +15,7 @@ public partial class ChamCong
 
     public DateTime GioRa { get; set; }
 
-    public string GhiChu { get; set; } = null!;
+    public string? GhiChu { get; set; }
 
     public bool IsDelete { get; set; }
 
