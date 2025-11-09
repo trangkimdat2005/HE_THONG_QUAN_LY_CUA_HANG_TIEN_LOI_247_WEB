@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.EF;
 
 public partial class ApplicationDbContext : DbContext
 {
@@ -144,7 +144,9 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<ViTri> ViTris { get; set; }
 
-
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=QuanLyCuaHangTienLoi;User Id=sa;Password=Password123!;TrustServerCertificate=True;MultipleActiveResultSets=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -157,6 +159,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
+            entity.Property(e => e.DenNgay).HasColumnName("denNgay");
             entity.Property(e => e.FileBaoCao)
                 .HasMaxLength(500)
                 .HasColumnName("fileBaoCao");
@@ -165,6 +168,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("loaiBaoCao");
             entity.Property(e => e.NgayLap).HasColumnName("ngayLap");
+            entity.Property(e => e.TuNgay).HasColumnName("tuNgay");
         });
 
         modelBuilder.Entity<BaoCaoBanChay>(entity =>
@@ -245,12 +249,24 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("baoCaoId");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
-            entity.Property(e => e.TongSoLuongTon).HasColumnName("tongSoLuongTon");
+            entity.Property(e => e.NhapTrongKy).HasColumnName("nhapTrongKy");
+            entity.Property(e => e.SanPhamDonViId)
+                .HasMaxLength(50)
+                .HasColumnName("sanPhamDonViId");
+            entity.Property(e => e.TonCuoiKy).HasColumnName("tonCuoiKy");
+            entity.Property(e => e.TonDauKy).HasColumnName("tonDauKy");
+            entity.Property(e => e.XuatTrongKy).HasColumnName("xuatTrongKy");
 
             entity.HasOne(d => d.BaoCao).WithMany(p => p.BaoCaoTonKhos)
                 .HasForeignKey(d => d.BaoCaoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_BCTK_BC");
+
+            entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.BaoCaoTonKhos)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(d => d.SanPhamDonViId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BCTK_SPDV");
         });
 
         modelBuilder.Entity<Barcode>(entity =>
@@ -303,7 +319,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__ChamCong__3213E83FB805717D");
 
-            entity.ToTable("ChamCong", "core", tb => tb.HasTrigger("trg_ChamCong_AI_Validate"));
+            entity.ToTable("ChamCong", "core");
 
             entity.HasIndex(e => e.NhanVienId, "IX_ChamCong_nhanVienId");
 
@@ -335,11 +351,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => new { e.DonHangId, e.SanPhamDonViId }).HasName("PK_CTDON");
 
-            entity.ToTable("ChiTietDonOnline", "core", tb =>
-                {
-                    tb.HasTrigger("trg_CTDON_AIU_UpdateTongTien");
-                    tb.HasTrigger("trg_CTDON_IOD_SoftDelete_UpdateTongTien");
-                });
+            entity.ToTable("ChiTietDonOnline", "core");
 
             entity.HasIndex(e => e.SanPhamDonViId, "IX_ChiTietDonOnline_sanPhamDonViId");
 
@@ -394,6 +406,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
             entity.Property(e => e.ThanhTien)
+                .HasDefaultValue(0m)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("thanhTien");
 
@@ -450,14 +463,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => new { e.HoaDonId, e.SanPhamDonViId, e.MaKhuyenMaiId }).HasName("PK_CTHDKM");
 
-            entity.ToTable("ChiTietHoaDonKhuyenMai", "core", tb =>
-                {
-                    tb.HasTrigger("trg_CTHDKM_AIU_UpdateHoaDonNet");
-                    tb.HasTrigger("trg_CTHDKM_AIU_ValidateAndConsume");
-                    tb.HasTrigger("trg_CTHDKM_AU_AdjustUsageOnChange");
-                    tb.HasTrigger("trg_CTHDKM_AU_AdjustUsageOnFlip");
-                    tb.HasTrigger("trg_CTHDKM_IOD_SoftDelete_AllInOne");
-                });
+            entity.ToTable("ChiTietHoaDonKhuyenMai", "core");
 
             entity.HasIndex(e => e.MaKhuyenMaiId, "IX_ChiTietHoaDonKhuyenMai_maKhuyenMaiId");
 
@@ -505,11 +511,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => new { e.PhieuNhapId, e.SanPhamDonViId }).HasName("PK_CTPN");
 
-            entity.ToTable("ChiTietPhieuNhap", "core", tb =>
-                {
-                    tb.HasTrigger("trg_CTPN_AIU_UpdateTonKho");
-                    tb.HasTrigger("trg_CTPN_IOD_SoftDelete");
-                });
+            entity.ToTable("ChiTietPhieuNhap", "core");
 
             entity.HasIndex(e => e.SanPhamDonViId, "IX_ChiTietPhieuNhap_sanPhamDonViId");
 
@@ -542,11 +544,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => new { e.PhieuXuatId, e.SanPhamDonViId }).HasName("PK_CTPX");
 
-            entity.ToTable("ChiTietPhieuXuat", "core", tb =>
-                {
-                    tb.HasTrigger("trg_CTPX_AIU_UpdateTonKho");
-                    tb.HasTrigger("trg_CTPX_IOD_SoftDelete");
-                });
+            entity.ToTable("ChiTietPhieuXuat", "core");
 
             entity.HasIndex(e => e.SanPhamDonViId, "IX_ChiTietPhieuXuat_sanPhamDonViId");
 
@@ -584,7 +582,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("id");
             entity.Property(e => e.ApDungDenNgay).HasColumnName("apDungDenNgay");
-            entity.Property(e => e.ApDungToanBo).HasColumnName("apDungToanBo");
+            entity.Property(e => e.ApDungToanBo)
+                .HasDefaultValue(false)
+                .HasColumnName("apDungToanBo");
             entity.Property(e => e.ApDungTuNgay).HasColumnName("apDungTuNgay");
             entity.Property(e => e.DieuKien)
                 .HasMaxLength(500)
@@ -634,7 +634,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__ChuongTr__3213E83F918CF90D");
 
-            entity.ToTable("ChuongTrinhKhuyenMai", "core", tb => tb.HasTrigger("trg_CTKM_AUD"));
+            entity.ToTable("ChuongTrinhKhuyenMai", "core");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
@@ -793,7 +793,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK_DGH");
 
-            entity.ToTable("DonGiaoHang", "core", tb => tb.HasTrigger("trg_DGH_AU_LogTrangThai"));
+            entity.ToTable("DonGiaoHang", "core");
 
             entity.HasIndex(e => e.HoaDonId, "IX_DonGiaoHang_hoaDonId");
 
@@ -841,7 +841,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__DonHangO__3213E83FAA6F60FF");
 
-            entity.ToTable("DonHangOnline", "core", tb => tb.HasTrigger("trg_DHO_AI_LogCreated"));
+            entity.ToTable("DonHangOnline", "core");
 
             entity.HasIndex(e => e.HoaDonId, "IX_DHO_HD");
 
@@ -900,7 +900,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__GiaoDich__3213E83F603FDFFA");
 
-            entity.ToTable("GiaoDichThanhToan", "core", tb => tb.HasTrigger("trg_GDTT_AI_LogPaidToDHO"));
+            entity.ToTable("GiaoDichThanhToan", "core");
 
             entity.HasIndex(e => e.HoaDonId, "IX_GiaoDichThanhToan_hoaDonId");
 
@@ -982,7 +982,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__HoaDon__3213E83F5212F956");
 
-            entity.ToTable("HoaDon", "core", tb => tb.HasTrigger("trg_HD_AU_AddLoyaltyPoints"));
+            entity.ToTable("HoaDon", "core");
 
             entity.HasIndex(e => e.KhachHangId, "IX_HD_khach");
 
@@ -1023,7 +1023,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__KenhThan__3213E83F2F0444F7");
 
-            entity.ToTable("KenhThanhToan", "core", tb => tb.HasTrigger("trg_KenhThanhToan_AU_Timestamp"));
+            entity.ToTable("KenhThanhToan", "core");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
@@ -1058,6 +1058,10 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__KhachHan__3213E83F168CE425");
 
             entity.ToTable("KhachHang", "core");
+
+            entity.HasIndex(e => e.SoDienThoai, "Index_KhachHang_1").IsUnique();
+
+            entity.HasIndex(e => e.Email, "Index_KhachHang_2").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
@@ -1101,18 +1105,26 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.NhanVienId)
                 .HasMaxLength(50)
                 .HasColumnName("nhanVienId");
+            entity.Property(e => e.SanPhamDonViId)
+                .HasMaxLength(50)
+                .HasColumnName("sanPhamDonViID");
 
             entity.HasOne(d => d.NhanVien).WithMany(p => p.KiemKes)
                 .HasForeignKey(d => d.NhanVienId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_KiemKe_NV");
+
+            entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.KiemKes)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(d => d.SanPhamDonViId)
+                .HasConstraintName("FK_KiemKe_SP");
         });
 
         modelBuilder.Entity<LichSuGiaBan>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__LichSuGi__3213E83F5BEC2A0A");
 
-            entity.ToTable("LichSuGiaBan", "core", tb => tb.HasTrigger("trg_LSGB_AIU_SyncGiaBanSPDV"));
+            entity.ToTable("LichSuGiaBan", "core");
 
             entity.HasIndex(e => e.DonViId, "IX_LichSuGiaBan_donViId");
 
@@ -1206,7 +1218,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__MaDinhDa__3213E83FB8B9410D");
 
-            entity.ToTable("MaDinhDanhSanPham", "core", tb => tb.HasTrigger("trg_MDDSP_AI_AutogenCodes"));
+            entity.ToTable("MaDinhDanhSanPham", "core");
 
             entity.HasIndex(e => e.SanPhamDonViId, "IX_MaDinhDanhSanPham_sanPhamDonViId");
 
@@ -1238,7 +1250,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__MaKhuyen__3213E83FAAB31469");
 
-            entity.ToTable("MaKhuyenMai", "core", tb => tb.HasTrigger("trg_MKM_AUD"));
+            entity.ToTable("MaKhuyenMai", "core");
 
             entity.HasIndex(e => e.ChuongTrinhId, "IX_MaKhuyenMai_chuongTrinhId");
 
@@ -1275,6 +1287,10 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__NhaCungC__3213E83F2D28D041");
 
             entity.ToTable("NhaCungCap", "core");
+
+            entity.HasIndex(e => e.SoDienThoai, "Index_NhaCungCap_1").IsUnique();
+
+            entity.HasIndex(e => e.Email, "Index_NhaCungCap_2").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
@@ -1455,11 +1471,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__PhieuDoi__3213E83FF7A1E82D");
 
-            entity.ToTable("PhieuDoiTra", "core", tb =>
-                {
-                    tb.HasTrigger("trg_PDT_AIU_ValidateAndRestock");
-                    tb.HasTrigger("trg_PDT_IOD_SoftDeleteAndRevertStock");
-                });
+            entity.ToTable("PhieuDoiTra", "core");
 
             entity.HasIndex(e => e.ChinhSachId, "IX_PhieuDoiTra_chinhSachId");
 
@@ -1732,6 +1744,10 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("SanPhamDonVi", "core");
 
+            entity.HasIndex(e => e.Id, "AK_SanPhamDonVi_id").IsUnique();
+
+            entity.HasIndex(e => e.Id, "IX_SPDV_id");
+
             entity.HasIndex(e => e.DonViId, "IX_SanPhamDonVi_donViId");
 
             entity.HasIndex(e => e.Id, "UQ__SanPhamD__3213E83ECC46A234").IsUnique();
@@ -1806,6 +1822,8 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("Shipper", "core");
 
+            entity.HasIndex(e => e.SoDienThoai, "Index_Shipper_1").IsUnique();
+
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
@@ -1822,7 +1840,7 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PK__TaiKhoan__3213E83F8B2017A0");
 
-            entity.ToTable("TaiKhoan", "core", tb => tb.HasTrigger("trg_TaiKhoan_AUD"));
+            entity.ToTable("TaiKhoan", "core");
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
