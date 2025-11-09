@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class SanPham
 {
@@ -11,7 +11,7 @@ public partial class SanPham
 
     public string NhanHieuId { get; set; } = null!;
 
-    public string MoTa { get; set; } = null!;
+    public string? MoTa { get; set; }
 
     public string TrangThai { get; set; } = null!;
 

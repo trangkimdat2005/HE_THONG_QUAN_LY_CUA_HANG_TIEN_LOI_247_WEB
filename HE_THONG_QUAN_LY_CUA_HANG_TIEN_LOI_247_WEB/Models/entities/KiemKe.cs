@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class KiemKe
 {
@@ -15,5 +15,9 @@ public partial class KiemKe
 
     public bool IsDelete { get; set; }
 
+    public string? SanPhamDonViId { get; set; }
+
     public virtual NhanVien NhanVien { get; set; } = null!;
+
+    public virtual SanPhamDonVi? SanPhamDonVi { get; set; }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class BaoCao
 {
@@ -14,6 +14,10 @@ public partial class BaoCao
     public string FileBaoCao { get; set; } = null!;
 
     public bool IsDelete { get; set; }
+
+    public DateOnly TuNgay { get; set; }
+
+    public DateOnly DenNgay { get; set; }
 
     public virtual ICollection<BaoCaoBanChay> BaoCaoBanChays { get; set; } = new List<BaoCaoBanChay>();
 
