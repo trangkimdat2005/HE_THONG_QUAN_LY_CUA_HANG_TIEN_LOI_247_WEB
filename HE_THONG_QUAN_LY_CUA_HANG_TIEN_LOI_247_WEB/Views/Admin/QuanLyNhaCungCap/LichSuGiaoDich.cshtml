@@ -1,0 +1,187 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+
+@{
+
+    ViewData["title"] = "Lịch Sử Giao Dịch";
+}
+  <!-- Css riêng ở đây nha -->
+  <link rel="stylesheet" href="~/assets/css/LichSuGiaoDich.css">
+
+  <!-- Main sidebar ở đây nha -->
+
+
+
+
+
+
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="bi bi-clock-history"></i> Lịch sử Giao dịch</h1>
+        <p>Lịch sử giao dịch với các nhà cung cấp</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+        <li class="breadcrumb-item">Quản lý nhà cung cấp</li>
+        <li class="breadcrumb-item active"><a href="#">Lịch sử giao dịch</a></li>
+      </ul>
+    </div>
+
+    <div id="section-transaction-history">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="tile-body">
+              <div class="row mb-3">
+                <div class="col-md-3">
+                  <label class="form-label">Nhà cung cấp</label>
+                  <input class="form-control" type="text" placeholder="Tìm theo tên hoặc mã NCC...">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Từ ngày</label>
+                  <input class="form-control" type="date">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Đến ngày</label>
+                  <input class="form-control" type="date">
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                  <button class="btn btn-primary btn-add-khoi" type="button"><i class="bi bi-funnel"></i> Lọc dữ
+                    liệu</button>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-hover table-bordered align-middle" id="sampleTable">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Mã Giao Dịch</th>
+                      <th>Nhà Cung Cấp</th>
+                      <th>Ngày Giao Dịch</th>
+                      <th>Tổng Tiền</th>
+                      <th class="text-center">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>GDNCC001</td>
+                      <td>CP Foods Việt Nam</td>
+                      <td>01/11/2025</td>
+                      <td class="fw-bold">10,500,000 ₫</td>
+                      <td class="text-center">
+                        <button class="btn btn-info btn-sm js-view-detail" data-id="GDNCC001" title="Xem chi tiết">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>GDNCC002</td>
+                      <td>Công ty Cổ phần Sữa TH</td>
+                      <td>30/10/2025</td>
+                      <td class="fw-bold">25,000,000 ₫</td>
+                      <td class="text-center">
+                        <button class="btn btn-info btn-sm js-view-detail" data-id="GDNCC002" title="Xem chi tiết">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="section-transaction-detail" class="d-none fade-in">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div class="d-flex justify-content-between align-items-center invoice-header-custom">
+              <h3 class="tile-title mb-0">
+                Chi Tiết Giao Dịch: <span id="detail-transaction-id" class="text-primary">---</span>
+              </h3>
+              <div>
+                <button class="btn btn-secondary me-2 js-back-to-list">
+                  <i class="bi bi-arrow-left me-1"></i>Quay lại danh sách
+                </button>
+              </div>
+            </div>
+
+            <div class="tile-body">
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <h5 class="text-success mb-3"><i class="bi bi-building-fill me-2"></i>Thông tin Nhà cung cấp</h5>
+                  <div class="row mb-2">
+                    <div class="col-4 info-label">Tên NCC:</div>
+                    <div class="col-8 info-value" id="detail-ncc-name">---</div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-4 info-label">Điện thoại:</div>
+                    <div class="col-8 info-value" id="detail-ncc-phone">---</div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-4 info-label">Email:</div>
+                    <div class="col-8 info-value" id="detail-ncc-email">---</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4 info-label">Địa chỉ:</div>
+                    <div class="col-8 info-value" id="detail-ncc-address">---</div>
+                  </div>
+                </div>
+                <div class="col-md-6 mt-4 mt-md-0">
+                  <h5 class="text-primary mb-3"><i class="bi bi-receipt-cutoff me-2"></i>Thông tin Phiếu nhập</h5>
+                  <div class="row mb-2">
+                    <div class="col-4 info-label">Mã phiếu:</div>
+                    <div class="col-8 info-value fw-bold" id="detail-trans-code">---</div>
+                  </div>
+                  <div class="row mb-2">
+                    <div class="col-4 info-label">Ngày nhập:</div>
+                    <div class="col-8 info-value" id="detail-trans-date">---</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4 info-label">Người lập:</div>
+                    <div class="col-8 info-value">Nguyễn Văn A (Mặc định)</div>
+                  </div>
+                </div>
+              </div>
+
+              <h5 class="mt-4 mb-3"><i class="bi bi-box-seam-fill me-2"></i>Danh sách sản phẩm nhập kho</h5>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover" id="table-transaction-detail">
+                  <thead class="table-light">
+                    <tr>
+                      <th class="c-stt">STT</th>
+                      <th class="c-ten">Tên sản phẩm</th>
+                      <th class="c-dvt">ĐVT</th>
+                      <th class="c-sl">Số lượng</th>
+                      <th class="c-gia">Đơn giá nhập</th>
+                      <th class="c-tien">Thành tiền</th>
+                    </tr>
+                  </thead>
+                  <tbody id="detail-product-list">
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="row justify-content-end">
+                <div class="col-md-6 col-lg-5">
+                  <div class="total-pay-box">
+                    <div class="label">Tổng tiền thanh toán</div>
+                    <div class="value" id="detail-total-amount">0 ₫</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  <!-- js riêng ở đây nha! -->
+  <script src="~/assets/js/LichSuGiaoDich.js"></script>

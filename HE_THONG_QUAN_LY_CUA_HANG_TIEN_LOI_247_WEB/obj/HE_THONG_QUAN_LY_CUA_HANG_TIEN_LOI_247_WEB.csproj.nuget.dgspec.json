@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\nam3\\LapTrinhWeb\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {}
+    "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {}
   },
   "projects": {
-    "D:\\nam3\\LapTrinhWeb\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {
+    "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\nam3\\LapTrinhWeb\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
+        "projectUniqueName": "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
         "projectName": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB",
-        "projectPath": "D:\\nam3\\LapTrinhWeb\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "D:\\nam3\\LapTrinhWeb\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\obj\\",
+        "projectPath": "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
+        "packagesPath": "C:\\Users\\nghia\\.nuget\\packages\\",
+        "outputPath": "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\nghia\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -99,24 +98,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[8.0.21, 8.0.21]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[8.0.21, 8.0.21]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[8.0.21, 8.0.21]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[8.0.21, 8.0.21]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"

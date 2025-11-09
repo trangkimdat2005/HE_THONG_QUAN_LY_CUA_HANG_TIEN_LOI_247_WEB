@@ -1,0 +1,108 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.entities;
+
+@{
+
+    ViewData["title"] = "Chính Sách Đổi Trả";
+}
+
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1>
+          <i class="bi bi-journal-check"></i> Quản lý Chính sách Đổi Trả
+        </h1>
+        <p>Thiết lập các quy định về việc đổi trả hàng hóa</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+        <li class="breadcrumb-item">Giao dịch & hoàn trả</li>
+        <li class="breadcrumb-item active">
+          <a href="#">Chính sách hoàn trả</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+            <h3 class="title" style="margin-bottom: 0">
+              Danh Sách Chính Sách
+            </h3>
+            <a class="btn btn-primary btn-add-khoi" href="../Them/ThemHoanTra.html">
+              <i class="fas fa-plus"></i> Thêm chính sách mới
+            </a>
+          </div>
+
+          <div class="tile-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                  <tr>
+                    <th>Tên Chính Sách</th>
+                    <th >Thời Hạn (Ngày)</th>
+                    <th>Điều Kiện Áp Dụng</th>
+                    <th  >Hiệu Lực Từ</th>
+                    <th  >Hiệu Lực Đến</th>
+                    <th  >Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Chính sách đổi trả 7 ngày</td>
+                    <td  >7</td>
+                    <td>Áp dụng cho tất cả sản phẩm, còn nguyên tem mác.</td>
+                    <td  >01/01/2025</td>
+                    <td  >31/12/2025</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="../Sua/SuaHoanTra.html" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Chính sách hoàn tiền (Hàng lỗi)</td>
+                    <td  >3</td>
+                    <td>
+                      Chỉ áp dụng cho hàng điện tử, lỗi do nhà sản xuất.
+                    </td>
+                    <td  >01/06/2025</td>
+                    <td  >31/12/2025</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="../Sua/SuaHoanTra.html" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>Không áp dụng đổi trả (Thực phẩm)</td>
+                    <td  >0</td>
+                    <td>Chỉ áp dụng cho Danh mục: Thực phẩm tươi sống.</td>
+                    <td  >01/01/2025</td>
+                    <td  >31/12/2025</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="../Sua/SuaHoanTra.html" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
