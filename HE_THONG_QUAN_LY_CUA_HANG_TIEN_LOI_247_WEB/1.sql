@@ -845,11 +845,7 @@ CREATE INDEX [IX_SanPhamDanhMuc_danhMucId] ON [core].[SanPhamDanhMuc] ([danhMucI
 
 CREATE UNIQUE INDEX [UQ__SanPhamD__3213E83E62FEA25D] ON [core].[SanPhamDanhMuc] ([id]) WHERE ([id] IS NOT NULL);
 
-CREATE UNIQUE INDEX [AK_SanPhamDonVi_id] ON [core].[SanPhamDonVi] ([id]);
-
 CREATE INDEX [IX_SanPhamDonVi_donViId] ON [core].[SanPhamDonVi] ([donViId]);
-
-CREATE INDEX [IX_SPDV_id] ON [core].[SanPhamDonVi] ([id]);
 
 CREATE UNIQUE INDEX [UQ__SanPhamD__3213E83ECC46A234] ON [core].[SanPhamDonVi] ([id]);
 
@@ -878,7 +874,10 @@ CREATE INDEX [IX_UserRole_roleId] ON [core].[UserRole] ([roleId]);
 CREATE UNIQUE INDEX [UQ__UserRole__3213E83E44209D3B] ON [core].[UserRole] ([id]) WHERE ([id] IS NOT NULL);
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20251109163839_code_sqlserver', N'9.0.10');
+VALUES (N'20251110111650_create_database', N'9.0.10');
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251110140134_v4', N'9.0.10');
 
 COMMIT;
 GO
