@@ -1744,10 +1744,6 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("SanPhamDonVi", "core");
 
-            entity.HasIndex(e => e.Id, "AK_SanPhamDonVi_id").IsUnique();
-
-            entity.HasIndex(e => e.Id, "IX_SPDV_id");
-
             entity.HasIndex(e => e.DonViId, "IX_SanPhamDonVi_donViId");
 
             entity.HasIndex(e => e.Id, "UQ__SanPhamD__3213E83ECC46A234").IsUnique();
