@@ -169,14 +169,18 @@
                            rel="noopener"></i> Quản lý danh mục</a>
                     </li>
                     <li>
-                        <a class="treeview-item space-first-right-khoi" href="~/QuanLyHangHoa/DanhSachNhanHieu.html">
+                        <a class="treeview-item space-first-right-khoi" asp-controller="QuanLyHangHoa" asp-action="DanhSachNhanHieu">
                             Danh sách nhãn
                             hiệu
                         </a>
                     </li>
-                    <li><a class="treeview-item space-first-right-khoi" href="~/QuanLyHangHoa/DanhSachDonVi.html"> </i> Các đơn vị</a></li>
                     <li>
-                        <a class="treeview-item space-first-right-khoi" href="~/QuanLyHangHoa/LichSuGiaBan.html">
+                        <a class="treeview-item space-first-right-khoi" asp-controller="QuanLyHangHoa" asp-action="DanhSachDonVi">
+
+                            </i> Các đơn vị</a>
+                     </li>
+                    <li>
+                        <a class="treeview-item space-first-right-khoi" asp-controller="QuanLyHangHoa" asp-action="LichSuGiaBan">
                             </i> Lịch sử giá
                             bán
                         </a>
@@ -185,7 +189,7 @@
             </li>
 
             <li>
-                <a class="app-menu__item" href="~/QuanLyHoaDon/DanhSachHoaDon.html">
+                <a class="app-menu__item" asp-controller="QuanLyHoaDon" asp-action="DanhSachHoaDon">
                     <i class="app-menu__icon bi bi-receipt-cutoff"></i><span class="app-menu__label">Danh sách hoá đơn</span>
                 </a>
             </li>
@@ -196,17 +200,17 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyNhanSu/DanhSachNhanVien.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhanSu" asp-action="DanhSachNhanVien">
                             </i> Danh sách
                             nhân viên
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyNhanSu/LichLamViec.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhanSu" asp-action="LichLamViec"
                            rel="noopener"> </i> Lịch làm việc</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyNhanSu/PhanCongCaLamViec.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhanSu" asp-action="PhanCongCaLamViec">
                             </i> Phân công
                             ca làm việc
                         </a>
@@ -220,21 +224,21 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhachHang/DanhSachKhachHang.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhachHang" asp-action="DanhSachKhachHang">
                             </i> Danh sách khách
                             hàng
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhachHang/TheThanhVien.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhachHang" asp-action="TheThanhVien"
                            rel="noopener"> </i> Thẻ thành viên</a>
                     </li>
-                    <li><a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhachHang/LichSuMuaHang.html"> </i> Lịch sử mua hàng</a></li>
+                    <li><a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhachHang" asp-action="LichSuMuaHang"> </i> Lịch sử mua hàng</a></li>
                 </ul>
             </li>
 
             <li>
-                <a class="app-menu__item  " href="~/QuanLyKhuyenMai/KhuyenMai.html">
+                <a class="app-menu__item  " asp-controller="QuanLyKhuyenMai" asp-action="KhuyenMai">
                     <i class="app-menu__icon bi bi-percent"></i><span class="app-menu__label">Quản lý khuyến mãi</span>
                 </a>
             </li>
@@ -245,13 +249,13 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyNhaCungCap/DanhSachNhaCungCap.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhaCungCap" asp-action="DanhSachNhaCungCap>
                             </i> Danh sách các nhà
                             cung cấp
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyNhaCungCap/LichSuGiaoDich.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhaCungCap" asp-action="LichSuGiaoDich
                            rel="noopener"> </i> Lịch sử giao dịch</a>
                     </li>
                 </ul>
@@ -263,25 +267,25 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhoHang/DanhSachPhieuNhap.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap">
                             </i> Danh sách phiếu
                             nhập
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhoHang/DanhSachPhieuXuat.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuXuat"
                            rel="noopener"> </i> Danh sách phiếu xuất</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhoHang/ViTriSanPham.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhoHang" asp-action="ViTriSanPham"
                            rel="noopener"> </i> Vị trí sản phẩm</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhoHang/DanhSachHangTonKho.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhoHang" asp-action="DanhSachHangTonKho"
                            rel="noopener"> </i> Danh sách hàng tồn kho</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyKhoHang/KiemKeSanPham.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyKhoHang" asp-action="KiemKeSanPham"
                            rel="noopener"> </i> Kiểm kê sản phẩm</a>
                     </li>
                 </ul>
@@ -293,24 +297,24 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/PhanTichBaoCao/BaoCaoDoanhThu.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="PhanTichBaoCao" asp-action="BaoCaoDoanhThu">
                             </i> Báo cáo doanh
                             thu
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/PhanTichBaoCao/BaoCaoBanChay.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="PhanTichBaoCao" asp-action="BaoCaoBanChay"
                            rel="noopener"> </i> Báo cáo bán chạy</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/PhanTichBaoCao/BaoCaoTonKho.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="PhanTichBaoCao" asp-action="BaoCaoTonKho"
                            rel="noopener"> </i> Báo cáo tồn kho</a>
                     </li>
                 </ul>
             </li>
 
             <li>
-                <a class="app-menu__item  " href="~/QuanLyDonHang/DanhSachDonHang.html">
+                <a class="app-menu__item  " asp-controller="QuanLyDonHang" asp-action="DanhSachDonHang">
                     <i class="app-menu__icon bi bi-card-checklist"></i><span class="app-menu__label">Danh sách đơn hàng</span>
                 </a>
             </li>
@@ -321,17 +325,17 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyBaoMat/DanhSachTaiKhoanNhanVien.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoanNhanVien">
                             </i> Tài khoản nhân
                             viên
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyBaoMat/DanhSachTaiKhoanKhachHang.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoanKhachHang"
                            rel="noopener"> </i> Tài khoản khách hàng</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyBaoMat/DanhSachTaiKhoan.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoan"
                            rel="noopener"> </i> Quản lý quyền</a>
                     </li>
                 </ul>
@@ -343,13 +347,13 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyBarCode/DinhDanhSanPham.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyBarCode" asp-action="DinhDanhSanPham">
                             </i> Định danh sản
                             phẩm
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/QuanLyBarCode/DanhSachTemNhan.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyBarCode" asp-action="DanhSachTemNhhan"
                            rel="noopener"> </i> Danh sách tem nhãn</a>
                     </li>
                 </ul>
@@ -361,23 +365,23 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/GiaoDichHoanTra/GiaoDichThanhToan.html">
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="GiaoDichHoanTra" asp-action="GiaoDichThanhToan">
                             </i> Giao dịch thanh
                             toán
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/GiaoDichHoanTra/PhieuDoiTra.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra"
                            rel="noopener"> </i> Phiếu đổi trả</a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" href="~/GiaoDichHoanTra/ChinhSachDoiTra.html"
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="GiaoDichHoanTra" asp-action="ChinhSachDoiTra"
                            rel="noopener"></i> Chính sách hoàn trả</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a class="app-menu__item  " href="~/ThanhToan/ThanhToan.html">
+                <a class="app-menu__item  " asp-controller="ThanhToan" asp-action="ThanhToan">
                     <i class="app-menu__icon bi bi-wallet"></i><span class="app-menu__label">Thanh toán</span>
                 </a>
             </li>
