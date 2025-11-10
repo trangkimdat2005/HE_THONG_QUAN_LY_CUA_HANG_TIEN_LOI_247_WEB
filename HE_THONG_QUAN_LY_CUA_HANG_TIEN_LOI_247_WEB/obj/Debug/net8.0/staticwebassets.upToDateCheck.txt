@@ -85,7 +85,6 @@ wwwroot\assets\js\ThemViTriSanPham.js
 wwwroot\assets\js\TheThanhVien.js
 wwwroot\assets\js\ViTriSanPham.js
 wwwroot\assets\js\XemNhapKho.js
-wwwroot\assets\lib\bootstrap\css\main.css
 wwwroot\assets\lib\bootstrap\js\bootstrap.min.js
 wwwroot\assets\lib\bootstrap\js\main.js
 wwwroot\assets\lib\fontawesome\css\all.css
@@ -6532,3 +6531,4 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\assets\lib\bootstrap\css\main.css
