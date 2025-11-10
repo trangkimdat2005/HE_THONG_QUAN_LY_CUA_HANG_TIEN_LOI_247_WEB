@@ -1,0 +1,143 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\ef\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\ef\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\baocao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\baocao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\dongiaohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\dongiaohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\calamviec.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\calamviec.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\baocaodoanhthu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\baocaodoanhthu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\qrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\qrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "DonGiaoHang.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:17:12.328Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\EF\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\EF\\ApplicationDbContext.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\EF\\ApplicationDbContext.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\EF\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAkwA4AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:15:04.943Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CaLamViec.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:14:59.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "BaoCaoDoanhThu.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:14:58.446Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BaoCao.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCao.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCao.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCao.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:14:57.577Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Qrcode.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:14:53.04Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:07:54.626Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
