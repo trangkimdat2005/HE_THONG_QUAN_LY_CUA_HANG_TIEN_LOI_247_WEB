@@ -1,0 +1,121 @@
+﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Sản Phẩm";
+}
+@{
+}
+<main class="col-12 col-lg-9 product-list-container">
+    <section class="container-fluid swiper-category bg-white rounded-4 shadow-sm border">
+        <div class="swiper-wrapper">
+            <a href="#ThitBo" class="swiper-slide ">
+                <img src="/User/ThucPham/images/Thit Bo.png">
+                <p>Thịt bò</p>
+            </a>
+            <a href="#ThitHeo" class="swiper-slide">
+                <span class="badge bg-danger">-45%</span>
+                <img src="/User/ThucPham/images/Thit heo.gif">
+                <p>Thịt heo</p>
+            </a>
+            <a href="#ThitGa" class="swiper-slide">
+                <img src="/User/ThucPham/images/Thit ga.png">
+                <p>Thịt gà, vịt</p>
+            </a>
+            <a href="#HaiSan" class="swiper-slide">
+                <img src="/User/ThucPham/images/Hai San.png">
+                <p>Hải sản</p>
+            </a>
+            <a href="#Trung" class="swiper-slide">
+                <img src="/User/ThucPham/images/trung.png" alt="Trứng">
+                <p>Trứng</p>
+            </a>
+        </div>
+    </section>
+
+    <section class="container-fluid p-3">
+        <h2 id="ThitBo" class="mb-4">Thịt Bò Tươi Sạch</h2>
+        <div class="bg-white rounded-4 p-4 shadow-sm border shadow-sm border">
+            <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4">
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="/User/ThucPham/images/Nam bo.jpg" class="card-img-top">
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title">Nạm bò</h5>
+                            <p class="text-danger fw-bold mt-auto">26.361đ/150g</p>
+                            <p class="text-muted text-decoration-line-through">30.200đ</p>
+                            <span class="text-success fw-bold">-13%</span>
+                            <button class="btn btn-success mt-auto align-self-center add-to-cart"
+                                    data-id="B1" data-name="Nạm bò" data-price="26361">
+                                MUA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="/User/ThucPham/images/Dui Bo.jpg" class="card-img-top">
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title">Đùi bò</h5>
+                            <p class="text-danger fw-bold mt-auto">56.400đ/200g</p>
+                            <p class="text-muted text-decoration-line-through">66.500đ</p>
+                            <span class="text-success fw-bold">-15%</span>
+                            <button class="btn btn-success mt-auto align-self-center add-to-cart"
+                                    data-id="B2" data-name="Đùi bò" data-price="56400">
+                                MUA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="/User/ThucPham/images/Thit Vun Bo.jpg" class="card-img-top">
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title">Thị vụn bò</h5>
+                            <p class="text-danger fw-bold mt-auto">48.900đ/300g</p>
+                            <p class="text-muted text-decoration-line-through">56.200đ</p>
+                            <span class="text-success fw-bold">-13%</span>
+                            <button class="btn btn-success mt-auto align-self-center add-to-cart"
+                                    data-id="B3" data-name="Thịt vụn bò" data-price="48900">
+                                MUA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="/User/ThucPham/images/Dui Bo.jpg" class="card-img-top">
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title">Đùi bò</h5>
+                            <p class="text-danger fw-bold mt-auto">42.300đ/150g</p>
+                            <p class="text-muted text-decoration-line-through">48.600đ</p>
+                            <span class="text-success fw-bold">-13%</span>
+                            <button class="btn btn-success mt-auto align-self-center add-to-cart"
+                                    data-id="B4" data-name="Đùi bò (150g)" data-price="42300">
+                                MUA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow-sm h-100">
+                        <img src="/User/ThucPham/images/Than Bo.jpg" class="card-img-top">
+                        <div class="card-body text-center d-flex flex-column">
+                            <h5 class="card-title">Đầu thăn ngoại bò tuyết Mr.T 250g</h5>
+                            <p class="text-danger fw-bold mt-auto">79.000đ</p>
+                            <p class="text-muted text-decoration-line-through">90.800đ</p>
+                            <span class="text-success fw-bold">-13%</span>
+                            <button class="btn btn-success mt-auto align-self-center add-to-cart"
+                                    data-id="B5" data-name="Đầu thăn ngoại bò" data-price="79000">
+                                MUA
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="~/assets/js/index.js"></script>

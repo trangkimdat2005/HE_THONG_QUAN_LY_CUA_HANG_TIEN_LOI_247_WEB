@@ -1,0 +1,134 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Thêm Tài Khoản";
+}
+  <!-- Css riêng ở đây nha -->
+  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="~/assets/css/ThemTaiKhoan.css">
+
+
+  <!-- Main sidebar ở đây nha -->
+
+
+
+
+
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="bi bi-person-lock"></i> Thêm Tài Khoản Mới</h1>
+        <p>Tạo tài khoản truy cập cho nhân viên hoặc khách hàng</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+        <li class="breadcrumb-item"><a href="#">Quản lý bảo mật</a></li>
+        <li class="breadcrumb-item"><a href="#">Thêm tài khoản</a></li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10 mx-auto">
+        <div class="tile">
+          <h3 class="tile-title">Thông tin Tài Khoản</h3>
+          <div class="tile-body">
+            <form>
+
+              <div class="mb-3">
+                <label class="form-label">Loại tài khoản</label>
+                <div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="accountType" id="radio-nhan-vien" value="NhanVien" checked>
+                    <label class="form-check-label" for="radio-nhan-vien">Tài khoản Nhân viên</label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="accountType" id="radio-khach-hang" value="KhachHang">
+                    <label class="form-check-label" for="radio-khach-hang">Tài khoản Khách hàng</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3" id="field-chon-nhan-vien">
+                <label class="form-label">Chọn Nhân Viên</label>
+                <select class="form-control" id="select-nhan-vien" style="width: 100%;">
+                  <option value="">-- Chọn nhân viên chưa có tài khoản --</option>
+                  <option value="NV001" data-email="vana@store.com">Nguyễn Văn A (Quản lý)</option>
+                  <option value="NV002" data-email="thib@store.com">Trần Thị B (Thu ngân)</option>
+                  <option value="NV003" data-email="vanc@store.com">Lê Văn C (Nhân viên kho)</option>
+                </select>
+              </div>
+
+              <div class="mb-3 form-field-hidden" id="field-chon-khach-hang">
+                <label class="form-label">Chọn Khách Hàng</label>
+                <select class="form-control" id="select-khach-hang" style="width: 100%;">
+                  <option value="">-- Chọn khách hàng chưa có tài khoản --</option>
+                  <option value="KH001" data-email="khach1@email.com">Nguyễn Văn B (090xxxx123)</option>
+                  <option value="KH002" data-email="khach2@email.com">Trần Thị D (091xxxx456)</option>
+                </select>
+              </div>
+
+              <hr>
+              <h5 class="mb-3">Thông tin đăng nhập (Bảng TaiKhoan )</h5>
+
+              <div class="mb-3">
+                <label class="form-label">Tên đăng nhập</label>
+                <input class="form-control" type="text" placeholder="V.d: vana, thib~">
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input class="form-control" type="email" id="input-email" placeholder="Email sẽ tự động điền khi chọn người dùng">
+              </div>
+
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Mật khẩu</label>
+                    <input class="form-control" type="password">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label class="form-label">Xác nhận Mật khẩu</label>
+                    <input class="form-control" type="password">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="form-label">Trạng thái</label>
+                <select class="form-select" id="select-trang-thai">
+                  <option value="Active">Active (Hoạt động)</option>
+                  <option value="Inactive">Inactive (Không hoạt động)</option>
+                  <option value="Locked">Locked (Đã khoá)</option>
+                </select>
+              </div>
+
+              <div class="mb-3" id="field-chon-quyen">
+                <label class="form-label">Gán Quyền (Roles)</label>
+                <select class="form-control" id="select-quyen" multiple="multiple" style="width: 100%;">
+                  <option value="ADMIN">Admin (Quản trị viên)</option>
+                  <option value="MANAGER">Manager (Quản lý)</option>
+                  <option value="STAFF">Staff (Nhân viên)</option>
+                  <option value="CASHIER">Cashier (Thu ngân)</option>
+                </select>
+              </div>
+
+            </form>
+          </div>
+          <div class="tile-footer">
+            <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Tạo tài
+              khoản</button>
+            <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+
+  <!-- js riêng ở đây nha! -->
+  <script src="~/assets/js/ThemTaiKhoan.js"></script>
