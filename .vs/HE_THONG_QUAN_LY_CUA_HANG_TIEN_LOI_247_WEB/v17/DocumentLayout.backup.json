@@ -3,12 +3,168 @@
   "WorkspaceRootPath": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\ef\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\ef\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\admin\\homeadmincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\admin\\homeadmincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlynhacungcap\\lichsugiaodich.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlynhacungcap\\lichsugiaodich.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhoadon\\danhsachhoadon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhoadon\\danhsachhoadon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\shared\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\shared\\error.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\xemnhapkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\xemnhapkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlynhacungcap\\danhsachnhacungcap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlynhacungcap\\danhsachnhacungcap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\danhmucspkhachhang\\danhsachsanphamkhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\danhmucspkhachhang\\danhsachsanphamkhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhuyenmai\\khuyenmai.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhuyenmai\\khuyenmai.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\xemchitietphieuxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\xemchitietphieuxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\xemchitietkiemke.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\xemchitietkiemke.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\kiemkesanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\kiemkesanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\vitrisanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\vitrisanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\danhsachphieuxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\danhsachphieuxuat.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\danhsachphieunhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\danhsachphieunhap.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\danhsachhangtonkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhohang\\danhsachhangtonkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhachhang\\thethanhvien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhachhang\\thethanhvien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhachhang\\lichsumuahang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhachhang\\lichsumuahang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhachhang\\danhsachkhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlykhachhang\\danhsachkhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\lichsugiaban.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\lichsugiaban.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachdonvi.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachdonvi.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybarcode\\dinhdanhsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybarcode\\dinhdanhsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachnhanhieu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachnhanhieu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachdanhmuc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlyhanghoa\\danhsachdanhmuc.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlydonhang\\xemchitiethoadon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlydonhang\\xemchitiethoadon.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlydonhang\\danhsachdonhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlydonhang\\danhsachdonhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\danhsachtaikhoannhanvien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\danhsachtaikhoannhanvien.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybarcode\\danhsachtemnhan.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybarcode\\danhsachtemnhan.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\lichsumuahang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\lichsumuahang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\danhsachtaikhoan.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\danhsachtaikhoan.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\danhsachtaikhoankhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\quanlybaomat\\danhsachtaikhoankhachhang.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\phantichbaocao\\baocaotonkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\phantichbaocao\\baocaotonkho.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\phantichbaocao\\baocaodoanhthu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\phantichbaocao\\baocaodoanhthu.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\phantichbaocao\\baocaobanchay.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\phantichbaocao\\baocaobanchay.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\giaodichhoantra\\phieudoitra.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\giaodichhoantra\\phieudoitra.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\giaodichhoantra\\chinhsachdoitra.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\giaodichhoantra\\chinhsachdoitra.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\giaodichhoantra\\giaodichthanhtoan.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\views\\admin\\giaodichhoantra\\giaodichthanhtoan.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\chinhsachhoantra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\chinhsachhoantra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\baocao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\baocao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\ef\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\ef\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\dongiaohang.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,10 +181,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\qrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\models\\entities\\qrcode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -38,11 +190,522 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 9,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DanhSachNhaCungCap.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\DanhSachNhaCungCap.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\DanhSachNhaCungCap.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\DanhSachNhaCungCap.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\DanhSachNhaCungCap.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:44.421Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "LichSuGiaoDich.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\LichSuGiaoDich.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\LichSuGiaoDich.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\LichSuGiaoDich.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyNhaCungCap\\LichSuGiaoDich.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:41.54Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DanhSachSanPhamKhachHang.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\DanhMucSPKhachHang\\DanhSachSanPhamKhachHang.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\DanhMucSPKhachHang\\DanhSachSanPhamKhachHang.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\DanhMucSPKhachHang\\DanhSachSanPhamKhachHang.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\DanhMucSPKhachHang\\DanhSachSanPhamKhachHang.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:39.055Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Error.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Shared\\Error.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Shared\\Error.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Shared\\Error.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Shared\\Error.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:36.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "KhuyenMai.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhuyenMai\\KhuyenMai.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhuyenMai\\KhuyenMai.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhuyenMai\\KhuyenMai.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhuyenMai\\KhuyenMai.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:31.658Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "XemNhapKho.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemNhapKho.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemNhapKho.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemNhapKho.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemNhapKho.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:22.254Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "DanhSachHoaDon.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHoaDon\\DanhSachHoaDon.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHoaDon\\DanhSachHoaDon.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHoaDon\\DanhSachHoaDon.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHoaDon\\DanhSachHoaDon.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:33.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HomeAdminController.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\Admin\\HomeAdminController.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\Admin\\HomeAdminController.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\Admin\\HomeAdminController.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\Admin\\HomeAdminController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:34:47.734Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:07:54.626Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "XemChiTietPhieuXuat.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietPhieuXuat.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietPhieuXuat.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietPhieuXuat.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietPhieuXuat.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:24.841Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "XemChiTietKiemKe.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietKiemKe.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietKiemKe.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietKiemKe.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\XemChiTietKiemKe.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:18.669Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "KiemKeSanPham.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\KiemKeSanPham.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\KiemKeSanPham.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\KiemKeSanPham.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\KiemKeSanPham.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:16.142Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ViTriSanPham.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\ViTriSanPham.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\ViTriSanPham.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\ViTriSanPham.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\ViTriSanPham.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:13.736Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DanhSachPhieuXuat.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuXuat.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuXuat.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuXuat.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuXuat.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:37:09.781Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "DanhSachPhieuNhap.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuNhap.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuNhap.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuNhap.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachPhieuNhap.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:47.625Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "DanhSachHangTonKho.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachHangTonKho.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachHangTonKho.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachHangTonKho.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhoHang\\DanhSachHangTonKho.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:44.571Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "TheThanhVien.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\TheThanhVien.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\TheThanhVien.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\TheThanhVien.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\TheThanhVien.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:41.488Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "LichSuMuaHang.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\LichSuMuaHang.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\LichSuMuaHang.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\LichSuMuaHang.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\LichSuMuaHang.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:36.634Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "DanhSachKhachHang.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\DanhSachKhachHang.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\DanhSachKhachHang.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\DanhSachKhachHang.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyKhachHang\\DanhSachKhachHang.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:30.937Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "DanhSachSanPham.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachSanPham.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachSanPham.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachSanPham.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachSanPham.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:26.073Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "LichSuGiaBan.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\LichSuGiaBan.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\LichSuGiaBan.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\LichSuGiaBan.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\LichSuGiaBan.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:23.111Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "DanhSachDonVi.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDonVi.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDonVi.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDonVi.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDonVi.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:20.09Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "DinhDanhSanPham.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DinhDanhSanPham.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DinhDanhSanPham.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DinhDanhSanPham.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DinhDanhSanPham.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:17.565Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "DanhSachNhanHieu.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachNhanHieu.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachNhanHieu.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachNhanHieu.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachNhanHieu.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:12.917Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "DanhSachDanhMuc.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDanhMuc.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDanhMuc.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDanhMuc.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyHangHoa\\DanhSachDanhMuc.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:09.743Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "XemChiTietHoaDon.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\XemChiTietHoaDon.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\XemChiTietHoaDon.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\XemChiTietHoaDon.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\XemChiTietHoaDon.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:04.797Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "DanhSachDonHang.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\DanhSachDonHang.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\DanhSachDonHang.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\DanhSachDonHang.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyDonHang\\DanhSachDonHang.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:36:01.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "DanhSachTemNhan.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DanhSachTemNhan.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DanhSachTemNhan.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DanhSachTemNhan.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBarCode\\DanhSachTemNhan.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:56.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "LichSuMuaHang.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\LichSuMuaHang.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\LichSuMuaHang.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\LichSuMuaHang.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\LichSuMuaHang.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:53.107Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "DanhSachTaiKhoanNhanVien.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanNhanVien.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanNhanVien.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanNhanVien.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanNhanVien.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:48.551Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "DanhSachTaiKhoan.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoan.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoan.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoan.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoan.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:43.292Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "DanhSachTaiKhoanKhachHang.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanKhachHang.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanKhachHang.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanKhachHang.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\QuanLyBaoMat\\DanhSachTaiKhoanKhachHang.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:40.064Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "BaoCaoTonKho.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoTonKho.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoTonKho.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoTonKho.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoTonKho.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:36.739Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "BaoCaoBanChay.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoBanChay.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoBanChay.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoBanChay.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoBanChay.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:29.547Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "BaoCaoDoanhThu.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoDoanhThu.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoDoanhThu.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoDoanhThu.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\PhanTichBaoCao\\BaoCaoDoanhThu.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:26.721Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "PhieuDoiTra.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\PhieuDoiTra.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\PhieuDoiTra.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\PhieuDoiTra.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\PhieuDoiTra.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:21.885Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "GiaoDichThanhToan.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\GiaoDichThanhToan.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\GiaoDichThanhToan.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\GiaoDichThanhToan.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\GiaoDichThanhToan.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:16.494Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "ChinhSachDoiTra.cshtml",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\ChinhSachDoiTra.cshtml",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\ChinhSachDoiTra.cshtml",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\ChinhSachDoiTra.cshtml",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Views\\Admin\\GiaoDichHoanTra\\ChinhSachDoiTra.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-10T08:35:00.943Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "ChinhSachHoanTra.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\ChinhSachHoanTra.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\ChinhSachHoanTra.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\ChinhSachHoanTra.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\ChinhSachHoanTra.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-10T08:34:39.202Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
               "Title": "DonGiaoHang.cs",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
@@ -50,16 +713,11 @@
               "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\DonGiaoHang.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T08:17:12.328Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+              "WhenOpened": "2025-11-10T08:17:12.328Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 40,
               "Title": "ApplicationDbContext.cs",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\EF\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\EF\\ApplicationDbContext.cs",
@@ -72,7 +730,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 42,
               "Title": "CaLamViec.cs",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
@@ -80,12 +738,11 @@
               "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\CaLamViec.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T08:14:59.214Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-10T08:14:59.214Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 43,
               "Title": "BaoCaoDoanhThu.cs",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
@@ -93,12 +750,11 @@
               "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCaoDoanhThu.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T08:14:58.446Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-10T08:14:58.446Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 39,
               "Title": "BaoCao.cs",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCao.cs",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\BaoCao.cs",
@@ -111,7 +767,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 44,
               "Title": "Qrcode.cs",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
@@ -119,21 +775,7 @@
               "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Models\\Entities\\Qrcode.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T08:14:53.04Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T08:07:54.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-10T08:14:53.04Z"
             }
           ]
         }
