@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {}
+    "D:\\code\\ky_I_nam_3\\Lập trình web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {}
   },
   "projects": {
-    "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {
+    "D:\\code\\ky_I_nam_3\\Lập trình web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
+        "projectUniqueName": "D:\\code\\ky_I_nam_3\\Lập trình web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
         "projectName": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB",
-        "projectPath": "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
-        "packagesPath": "C:\\Users\\nghia\\.nuget\\packages\\",
-        "outputPath": "D:\\LT_Web\\BTL_HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\obj\\",
+        "projectPath": "D:\\code\\ky_I_nam_3\\Lập trình web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj",
+        "packagesPath": "C:\\Users\\trang\\.nuget\\packages\\",
+        "outputPath": "D:\\code\\ky_I_nam_3\\Lập trình web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\nghia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\trang\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

@@ -3,74 +3,6 @@
   "WorkspaceRootPath": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\themcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\themcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\thanhtoancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\thanhtoancontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\suacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\suacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlynhansucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlynhansucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlynhacungcapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlynhacungcapcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlykhuyenmaicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlykhuyenmaicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlykhohangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlykhohangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlykhachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlykhachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlyhoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlyhoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlyhanghoacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlyhanghoacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlydonhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlydonhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlybarcodecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlybarcodecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlybaomatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\quanlybaomatcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\phantichbaocaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\phantichbaocaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\homeadmincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\homeadmincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\giaodichhoantracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\giaodichhoantracontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\danhmucspkhachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\controllers\\danhmucspkhachhangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|d:\\code\\ky_i_nam_3\\l\u1EADp tr\u00ECnh web\\btl\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{CEFB9331-A937-4B96-A5C0-8F481505DE18}|HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.csproj|solutionrelative:he_thong_quan_ly_cua_hang_tien_loi_247_web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -86,232 +18,28 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ThemController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThemController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThemController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThemController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThemController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:25:02.497Z",
+              "WhenOpened": "2025-11-10T11:07:23.997Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "ThanhToanController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThanhToanController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThanhToanController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThanhToanController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\ThanhToanController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:58.693Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SuaController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\SuaController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\SuaController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\SuaController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\SuaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:55.375Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "QuanLyNhanSuController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhanSuController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhanSuController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhanSuController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhanSuController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:53.157Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "QuanLyNhaCungCapController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhaCungCapController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhaCungCapController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhaCungCapController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyNhaCungCapController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:50.582Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "QuanLyKhuyenMaiController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhuyenMaiController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhuyenMaiController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhuyenMaiController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhuyenMaiController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:47.226Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "QuanLyKhoHangController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhoHangController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhoHangController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhoHangController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhoHangController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:40.716Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "QuanLyKhachHangController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhachHangController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhachHangController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhachHangController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyKhachHangController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:41.14Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "QuanLyHoaDonController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHoaDonController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHoaDonController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHoaDonController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHoaDonController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:37.593Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "QuanLyHangHoaController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHangHoaController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHangHoaController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHangHoaController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyHangHoaController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:35.02Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "QuanLyDonHangController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyDonHangController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyDonHangController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyDonHangController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyDonHangController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:32.725Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "QuanLyBarCodeController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBarCodeController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBarCodeController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBarCodeController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBarCodeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:22.981Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "QuanLyBaoMatController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBaoMatController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBaoMatController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBaoMatController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\QuanLyBaoMatController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:19.712Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "PhanTichBaoCaoController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\PhanTichBaoCaoController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\PhanTichBaoCaoController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\PhanTichBaoCaoController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\PhanTichBaoCaoController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:17.177Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "HomeAdminController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\HomeAdminController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\HomeAdminController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\HomeAdminController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\HomeAdminController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:24:14.566Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "DanhMucSPKhachHangController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\DanhMucSPKhachHangController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\DanhMucSPKhachHangController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\DanhMucSPKhachHangController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\DanhMucSPKhachHangController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:22:52.163Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "GiaoDichHoanTraController.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\GiaoDichHoanTraController.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\GiaoDichHoanTraController.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\GiaoDichHoanTraController.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Controllers\\GiaoDichHoanTraController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:20:54.098Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Properties\\launchSettings.json",
@@ -320,19 +48,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-11-10T09:19:26.821Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "RelativeDocumentMoniker": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "ToolTip": "D:\\code\\ky_I_nam_3\\L\u1EADp tr\u00ECnh web\\BTL\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "RelativeToolTip": "HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-10T09:17:09.639Z",
               "EditorCaption": ""
             }
           ]

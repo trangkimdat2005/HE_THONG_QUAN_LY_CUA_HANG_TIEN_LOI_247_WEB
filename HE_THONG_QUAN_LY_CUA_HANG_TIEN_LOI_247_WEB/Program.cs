@@ -30,7 +30,12 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=HomeAdmin}/{action=Index}/{id?}");
+    name: "areas",
+    pattern: "{area:exists}/{controller=HomeAdmin}/{action=Index}/{id?}");
+
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=HomeAdmin}/{action=Index}/{id?}");
+app.MapGet("/", () => Results.Redirect("/Admin/HomeAdmin/Index"));
 
 app.Run();
