@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.EF;
@@ -15,6 +15,8 @@ public partial class ApplicationDbContext : DbContext
         : base(options)
     {
     }
+
+    public virtual DbSet<AnhSanPhamDonVi> AnhSanPhamDonVis { get; set; }
 
     public virtual DbSet<BaoCao> BaoCaos { get; set; }
 
@@ -69,6 +71,8 @@ public partial class ApplicationDbContext : DbContext
     public virtual DbSet<GioHang> GioHangs { get; set; }
 
     public virtual DbSet<HinhAnh> HinhAnhs { get; set; }
+
+    public virtual DbSet<HinhAnh1> HinhAnhs1 { get; set; }
 
     public virtual DbSet<HoaDon> HoaDons { get; set; }
 
@@ -144,8 +148,40 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<ViTri> ViTris { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=QuanLyCuaHangTienLoi;User Id=sa;Password=Password123!;TrustServerCertificate=True;MultipleActiveResultSets=True");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<AnhSanPhamDonVi>(entity =>
+        {
+            entity.HasKey(e => new { e.AnhId, e.SanPhamDonViId });
+
+            entity.ToTable("Anh_SanPhamDonVi", "core");
+
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
+            entity.Property(e => e.SanPhamDonViId)
+                .HasMaxLength(50)
+                .HasColumnName("sanPhamDonViId");
+            entity.Property(e => e.IsDelete)
+                .HasDefaultValue(false)
+                .HasColumnName("isDelete");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.AnhSanPhamDonVis)
+                .HasForeignKey(d => d.AnhId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Anh_SanPhamDonVi_Anh_PK1");
+
+            entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.AnhSanPhamDonVis)
+                .HasPrincipalKey(p => p.Id)
+                .HasForeignKey(d => d.SanPhamDonViId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Anh_SanPhamDonVi_SanPhamDonVi");
+        });
+
         modelBuilder.Entity<BaoCao>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__BaoCao__3213E83FE22F5722");
@@ -968,6 +1004,14 @@ public partial class ApplicationDbContext : DbContext
 
         modelBuilder.Entity<HinhAnh>(entity =>
         {
+            entity.ToTable("HinhAnh", "core");
+
+            entity.Property(e => e.Id).HasMaxLength(50);
+            entity.Property(e => e.TenAnh).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<HinhAnh1>(entity =>
+        {
             entity.ToTable("HinhAnh");
 
             entity.Property(e => e.Id).HasMaxLength(50);
@@ -1062,6 +1106,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
             entity.Property(e => e.DiaChi)
                 .HasMaxLength(500)
                 .HasColumnName("diaChi");
@@ -1080,6 +1127,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.TrangThai)
                 .HasMaxLength(20)
                 .HasColumnName("trangThai");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.KhachHangs)
+                .HasForeignKey(d => d.AnhId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_KhachHang_Anh");
         });
 
         modelBuilder.Entity<KiemKe>(entity =>
@@ -1333,6 +1385,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
             entity.Property(e => e.ChucVu)
                 .HasMaxLength(100)
                 .HasColumnName("chucVu");
@@ -1357,6 +1412,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.TrangThai)
                 .HasMaxLength(20)
                 .HasColumnName("trangThai");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.NhanViens)
+                .HasForeignKey(d => d.AnhId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_NhanVien_Anh");
         });
 
         modelBuilder.Entity<NhatKyHoatDong>(entity =>
@@ -1596,13 +1656,18 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MaDinhDanhId)
                 .HasMaxLength(50)
                 .HasColumnName("maDinhDanhId");
-            entity.Property(e => e.QrCodeImage)
-                .HasMaxLength(500)
-                .HasColumnName("qrCodeImage");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.Qrcodes)
+                .HasForeignKey(d => d.AnhId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_QRCode_Anh");
 
             entity.HasOne(d => d.MaDinhDanh).WithMany(p => p.Qrcodes)
                 .HasForeignKey(d => d.MaDinhDanhId)
@@ -1739,6 +1804,10 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => new { e.SanPhamId, e.DonViId });
 
             entity.ToTable("SanPhamDonVi", "core");
+
+            entity.HasIndex(e => e.Id, "AK_SanPhamDonVi_id").IsUnique();
+
+            entity.HasIndex(e => e.Id, "IX_SPDV_id");
 
             entity.HasIndex(e => e.DonViId, "IX_SanPhamDonVi_donViId");
 
@@ -1917,12 +1986,20 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MaDinhDanhId)
                 .HasMaxLength(50)
                 .HasColumnName("maDinhDanhId");
             entity.Property(e => e.NgayIn).HasColumnName("ngayIn");
             entity.Property(e => e.NoiDungTem).HasColumnName("noiDungTem");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.TemNhans)
+                .HasForeignKey(d => d.AnhId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TemNhan_Anh");
 
             entity.HasOne(d => d.MaDinhDanh).WithMany(p => p.TemNhans)
                 .HasForeignKey(d => d.MaDinhDanhId)

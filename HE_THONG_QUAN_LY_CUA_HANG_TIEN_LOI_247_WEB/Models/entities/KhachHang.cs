@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class KhachHang
 {
@@ -22,6 +22,10 @@ public partial class KhachHang
     public bool IsDelete { get; set; }
 
     public bool GioiTinh { get; set; }
+
+    public string AnhId { get; set; } = null!;
+
+    public virtual HinhAnh1 Anh { get; set; } = null!;
 
     public virtual ICollection<DonHangOnline> DonHangOnlines { get; set; } = new List<DonHangOnline>();
 

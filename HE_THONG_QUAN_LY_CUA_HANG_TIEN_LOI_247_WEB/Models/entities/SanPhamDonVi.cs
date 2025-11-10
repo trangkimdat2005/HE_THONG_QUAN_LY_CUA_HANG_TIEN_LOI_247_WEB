@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 
 public partial class SanPhamDonVi
 {
@@ -16,6 +16,8 @@ public partial class SanPhamDonVi
     public decimal GiaBan { get; set; }
 
     public bool IsDelete { get; set; }
+
+    public virtual ICollection<AnhSanPhamDonVi> AnhSanPhamDonVis { get; set; } = new List<AnhSanPhamDonVi>();
 
     public virtual ICollection<BaoCaoTonKho> BaoCaoTonKhos { get; set; } = new List<BaoCaoTonKho>();
 

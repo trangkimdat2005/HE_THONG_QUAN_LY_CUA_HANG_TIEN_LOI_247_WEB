@@ -845,11 +845,7 @@ CREATE INDEX [IX_SanPhamDanhMuc_danhMucId] ON [core].[SanPhamDanhMuc] ([danhMucI
 
 CREATE UNIQUE INDEX [UQ__SanPhamD__3213E83E62FEA25D] ON [core].[SanPhamDanhMuc] ([id]) WHERE ([id] IS NOT NULL);
 
-CREATE UNIQUE INDEX [AK_SanPhamDonVi_id] ON [core].[SanPhamDonVi] ([id]);
-
 CREATE INDEX [IX_SanPhamDonVi_donViId] ON [core].[SanPhamDonVi] ([donViId]);
-
-CREATE INDEX [IX_SPDV_id] ON [core].[SanPhamDonVi] ([id]);
 
 CREATE UNIQUE INDEX [UQ__SanPhamD__3213E83ECC46A234] ON [core].[SanPhamDonVi] ([id]);
 
@@ -878,7 +874,64 @@ CREATE INDEX [IX_UserRole_roleId] ON [core].[UserRole] ([roleId]);
 CREATE UNIQUE INDEX [UQ__UserRole__3213E83E44209D3B] ON [core].[UserRole] ([id]) WHERE ([id] IS NOT NULL);
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20251109163839_code_sqlserver', N'9.0.10');
+VALUES (N'20251110111650_create_database', N'9.0.10');
+
+DECLARE @var sysname;
+SELECT @var = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[core].[QRCode]') AND [c].[name] = N'qrCodeImage');
+IF @var IS NOT NULL EXEC(N'ALTER TABLE [core].[QRCode] DROP CONSTRAINT [' + @var + '];');
+ALTER TABLE [core].[QRCode] DROP COLUMN [qrCodeImage];
+
+ALTER TABLE [core].[TemNhan] ADD [anhId] nvarchar(50) NOT NULL DEFAULT N'';
+
+ALTER TABLE [core].[QRCode] ADD [anhId] nvarchar(50) NOT NULL DEFAULT N'';
+
+ALTER TABLE [core].[NhanVien] ADD [anhId] nvarchar(50) NOT NULL DEFAULT N'';
+
+ALTER TABLE [core].[KhachHang] ADD [anhId] nvarchar(50) NOT NULL DEFAULT N'';
+
+CREATE TABLE [core].[Anh_SanPhamDonVi] (
+    [sanPhamDonViId] nvarchar(50) NOT NULL,
+    [anhId] nvarchar(50) NOT NULL,
+    [isDelete] bit NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Anh_SanPhamDonVi] PRIMARY KEY ([anhId], [sanPhamDonViId]),
+    CONSTRAINT [FK_Anh_SanPhamDonVi_Anh_PK1] FOREIGN KEY ([anhId]) REFERENCES [HinhAnh] ([Id]),
+    CONSTRAINT [FK_Anh_SanPhamDonVi_SanPhamDonVi] FOREIGN KEY ([sanPhamDonViId]) REFERENCES [core].[SanPhamDonVi] ([id])
+);
+
+CREATE TABLE [core].[HinhAnh] (
+    [Id] nvarchar(50) NOT NULL,
+    [TenAnh] nvarchar(100) NOT NULL,
+    [Anh] varbinary(max) NOT NULL,
+    CONSTRAINT [PK_HinhAnh] PRIMARY KEY ([Id])
+);
+
+CREATE INDEX [IX_TemNhan_anhId] ON [core].[TemNhan] ([anhId]);
+
+CREATE UNIQUE INDEX [AK_SanPhamDonVi_id] ON [core].[SanPhamDonVi] ([id]);
+
+CREATE INDEX [IX_SPDV_id] ON [core].[SanPhamDonVi] ([id]);
+
+CREATE INDEX [IX_QRCode_anhId] ON [core].[QRCode] ([anhId]);
+
+CREATE INDEX [IX_NhanVien_anhId] ON [core].[NhanVien] ([anhId]);
+
+CREATE INDEX [IX_KhachHang_anhId] ON [core].[KhachHang] ([anhId]);
+
+CREATE INDEX [IX_Anh_SanPhamDonVi_sanPhamDonViId] ON [core].[Anh_SanPhamDonVi] ([sanPhamDonViId]);
+
+ALTER TABLE [core].[KhachHang] ADD CONSTRAINT [FK_KhachHang_Anh] FOREIGN KEY ([anhId]) REFERENCES [HinhAnh] ([Id]);
+
+ALTER TABLE [core].[NhanVien] ADD CONSTRAINT [FK_NhanVien_Anh] FOREIGN KEY ([anhId]) REFERENCES [HinhAnh] ([Id]);
+
+ALTER TABLE [core].[QRCode] ADD CONSTRAINT [FK_QRCode_Anh] FOREIGN KEY ([anhId]) REFERENCES [HinhAnh] ([Id]);
+
+ALTER TABLE [core].[TemNhan] ADD CONSTRAINT [FK_TemNhan_Anh] FOREIGN KEY ([anhId]) REFERENCES [HinhAnh] ([Id]);
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20251110133503_v3', N'9.0.10');
 
 COMMIT;
 GO
