@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251110111650_create_database")]
-    partial class create_database
+    [Migration("20251110144411_v5")]
+    partial class v5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,32 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCao", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.AnhSanPhamDonVi", b =>
+                {
+                    b.Property<string>("AnhId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("anhId");
+
+                    b.Property<string>("SanPhamDonViId")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("sanPhamDonViId");
+
+                    b.Property<bool?>("IsDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("isDelete");
+
+                    b.HasKey("AnhId", "SanPhamDonViId");
+
+                    b.HasIndex("SanPhamDonViId");
+
+                    b.ToTable("Anh_SanPhamDonVi", "core");
+                });
+
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCao", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -66,7 +91,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("BaoCao", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCaoBanChay", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCaoBanChay", b =>
                 {
                     b.Property<string>("BaoCaoId")
                         .HasMaxLength(50)
@@ -103,7 +128,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("BaoCaoBanChay", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCaoDoanhThu", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCaoDoanhThu", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -138,7 +163,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("BaoCaoDoanhThu", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCaoTonKho", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCaoTonKho", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -187,7 +212,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("BaoCaoTonKho", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Barcode", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Barcode", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -218,7 +243,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("Barcode", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.CaLamViec", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.CaLamViec", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -251,7 +276,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("CaLamViec", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChamCong", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChamCong", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -295,7 +320,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChamCong", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietDonOnline", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietDonOnline", b =>
                 {
                     b.Property<string>("DonHangId")
                         .HasMaxLength(50)
@@ -336,7 +361,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChiTietDonOnline", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietGiaoDichNcc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietGiaoDichNcc", b =>
                 {
                     b.Property<string>("GiaoDichId")
                         .HasMaxLength(50)
@@ -374,7 +399,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChiTietGiaoDichNCC", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietHoaDon", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietHoaDon", b =>
                 {
                     b.Property<string>("HoaDonId")
                         .HasMaxLength(50)
@@ -411,7 +436,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChiTietHoaDon", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietHoaDonKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietHoaDonKhuyenMai", b =>
                 {
                     b.Property<string>("HoaDonId")
                         .HasMaxLength(50)
@@ -455,7 +480,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChiTietHoaDonKhuyenMai", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietPhieuNhap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietPhieuNhap", b =>
                 {
                     b.Property<string>("PhieuNhapId")
                         .HasMaxLength(50)
@@ -491,7 +516,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChiTietPhieuNhap", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietPhieuXuat", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietPhieuXuat", b =>
                 {
                     b.Property<string>("PhieuXuatId")
                         .HasMaxLength(50)
@@ -523,7 +548,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChiTietPhieuXuat", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChinhSachHoanTra", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChinhSachHoanTra", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -570,7 +595,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChinhSachHoanTra", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChinhSachHoanTraDanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChinhSachHoanTraDanhMuc", b =>
                 {
                     b.Property<string>("ChinhSachId")
                         .HasMaxLength(50)
@@ -603,7 +628,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChinhSachHoanTra_DanhMuc", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChuongTrinhKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChuongTrinhKhuyenMai", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -644,7 +669,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ChuongTrinhKhuyenMai", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DanhMuc", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -667,7 +692,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DanhMuc", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDung", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDung", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -712,7 +737,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DieuKienApDung", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDungDanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDungDanhMuc", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -745,7 +770,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DieuKienApDungDanhMuc", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDungSanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDungSanPham", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -778,7 +803,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DieuKienApDungSanPham", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDungToanBo", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDungToanBo", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -808,7 +833,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DieuKienApDungToanBo", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonGiaoHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonGiaoHang", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -862,7 +887,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DonGiaoHang", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonHangOnline", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonHangOnline", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -912,7 +937,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DonHangOnline", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonViDoLuong", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonViDoLuong", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -941,7 +966,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("DonViDoLuong", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.GiaoDichThanhToan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.GiaoDichThanhToan", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -987,7 +1012,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("GiaoDichThanhToan", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.GioHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.GioHang", b =>
                 {
                     b.Property<string>("TaiKhoanId")
                         .HasMaxLength(50)
@@ -1026,7 +1051,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("GioHang", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HinhAnh", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1043,10 +1068,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HinhAnh", (string)null);
+                    b.ToTable("HinhAnh", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1094,7 +1119,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("HoaDon", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KenhThanhToan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KenhThanhToan", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1153,12 +1178,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("KenhThanhToan", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("id");
+
+                    b.Property<string>("AnhId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("anhId");
 
                     b.Property<string>("DiaChi")
                         .IsRequired()
@@ -1204,6 +1235,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.HasKey("Id")
                         .HasName("PK__KhachHan__3213E83F168CE425");
 
+                    b.HasIndex("AnhId");
+
                     b.HasIndex(new[] { "SoDienThoai" }, "Index_KhachHang_1")
                         .IsUnique();
 
@@ -1214,7 +1247,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("KhachHang", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KiemKe", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KiemKe", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1256,7 +1289,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("KiemKe", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuGiaBan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuGiaBan", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1301,7 +1334,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("LichSuGiaBan", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuGiaoDich", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuGiaoDich", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1334,7 +1367,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("LichSuGiaoDich", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuMuaHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuMuaHang", b =>
                 {
                     b.Property<string>("KhachHangId")
                         .HasMaxLength(50)
@@ -1366,7 +1399,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("LichSuMuaHang", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaDinhDanhSanPham", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1409,7 +1442,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("MaDinhDanhSanPham", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaKhuyenMai", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1465,7 +1498,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("MaKhuyenMai", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhaCungCap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhaCungCap", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1518,7 +1551,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("NhaCungCap", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanHieu", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanHieu", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1541,12 +1574,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("NhanHieu", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("id");
+
+                    b.Property<string>("AnhId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("anhId");
 
                     b.Property<string>("ChucVu")
                         .IsRequired()
@@ -1602,10 +1641,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.HasKey("Id")
                         .HasName("PK__NhanVien__3213E83F4D14CBFC");
 
+                    b.HasIndex("AnhId");
+
                     b.ToTable("NhanVien", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhatKyHoatDong", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhatKyHoatDong", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1641,7 +1682,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("NhatKyHoatDong", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Permission", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Permission", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1678,7 +1719,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("Permission", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhanCongCaLamViec", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhanCongCaLamViec", b =>
                 {
                     b.Property<string>("NhanVienId")
                         .HasMaxLength(50)
@@ -1715,7 +1756,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("PhanCongCaLamViec", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhiVanChuyen", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhiVanChuyen", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1742,7 +1783,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("PhiVanChuyen", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuDoiTra", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuDoiTra", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1797,7 +1838,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("PhieuDoiTra", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuNhap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuNhap", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1838,7 +1879,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("PhieuNhap", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuXuat", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuXuat", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1879,12 +1920,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("PhieuXuat", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Qrcode", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Qrcode", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("id");
+
+                    b.Property<string>("AnhId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("anhId");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit")
@@ -1896,21 +1943,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("maDinhDanhId");
 
-                    b.Property<string>("QrCodeImage")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)")
-                        .HasColumnName("qrCodeImage");
-
                     b.HasKey("Id")
                         .HasName("PK__QRCode__3213E83FF13BADA6");
+
+                    b.HasIndex("AnhId");
 
                     b.HasIndex(new[] { "MaDinhDanhId" }, "IX_QRCode_maDinhDanhId");
 
                     b.ToTable("QRCode", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Role", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Role", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -1955,7 +1998,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("Role", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.RolePermission", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.RolePermission", b =>
                 {
                     b.Property<string>("RoleId")
                         .HasMaxLength(50)
@@ -1988,7 +2031,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("RolePermission", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2029,7 +2072,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("SanPham", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDanhMuc", b =>
                 {
                     b.Property<string>("SanPhamId")
                         .HasMaxLength(50)
@@ -2061,7 +2104,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("SanPhamDanhMuc", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", b =>
                 {
                     b.Property<string>("SanPhamId")
                         .HasMaxLength(50)
@@ -2093,6 +2136,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
                     b.HasKey("SanPhamId", "DonViId");
 
+                    b.HasIndex(new[] { "Id" }, "AK_SanPhamDonVi_id")
+                        .IsUnique();
+
+                    b.HasIndex(new[] { "Id" }, "IX_SPDV_id");
+
                     b.HasIndex(new[] { "DonViId" }, "IX_SanPhamDonVi_donViId");
 
                     b.HasIndex(new[] { "Id" }, "UQ__SanPhamD__3213E83ECC46A234")
@@ -2101,7 +2149,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("SanPhamDonVi", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamViTri", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamViTri", b =>
                 {
                     b.Property<string>("SanPhamDonViId")
                         .HasMaxLength(50)
@@ -2138,7 +2186,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("SanPhamViTri", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Shipper", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Shipper", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2170,7 +2218,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("Shipper", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2211,7 +2259,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TaiKhoan", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanKhachHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoanKhachHang", b =>
                 {
                     b.Property<string>("KhachHangId")
                         .HasMaxLength(50)
@@ -2236,7 +2284,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TaiKhoanKhachHang", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanNhanVien", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoanNhanVien", b =>
                 {
                     b.Property<string>("NhanVienId")
                         .HasMaxLength(50)
@@ -2261,12 +2309,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TaiKhoanNhanVien", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TemNhan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TemNhan", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("id");
+
+                    b.Property<string>("AnhId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("anhId");
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit")
@@ -2290,12 +2344,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.HasKey("Id")
                         .HasName("PK__TemNhan__3213E83F9EB50D82");
 
+                    b.HasIndex("AnhId");
+
                     b.HasIndex(new[] { "MaDinhDanhId" }, "IX_TemNhan_maDinhDanhId");
 
                     b.ToTable("TemNhan", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TheThanhVien", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TheThanhVien", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2334,7 +2390,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TheThanhVien", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TonKho", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TonKho", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2363,7 +2419,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TonKho", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TrangThaiGiaoHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TrangThaiGiaoHang", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2404,7 +2460,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TrangThaiGiaoHang", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TrangThaiXuLy", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TrangThaiXuLy", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2440,7 +2496,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("TrangThaiXuLy", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.UserRole", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.UserRole", b =>
                 {
                     b.Property<string>("TaiKhoanId")
                         .HasMaxLength(50)
@@ -2481,7 +2537,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("UserRole", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ViTri", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViTri", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(50)
@@ -2515,15 +2571,35 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.ToTable("ViTri", "core");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCaoBanChay", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.AnhSanPhamDonVi", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCao", "BaoCao")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", "Anh")
+                        .WithMany("AnhSanPhamDonVis")
+                        .HasForeignKey("AnhId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Anh_SanPhamDonVi_Anh_PK1");
+
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
+                        .WithMany("AnhSanPhamDonVis")
+                        .HasForeignKey("SanPhamDonViId")
+                        .HasPrincipalKey("Id")
+                        .IsRequired()
+                        .HasConstraintName("FK_Anh_SanPhamDonVi_SanPhamDonVi");
+
+                    b.Navigation("Anh");
+
+                    b.Navigation("SanPhamDonVi");
+                });
+
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCaoBanChay", b =>
+                {
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCao", "BaoCao")
                         .WithMany("BaoCaoBanChays")
                         .HasForeignKey("BaoCaoId")
                         .IsRequired()
                         .HasConstraintName("FK_BCBC_BC");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", "SanPham")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", "SanPham")
                         .WithMany("BaoCaoBanChays")
                         .HasForeignKey("SanPhamId")
                         .IsRequired()
@@ -2534,9 +2610,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPham");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCaoDoanhThu", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCaoDoanhThu", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCao", "BaoCao")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCao", "BaoCao")
                         .WithMany("BaoCaoDoanhThus")
                         .HasForeignKey("BaoCaoId")
                         .IsRequired()
@@ -2545,15 +2621,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("BaoCao");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCaoTonKho", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCaoTonKho", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCao", "BaoCao")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCao", "BaoCao")
                         .WithMany("BaoCaoTonKhos")
                         .HasForeignKey("BaoCaoId")
                         .IsRequired()
                         .HasConstraintName("FK_BCTK_BC");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("BaoCaoTonKhos")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2565,9 +2641,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Barcode", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Barcode", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", "MaDinhDanh")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaDinhDanhSanPham", "MaDinhDanh")
                         .WithMany("Barcodes")
                         .HasForeignKey("MaDinhDanhId")
                         .IsRequired()
@@ -2576,9 +2652,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("MaDinhDanh");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChamCong", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChamCong", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("ChamCongs")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
@@ -2587,15 +2663,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhanVien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietDonOnline", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietDonOnline", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonHangOnline", "DonHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonHangOnline", "DonHang")
                         .WithMany("ChiTietDonOnlines")
                         .HasForeignKey("DonHangId")
                         .IsRequired()
                         .HasConstraintName("FK_CTDON_DH");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("ChiTietDonOnlines")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2607,15 +2683,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietGiaoDichNcc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietGiaoDichNcc", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuGiaoDich", "GiaoDich")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuGiaoDich", "GiaoDich")
                         .WithMany("ChiTietGiaoDichNccs")
                         .HasForeignKey("GiaoDichId")
                         .IsRequired()
                         .HasConstraintName("FK_CTGD_LSGD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("ChiTietGiaoDichNccs")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2627,15 +2703,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietHoaDon", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietHoaDon", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithMany("ChiTietHoaDons")
                         .HasForeignKey("HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_CTHD_HoaDon");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("ChiTietHoaDons")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2647,21 +2723,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietHoaDonKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietHoaDonKhuyenMai", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithMany("ChiTietHoaDonKhuyenMais")
                         .HasForeignKey("HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_CTHDKM_HD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaKhuyenMai", "MaKhuyenMai")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaKhuyenMai", "MaKhuyenMai")
                         .WithMany("ChiTietHoaDonKhuyenMais")
                         .HasForeignKey("MaKhuyenMaiId")
                         .IsRequired()
                         .HasConstraintName("FK_CTHDKM_MKM");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("ChiTietHoaDonKhuyenMais")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2675,15 +2751,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietPhieuNhap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietPhieuNhap", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuNhap", "PhieuNhap")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuNhap", "PhieuNhap")
                         .WithMany("ChiTietPhieuNhaps")
                         .HasForeignKey("PhieuNhapId")
                         .IsRequired()
                         .HasConstraintName("FK_CTPN_PN");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("ChiTietPhieuNhaps")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2695,15 +2771,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChiTietPhieuXuat", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChiTietPhieuXuat", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuXuat", "PhieuXuat")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuXuat", "PhieuXuat")
                         .WithMany("ChiTietPhieuXuats")
                         .HasForeignKey("PhieuXuatId")
                         .IsRequired()
                         .HasConstraintName("FK_CTPX_PX");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("ChiTietPhieuXuats")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2715,15 +2791,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChinhSachHoanTraDanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChinhSachHoanTraDanhMuc", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChinhSachHoanTra", "ChinhSach")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChinhSachHoanTra", "ChinhSach")
                         .WithMany("ChinhSachHoanTraDanhMucs")
                         .HasForeignKey("ChinhSachId")
                         .IsRequired()
                         .HasConstraintName("FK_CSHTDM_CS");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DanhMuc", "DanhMuc")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DanhMuc", "DanhMuc")
                         .WithMany("ChinhSachHoanTraDanhMucs")
                         .HasForeignKey("DanhMucId")
                         .IsRequired()
@@ -2734,9 +2810,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("DanhMuc");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDung", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDung", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChuongTrinhKhuyenMai", "ChuongTrinh")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChuongTrinhKhuyenMai", "ChuongTrinh")
                         .WithMany("DieuKienApDungs")
                         .HasForeignKey("ChuongTrinhId")
                         .IsRequired()
@@ -2745,15 +2821,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("ChuongTrinh");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDungDanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDungDanhMuc", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DanhMuc", "DanhMuc")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DanhMuc", "DanhMuc")
                         .WithMany("DieuKienApDungDanhMucs")
                         .HasForeignKey("DanhMucId")
                         .IsRequired()
                         .HasConstraintName("FK_DKADDM_DM");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDung", "DieuKien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDung", "DieuKien")
                         .WithMany("DieuKienApDungDanhMucs")
                         .HasForeignKey("DieuKienId")
                         .IsRequired()
@@ -2764,15 +2840,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("DieuKien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDungSanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDungSanPham", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDung", "DieuKien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDung", "DieuKien")
                         .WithMany("DieuKienApDungSanPhams")
                         .HasForeignKey("DieuKienId")
                         .IsRequired()
                         .HasConstraintName("FK_DKADSP_DK");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", "SanPham")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", "SanPham")
                         .WithMany("DieuKienApDungSanPhams")
                         .HasForeignKey("SanPhamId")
                         .IsRequired()
@@ -2783,9 +2859,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPham");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDungToanBo", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDungToanBo", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDung", "DieuKien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDung", "DieuKien")
                         .WithMany("DieuKienApDungToanBos")
                         .HasForeignKey("DieuKienId")
                         .IsRequired()
@@ -2794,21 +2870,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("DieuKien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonGiaoHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonGiaoHang", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithMany("DonGiaoHangs")
                         .HasForeignKey("HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_DGH_HD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhiVanChuyen", "PhiVanChuyen")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhiVanChuyen", "PhiVanChuyen")
                         .WithMany("DonGiaoHangs")
                         .HasForeignKey("PhiVanChuyenId")
                         .IsRequired()
                         .HasConstraintName("FK_DGH_PVC");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Shipper", "Shipper")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Shipper", "Shipper")
                         .WithMany("DonGiaoHangs")
                         .HasForeignKey("ShipperId")
                         .IsRequired()
@@ -2821,15 +2897,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("Shipper");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonHangOnline", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonHangOnline", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithOne("DonHangOnline")
-                        .HasForeignKey("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonHangOnline", "HoaDonId")
+                        .HasForeignKey("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonHangOnline", "HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_DHO_HD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", "KhachHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", "KhachHang")
                         .WithMany("DonHangOnlines")
                         .HasForeignKey("KhachHangId")
                         .IsRequired()
@@ -2840,15 +2916,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("KhachHang");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.GiaoDichThanhToan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.GiaoDichThanhToan", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithMany("GiaoDichThanhToans")
                         .HasForeignKey("HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_GDTT_HD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KenhThanhToan", "KenhThanhToan")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KenhThanhToan", "KenhThanhToan")
                         .WithMany("GiaoDichThanhToans")
                         .HasForeignKey("KenhThanhToanId")
                         .IsRequired()
@@ -2859,16 +2935,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("KenhThanhToan");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.GioHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.GioHang", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("GioHangs")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
                         .IsRequired()
                         .HasConstraintName("FK_GioHang_SanPhamDonVi");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", "TaiKhoan")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", "TaiKhoan")
                         .WithMany("GioHangs")
                         .HasForeignKey("TaiKhoanId")
                         .IsRequired()
@@ -2879,15 +2955,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", "KhachHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", "KhachHang")
                         .WithMany("HoaDons")
                         .HasForeignKey("KhachHangId")
                         .IsRequired()
                         .HasConstraintName("FK_HoaDon_KhachHang");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("HoaDons")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
@@ -2898,15 +2974,26 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhanVien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KiemKe", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", "Anh")
+                        .WithMany("KhachHangs")
+                        .HasForeignKey("AnhId")
+                        .IsRequired()
+                        .HasConstraintName("FK_KhachHang_Anh");
+
+                    b.Navigation("Anh");
+                });
+
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KiemKe", b =>
+                {
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("KiemKes")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
                         .HasConstraintName("FK_KiemKe_NV");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("KiemKes")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2917,15 +3004,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuGiaBan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuGiaBan", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonViDoLuong", "DonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonViDoLuong", "DonVi")
                         .WithMany("LichSuGiaBans")
                         .HasForeignKey("DonViId")
                         .IsRequired()
                         .HasConstraintName("FK_LSGB_DonVi");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", "SanPham")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", "SanPham")
                         .WithMany("LichSuGiaBans")
                         .HasForeignKey("SanPhamId")
                         .IsRequired()
@@ -2936,9 +3023,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPham");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuGiaoDich", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuGiaoDich", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhaCungCap", "NhaCungCap")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhaCungCap", "NhaCungCap")
                         .WithMany("LichSuGiaoDiches")
                         .HasForeignKey("NhaCungCapId")
                         .IsRequired()
@@ -2947,15 +3034,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhaCungCap");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuMuaHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuMuaHang", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithMany("LichSuMuaHangs")
                         .HasForeignKey("HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_LSMH_HD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", "KhachHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", "KhachHang")
                         .WithMany("LichSuMuaHangs")
                         .HasForeignKey("KhachHangId")
                         .IsRequired()
@@ -2966,9 +3053,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("KhachHang");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaDinhDanhSanPham", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("MaDinhDanhSanPhams")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -2978,9 +3065,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaKhuyenMai", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChuongTrinhKhuyenMai", "ChuongTrinh")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChuongTrinhKhuyenMai", "ChuongTrinh")
                         .WithMany("MaKhuyenMais")
                         .HasForeignKey("ChuongTrinhId")
                         .IsRequired()
@@ -2989,9 +3076,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("ChuongTrinh");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhatKyHoatDong", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", "TaiKhoan")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", "Anh")
+                        .WithMany("NhanViens")
+                        .HasForeignKey("AnhId")
+                        .IsRequired()
+                        .HasConstraintName("FK_NhanVien_Anh");
+
+                    b.Navigation("Anh");
+                });
+
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhatKyHoatDong", b =>
+                {
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", "TaiKhoan")
                         .WithMany("NhatKyHoatDongs")
                         .HasForeignKey("TaiKhoanId")
                         .IsRequired()
@@ -3000,15 +3098,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhanCongCaLamViec", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhanCongCaLamViec", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.CaLamViec", "CaLamViec")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.CaLamViec", "CaLamViec")
                         .WithMany("PhanCongCaLamViecs")
                         .HasForeignKey("CaLamViecId")
                         .IsRequired()
                         .HasConstraintName("FK_PhanCong_Ca");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("PhanCongCaLamViecs")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
@@ -3019,21 +3117,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhanVien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuDoiTra", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuDoiTra", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChinhSachHoanTra", "ChinhSach")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChinhSachHoanTra", "ChinhSach")
                         .WithMany("PhieuDoiTras")
                         .HasForeignKey("ChinhSachId")
                         .IsRequired()
                         .HasConstraintName("FK_PDT_CS");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", "HoaDon")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", "HoaDon")
                         .WithMany("PhieuDoiTras")
                         .HasForeignKey("HoaDonId")
                         .IsRequired()
                         .HasConstraintName("FK_PDT_HD");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("PhieuDoiTras")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -3047,15 +3145,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuNhap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuNhap", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhaCungCap", "NhaCungCap")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhaCungCap", "NhaCungCap")
                         .WithMany("PhieuNhaps")
                         .HasForeignKey("NhaCungCapId")
                         .IsRequired()
                         .HasConstraintName("FK_PN_NCC");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("PhieuNhaps")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
@@ -3066,15 +3164,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhanVien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuXuat", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuXuat", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", "KhachHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", "KhachHang")
                         .WithMany("PhieuXuats")
                         .HasForeignKey("KhachHangId")
                         .IsRequired()
                         .HasConstraintName("FK_PX_KH");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("PhieuXuats")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
@@ -3085,26 +3183,34 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhanVien");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Qrcode", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Qrcode", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", "MaDinhDanh")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", "Anh")
+                        .WithMany("Qrcodes")
+                        .HasForeignKey("AnhId")
+                        .IsRequired()
+                        .HasConstraintName("FK_QRCode_Anh");
+
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaDinhDanhSanPham", "MaDinhDanh")
                         .WithMany("Qrcodes")
                         .HasForeignKey("MaDinhDanhId")
                         .IsRequired()
                         .HasConstraintName("FK_QR_MDD");
 
+                    b.Navigation("Anh");
+
                     b.Navigation("MaDinhDanh");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.RolePermission", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.RolePermission", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Permission", "Permission")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Permission", "Permission")
                         .WithMany("RolePermissions")
                         .HasForeignKey("PermissionId")
                         .IsRequired()
                         .HasConstraintName("FK_RP_Permission");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Role", "Role")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Role", "Role")
                         .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .IsRequired()
@@ -3115,9 +3221,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanHieu", "NhanHieu")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanHieu", "NhanHieu")
                         .WithMany("SanPhams")
                         .HasForeignKey("NhanHieuId")
                         .IsRequired()
@@ -3126,15 +3232,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("NhanHieu");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDanhMuc", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DanhMuc", "DanhMuc")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DanhMuc", "DanhMuc")
                         .WithMany("SanPhamDanhMucs")
                         .HasForeignKey("DanhMucId")
                         .IsRequired()
                         .HasConstraintName("FK_SanPhamDanhMuc_DanhMuc");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", "SanPham")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", "SanPham")
                         .WithMany("SanPhamDanhMucs")
                         .HasForeignKey("SanPhamId")
                         .IsRequired()
@@ -3145,15 +3251,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPham");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonViDoLuong", "DonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonViDoLuong", "DonVi")
                         .WithMany("SanPhamDonVis")
                         .HasForeignKey("DonViId")
                         .IsRequired()
                         .HasConstraintName("FK_SanPhamDonVi_DonVi");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", "SanPham")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", "SanPham")
                         .WithMany("SanPhamDonVis")
                         .HasForeignKey("SanPhamId")
                         .IsRequired()
@@ -3164,16 +3270,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPham");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamViTri", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamViTri", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("SanPhamViTris")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
                         .IsRequired()
                         .HasConstraintName("FK_SPVT_SPDV");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ViTri", "ViTri")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViTri", "ViTri")
                         .WithMany("SanPhamViTris")
                         .HasForeignKey("ViTriId")
                         .IsRequired()
@@ -3184,17 +3290,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("ViTri");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanKhachHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoanKhachHang", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", "KhachHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", "KhachHang")
                         .WithMany("TaiKhoanKhachHangs")
                         .HasForeignKey("KhachHangId")
                         .IsRequired()
                         .HasConstraintName("FK_TKKH_KH");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", "TaiKhoan")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", "TaiKhoan")
                         .WithOne("TaiKhoanKhachHang")
-                        .HasForeignKey("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanKhachHang", "TaiKhoanid")
+                        .HasForeignKey("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoanKhachHang", "TaiKhoanid")
                         .IsRequired()
                         .HasConstraintName("FK_TKKH_TK");
 
@@ -3203,17 +3309,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanNhanVien", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoanNhanVien", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", "NhanVien")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", "NhanVien")
                         .WithMany("TaiKhoanNhanViens")
                         .HasForeignKey("NhanVienId")
                         .IsRequired()
                         .HasConstraintName("FK_TKNV_NV");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", "TaiKhoan")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", "TaiKhoan")
                         .WithOne("TaiKhoanNhanVien")
-                        .HasForeignKey("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanNhanVien", "TaiKhoanId")
+                        .HasForeignKey("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoanNhanVien", "TaiKhoanId")
                         .IsRequired()
                         .HasConstraintName("FK_TKNV_TK");
 
@@ -3222,20 +3328,28 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TemNhan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TemNhan", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", "MaDinhDanh")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", "Anh")
+                        .WithMany("TemNhans")
+                        .HasForeignKey("AnhId")
+                        .IsRequired()
+                        .HasConstraintName("FK_TemNhan_Anh");
+
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaDinhDanhSanPham", "MaDinhDanh")
                         .WithMany("TemNhans")
                         .HasForeignKey("MaDinhDanhId")
                         .IsRequired()
                         .HasConstraintName("FK_Tem_MDD");
 
+                    b.Navigation("Anh");
+
                     b.Navigation("MaDinhDanh");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TheThanhVien", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TheThanhVien", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", "KhachHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", "KhachHang")
                         .WithMany("TheThanhViens")
                         .HasForeignKey("KhachHangId")
                         .IsRequired()
@@ -3244,9 +3358,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("KhachHang");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TonKho", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TonKho", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", "SanPhamDonVi")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", "SanPhamDonVi")
                         .WithMany("TonKhos")
                         .HasForeignKey("SanPhamDonViId")
                         .HasPrincipalKey("Id")
@@ -3256,9 +3370,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVi");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TrangThaiGiaoHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TrangThaiGiaoHang", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonGiaoHang", "DonGiaoHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonGiaoHang", "DonGiaoHang")
                         .WithMany("TrangThaiGiaoHangs")
                         .HasForeignKey("DonGiaoHangId")
                         .IsRequired()
@@ -3267,9 +3381,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("DonGiaoHang");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TrangThaiXuLy", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TrangThaiXuLy", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonHangOnline", "DonHang")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonHangOnline", "DonHang")
                         .WithMany("TrangThaiXuLies")
                         .HasForeignKey("DonHangId")
                         .IsRequired()
@@ -3278,15 +3392,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("DonHang");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.UserRole", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.UserRole", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Role", "Role")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .IsRequired()
                         .HasConstraintName("FK_UR_Role");
 
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", "TaiKhoan")
+                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", "TaiKhoan")
                         .WithMany("UserRoles")
                         .HasForeignKey("TaiKhoanId")
                         .IsRequired()
@@ -3297,7 +3411,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.BaoCao", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.BaoCao", b =>
                 {
                     b.Navigation("BaoCaoBanChays");
 
@@ -3306,26 +3420,26 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("BaoCaoTonKhos");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.CaLamViec", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.CaLamViec", b =>
                 {
                     b.Navigation("PhanCongCaLamViecs");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChinhSachHoanTra", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChinhSachHoanTra", b =>
                 {
                     b.Navigation("ChinhSachHoanTraDanhMucs");
 
                     b.Navigation("PhieuDoiTras");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ChuongTrinhKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ChuongTrinhKhuyenMai", b =>
                 {
                     b.Navigation("DieuKienApDungs");
 
                     b.Navigation("MaKhuyenMais");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DanhMuc", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DanhMuc", b =>
                 {
                     b.Navigation("ChinhSachHoanTraDanhMucs");
 
@@ -3334,7 +3448,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDanhMucs");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DieuKienApDung", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DieuKienApDung", b =>
                 {
                     b.Navigation("DieuKienApDungDanhMucs");
 
@@ -3343,26 +3457,39 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("DieuKienApDungToanBos");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonGiaoHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonGiaoHang", b =>
                 {
                     b.Navigation("TrangThaiGiaoHangs");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonHangOnline", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonHangOnline", b =>
                 {
                     b.Navigation("ChiTietDonOnlines");
 
                     b.Navigation("TrangThaiXuLies");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.DonViDoLuong", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.DonViDoLuong", b =>
                 {
                     b.Navigation("LichSuGiaBans");
 
                     b.Navigation("SanPhamDonVis");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HoaDon", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HinhAnh", b =>
+                {
+                    b.Navigation("AnhSanPhamDonVis");
+
+                    b.Navigation("KhachHangs");
+
+                    b.Navigation("NhanViens");
+
+                    b.Navigation("Qrcodes");
+
+                    b.Navigation("TemNhans");
+                });
+
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.HoaDon", b =>
                 {
                     b.Navigation("ChiTietHoaDonKhuyenMais");
 
@@ -3379,12 +3506,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("PhieuDoiTras");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KenhThanhToan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KenhThanhToan", b =>
                 {
                     b.Navigation("GiaoDichThanhToans");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.KhachHang", b =>
                 {
                     b.Navigation("DonHangOnlines");
 
@@ -3399,12 +3526,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TheThanhViens");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.LichSuGiaoDich", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.LichSuGiaoDich", b =>
                 {
                     b.Navigation("ChiTietGiaoDichNccs");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaDinhDanhSanPham", b =>
                 {
                     b.Navigation("Barcodes");
 
@@ -3413,24 +3540,24 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TemNhans");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaKhuyenMai", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.MaKhuyenMai", b =>
                 {
                     b.Navigation("ChiTietHoaDonKhuyenMais");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhaCungCap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhaCungCap", b =>
                 {
                     b.Navigation("LichSuGiaoDiches");
 
                     b.Navigation("PhieuNhaps");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanHieu", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanHieu", b =>
                 {
                     b.Navigation("SanPhams");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.NhanVien", b =>
                 {
                     b.Navigation("ChamCongs");
 
@@ -3447,34 +3574,34 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TaiKhoanNhanViens");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Permission", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Permission", b =>
                 {
                     b.Navigation("RolePermissions");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhiVanChuyen", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhiVanChuyen", b =>
                 {
                     b.Navigation("DonGiaoHangs");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuNhap", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuNhap", b =>
                 {
                     b.Navigation("ChiTietPhieuNhaps");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.PhieuXuat", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.PhieuXuat", b =>
                 {
                     b.Navigation("ChiTietPhieuXuats");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Role", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Role", b =>
                 {
                     b.Navigation("RolePermissions");
 
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPham", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPham", b =>
                 {
                     b.Navigation("BaoCaoBanChays");
 
@@ -3487,8 +3614,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("SanPhamDonVis");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.SanPhamDonVi", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.SanPhamDonVi", b =>
                 {
+                    b.Navigation("AnhSanPhamDonVis");
+
                     b.Navigation("BaoCaoTonKhos");
 
                     b.Navigation("ChiTietDonOnlines");
@@ -3516,12 +3645,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("TonKhos");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Shipper", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Shipper", b =>
                 {
                     b.Navigation("DonGiaoHangs");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoan", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.TaiKhoan", b =>
                 {
                     b.Navigation("GioHangs");
 
@@ -3534,7 +3663,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.ViTri", b =>
+            modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViTri", b =>
                 {
                     b.Navigation("SanPhamViTris");
                 });

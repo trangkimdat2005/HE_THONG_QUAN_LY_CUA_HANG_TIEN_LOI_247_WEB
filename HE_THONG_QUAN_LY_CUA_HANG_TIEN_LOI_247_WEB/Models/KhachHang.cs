@@ -25,7 +25,7 @@ public partial class KhachHang
 
     public string AnhId { get; set; } = null!;
 
-    public virtual HinhAnh1 Anh { get; set; } = null!;
+    public virtual HinhAnh Anh { get; set; } = null!;
 
     public virtual ICollection<DonHangOnline> DonHangOnlines { get; set; } = new List<DonHangOnline>();
 
