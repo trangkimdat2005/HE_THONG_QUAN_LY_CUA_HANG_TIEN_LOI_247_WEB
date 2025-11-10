@@ -1,0 +1,118 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Danh Sách Nhà Cung Cấp";
+}
+  <!-- Main sidebar ở đây nha -->
+
+
+
+
+
+
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="bi bi-microsoft-teams"></i> Quản lý Nhà Cung Cấp</h1>
+          <p>Quản lý thông tin các nhà cung cấp</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+          <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+          <li class="breadcrumb-item">Quản lý nhà cung cấp</li>
+          <li class="breadcrumb-item active">
+            <a href="#">Danh sách các nhà cung cấp</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="tile">
+            <div
+              class="tile-title-w-btn d-flex justify-content-between align-items-center"
+            >
+              <h3 class="title" style="margin-bottom: 0">
+                Danh Sách Nhà Cung Cấp
+              </h3>
+              <a class="btn btn-primary btn-add-khoi" href="../Them/ThemNCC.html">
+                <i class="fas fa-plus"></i> Thêm nhà cung cấp mới
+              </a>
+            </div>
+
+            <div class="tile-body">
+              <div class="table-responsive">
+                <table
+                  class="table table-hover table-bordered"
+                  id="sampleTable"
+                >
+                  <thead>
+                    <tr>
+                      <th>Mã Nhà Cung Cấp</th>
+                      <th>Tên Nhà Cung Cấp</th>
+                      <th>Số Điện Thoại</th>
+                      <th>Email</th>
+                      <th>Địa Chỉ</th>
+                      <th>Mã Số Thuế</th>
+                      <th class="text-center">Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>NCC001</td>
+                      <td>CP Foods</td>
+                      <td>02838234567</td>
+                      <td>contact@cp.com.vn</td>
+                      <td>Số 10, Đường 10, KCN Biên Hòa, Đồng Nai</td>
+                      <td>0300104910</td>
+                      <td class="text-center">
+                        <a
+                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
+                          href="../Sua/SuaNCC.html"
+                          title="Sửa"
+                        >
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>NCC002</td>
+                      <td>Công ty sữa TH</td>
+                      <td>02435729898</td>
+                      <td>info@thmilk.vn</td>
+                      <td>166 Nguyễn Thái Học, Ba Đình, Hà Nội</td>
+                      <td>0101290745</td>
+                      <td class="text-center">
+                        <a
+                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
+                          href="../Sua/SuaNCC.html"
+                          title="Sửa"
+                        >
+                          <i class="fas fa-edit"></i>
+                        </a>
+                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                          <i class="fas fa-trash-alt"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+
+
+
+
+
+
+

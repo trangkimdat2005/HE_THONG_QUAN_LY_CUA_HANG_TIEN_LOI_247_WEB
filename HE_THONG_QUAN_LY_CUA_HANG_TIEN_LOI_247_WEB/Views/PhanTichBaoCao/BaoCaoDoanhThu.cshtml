@@ -1,0 +1,107 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Báo Cáo Doanh Thu";
+}
+
+  <!-- Main sidebar ở đây nha -->
+
+
+
+
+
+
+
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="bi bi-graph-up"></i> Báo cáo Doanh thu</h1>
+        <p>Thống kê doanh thu theo kỳ</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+        <li class="breadcrumb-item">Phân tích & Báo cáo</li>
+        <li class="breadcrumb-item active"><a href="#">Báo cáo doanh thu</a></li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+
+          <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+            <h3 class="title" style="margin-bottom: 0;">Lịch Sử Báo Cáo Doanh Thu</h3>
+          </div>
+
+          <div class="tile-body">
+
+            <div class="row mb-3">
+              <div class="col-md-3">
+                <label class="form-label">Từ ngày</label>
+                <input class="form-control" type="date" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Đến ngày</label>
+                <input class="form-control" type="date" />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Theo kỳ</label>
+                <select class="form-select">
+                  <option value="">Tất cả</option>
+                  <option value="NGAY">Theo ngày</option>
+                  <option value="THANG">Theo tháng</option>
+                  <option value="NAM">Theo năm</option>
+                </select>
+              </div>
+              <div class="col-md-3 d-flex align-items-end">
+                <button class="btn btn-primary btn-add-khoi" type="button">
+                  <i class="fas fa-filter"></i> Lọc
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                  <tr>
+                    <th>Mã Báo Cáo</th>
+                    <th>Ngày Lập</th>
+                    <th>Kỳ Báo Cáo</th>
+                    <th>Tổng Doanh Thu</th>
+                    <th class="text-center">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>BCDT001</td>
+                    <td>01/11/2025</td>
+                    <td>Tháng 10/2025</td>
+                    <td>150,500,000 đ</td>
+                    <td class="text-center">
+                      <a class="btn btn-success btn-sm" href="#" title="Tải về (Excel)">
+                        <i class="fas fa-download"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>BCDT002</td>
+                    <td>31/10/2025</td>
+                    <td>Ngày 31/10/2025</td>
+                    <td>5,200,000 đ</td>
+                    <td class="text-center">
+                      <a class="btn btn-success btn-sm" href="#" title="Tải về (Excel)">
+                        <i class="fas fa-download"></i>
+                      </a>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+

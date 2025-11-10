@@ -1,0 +1,88 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Sửa Phân Công Ca Làm Việc";
+}
+  <!-- Css riêng ở đây nha -->
+  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="~/assets/css/SuaPhanCong.css">
+
+  <!-- Main sidebar ở đây nha -->
+
+
+
+
+
+
+<main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="bi bi-calendar-plus"></i> Sửa Phân Công Ca Làm Việc</h1>
+        <p>Lập lịch làm việc cho nhân viên</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb">
+        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+        <li class="breadcrumb-item"><a href="#">Quản lý nhân sự</a></li>
+        <li class="breadcrumb-item"><a href="#">Phân công ca</a></li>
+        <li class="breadcrumb-item"><a href="#">Sửa</a></li>
+      </ul>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 mx-auto">
+        <div class="tile">
+          <h3 class="tile-title">Thông Tin Phân Công</h3>
+          <p>Dữ liệu sẽ được lưu vào bảng <strong>PhanCongCaLamViec</strong>.</p>
+          <div class="tile-body">
+            <form>
+              
+              <div class="mb-3">
+                <label class="form-label">Chọn Nhân Viên</label>
+                <select class="form-control" id="select-nhan-vien" required>
+                  <option value="">-- Tìm và chọn nhân viên --</option>
+                  <option value="NV001">Nguyễn Văn A (Quản lý)</option>
+                  <option value="NV002">Trần Thị B (Thu ngân)</option>
+                  <option value="NV003">Lê Văn C (Nhân viên kho)</option>
+                  </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Chọn Ca Làm Việc (caLamViecId)</label>
+                <select class="form-control" id="select-ca-lam-viec" required>
+                  <option value="">-- Chọn ca làm việc --</option>
+                  <option value="CA_SANG">Ca Sáng (06:00 - 14:00)</option>
+                  <option value="CA_CHIEU">Ca Chiều (14:00 - 22:00)</option>
+                  <option value="CA_TOI">Ca Tối (22:00 - 06:00)</option>
+                  </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Ngày Phân Công (ngay)</label>
+                <input class="form-control" type="date" id="input-ngay" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Mã Phân Công (id)</label>
+                <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
+                <small class="form-text text-muted">Mã này sẽ tự động tạo khi lưu.</small>
+              </div>
+
+            </form>
+          </div>
+          <div class="tile-footer">
+            <div class="d-flex justify-content-end">
+              <a class="btn btn-secondary me-2" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+              <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+  
+  <script src="~/assets/js/SuaPhanCong.js"></script>
+

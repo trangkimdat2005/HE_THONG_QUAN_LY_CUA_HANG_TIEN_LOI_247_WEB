@@ -1,0 +1,170 @@
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Danh Sách Nhãn Hiệu";
+}
+  <!-- Css riêng ở đây nha -->
+  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+  <link rel="stylesheet" href="~/assets/css/ThemNhanHieu.css">
+
+  <!-- Main sidebar ở đây nha -->
+
+
+  <main class="app-content">
+    <div class="app-title">
+      <div>
+        <h1><i class="bi bi-tags"></i> Quản lý Nhãn hiệu</h1>
+        <p>Quản lý các nhãn hiệu của sản phẩm</p>
+      </div>
+      <ul class="app-breadcrumb breadcrumb side">
+        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+        <li class="breadcrumb-item">Quản lý hàng hoá</li>
+        <li class="breadcrumb-item active">
+          <a href="#">Danh sách nhãn hiệu</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="row" id="main-row-container">
+      
+      <div class="col-md-12" id="list-col">
+        <div class="tile">
+          <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+            <h3 class="title" style="margin-bottom: 0">
+              Danh Sách Nhãn Hiệu
+            </h3>
+            <a class="btn btn-primary btn-add-khoi" href="#" id="show-add-form-btn">
+              <i class="fas fa-plus"></i> Thêm nhãn hiệu mới
+            </a>
+          </div>
+
+          <div class="tile-body">
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered" id="sampleTable">
+                <thead>
+                  <tr>
+                    <th>Mã Nhãn Hiệu (id)</th>
+                    <th>Tên Nhãn Hiệu (ten)</th>
+                    <th>Số Lượng Sản Phẩm</th>
+                    <th class="text-center">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CP</td>
+                    <td>CP Foods</td>
+                    <td>1</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>TH</td>
+                    <td>TH True Milk</td>
+                    <td>1</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>KHONGCO</td>
+                    <td>(Không có)</td>
+                    <td>1</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>PEPSI</td>
+                    <td>PepsiCo</td>
+                    <td>5</td>
+                    <td class="text-center">
+                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
+                        <i class="fas fa-edit"></i>
+                      </a>
+                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                        <i class="fas fa-trash-alt"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-0" id="form-col">
+
+        <div id="add-form-wrapper">
+          <div class="tile">
+            <h3 class="tile-title">Thêm Nhãn Hiệu Mới</h3>
+            <p>Thêm nhãn hiệu vào hệ thống</p>
+            <div class="tile-body">
+              <form id="add-brand-form">
+                <div class="mb-3">
+                  <label class="form-label">Mã Nhãn Hiệu</label>
+                  <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Tên Nhãn Hiệu</label>
+                  <input class="form-control" id="add-ten-input" type="text" placeholder="V.d: Vinamilk" required>
+                </div>
+              </form>
+            </div>
+            <div class="tile-footer">
+              <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Thêm</button>
+              <a class="btn btn-secondary" href="#" id="cancel-add-form-btn"><i
+                  class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+            </div>
+          </div>
+        </div>
+        
+        <div id="edit-form-wrapper" style="display: none;">
+          <div class="tile">
+            <h3 class="tile-title">Sửa Nhãn Hiệu</h3>
+            <p>Sửa nhãn hiện có trong hệ thống</p>
+            <div class="tile-body">
+              <form id="edit-brand-form">
+                <div class="mb-3">
+                  <label class="form-label">Mã Nhãn Hiệu</label>
+                  <input class="form-control" id="edit-id-input" type="text" readonly>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Tên Nhãn Hiệu</label>
+                  <input class="form-control" id="edit-ten-input" type="text" required>
+                </div>
+              </form>
+            </div>
+            <div class="tile-footer">
+              <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+              <a class="btn btn-secondary" href="#" id="cancel-edit-form-btn"><i
+                  class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+            </div>
+          </div>
+        </div>
+
+      </div> </div>
+  </main>
+
+
+
+  <!-- js riêng ở đây nha! -->
+  <script src="~/assets/lib/select2/dist/js/select2.min.js"></script>
+  <script src="~/assets/js/DanhSachNhanHieu.js"></script>
