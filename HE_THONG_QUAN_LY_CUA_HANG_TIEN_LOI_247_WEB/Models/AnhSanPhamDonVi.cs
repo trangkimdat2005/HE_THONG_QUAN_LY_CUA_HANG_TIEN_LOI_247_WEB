@@ -11,7 +11,7 @@ public partial class AnhSanPhamDonVi
 
     public bool? IsDelete { get; set; }
 
-    public virtual HinhAnh1 Anh { get; set; } = null!;
+    public virtual HinhAnh Anh { get; set; } = null!;
 
     public virtual SanPhamDonVi SanPhamDonVi { get; set; } = null!;
 }

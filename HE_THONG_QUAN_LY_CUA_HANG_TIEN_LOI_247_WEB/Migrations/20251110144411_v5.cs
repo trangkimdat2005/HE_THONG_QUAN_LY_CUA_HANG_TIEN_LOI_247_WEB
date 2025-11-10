@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 {
     /// <inheritdoc />
-    public partial class create_database : Migration
+    public partial class v5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -116,6 +116,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
             migrationBuilder.CreateTable(
                 name: "HinhAnh",
+                schema: "core",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
@@ -148,26 +149,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "KhachHang",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    hoTen = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    soDienThoai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    diaChi = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ngayDangKy = table.Column<DateOnly>(type: "date", nullable: false),
-                    trangThai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false),
-                    gioiTinh = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__KhachHan__3213E83F168CE425", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "NhaCungCap",
                 schema: "core",
                 columns: table => new
@@ -197,28 +178,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__NhanHieu__3213E83FB4538AA9", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NhanVien",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    hoTen = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
-                    chucVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    luongCoBan = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    soDienThoai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    diaChi = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    ngayVaoLam = table.Column<DateOnly>(type: "date", nullable: false),
-                    trangThai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false),
-                    gioiTinh = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__NhanVien__3213E83F4D14CBFC", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -417,26 +376,59 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TheThanhVien",
+                name: "KhachHang",
                 schema: "core",
                 columns: table => new
                 {
                     id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    khachHangId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    hang = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    diemTichLuy = table.Column<int>(type: "int", nullable: false),
-                    ngayCap = table.Column<DateOnly>(type: "date", nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                    hoTen = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    soDienThoai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    diaChi = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ngayDangKy = table.Column<DateOnly>(type: "date", nullable: false),
+                    trangThai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false),
+                    gioiTinh = table.Column<bool>(type: "bit", nullable: false),
+                    anhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__TheThanh__3213E83FCD40305D", x => x.id);
+                    table.PrimaryKey("PK__KhachHan__3213E83F168CE425", x => x.id);
                     table.ForeignKey(
-                        name: "FK_TTV_KH",
-                        column: x => x.khachHangId,
+                        name: "FK_KhachHang_Anh",
+                        column: x => x.anhId,
                         principalSchema: "core",
-                        principalTable: "KhachHang",
-                        principalColumn: "id");
+                        principalTable: "HinhAnh",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NhanVien",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    hoTen = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    chucVu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    luongCoBan = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    soDienThoai = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    diaChi = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    ngayVaoLam = table.Column<DateOnly>(type: "date", nullable: false),
+                    trangThai = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false),
+                    gioiTinh = table.Column<bool>(type: "bit", nullable: false),
+                    anhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__NhanVien__3213E83F4D14CBFC", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_NhanVien_Anh",
+                        column: x => x.anhId,
+                        principalSchema: "core",
+                        principalTable: "HinhAnh",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -481,6 +473,181 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                         column: x => x.nhanHieuId,
                         principalSchema: "core",
                         principalTable: "NhanHieu",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RolePermission",
+                schema: "core",
+                columns: table => new
+                {
+                    roleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    permissionId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RP", x => new { x.roleId, x.permissionId });
+                    table.ForeignKey(
+                        name: "FK_RP_Permission",
+                        column: x => x.permissionId,
+                        principalSchema: "core",
+                        principalTable: "Permission",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_RP_Role",
+                        column: x => x.roleId,
+                        principalSchema: "core",
+                        principalTable: "Role",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NhatKyHoatDong",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    taiKhoanId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    thoiGian = table.Column<DateTime>(type: "datetime2(0)", precision: 0, nullable: false),
+                    hanhDong = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__NhatKyHo__3213E83F73810801", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_NKHD_TK",
+                        column: x => x.taiKhoanId,
+                        principalSchema: "core",
+                        principalTable: "TaiKhoan",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRole",
+                schema: "core",
+                columns: table => new
+                {
+                    taiKhoanId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    roleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    hieuLucTu = table.Column<DateOnly>(type: "date", nullable: true),
+                    hieuLucDen = table.Column<DateOnly>(type: "date", nullable: true),
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UR", x => new { x.taiKhoanId, x.roleId });
+                    table.ForeignKey(
+                        name: "FK_UR_Role",
+                        column: x => x.roleId,
+                        principalSchema: "core",
+                        principalTable: "Role",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_UR_TK",
+                        column: x => x.taiKhoanId,
+                        principalSchema: "core",
+                        principalTable: "TaiKhoan",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DieuKienApDungDanhMuc",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    dieuKienId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    danhMucId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__DieuKien__3213E83F8C100A0B", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_DKADDM_DK",
+                        column: x => x.dieuKienId,
+                        principalSchema: "core",
+                        principalTable: "DieuKienApDung",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_DKADDM_DM",
+                        column: x => x.danhMucId,
+                        principalSchema: "core",
+                        principalTable: "DanhMuc",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DieuKienApDungToanBo",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    dieuKienId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    ghiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__DieuKien__3213E83F8B829C4F", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_DKADTB_DK",
+                        column: x => x.dieuKienId,
+                        principalSchema: "core",
+                        principalTable: "DieuKienApDung",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TaiKhoanKhachHang",
+                schema: "core",
+                columns: table => new
+                {
+                    khachHangId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    taiKhoanid = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TKKH", x => new { x.khachHangId, x.taiKhoanid });
+                    table.ForeignKey(
+                        name: "FK_TKKH_KH",
+                        column: x => x.khachHangId,
+                        principalSchema: "core",
+                        principalTable: "KhachHang",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_TKKH_TK",
+                        column: x => x.taiKhoanid,
+                        principalSchema: "core",
+                        principalTable: "TaiKhoan",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TheThanhVien",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    khachHangId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    hang = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    diemTichLuy = table.Column<int>(type: "int", nullable: false),
+                    ngayCap = table.Column<DateOnly>(type: "date", nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__TheThanh__3213E83FCD40305D", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_TTV_KH",
+                        column: x => x.khachHangId,
+                        principalSchema: "core",
+                        principalTable: "KhachHang",
                         principalColumn: "id");
                 });
 
@@ -625,81 +792,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RolePermission",
-                schema: "core",
-                columns: table => new
-                {
-                    roleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    permissionId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RP", x => new { x.roleId, x.permissionId });
-                    table.ForeignKey(
-                        name: "FK_RP_Permission",
-                        column: x => x.permissionId,
-                        principalSchema: "core",
-                        principalTable: "Permission",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_RP_Role",
-                        column: x => x.roleId,
-                        principalSchema: "core",
-                        principalTable: "Role",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "NhatKyHoatDong",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    taiKhoanId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    thoiGian = table.Column<DateTime>(type: "datetime2(0)", precision: 0, nullable: false),
-                    hanhDong = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__NhatKyHo__3213E83F73810801", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_NKHD_TK",
-                        column: x => x.taiKhoanId,
-                        principalSchema: "core",
-                        principalTable: "TaiKhoan",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TaiKhoanKhachHang",
-                schema: "core",
-                columns: table => new
-                {
-                    khachHangId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    taiKhoanid = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TKKH", x => new { x.khachHangId, x.taiKhoanid });
-                    table.ForeignKey(
-                        name: "FK_TKKH_KH",
-                        column: x => x.khachHangId,
-                        principalSchema: "core",
-                        principalTable: "KhachHang",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_TKKH_TK",
-                        column: x => x.taiKhoanid,
-                        principalSchema: "core",
-                        principalTable: "TaiKhoan",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TaiKhoanNhanVien",
                 schema: "core",
                 columns: table => new
@@ -722,83 +814,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                         column: x => x.taiKhoanId,
                         principalSchema: "core",
                         principalTable: "TaiKhoan",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserRole",
-                schema: "core",
-                columns: table => new
-                {
-                    taiKhoanId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    roleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    hieuLucTu = table.Column<DateOnly>(type: "date", nullable: true),
-                    hieuLucDen = table.Column<DateOnly>(type: "date", nullable: true),
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UR", x => new { x.taiKhoanId, x.roleId });
-                    table.ForeignKey(
-                        name: "FK_UR_Role",
-                        column: x => x.roleId,
-                        principalSchema: "core",
-                        principalTable: "Role",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_UR_TK",
-                        column: x => x.taiKhoanId,
-                        principalSchema: "core",
-                        principalTable: "TaiKhoan",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DieuKienApDungDanhMuc",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    dieuKienId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    danhMucId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__DieuKien__3213E83F8C100A0B", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_DKADDM_DK",
-                        column: x => x.dieuKienId,
-                        principalSchema: "core",
-                        principalTable: "DieuKienApDung",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_DKADDM_DM",
-                        column: x => x.danhMucId,
-                        principalSchema: "core",
-                        principalTable: "DanhMuc",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "DieuKienApDungToanBo",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    dieuKienId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    ghiChu = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__DieuKien__3213E83F8B829C4F", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_DKADTB_DK",
-                        column: x => x.dieuKienId,
-                        principalSchema: "core",
-                        principalTable: "DieuKienApDung",
                         principalColumn: "id");
                 });
 
@@ -1065,6 +1080,32 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                         column: x => x.khachHangId,
                         principalSchema: "core",
                         principalTable: "KhachHang",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Anh_SanPhamDonVi",
+                schema: "core",
+                columns: table => new
+                {
+                    sanPhamDonViId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    anhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    isDelete = table.Column<bool>(type: "bit", nullable: true, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Anh_SanPhamDonVi", x => new { x.anhId, x.sanPhamDonViId });
+                    table.ForeignKey(
+                        name: "FK_Anh_SanPhamDonVi_Anh_PK1",
+                        column: x => x.anhId,
+                        principalSchema: "core",
+                        principalTable: "HinhAnh",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Anh_SanPhamDonVi_SanPhamDonVi",
+                        column: x => x.sanPhamDonViId,
+                        principalSchema: "core",
+                        principalTable: "SanPhamDonVi",
                         principalColumn: "id");
                 });
 
@@ -1518,12 +1559,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 {
                     id = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     maDinhDanhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    qrCodeImage = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                    isDelete = table.Column<bool>(type: "bit", nullable: false),
+                    anhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__QRCode__3213E83FF13BADA6", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_QRCode_Anh",
+                        column: x => x.anhId,
+                        principalSchema: "core",
+                        principalTable: "HinhAnh",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_QR_MDD",
                         column: x => x.maDinhDanhId,
@@ -1541,11 +1588,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                     maDinhDanhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     noiDungTem = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ngayIn = table.Column<DateOnly>(type: "date", nullable: false),
-                    isDelete = table.Column<bool>(type: "bit", nullable: false)
+                    isDelete = table.Column<bool>(type: "bit", nullable: false),
+                    anhId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__TemNhan__3213E83F9EB50D82", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_TemNhan_Anh",
+                        column: x => x.anhId,
+                        principalSchema: "core",
+                        principalTable: "HinhAnh",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tem_MDD",
                         column: x => x.maDinhDanhId,
@@ -1553,6 +1607,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                         principalTable: "MaDinhDanhSanPham",
                         principalColumn: "id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Anh_SanPhamDonVi_sanPhamDonViId",
+                schema: "core",
+                table: "Anh_SanPhamDonVi",
+                column: "sanPhamDonViId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BaoCaoBanChay_sanPhamId",
@@ -1802,6 +1862,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 filter: "[email] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_KhachHang_anhId",
+                schema: "core",
+                table: "KhachHang",
+                column: "anhId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_KiemKe_nhanVienId",
                 schema: "core",
                 table: "KiemKe",
@@ -1870,6 +1936,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 column: "email",
                 unique: true,
                 filter: "[email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NhanVien_anhId",
+                schema: "core",
+                table: "NhanVien",
+                column: "anhId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NhatKyHoatDong_taiKhoanId",
@@ -1941,6 +2013,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 column: "nhanVienId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_QRCode_anhId",
+                schema: "core",
+                table: "QRCode",
+                column: "anhId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_QRCode_maDinhDanhId",
                 schema: "core",
                 table: "QRCode",
@@ -1988,10 +2066,23 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 filter: "([id] IS NOT NULL)");
 
             migrationBuilder.CreateIndex(
+                name: "AK_SanPhamDonVi_id",
+                schema: "core",
+                table: "SanPhamDonVi",
+                column: "id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_SanPhamDonVi_donViId",
                 schema: "core",
                 table: "SanPhamDonVi",
                 column: "donViId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SPDV_id",
+                schema: "core",
+                table: "SanPhamDonVi",
+                column: "id");
 
             migrationBuilder.CreateIndex(
                 name: "UQ__SanPhamD__3213E83ECC46A234",
@@ -2034,6 +2125,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                 table: "TaiKhoanNhanVien",
                 column: "taiKhoanId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TemNhan_anhId",
+                schema: "core",
+                table: "TemNhan",
+                column: "anhId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TemNhan_maDinhDanhId",
@@ -2083,6 +2180,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Anh_SanPhamDonVi",
+                schema: "core");
+
             migrationBuilder.DropTable(
                 name: "BaoCaoBanChay",
                 schema: "core");
@@ -2150,9 +2251,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
             migrationBuilder.DropTable(
                 name: "GioHang",
                 schema: "core");
-
-            migrationBuilder.DropTable(
-                name: "HinhAnh");
 
             migrationBuilder.DropTable(
                 name: "KiemKe",
@@ -2336,6 +2434,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
             migrationBuilder.DropTable(
                 name: "NhanHieu",
+                schema: "core");
+
+            migrationBuilder.DropTable(
+                name: "HinhAnh",
                 schema: "core");
         }
     }

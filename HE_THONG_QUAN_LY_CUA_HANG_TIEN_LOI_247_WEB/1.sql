@@ -69,7 +69,7 @@ CREATE TABLE [core].[DonViDoLuong] (
     CONSTRAINT [PK__DonViDoL__3213E83F05CA6401] PRIMARY KEY ([id])
 );
 
-CREATE TABLE [HinhAnh] (
+CREATE TABLE [core].[HinhAnh] (
     [Id] nvarchar(50) NOT NULL,
     [TenAnh] nvarchar(100) NOT NULL,
     [Anh] varbinary(max) NOT NULL,
@@ -89,19 +89,6 @@ CREATE TABLE [core].[KenhThanhToan] (
     CONSTRAINT [PK__KenhThan__3213E83F2F0444F7] PRIMARY KEY ([id])
 );
 
-CREATE TABLE [core].[KhachHang] (
-    [id] nvarchar(50) NOT NULL,
-    [hoTen] nvarchar(200) NOT NULL,
-    [soDienThoai] nvarchar(50) NOT NULL,
-    [email] nvarchar(200) NULL,
-    [diaChi] nvarchar(500) NOT NULL,
-    [ngayDangKy] date NOT NULL,
-    [trangThai] nvarchar(20) NOT NULL,
-    [isDelete] bit NOT NULL,
-    [gioiTinh] bit NOT NULL,
-    CONSTRAINT [PK__KhachHan__3213E83F168CE425] PRIMARY KEY ([id])
-);
-
 CREATE TABLE [core].[NhaCungCap] (
     [id] nvarchar(50) NOT NULL,
     [ten] nvarchar(200) NOT NULL,
@@ -118,21 +105,6 @@ CREATE TABLE [core].[NhanHieu] (
     [ten] nvarchar(200) NOT NULL,
     [isDelete] bit NOT NULL,
     CONSTRAINT [PK__NhanHieu__3213E83FB4538AA9] PRIMARY KEY ([id])
-);
-
-CREATE TABLE [core].[NhanVien] (
-    [id] nvarchar(50) NOT NULL,
-    [hoTen] nvarchar(200) NOT NULL,
-    [chucVu] nvarchar(100) NOT NULL,
-    [luongCoBan] decimal(18,2) NOT NULL,
-    [soDienThoai] nvarchar(50) NOT NULL,
-    [email] nvarchar(200) NULL,
-    [diaChi] nvarchar(500) NOT NULL,
-    [ngayVaoLam] date NOT NULL,
-    [trangThai] nvarchar(20) NOT NULL,
-    [isDelete] bit NOT NULL,
-    [gioiTinh] bit NOT NULL,
-    CONSTRAINT [PK__NhanVien__3213E83F4D14CBFC] PRIMARY KEY ([id])
 );
 
 CREATE TABLE [core].[Permission] (
@@ -235,15 +207,36 @@ CREATE TABLE [core].[ChinhSachHoanTra_DanhMuc] (
     CONSTRAINT [FK_CSHTDM_DM] FOREIGN KEY ([danhMucId]) REFERENCES [core].[DanhMuc] ([id])
 );
 
-CREATE TABLE [core].[TheThanhVien] (
+CREATE TABLE [core].[KhachHang] (
     [id] nvarchar(50) NOT NULL,
-    [khachHangId] nvarchar(50) NOT NULL,
-    [hang] nvarchar(20) NOT NULL,
-    [diemTichLuy] int NOT NULL,
-    [ngayCap] date NOT NULL,
+    [hoTen] nvarchar(200) NOT NULL,
+    [soDienThoai] nvarchar(50) NOT NULL,
+    [email] nvarchar(200) NULL,
+    [diaChi] nvarchar(500) NOT NULL,
+    [ngayDangKy] date NOT NULL,
+    [trangThai] nvarchar(20) NOT NULL,
     [isDelete] bit NOT NULL,
-    CONSTRAINT [PK__TheThanh__3213E83FCD40305D] PRIMARY KEY ([id]),
-    CONSTRAINT [FK_TTV_KH] FOREIGN KEY ([khachHangId]) REFERENCES [core].[KhachHang] ([id])
+    [gioiTinh] bit NOT NULL,
+    [anhId] nvarchar(50) NOT NULL,
+    CONSTRAINT [PK__KhachHan__3213E83F168CE425] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_KhachHang_Anh] FOREIGN KEY ([anhId]) REFERENCES [core].[HinhAnh] ([Id])
+);
+
+CREATE TABLE [core].[NhanVien] (
+    [id] nvarchar(50) NOT NULL,
+    [hoTen] nvarchar(200) NOT NULL,
+    [chucVu] nvarchar(100) NOT NULL,
+    [luongCoBan] decimal(18,2) NOT NULL,
+    [soDienThoai] nvarchar(50) NOT NULL,
+    [email] nvarchar(200) NULL,
+    [diaChi] nvarchar(500) NOT NULL,
+    [ngayVaoLam] date NOT NULL,
+    [trangThai] nvarchar(20) NOT NULL,
+    [isDelete] bit NOT NULL,
+    [gioiTinh] bit NOT NULL,
+    [anhId] nvarchar(50) NOT NULL,
+    CONSTRAINT [PK__NhanVien__3213E83F4D14CBFC] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_NhanVien_Anh] FOREIGN KEY ([anhId]) REFERENCES [core].[HinhAnh] ([Id])
 );
 
 CREATE TABLE [core].[LichSuGiaoDich] (
@@ -265,6 +258,77 @@ CREATE TABLE [core].[SanPham] (
     [isDelete] bit NOT NULL,
     CONSTRAINT [PK__SanPham__3213E83F9FAE08F2] PRIMARY KEY ([id]),
     CONSTRAINT [FK_SanPham_NhanHieu] FOREIGN KEY ([nhanHieuId]) REFERENCES [core].[NhanHieu] ([id])
+);
+
+CREATE TABLE [core].[RolePermission] (
+    [roleId] nvarchar(50) NOT NULL,
+    [permissionId] nvarchar(50) NOT NULL,
+    [id] nvarchar(50) NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK_RP] PRIMARY KEY ([roleId], [permissionId]),
+    CONSTRAINT [FK_RP_Permission] FOREIGN KEY ([permissionId]) REFERENCES [core].[Permission] ([id]),
+    CONSTRAINT [FK_RP_Role] FOREIGN KEY ([roleId]) REFERENCES [core].[Role] ([id])
+);
+
+CREATE TABLE [core].[NhatKyHoatDong] (
+    [id] nvarchar(50) NOT NULL,
+    [taiKhoanId] nvarchar(50) NOT NULL,
+    [thoiGian] datetime2(0) NOT NULL,
+    [hanhDong] nvarchar(500) NOT NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK__NhatKyHo__3213E83F73810801] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_NKHD_TK] FOREIGN KEY ([taiKhoanId]) REFERENCES [core].[TaiKhoan] ([id])
+);
+
+CREATE TABLE [core].[UserRole] (
+    [taiKhoanId] nvarchar(50) NOT NULL,
+    [roleId] nvarchar(50) NOT NULL,
+    [hieuLucTu] date NULL,
+    [hieuLucDen] date NULL,
+    [id] nvarchar(50) NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK_UR] PRIMARY KEY ([taiKhoanId], [roleId]),
+    CONSTRAINT [FK_UR_Role] FOREIGN KEY ([roleId]) REFERENCES [core].[Role] ([id]),
+    CONSTRAINT [FK_UR_TK] FOREIGN KEY ([taiKhoanId]) REFERENCES [core].[TaiKhoan] ([id])
+);
+
+CREATE TABLE [core].[DieuKienApDungDanhMuc] (
+    [id] nvarchar(50) NOT NULL,
+    [dieuKienId] nvarchar(50) NOT NULL,
+    [danhMucId] nvarchar(50) NOT NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK__DieuKien__3213E83F8C100A0B] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_DKADDM_DK] FOREIGN KEY ([dieuKienId]) REFERENCES [core].[DieuKienApDung] ([id]),
+    CONSTRAINT [FK_DKADDM_DM] FOREIGN KEY ([danhMucId]) REFERENCES [core].[DanhMuc] ([id])
+);
+
+CREATE TABLE [core].[DieuKienApDungToanBo] (
+    [id] nvarchar(50) NOT NULL,
+    [dieuKienId] nvarchar(50) NOT NULL,
+    [ghiChu] nvarchar(500) NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK__DieuKien__3213E83F8B829C4F] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_DKADTB_DK] FOREIGN KEY ([dieuKienId]) REFERENCES [core].[DieuKienApDung] ([id])
+);
+
+CREATE TABLE [core].[TaiKhoanKhachHang] (
+    [khachHangId] nvarchar(50) NOT NULL,
+    [taiKhoanid] nvarchar(50) NOT NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK_TKKH] PRIMARY KEY ([khachHangId], [taiKhoanid]),
+    CONSTRAINT [FK_TKKH_KH] FOREIGN KEY ([khachHangId]) REFERENCES [core].[KhachHang] ([id]),
+    CONSTRAINT [FK_TKKH_TK] FOREIGN KEY ([taiKhoanid]) REFERENCES [core].[TaiKhoan] ([id])
+);
+
+CREATE TABLE [core].[TheThanhVien] (
+    [id] nvarchar(50) NOT NULL,
+    [khachHangId] nvarchar(50) NOT NULL,
+    [hang] nvarchar(20) NOT NULL,
+    [diemTichLuy] int NOT NULL,
+    [ngayCap] date NOT NULL,
+    [isDelete] bit NOT NULL,
+    CONSTRAINT [PK__TheThanh__3213E83FCD40305D] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_TTV_KH] FOREIGN KEY ([khachHangId]) REFERENCES [core].[KhachHang] ([id])
 );
 
 CREATE TABLE [core].[ChamCong] (
@@ -327,35 +391,6 @@ CREATE TABLE [core].[PhieuXuat] (
     CONSTRAINT [FK_PX_NV] FOREIGN KEY ([nhanVienId]) REFERENCES [core].[NhanVien] ([id])
 );
 
-CREATE TABLE [core].[RolePermission] (
-    [roleId] nvarchar(50) NOT NULL,
-    [permissionId] nvarchar(50) NOT NULL,
-    [id] nvarchar(50) NULL,
-    [isDelete] bit NOT NULL,
-    CONSTRAINT [PK_RP] PRIMARY KEY ([roleId], [permissionId]),
-    CONSTRAINT [FK_RP_Permission] FOREIGN KEY ([permissionId]) REFERENCES [core].[Permission] ([id]),
-    CONSTRAINT [FK_RP_Role] FOREIGN KEY ([roleId]) REFERENCES [core].[Role] ([id])
-);
-
-CREATE TABLE [core].[NhatKyHoatDong] (
-    [id] nvarchar(50) NOT NULL,
-    [taiKhoanId] nvarchar(50) NOT NULL,
-    [thoiGian] datetime2(0) NOT NULL,
-    [hanhDong] nvarchar(500) NOT NULL,
-    [isDelete] bit NOT NULL,
-    CONSTRAINT [PK__NhatKyHo__3213E83F73810801] PRIMARY KEY ([id]),
-    CONSTRAINT [FK_NKHD_TK] FOREIGN KEY ([taiKhoanId]) REFERENCES [core].[TaiKhoan] ([id])
-);
-
-CREATE TABLE [core].[TaiKhoanKhachHang] (
-    [khachHangId] nvarchar(50) NOT NULL,
-    [taiKhoanid] nvarchar(50) NOT NULL,
-    [isDelete] bit NOT NULL,
-    CONSTRAINT [PK_TKKH] PRIMARY KEY ([khachHangId], [taiKhoanid]),
-    CONSTRAINT [FK_TKKH_KH] FOREIGN KEY ([khachHangId]) REFERENCES [core].[KhachHang] ([id]),
-    CONSTRAINT [FK_TKKH_TK] FOREIGN KEY ([taiKhoanid]) REFERENCES [core].[TaiKhoan] ([id])
-);
-
 CREATE TABLE [core].[TaiKhoanNhanVien] (
     [nhanVienId] nvarchar(50) NOT NULL,
     [taiKhoanId] nvarchar(50) NOT NULL,
@@ -363,37 +398,6 @@ CREATE TABLE [core].[TaiKhoanNhanVien] (
     CONSTRAINT [PK_TKNV] PRIMARY KEY ([nhanVienId], [taiKhoanId]),
     CONSTRAINT [FK_TKNV_NV] FOREIGN KEY ([nhanVienId]) REFERENCES [core].[NhanVien] ([id]),
     CONSTRAINT [FK_TKNV_TK] FOREIGN KEY ([taiKhoanId]) REFERENCES [core].[TaiKhoan] ([id])
-);
-
-CREATE TABLE [core].[UserRole] (
-    [taiKhoanId] nvarchar(50) NOT NULL,
-    [roleId] nvarchar(50) NOT NULL,
-    [hieuLucTu] date NULL,
-    [hieuLucDen] date NULL,
-    [id] nvarchar(50) NULL,
-    [isDelete] bit NOT NULL,
-    CONSTRAINT [PK_UR] PRIMARY KEY ([taiKhoanId], [roleId]),
-    CONSTRAINT [FK_UR_Role] FOREIGN KEY ([roleId]) REFERENCES [core].[Role] ([id]),
-    CONSTRAINT [FK_UR_TK] FOREIGN KEY ([taiKhoanId]) REFERENCES [core].[TaiKhoan] ([id])
-);
-
-CREATE TABLE [core].[DieuKienApDungDanhMuc] (
-    [id] nvarchar(50) NOT NULL,
-    [dieuKienId] nvarchar(50) NOT NULL,
-    [danhMucId] nvarchar(50) NOT NULL,
-    [isDelete] bit NOT NULL,
-    CONSTRAINT [PK__DieuKien__3213E83F8C100A0B] PRIMARY KEY ([id]),
-    CONSTRAINT [FK_DKADDM_DK] FOREIGN KEY ([dieuKienId]) REFERENCES [core].[DieuKienApDung] ([id]),
-    CONSTRAINT [FK_DKADDM_DM] FOREIGN KEY ([danhMucId]) REFERENCES [core].[DanhMuc] ([id])
-);
-
-CREATE TABLE [core].[DieuKienApDungToanBo] (
-    [id] nvarchar(50) NOT NULL,
-    [dieuKienId] nvarchar(50) NOT NULL,
-    [ghiChu] nvarchar(500) NULL,
-    [isDelete] bit NOT NULL,
-    CONSTRAINT [PK__DieuKien__3213E83F8B829C4F] PRIMARY KEY ([id]),
-    CONSTRAINT [FK_DKADTB_DK] FOREIGN KEY ([dieuKienId]) REFERENCES [core].[DieuKienApDung] ([id])
 );
 
 CREATE TABLE [core].[BaoCaoBanChay] (
@@ -502,6 +506,15 @@ CREATE TABLE [core].[LichSuMuaHang] (
     CONSTRAINT [PK_LSMH] PRIMARY KEY ([khachHangId], [hoaDonId]),
     CONSTRAINT [FK_LSMH_HD] FOREIGN KEY ([hoaDonId]) REFERENCES [core].[HoaDon] ([id]),
     CONSTRAINT [FK_LSMH_KH] FOREIGN KEY ([khachHangId]) REFERENCES [core].[KhachHang] ([id])
+);
+
+CREATE TABLE [core].[Anh_SanPhamDonVi] (
+    [sanPhamDonViId] nvarchar(50) NOT NULL,
+    [anhId] nvarchar(50) NOT NULL,
+    [isDelete] bit NULL DEFAULT CAST(0 AS bit),
+    CONSTRAINT [PK_Anh_SanPhamDonVi] PRIMARY KEY ([anhId], [sanPhamDonViId]),
+    CONSTRAINT [FK_Anh_SanPhamDonVi_Anh_PK1] FOREIGN KEY ([anhId]) REFERENCES [core].[HinhAnh] ([Id]),
+    CONSTRAINT [FK_Anh_SanPhamDonVi_SanPhamDonVi] FOREIGN KEY ([sanPhamDonViId]) REFERENCES [core].[SanPhamDonVi] ([id])
 );
 
 CREATE TABLE [core].[BaoCaoTonKho] (
@@ -693,9 +706,10 @@ CREATE TABLE [core].[Barcode] (
 CREATE TABLE [core].[QRCode] (
     [id] nvarchar(50) NOT NULL,
     [maDinhDanhId] nvarchar(50) NOT NULL,
-    [qrCodeImage] nvarchar(500) NOT NULL,
     [isDelete] bit NOT NULL,
+    [anhId] nvarchar(50) NOT NULL,
     CONSTRAINT [PK__QRCode__3213E83FF13BADA6] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_QRCode_Anh] FOREIGN KEY ([anhId]) REFERENCES [core].[HinhAnh] ([Id]),
     CONSTRAINT [FK_QR_MDD] FOREIGN KEY ([maDinhDanhId]) REFERENCES [core].[MaDinhDanhSanPham] ([id])
 );
 
@@ -705,9 +719,13 @@ CREATE TABLE [core].[TemNhan] (
     [noiDungTem] nvarchar(max) NOT NULL,
     [ngayIn] date NOT NULL,
     [isDelete] bit NOT NULL,
+    [anhId] nvarchar(50) NOT NULL,
     CONSTRAINT [PK__TemNhan__3213E83F9EB50D82] PRIMARY KEY ([id]),
+    CONSTRAINT [FK_TemNhan_Anh] FOREIGN KEY ([anhId]) REFERENCES [core].[HinhAnh] ([Id]),
     CONSTRAINT [FK_Tem_MDD] FOREIGN KEY ([maDinhDanhId]) REFERENCES [core].[MaDinhDanhSanPham] ([id])
 );
+
+CREATE INDEX [IX_Anh_SanPhamDonVi_sanPhamDonViId] ON [core].[Anh_SanPhamDonVi] ([sanPhamDonViId]);
 
 CREATE INDEX [IX_BaoCaoBanChay_sanPhamId] ON [core].[BaoCaoBanChay] ([sanPhamId]);
 
@@ -787,6 +805,8 @@ CREATE UNIQUE INDEX [Index_KhachHang_1] ON [core].[KhachHang] ([soDienThoai]);
 
 CREATE UNIQUE INDEX [Index_KhachHang_2] ON [core].[KhachHang] ([email]) WHERE [email] IS NOT NULL;
 
+CREATE INDEX [IX_KhachHang_anhId] ON [core].[KhachHang] ([anhId]);
+
 CREATE INDEX [IX_KiemKe_nhanVienId] ON [core].[KiemKe] ([nhanVienId]);
 
 CREATE INDEX [IX_KiemKe_sanPhamDonViID] ON [core].[KiemKe] ([sanPhamDonViID]);
@@ -808,6 +828,8 @@ CREATE UNIQUE INDEX [UQ__MaKhuyen__357D4CF9340F2F1C] ON [core].[MaKhuyenMai] ([c
 CREATE UNIQUE INDEX [Index_NhaCungCap_1] ON [core].[NhaCungCap] ([soDienThoai]);
 
 CREATE UNIQUE INDEX [Index_NhaCungCap_2] ON [core].[NhaCungCap] ([email]) WHERE [email] IS NOT NULL;
+
+CREATE INDEX [IX_NhanVien_anhId] ON [core].[NhanVien] ([anhId]);
 
 CREATE INDEX [IX_NhatKyHoatDong_taiKhoanId] ON [core].[NhatKyHoatDong] ([taiKhoanId]);
 
@@ -831,6 +853,8 @@ CREATE INDEX [IX_PhieuXuat_khachHangId] ON [core].[PhieuXuat] ([khachHangId]);
 
 CREATE INDEX [IX_PhieuXuat_nhanVienId] ON [core].[PhieuXuat] ([nhanVienId]);
 
+CREATE INDEX [IX_QRCode_anhId] ON [core].[QRCode] ([anhId]);
+
 CREATE INDEX [IX_QRCode_maDinhDanhId] ON [core].[QRCode] ([maDinhDanhId]);
 
 CREATE UNIQUE INDEX [UQ__Role__357D4CF9DD99A6B0] ON [core].[Role] ([code]);
@@ -845,7 +869,11 @@ CREATE INDEX [IX_SanPhamDanhMuc_danhMucId] ON [core].[SanPhamDanhMuc] ([danhMucI
 
 CREATE UNIQUE INDEX [UQ__SanPhamD__3213E83E62FEA25D] ON [core].[SanPhamDanhMuc] ([id]) WHERE ([id] IS NOT NULL);
 
+CREATE UNIQUE INDEX [AK_SanPhamDonVi_id] ON [core].[SanPhamDonVi] ([id]);
+
 CREATE INDEX [IX_SanPhamDonVi_donViId] ON [core].[SanPhamDonVi] ([donViId]);
+
+CREATE INDEX [IX_SPDV_id] ON [core].[SanPhamDonVi] ([id]);
 
 CREATE UNIQUE INDEX [UQ__SanPhamD__3213E83ECC46A234] ON [core].[SanPhamDonVi] ([id]);
 
@@ -858,6 +886,8 @@ CREATE UNIQUE INDEX [Index_Shipper_1] ON [core].[Shipper] ([soDienThoai]);
 CREATE UNIQUE INDEX [UQ__tmp_ms_x__701B5126D1F8EDF3] ON [core].[TaiKhoanKhachHang] ([taiKhoanid]);
 
 CREATE UNIQUE INDEX [UQ__tmp_ms_x__701A5D1E31FA1692] ON [core].[TaiKhoanNhanVien] ([taiKhoanId]);
+
+CREATE INDEX [IX_TemNhan_anhId] ON [core].[TemNhan] ([anhId]);
 
 CREATE INDEX [IX_TemNhan_maDinhDanhId] ON [core].[TemNhan] ([maDinhDanhId]);
 
@@ -874,10 +904,7 @@ CREATE INDEX [IX_UserRole_roleId] ON [core].[UserRole] ([roleId]);
 CREATE UNIQUE INDEX [UQ__UserRole__3213E83E44209D3B] ON [core].[UserRole] ([id]) WHERE ([id] IS NOT NULL);
 
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20251110111650_create_database', N'9.0.10');
-
-INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
-VALUES (N'20251110140134_v4', N'9.0.10');
+VALUES (N'20251110144411_v5', N'9.0.10');
 
 COMMIT;
 GO

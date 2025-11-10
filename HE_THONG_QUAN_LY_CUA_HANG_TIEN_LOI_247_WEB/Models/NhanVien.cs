@@ -29,7 +29,7 @@ public partial class NhanVien
 
     public string AnhId { get; set; } = null!;
 
-    public virtual HinhAnh1 Anh { get; set; } = null!;
+    public virtual HinhAnh Anh { get; set; } = null!;
 
     public virtual ICollection<ChamCong> ChamCongs { get; set; } = new List<ChamCong>();
 
