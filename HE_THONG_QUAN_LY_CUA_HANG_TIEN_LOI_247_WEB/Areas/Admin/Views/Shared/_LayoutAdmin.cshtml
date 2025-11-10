@@ -148,8 +148,8 @@
         </div>
         <ul class="app-menu">
             <li>
-                <a class="app-menu__item  " href="index.html">
-                    <i class="app-menu__icon bi bi-speedometer"></i><span class="app-menu__label">Bảng điều khiển</span>
+                <a class="app-menu__item" asp-controller="HomeAdmin" asp-action="Index">
+                    <i class="app-menu__icon bi bi-speedometer" ></i><span class="app-menu__label">Bảng điều khiển</span>
                 </a>
             </li>
 
@@ -249,13 +249,13 @@
                 </a>
                 <ul class="treeview-menu">
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhaCungCap" asp-action="DanhSachNhaCungCap>
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhaCungCap" asp-action="DanhSachNhaCungCap">
                             </i> Danh sách các nhà
                             cung cấp
                         </a>
                     </li>
                     <li>
-                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhaCungCap" asp-action="LichSuGiaoDich
+                        <a class=" treeview-item space-first-right-khoi" asp-controller="QuanLyNhaCungCap" asp-action="LichSuGiaoDich"
                            rel="noopener"> </i> Lịch sử giao dịch</a>
                     </li>
                 </ul>
