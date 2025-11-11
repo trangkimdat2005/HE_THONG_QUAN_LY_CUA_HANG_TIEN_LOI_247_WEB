@@ -53,7 +53,7 @@
                   <i class="fas fa-filter"></i> Lọc
                 </button>
 
-                <a class="btn btn-primary btn-add-khoi ms-2" href="../Them/ThemHoaDon.html">
+                            <a class="btn btn-primary btn-add-khoi ms-2" asp-controller="Them" asp-action="ThemHoaDon">
                   <i class="fas fa-plus"></i> Thêm hoá đơn mới
                 </a>
               </div>
@@ -83,59 +83,19 @@
                       <span class="badge bg-success">Đã Thanh Toán</span>
                     </td>
                     <td class="text-center">
-                      <a class="btn btn-info btn-sm" href="../QuanLyDonHang/XemChiTietHoaDon.html" title="Xem chi tiết">
+                                        <a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon"  title="Xem chi tiết">
                         <i class="fas fa-eye"></i>
                       </a>
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaHoaDon.html" title="Sửa">
+                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaHoaDon"  title="Sửa">
                         <i class="fas fa-edit"></i>
                       </a>
-                      <a class="btn btn-info btn-sm" href="../ThanhToan/ThanhToanHoaDon.html" title="Thanh toán">
+                                        <a class="btn btn-info btn-sm" asp-controller="ThanhToan" asp-action="ThanhToanHoaDon" title="Thanh toán">
                         <i class="bi bi-wallet"></i>
                       </a>
                     </td>
                   </tr>
 
-                  <tr>
-                    <td>HD002</td>
-                    <td>02/11/2025, 10:15</td>
-                    <td>Jane Smith</td>
-                    <td>Nguyễn Văn A</td>
-                    <td>50,000 đ</td>
-                    <td><span class="badge bg-danger">Đã Hủy</span></td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm" href="../QuanLyDonHang/XemChiTietHoaDon.html" title="Xem chi tiết">
-                        <i class="fas fa-eye"></i>
-                      </a>
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaHoaDon.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-info btn-sm" href="../ThanhToan/ThanhToanHoaDon.html" title="Thanh toán">
-                        <i class="bi bi-wallet"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>HD003</td>
-                    <td>01/11/2025, 08:05</td>
-                    <td>John Doe</td>
-                    <td>Trần Thị B</td>
-                    <td>12,000 đ</td>
-                    <td>
-                      <span class="badge bg-warning">Chưa Thanh Toán</span>
-                    </td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm" href="../QuanLyDonHang/XemChiTietHoaDon.html" title="Xem chi tiết">
-                        <i class="fas fa-eye"></i>
-                      </a>
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaHoaDon.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-info btn-sm" href="../ThanhToan/ThanhToanHoaDon.html" title="Thanh toán">
-                        <i class="bi bi-wallet"></i>
-                      </a>
-                    </td>
-                  </tr>
+                  
                 </tbody>
               </table>
             </div>

@@ -35,7 +35,7 @@
               <h3 class="title" style="margin-bottom: 0">
                 Danh Sách Tài Khoản
               </h3>
-              <a class="btn btn-primary btn-add-khoi" href="../Them/ThemTaiKhoan.html">
+                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemTaiKhoan">
                 <i class="fas fa-plus"></i> Tạo tài khoản mới
               </a>
             </div>
@@ -67,8 +67,7 @@
                       </td>
                       <td class="text-center">
                         <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaTaiKhoan.html"
+                          class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan" "
                           title="Sửa"
                         >
                           <i class="fas fa-user-edit"></i>
@@ -83,57 +82,9 @@
                       </td>
                     </tr>
 
-                    <tr>
-                      <td>nhanvien01</td>
-                      <td>Jane Smith</td>
-                      <td>jane.smith@example.com</td>
-                      <td>Nhân viên bán hàng</td>
-                      <td >
-                        <span class="badge bg-success">Hoạt động</span>
-                      </td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaTaiKhoan.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-user-edit"></i>
-                        </a>
-                        <a
-                          class="btn btn-secondary btn-sm me-1"
-                          href="#"
-                          title="Đặt lại mật khẩu"
-                        >
-                          <i class="fas fa-key"></i>
-                        </a>
-                      </td>
-                    </tr>
+                    
 
-                    <tr>
-                      <td>khoquanly01</td>
-                      <td>Peter Jones</td>
-                      <td>peter.jones@example.com</td>
-                      <td>Quản lý kho</td>
-                      <td >
-                        <span class="badge bg-danger">Đã khóa</span>
-                      </td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaTaiKhoan.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-user-edit"></i>
-                        </a>
-                        <a
-                          class="btn btn-success btn-sm me-1"
-                          href="#"
-                          title="Mở khóa"
-                        >
-                          <i class="fas fa-unlock"></i>
-                        </a>
-                      </td>
-                    </tr>
+                    
                   </tbody>
                 </table>
               </div>

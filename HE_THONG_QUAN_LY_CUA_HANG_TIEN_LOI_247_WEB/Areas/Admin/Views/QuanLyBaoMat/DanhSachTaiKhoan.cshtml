@@ -30,7 +30,7 @@
         <div class="tile">
           <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
             <h3 class="title" style="margin-bottom: 0">Danh Sách Vai Trò</h3>
-            <a class="btn btn-primary btn-add-khoi" href="../Them/ThemTaiKhoan.html">
+                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemTaiKhoan">
               <i class="fas fa-plus"></i> Thêm vai trò mới
             </a>
           </div>
@@ -56,62 +56,13 @@
                       <span class="badge bg-success">Hoạt động</span>
                     </td>
                     <td>
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaTaiKhoan.html" title="Sửa">
+                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan">
                         <i class="fas fa-edit"></i>
                       </a>
                     </td>
                   </tr>
 
-                  <tr>
-                    <td>SALE_STAFF</td>
-                    <td>Nhân viên bán hàng</td>
-                    <td>Chỉ truy cập các chức năng bán hàng và hóa đơn.</td>
-                    <td >
-                      <span class="badge bg-success">Hoạt động</span>
-                    </td>
-                    <td >
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaTaiKhoan.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>WAREHOUSE_MANAGER</td>
-                    <td>Quản lý kho</td>
-                    <td>Quản lý các chức năng nhập, xuất, tồn kho.</td>
-                    <td >
-                      <span class="badge bg-success">Hoạt động</span>
-                    </td>
-                    <td >
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaTaiKhoan.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>OLD_ROLE</td>
-                    <td>Vai trò cũ</td>
-                    <td>Vai trò này đã không còn sử dụng.</td>
-                    <td >
-                      <span class="badge bg-secondary">Không hoạt động</span>
-                    </td>
-                    <td >
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="../Sua/SuaTaiKhoan.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
+                 
                 </tbody>
               </table>
             </div>

@@ -29,7 +29,7 @@
             <h3 class="title" style="margin-bottom: 0">
               Danh Sách Chính Sách
             </h3>
-            <a class="btn btn-primary btn-add-khoi" href="../Them/ThemHoanTra.html">
+                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemHoanTra">
               <i class="fas fa-plus"></i> Thêm chính sách mới
             </a>
           </div>
@@ -55,7 +55,7 @@
                     <td  >01/01/2025</td>
                     <td  >31/12/2025</td>
                     <td class="text-center">
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="../Sua/SuaHoanTra.html" title="Sửa">
+                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoanTra">
                         <i class="fas fa-edit"></i>
                       </a>
                       <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
@@ -64,39 +64,6 @@
                     </td>
                   </tr>
 
-                  <tr>
-                    <td>Chính sách hoàn tiền (Hàng lỗi)</td>
-                    <td  >3</td>
-                    <td>
-                      Chỉ áp dụng cho hàng điện tử, lỗi do nhà sản xuất.
-                    </td>
-                    <td  >01/06/2025</td>
-                    <td  >31/12/2025</td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="../Sua/SuaHoanTra.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>Không áp dụng đổi trả (Thực phẩm)</td>
-                    <td  >0</td>
-                    <td>Chỉ áp dụng cho Danh mục: Thực phẩm tươi sống.</td>
-                    <td  >01/01/2025</td>
-                    <td  >31/12/2025</td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="../Sua/SuaHoanTra.html" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>
