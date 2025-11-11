@@ -4,12 +4,16 @@
     {
         List<T> GetList<T>() where T : class;
         
-        T Get<T> (string id) where T : class;
+        T GetById<T> (params object[] keyValues) where T : class;
 
         bool Add<T>(T entity) where T : class;
 
         bool Update<T>(T entity) where T : class;
 
-        public bool Delete<T>(T entity) where T : class;
+        bool HardDelete<T>(T entity) where T : class;
+
+        bool SoftDelete<T>(T entity) where T : class;
+
+        string GenerateNewId<T>(string prefix, int totalLength) where T : class;
     }
 }
