@@ -1,5 +1,4 @@
-.text-center {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5em;
+.text-center button, a{
+    margin: 0.25rem;
 }
+
