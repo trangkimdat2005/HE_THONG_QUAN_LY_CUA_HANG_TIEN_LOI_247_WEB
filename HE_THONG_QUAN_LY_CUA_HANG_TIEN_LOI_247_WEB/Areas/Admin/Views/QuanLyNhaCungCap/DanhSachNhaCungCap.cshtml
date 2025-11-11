@@ -35,7 +35,7 @@
               <h3 class="title" style="margin-bottom: 0">
                 Danh Sách Nhà Cung Cấp
               </h3>
-              <a class="btn btn-primary btn-add-khoi" href="../Them/ThemNCC.html">
+              <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemNCC">
                 <i class="fas fa-plus"></i> Thêm nhà cung cấp mới
               </a>
             </div>
@@ -68,28 +68,7 @@
                       <td class="text-center">
                         <a
                           class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaNCC.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>NCC002</td>
-                      <td>Công ty sữa TH</td>
-                      <td>02435729898</td>
-                      <td>info@thmilk.vn</td>
-                      <td>166 Nguyễn Thái Học, Ba Đình, Hà Nội</td>
-                      <td>0101290745</td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaNCC.html"
+                          asp-controller="Sua" asp-action="SuaNCC"
                           title="Sửa"
                         >
                           <i class="fas fa-edit"></i>
@@ -107,7 +86,7 @@
         </div>
       </div>
     </main>
-
+   
 
 
 

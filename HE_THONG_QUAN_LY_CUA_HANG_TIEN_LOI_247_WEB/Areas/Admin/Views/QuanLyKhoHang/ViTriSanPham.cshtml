@@ -28,7 +28,7 @@
       <div class="tile">
         <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
           <h3 class="title" style="margin-bottom: 0">Danh Sách Vị Trí Sản Phẩm</h3>
-          <a class="btn btn-primary" href="../Them/ThemViTriSanPham.html"><i class="fas fa-plus"></i> Gán vị trí cho SP</a>
+                    <a class="btn btn-primary" asp-controller="Them" asp-action="ThemViTriSanPham"><i class="fas fa-plus"></i> Gán vị trí cho SP</a>
         </div>
         <div class="tile-body">
             <div class="table-responsive">
@@ -54,18 +54,7 @@
                     <button class="btn btn-info btn-sm me-1 btn-edit-sp-vt" title="Sửa"><i class="fas fa-edit"></i></button>
                     <button class="btn btn-danger btn-sm btn-delete-sp-vt" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                   </td>
-                </tr>
-                  <tr>
-                  <td>Sữa tươi TH True Milk</td>
-                  <td>Lốc</td>
-                  <td>KHO-A1</td>
-                  <td>Kho</td>
-                  <td>100</td>
-                  <td class="text-center">
-                    <button class="btn btn-info btn-sm me-1 btn-edit-sp-vt" title="Sửa"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm btn-delete-sp-vt" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                  </td>
-                </tr>
+                
                 </tbody>
             </table>
           </div>
@@ -78,7 +67,7 @@
       <div class="tile">
         <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
           <h3 class="title" style="margin-bottom: 0">Danh Mục Vị Trí (Kho/Kệ)</h3>
-          <a class="btn btn-primary" href="../Them/ThemDanhMucViTri.html"><i class="fas fa-plus"></i> Thêm vị trí mới</a>
+                    <a class="btn btn-primary" asp-controller="Them" asp-action="ThemDanhMucViTRi"><i class="fas fa-plus"></i> Thêm vị trí mới</a>
         </div>
         <div class="tile-body">
            <div class="table-responsive">
@@ -101,15 +90,7 @@
                     <button class="btn btn-danger btn-sm btn-delete-dm-vt" title="Xóa"><i class="fas fa-trash-alt"></i></button>
                   </td>
                 </tr>
-                <tr>
-                  <td>KHO-A1</td>
-                  <td>Kho</td>
-                  <td>Khu vực kệ sắt lưu trữ hàng khô, tầng 1</td>
-                  <td class="text-center">
-                    <button class="btn btn-info btn-sm me-1 btn-edit-dm-vt" title="Sửa"><i class="fas fa-edit"></i></button>
-                    <button class="btn btn-danger btn-sm btn-delete-dm-vt" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                  </td>
-                </tr>
+              
                  </tbody>
             </table>
           </div>
@@ -193,5 +174,5 @@
 
 
   <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/ViTriSanPham.js"></script>
+  <script src="~/assets/js/ViTriSanPham.js" asp-append-version="true" defer></script>
 
