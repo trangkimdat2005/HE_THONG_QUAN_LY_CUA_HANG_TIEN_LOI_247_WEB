@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\**" />
+    <Compile Remove="Models\NewFolder\**" />
     <Content Remove="Controllers\**" />
+    <Content Remove="Models\NewFolder\**" />
     <EmbeddedResource Remove="Controllers\**" />
+    <EmbeddedResource Remove="Models\NewFolder\**" />
     <None Remove="Controllers\**" />
+    <None Remove="Models\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,10 +32,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.10" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.10" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\NewFolder\" />
   </ItemGroup>
 
 </Project>
