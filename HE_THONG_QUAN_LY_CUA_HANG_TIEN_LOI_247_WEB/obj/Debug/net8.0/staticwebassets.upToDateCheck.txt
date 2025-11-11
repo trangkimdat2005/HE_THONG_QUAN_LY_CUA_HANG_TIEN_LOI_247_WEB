@@ -58,7 +58,6 @@ wwwroot\assets\js\DanhSachDanhMuc.js
 wwwroot\assets\js\DanhSachDonVi.js
 wwwroot\assets\js\DanhSachHangTonKho.js
 wwwroot\assets\js\DanhSachNhanHieu.js
-wwwroot\assets\js\DanhSachSanPham.js
 wwwroot\assets\js\DanhSachTemNhan.js
 wwwroot\assets\js\DinhDanhSanPham.js
 wwwroot\assets\js\GiaoDichThanhToan.js
@@ -6532,3 +6531,4 @@ wwwroot\lib\jquery\dist\jquery.js
 wwwroot\lib\jquery\dist\jquery.min.js
 wwwroot\lib\jquery\dist\jquery.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\assets\js\DanhSachSanPham.js
