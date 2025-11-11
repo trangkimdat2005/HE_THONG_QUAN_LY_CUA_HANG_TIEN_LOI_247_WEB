@@ -19,7 +19,7 @@
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item"><a href="#">Quản lý kho</a></li>
-        <li class="breadcrumb-item"><a href="../QuanLy/QuanLyViTri.html">Danh sách vị trí</a></li>
+        <li class="breadcrumb-item"><a href="#">Danh sách vị trí</a></li>
         <li class="breadcrumb-item active"><a href="#">Thêm mới</a></li>
       </ul>
     </div>
@@ -69,7 +69,7 @@
               </div>
 
               <div class="tile-footer col-md-12 mt-4 text-end">
-                <a class="btn btn-secondary me-2" href="../QuanLyKhoHang/ViTriSanPham.html">
+                            <a class="btn btn-secondary me-2"  asp-controller="QuanLyKhoHang" asp-action="ViTriSanPham">
                     <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
                 </a>
                 <button class="btn btn-primary" type="button" id="btnLuuLai">
@@ -83,5 +83,5 @@
     </div>
   </main>
 
-  <script src="~/assets/js/QuanLyKhoHang/ViTriSanPham.js"></script>
+  <script src="~/assets/js/ViTriSanPham.js" asp-append-version="true" defer></script>
 
