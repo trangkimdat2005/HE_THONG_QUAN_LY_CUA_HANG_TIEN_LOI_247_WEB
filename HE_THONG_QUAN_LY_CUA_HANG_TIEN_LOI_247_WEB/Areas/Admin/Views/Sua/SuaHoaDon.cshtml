@@ -44,7 +44,7 @@
                 </select>
               </div>
               <div class="col-md-3 d-flex align-items-end">
-                <a href="~/Them/ThemKhachHang.html">
+                            <a asp-controller="Them" asp-action="ThemKhachHang">
                   <button class="btn btn-primary" type="button"><i class="bi bi-plus-lg"></i> Thêm khách hàng</button>
                 </a>
               </div>
@@ -171,4 +171,4 @@
 
 
   <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/SuaHoaDon.js"></script>
+  <script src="~/assets/js/SuaHoaDon.js" asp-append-version="true" defer></script>

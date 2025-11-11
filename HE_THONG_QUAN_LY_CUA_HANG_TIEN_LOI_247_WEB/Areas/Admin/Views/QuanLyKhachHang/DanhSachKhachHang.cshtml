@@ -36,7 +36,7 @@
               <h3 class="title" style="margin-bottom: 0">
                 Danh Sách Khách Hàng
               </h3>
-              <a class="btn btn-primary btn-add-khoi" href="../Them/ThemKhachHang.html">
+                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemKhachHang">
                 <i class="fas fa-plus"></i> Thêm khách hàng mới
               </a>
             </div>
@@ -73,7 +73,7 @@
                       <td class="text-center">
                         <a
                           class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaKhachHang.html"
+                                           asp-controller="Sua" asp-action="SuaKhachHang"
                           title="Sửa"
                         >
                           <i class="fas fa-edit"></i>
@@ -83,30 +83,7 @@
                         </a>
                       </td>
                     </tr>
-
-                    <tr>
-                      <td>KH002</td>
-                      <td>Trần Thị B</td>
-                      <td>0912345678</td>
-                      <td>tranthib@hotmail.com</td>
-                      <td>456 Đường XYZ, Q.7, TP.HCM</td>
-                      <td>05/09/2025</td>
-                      <td>
-                        <span class="badge bg-secondary">Không hoạt động</span>
-                      </td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaKhachHang.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
+                        
                   </tbody>
                 </table>
               </div>
@@ -115,8 +92,6 @@
         </div>
       </div>
     </main>
-
-
 
 
 

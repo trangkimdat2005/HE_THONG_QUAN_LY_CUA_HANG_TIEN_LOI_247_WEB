@@ -122,7 +122,7 @@
                         </div>
                     </div>
                     <div class="tile-footer text-end">
-                        <a class="btn btn-secondary me-2" href="~/QuanLyKhoHang/ViTriSanPham.html">
+                    <a class="btn btn-secondary me-2" asp-controller="QuanLyKhoHang" asp-action="ViTriSanPham">
                             <i class="bi bi-x-circle me-2"></i>Hủy bỏ
                         </a>
                         <button class="btn btn-primary" type="button" id="btn-luu-phieu">
@@ -138,6 +138,6 @@
 
 
     <!-- js riêng ở đây nha! -->
-<script src="~/assets/lib/select2/dist/js/select2.min.js"></script>
-<script src="~/assets/js/ThemViTriSanPham.js"></script>
+<script src="~/assets/lib/select2/dist/js/select2.min.js" asp-append-version="true" defer></script>
+<script src="~/assets/js/ThemViTriSanPham.js" asp-append-version="true" defer></script>
 

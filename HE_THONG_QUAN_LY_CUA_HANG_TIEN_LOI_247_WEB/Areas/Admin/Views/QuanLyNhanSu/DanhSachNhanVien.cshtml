@@ -35,8 +35,8 @@
               <h3 class="title" style="margin-bottom: 0">
                 Danh Sách Nhân Viên
               </h3>
-              <a class="btn btn btn-primary btn-add-khoi" href="../Them/ThemNhanSu.html">
-                <i class="fas fa-plus"></i> Thêm nhân viên mới
+                    <a class="btn btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemNhanSu">
+                        <i class="fas fa-plus"></i> Thêm nhân viên mới
               </a>
             </div>
 
@@ -70,51 +70,8 @@
                       <td class="text-center">
                         <a
                           class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaNhanSu.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>NV002</td>
-                      <td>Jane Smith</td>
-                      <td>Nhân viên Bán hàng</td>
-                      <td>0912345678</td>
-                      <td>jane.smith@example.com</td>
-                      <td>15/03/2025</td>
-                      <td><span class="badge bg-warning">Nghỉ phép</span></td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaNhanSu.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>NV003</td>
-                      <td>Peter Jones</td>
-                      <td>Nhân viên Kho</td>
-                      <td>0923456789</td>
-                      <td>peter.jones@example.com</td>
-                      <td>10/02/2025</td>
-                      <td><span class="badge bg-secondary">Đã nghỉ</span></td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaNhanSu.html"
+                        
+                                           asp-controller="Sua" asp-action="SuaNhanSu"
                           title="Sửa"
                         >
                           <i class="fas fa-edit"></i>

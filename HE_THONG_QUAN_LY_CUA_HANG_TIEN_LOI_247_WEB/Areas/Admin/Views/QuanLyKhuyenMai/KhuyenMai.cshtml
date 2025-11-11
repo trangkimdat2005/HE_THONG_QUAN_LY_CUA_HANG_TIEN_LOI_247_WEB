@@ -33,7 +33,7 @@
               <h3 class="title" style="margin-bottom: 0">
                 Danh Sách Chương Trình
               </h3>
-              <a class="btn btn-primary btn-add-khoi" href="../Them/ThemMaKhuyenMai.html">
+                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemMaKhuyenMai">
                 <i class="fas fa-plus"></i> Tạo chương trình mới
               </a>
             </div>
@@ -66,7 +66,7 @@
                       <td class="text-center">
                         <a
                           class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaMaKhuyenMai.html"
+                                           asp-controller="Sua" asp-action="SuaMaKhuyenMai"
                           title="Sửa"
                         >
                           <i class="fas fa-edit"></i>
@@ -77,47 +77,7 @@
                       </td>
                     </tr>
 
-                    <tr>
-                      <td>VOUCHER20K</td>
-                      <td>Tặng voucher 20k</td>
-                      <td>voucher</td>
-                      <td>15/10/2025</td>
-                      <td>15/11/2025</td>
-                      <td>Phát hành 100 voucher 20k</td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaMaKhuyenMai.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td>COMBO99</td>
-                      <td>Combo 99k</td>
-                      <td>combo</td>
-                      <td>01/11/2025</td>
-                      <td>15/11/2025</td>
-                      <td>Combo 1 Gà + 2 Nước ngọt 99k</td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                          href="../Sua/SuaMaKhuyenMai.html"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr>
+           
                   </tbody>
                 </table>
               </div>
@@ -126,4 +86,3 @@
         </div>
       </div>
     </main>
-

@@ -125,7 +125,7 @@
           <div class="tile-footer">
             <div class="d-flex justify-content-end">
               <div>
-                <a class="btn btn-secondary" href="DanhSachPhieuNhap.html"><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
+                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuXuat" ><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
                 
                 <button class="btn btn-warning" type="button" id="btn-edit">
                   <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa
@@ -150,4 +150,4 @@
 
 
   <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/XemNhapKho.js"></script>
+  <script src="~/assets/js/XemNhapKho.js" asp-append-version="true" defer></script>
