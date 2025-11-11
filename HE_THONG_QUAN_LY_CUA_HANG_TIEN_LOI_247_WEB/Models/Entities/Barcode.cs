@@ -9,9 +9,11 @@ public partial class Barcode
 
     public string MaDinhDanhId { get; set; } = null!;
 
-    public string BarcodeImage { get; set; } = null!;
+    public string AnhId { get; set; } = null!;
 
     public bool IsDelete { get; set; }
+
+    public virtual HinhAnh Anh { get; set; } = null!;
 
     public virtual MaDinhDanhSanPham MaDinhDanh { get; set; } = null!;
 }

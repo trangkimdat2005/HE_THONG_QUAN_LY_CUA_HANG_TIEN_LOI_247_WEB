@@ -4,6 +4,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251111152329_xoa_file_bao_cao")]
+    partial class xoa_file_bao_cao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -218,11 +221,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("id");
 
-                    b.Property<string>("AnhId")
+                    b.Property<string>("BarcodeImage")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("anhId");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)")
+                        .HasColumnName("barcodeImage");
 
                     b.Property<bool>("IsDelete")
                         .ValueGeneratedOnAdd()
@@ -238,8 +241,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK__Barcode__3213E83F1D9006F9");
-
-                    b.HasIndex("AnhId");
 
                     b.HasIndex(new[] { "MaDinhDanhId" }, "IX_Barcode_maDinhDanhId");
 
@@ -2759,19 +2760,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
 
             modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.Barcode", b =>
                 {
-                    b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HinhAnh", "Anh")
-                        .WithMany("Barcodes")
-                        .HasForeignKey("AnhId")
-                        .IsRequired()
-                        .HasConstraintName("FK_BarCode_Anh");
-
                     b.HasOne("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.MaDinhDanhSanPham", "MaDinhDanh")
                         .WithMany("Barcodes")
                         .HasForeignKey("MaDinhDanhId")
                         .IsRequired()
                         .HasConstraintName("FK_Bar_MDD");
-
-                    b.Navigation("Anh");
 
                     b.Navigation("MaDinhDanh");
                 });
@@ -3603,8 +3596,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Migrations
             modelBuilder.Entity("HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.HinhAnh", b =>
                 {
                     b.Navigation("AnhSanPhamDonVis");
-
-                    b.Navigation("Barcodes");
 
                     b.Navigation("KhachHangs");
 

@@ -17,6 +17,8 @@ public partial class HinhAnh
 
     public virtual ICollection<NhanVien> NhanViens { get; set; } = new List<NhanVien>();
 
+    public virtual ICollection<Barcode> Barcodes { get; set; } = new List<Barcode>();
+
     public virtual ICollection<Qrcode> Qrcodes { get; set; } = new List<Qrcode>();
 
     public virtual ICollection<TemNhan> TemNhans { get; set; } = new List<TemNhan>();
