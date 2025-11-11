@@ -1,0 +1,63 @@
+﻿/* --- CSS CHO BỐ CỤC FORM TRƯỢT --- */
+
+/* Hiệu ứng transition cho cả 2 cột */
+#list-column,
+#form-column {
+    transition: width 0.4s ease-in-out;
+}
+
+#form-column {
+    overflow: hidden;
+}
+
+/* Trạng thái ban đầu (form ẩn) */
+#list-column.col-lg-12 {
+    width: 100%;
+}
+
+#form-column {
+    width: 0;
+    opacity: 0;
+    padding: 0;
+    margin: 0;
+}
+
+/* Trạng thái khi form mở (thêm class .form-active vào #main-content-row) */
+.form-active #list-column {
+    width: 66.66667%; /* 8/12 = ~66.67% */
+}
+
+.form-active #form-column {
+    width: 33.33333%; /* 4/12 = ~33.33% */
+    opacity: 1;
+}
+
+/* Khi có class active, form hiện ra */
+#form-column.active {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Tùy chỉnh cho tile bên trong form */
+.form-panel .tile-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .form-panel .tile-title h3 {
+        margin-bottom: 0;
+        font-size: 1.25rem;
+    }
+
+/* Responsive (trên mobile, form chiếm 100%) */
+@media (max-width: 767.98px) {
+    .form-active #list-column {
+        display: none; /* Ẩn list đi */
+    }
+
+    .form-active #form-column {
+        width: 100%;
+    }
+}
