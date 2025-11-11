@@ -11,8 +11,6 @@ public partial class BaoCao
 
     public DateOnly NgayLap { get; set; }
 
-    public string FileBaoCao { get; set; } = null!;
-
     public bool IsDelete { get; set; }
 
     public DateOnly TuNgay { get; set; }

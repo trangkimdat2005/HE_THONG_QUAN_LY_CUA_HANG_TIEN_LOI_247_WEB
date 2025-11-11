@@ -186,9 +186,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("id");
             entity.Property(e => e.DenNgay).HasColumnName("denNgay");
-            entity.Property(e => e.FileBaoCao)
-                .HasMaxLength(500)
-                .HasColumnName("fileBaoCao");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false).HasDefaultValue(false);
             entity.Property(e => e.LoaiBaoCao)
                 .HasMaxLength(20)
@@ -306,9 +303,16 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.BarcodeImage)
-                .HasMaxLength(500)
-                .HasColumnName("barcodeImage");
+
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.Barcodes)
+                .HasForeignKey(d => d.AnhId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BarCode_Anh");
+
             entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
             entity.Property(e => e.MaDinhDanhId)
                 .HasMaxLength(50)
@@ -1642,13 +1646,15 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.AnhId)
-                .HasMaxLength(50)
-                .HasColumnName("anhId");
+            
             entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
             entity.Property(e => e.MaDinhDanhId)
                 .HasMaxLength(50)
                 .HasColumnName("maDinhDanhId");
+
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
 
             entity.HasOne(d => d.Anh).WithMany(p => p.Qrcodes)
                 .HasForeignKey(d => d.AnhId)
