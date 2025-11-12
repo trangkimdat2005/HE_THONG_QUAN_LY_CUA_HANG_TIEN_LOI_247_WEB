@@ -81,4 +81,25 @@
              }
              alert('Đã lưu phiếu thành công! (Mô phỏng)');
         });
+     $('#btn-cancel').click(function (e) { // <-- Đã thay đổi ở đây
+         e.preventDefault();
+         resetForm();
+     });
+
+     // Hàm thực hiện reset tất cả các trường nhập liệu
+     function resetForm() {
+         // --- 1. Thông tin Phiếu Gán Vị Trí ---
+         $('#select-nhan-vien').val('NV001').trigger('change');
+         $('#input-ngay-thuc-hien').val(new Date().toISOString().split('T')[0]);
+
+         // --- 2. Chi Tiết Sản Phẩm & Vị Trí (Khu vực nhập liệu) ---
+         $('#select-san-pham').val('').trigger('change');
+         $('#select-ma-vi-tri').val('').trigger('change');
+         $('#select-loai-vi-tri').val('Kho');
+         $('#input-so-luong').val(1);
+         $('#input-gia-tien').val('');
+
+         // Đặt lại biến đếm STT
+         stt = 1;
+     }
     });

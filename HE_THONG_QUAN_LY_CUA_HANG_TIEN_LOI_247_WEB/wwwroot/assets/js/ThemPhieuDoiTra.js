@@ -121,5 +121,35 @@ $(document).ready(function() {
             });
             $('#lbl-tong-tien-hoan').text(total.toLocaleString('vi-VN') + ' đ');
             $('#hidden-tong-tien-hoan').val(total);
-        }
+    }
+    // --- 5. XỬ LÝ NÚT HỦY BỎ (CLEAN FORM) ---
+
+    $('#btn-cancel').click(function (event) {
+        event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+        resetReturnForm();
+    });
+
+    // Hàm thực hiện làm sạch toàn bộ dữ liệu form (Sử dụng jQuery)
+    function resetReturnForm() {
+        // --- 1. Thông tin Hoàn Trả ---
+        $('#input-ma-hoa-don').val('');
+        $('#input-khach-hang').val('---'); // Đặt lại placeholder
+        $('#input-khach-hang-id').val('');
+        $('#select-chinh-sach').val(''); // Đặt lại option đầu tiên
+        // Đặt lại ngày về ngày hiện tại hoặc xóa (tùy theo yêu cầu)
+        document.getElementById('input-ngay-tra').valueAsDate = new Date();
+
+        // --- 2. Chi Tiết Sản Phẩm Trả (Khu vực thêm dòng) ---
+        // Xóa các tùy chọn sản phẩm và vô hiệu hóa các trường
+        $('#select-san-pham-tra')
+            .html('<option value="">-- Vui lòng nhập Mã HĐ trước --</option>')
+            .prop('disabled', true);
+
+        $('#input-sl-tra').val(1).prop('disabled', true);
+        $('#input-ly-do').val('').prop('disabled', true);
+        $('#btn-add-return-item').prop('disabled', true);
+
+        // Đưa con trỏ về trường nhập mã hóa đơn
+        $('#input-ma-hoa-don').focus();
+    }
     });
