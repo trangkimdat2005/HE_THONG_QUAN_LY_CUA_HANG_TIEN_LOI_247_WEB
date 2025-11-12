@@ -1,7 +1,4 @@
-﻿using BarcodeLib;
-using BarcodeStandard;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using SkiaSharp;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
 {
@@ -17,25 +14,24 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
         /// <returns>Mảng byte của ảnh PNG</returns>
         public static byte[] GenerateBarcode(
             string data,
-            BarcodeLib.TYPE type = BarcodeLib.TYPE.CODE128,
+            BarcodeStandard.Type type = BarcodeStandard.Type.Code128,
             int width = 300,
             int height = 150)
         {
             if (string.IsNullOrEmpty(data))
                 throw new ArgumentException("Data không được rỗng", nameof(data));
 
-            Barcode barcode = new Barcode()
+            var barcode = new BarcodeStandard.Barcode
             {
                 IncludeLabel = true,
-                Alignment = AlignmentPositions.CENTER,
+                AlternateLabel = data,
                 Width = width,
                 Height = height,
-                RotateFlipType = RotateFlipType.RotateNoneFlipNone,
-                BackColor = Color.White,
-                ForeColor = Color.Black
+                BackgroundColor = SKColors.White,
+                ForegroundColor = SKColors.Black
             };
 
-            Image img = barcode.Encode(type, data, width, height);
+            SKImage img = barcode.Encode(type, data, width, height);
             return ImageToByteArray(img);
         }
 
@@ -58,7 +54,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
                 throw new ArgumentException("EAN13 cần 12 hoặc 13 chữ số", nameof(data));
             }
 
-            return GenerateBarcode(data, BarcodeLib.TYPE.EAN13, width, height);
+            return GenerateBarcode(data, BarcodeStandard.Type.Ean13, width, height);
         }
 
         /// <summary>
@@ -66,7 +62,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
         /// </summary>
         public static byte[] GenerateCODE128(string data, int width = 300, int height = 150)
         {
-            return GenerateBarcode(data, BarcodeLib.TYPE.CODE128, width, height);
+            return GenerateBarcode(data, BarcodeStandard.Type.Code128, width, height);
         }
 
         /// <summary>
@@ -74,7 +70,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
         /// </summary>
         public static byte[] GenerateCODE39(string data, int width = 300, int height = 150)
         {
-            return GenerateBarcode(data, BarcodeLib.TYPE.CODE39, width, height);
+            return GenerateBarcode(data, BarcodeStandard.Type.Code39, width, height);
         }
 
         /// <summary>
@@ -87,7 +83,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
                 throw new ArgumentException("UPC-A cần 11 hoặc 12 chữ số", nameof(data));
             }
 
-            return GenerateBarcode(data, BarcodeLib.TYPE.UPCA, width, height);
+            return GenerateBarcode(data, BarcodeStandard.Type.UpcA, width, height);
         }
 
         /// <summary>
@@ -95,7 +91,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
         /// </summary>
         public static string GenerateBarcodeBase64(
             string data,
-            BarcodeLib.TYPE type = BarcodeLib.TYPE.CODE128,
+            BarcodeStandard.Type type = BarcodeStandard.Type.Code128,
             int width = 300,
             int height = 150)
         {
@@ -108,7 +104,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
         /// </summary>
         public static string GenerateBarcodeDataUrl(
             string data,
-            BarcodeLib.TYPE type = BarcodeLib.TYPE.CODE128,
+            BarcodeStandard.Type type = BarcodeStandard.Type.Code128,
             int width = 300,
             int height = 150)
         {
@@ -122,7 +118,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
         public static void SaveBarcodeToFile(
             string data,
             string filePath,
-            BarcodeLib.TYPE type = BarcodeLib.TYPE.CODE128,
+            BarcodeStandard.Type type = BarcodeStandard.Type.Code128,
             int width = 300,
             int height = 150)
         {
@@ -148,11 +144,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
             return checkDigit.ToString();
         }
 
-        private static byte[] ImageToByteArray(Image image)
+        private static byte[] ImageToByteArray(SKImage image)
         {
-            using (MemoryStream ms = new MemoryStream())
+            using (var data = image.Encode(SKEncodedImageFormat.Png, 100))
+            using (var ms = new MemoryStream())
             {
-                image.Save(ms, ImageFormat.Png);
+                data.SaveTo(ms);
                 return ms.ToArray();
             }
         }

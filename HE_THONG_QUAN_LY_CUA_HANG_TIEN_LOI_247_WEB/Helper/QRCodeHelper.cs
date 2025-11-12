@@ -49,7 +49,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
             using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
             using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q))
             using (QRCode qrCode = new QRCode(qrCodeData))
-            using (Bitmap qrCodeImage = qrCode.GetGraphic(pixelsPerModule, fore, back))
+            using (Bitmap qrCodeImage = qrCode.GetGraphic(pixelsPerModule, fore, back, true))
             {
                 return BitmapToByteArray(qrCodeImage);
             }
