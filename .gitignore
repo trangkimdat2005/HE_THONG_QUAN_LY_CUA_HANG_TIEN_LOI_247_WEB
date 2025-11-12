@@ -110,3 +110,5 @@ PublishScripts/
 *.bak
 *.tmp
 *.temp
+
+docker-compose.override.yml
