@@ -26,12 +26,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers
                 IncludeLabel = true,
                 AlternateLabel = data,
                 Width = width,
-                Height = height,
-                BackgroundColor = SKColors.White,
-                ForegroundColor = SKColors.Black
+                Height = height
             };
 
-            SKImage img = barcode.Encode(type, data, width, height);
+            SKImage img = barcode.Encode(type, data, SKColors.Black, SKColors.White, width, height);
             return ImageToByteArray(img);
         }
 
