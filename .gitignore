@@ -96,11 +96,6 @@ project.lock.json
 project.fragment.lock.json
 artifacts/
 
-# Tự động restore
-packages/
-node_modules/
-bower_components/
-
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
