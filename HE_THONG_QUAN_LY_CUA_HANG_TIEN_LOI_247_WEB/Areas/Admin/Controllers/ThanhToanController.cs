@@ -10,10 +10,5 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             return View();
         }
-        [Route("/ThanhToan/ThanhToanHoaDon")]
-        public IActionResult ThanhToanHoaDon()
-        {
-            return View();
-        }
     }
 }
