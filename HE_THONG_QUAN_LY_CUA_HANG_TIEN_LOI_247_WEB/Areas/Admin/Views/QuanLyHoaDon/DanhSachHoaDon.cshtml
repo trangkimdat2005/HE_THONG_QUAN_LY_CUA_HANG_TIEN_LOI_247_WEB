@@ -2,9 +2,9 @@
 
 @{
 
-    ViewData["title"] = "Danh Sách Hóa Đơn";
+	ViewData["title"] = "Danh Sách Hóa Đơn";
 }
-  <!-- Main sidebar ở đây nha -->
+<!-- Main sidebar ở đây nha -->
 
 
 
@@ -12,96 +12,132 @@
 
 
 
-  <main class="app-content">
-    <div class="app-title">
-      <div>
-        <h1><i class="bi bi-receipt-cutoff"></i> Danh sách Hoá Đơn</h1>
-        <p>Quản lý và tra cứu lịch sử các đơn hàng/hoá đơn đã bán</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb side">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item active"><a asp-controller="QuanLyHoaDon" asp-action="DanhSachHoaDon"> Danh sách hoá đơn</a></li>
-      </ul>
-    </div>
+<main class="app-content">
+	<div class="app-title">
+		<div>
+			<h1><i class="bi bi-receipt-cutoff"></i> Danh sách Hoá Đơn</h1>
+			<p>Quản lý và tra cứu lịch sử các đơn hàng/hoá đơn đã bán</p>
+		</div>
+		<ul class="app-breadcrumb breadcrumb side">
+			<li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+			<li class="breadcrumb-item active"><a asp-controller="QuanLyHoaDon" asp-action="DanhSachHoaDon"> Danh sách hoá đơn</a></li>
+		</ul>
+	</div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          <div class="tile-body">
-            <div class="row mb-3">
-              <div class="col-md-3">
-                <label class="form-label">Từ ngày</label>
-                <input class="form-control" type="date" />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Đến ngày</label>
-                <input class="form-control" type="date" />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Trạng thái</label>
-                <select class="form-select">
-                  <option value="">Tất cả trạng thái</option>
-                  <option value="DaThanhToan">Đã Thanh Toán</option>
-                  <option value="ChuaThanhToan">Chưa Thanh Toán</option>
-                  <option value="Huy">Đã Hủy</option>
-                </select>
-              </div>
-              <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-primary btn-add-khoi" type="button">
-                  <i class="fas fa-filter"></i> Lọc
-                </button>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tile">
+				<div class="tile-body">
+					<div class="row mb-3">
+						<div class="col-md-3">
+							<label class="form-label">Từ ngày</label>
+							<input class="form-control" type="date" />
+						</div>
+						<div class="col-md-3">
+							<label class="form-label">Đến ngày</label>
+							<input class="form-control" type="date" />
+						</div>
+						<div class="col-md-3">
+							<label class="form-label">Trạng thái</label>
+							<select class="form-select">
+								<option value="">Tất cả trạng thái</option>
+								<option value="DaThanhToan">Đã Thanh Toán</option>
+								<option value="ChuaThanhToan">Chưa Thanh Toán</option>
+								<option value="Huy">Đã Hủy</option>
+							</select>
+						</div>
+						<div class="col-md-3 d-flex align-items-end">
+							<button class="btn btn-primary btn-add-khoi" type="button">
+								<i class="fas fa-filter"></i> Lọc
+							</button>
 
-                            <a class="btn btn-primary btn-add-khoi ms-2" asp-controller="Them" asp-action="ThemHoaDon">
-                  <i class="fas fa-plus"></i> Thêm hoá đơn mới
-                </a>
-              </div>
-            </div>
+							<a class="btn btn-primary btn-add-khoi ms-2" asp-controller="Them" asp-action="ThemHoaDon">
+								<i class="fas fa-plus"></i> Thêm hoá đơn mới
+							</a>
+						</div>
+					</div>
 
-            <div class="table-responsive">
-              <table class="table table-hover table-bordered" id="sampleTable">
-                <thead>
-                  <tr>
-                    <th>Mã Hóa Đơn</th>
-                    <th>Ngày Lập</th>
-                    <th>Nhân Viên Lập</th>
-                    <th>Khách Hàng</th>
-                    <th>Tổng Tiền</th>
-                    <th>Trạng Thái</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>HD001</td>
-                    <td>02/11/2025, 14:30</td>
-                    <td>John Doe</td>
-                    <td>Khách lẻ</td>
-                    <td>151,000 đ</td>
-                    <td>
-                      <span class="badge bg-success">Đã Thanh Toán</span>
-                    </td>
-                    <td class="text-center">
-                                        <a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon"  title="Xem chi tiết">
-                        <i class="fas fa-eye"></i>
-                      </a>
-                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaHoaDon"  title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                                        <a class="btn btn-info btn-sm" asp-controller="ThanhToan" asp-action="ThanhToanHoaDon" title="Thanh toán">
-                        <i class="bi bi-wallet"></i>
-                      </a>
-                    </td>
-                  </tr>
+					<div class="table-responsive">
+						<table class="table table-hover table-bordered" id="sampleTable">
+							<thead>
+								<tr>
+									<th>Mã Hóa Đơn</th>
+									<th>Ngày Lập</th>
+									<th>Nhân Viên Lập</th>
+									<th>Khách Hàng</th>
+									<th>Tổng Tiền</th>
+									<th>Trạng Thái</th>
+									<th>Thao tác</th>
+								</tr>
+							</thead>
+							@{
+								if (ViewData["lstHoaDon"] != null)
+								{
+									List<HoaDon> hoaDons = ViewBag.lstHoaDon;
+									foreach (HoaDon hoaDon in hoaDons)
+									{
+										string trangThaiGoc = hoaDon.TrangThai;
+										string trangThaiHienThi = trangThaiGoc; // Giữ nguyên giá trị DB
+										string trangThaiClass = "bg-secondary"; // Mặc định là xám
 
-                  
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+										// Logic phân loại và chọn màu
+										if (trangThaiGoc.Contains("thanh toán", StringComparison.OrdinalIgnoreCase))
+										{
+											// Dùng Contains để bắt được cả "Đã thanh toán" và "Chờ thanh toán"
+											if (trangThaiGoc.StartsWith("Đã", StringComparison.OrdinalIgnoreCase))
+											{
+												trangThaiClass = "bg-success";
+											}
+											else
+											{
+												trangThaiClass = "bg-warning text-dark";
+											}
+										}
+										else if (trangThaiGoc.Contains("hủy", StringComparison.OrdinalIgnoreCase))
+										{
+											trangThaiClass = "bg-danger";
+										}
+										// ---------------------------------------------
+
+										<tbody>
+											<tr>
+												<td>@hoaDon.Id</td>
+												<td>@hoaDon.NgayLap.ToString("dd/MM/yyyy")</td>
+												<td>@(hoaDon.NhanVien != null ? hoaDon.NhanVien.HoTen : "N/A")</td>
+												<td>@(hoaDon.KhachHang != null ? hoaDon.KhachHang.HoTen : "Khách lẻ")</td>
+												<td>@String.Format("{0:N0}", hoaDon.TongTien) đ</td>
+
+												<td>
+													<span class="badge @trangThaiClass">
+														@trangThaiHienThi
+													</span>
+												</td>
+
+												<td class="text-center">
+													<a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon" asp-route-id="@hoaDon.Id" title="Xem chi tiết">
+														<i class="fas fa-eye"></i>
+													</a>
+													<a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoaDon" asp-route-id="@hoaDon.Id" title="Sửa">
+														<i class="fas fa-edit"></i>
+													</a>
+													<a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
+														<i class="bi bi-wallet"></i>
+													</a>
+												</td>
+											</tr>
+										</tbody>
+
+									}
+								}
+							}
+
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
 
 
 
