@@ -13,7 +13,7 @@ public partial class TheThanhVien
 
     public int DiemTichLuy { get; set; }
 
-    public DateOnly NgayCap { get; set; }
+    public DateTime NgayCap { get; set; }
 
     public bool IsDelete { get; set; }
 

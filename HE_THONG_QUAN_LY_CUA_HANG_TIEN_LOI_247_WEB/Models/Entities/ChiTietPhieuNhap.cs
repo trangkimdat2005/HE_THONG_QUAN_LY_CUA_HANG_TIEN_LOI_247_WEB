@@ -13,9 +13,9 @@ public partial class ChiTietPhieuNhap
 
     public decimal DonGia { get; set; }
 
-    public DateOnly HanSuDung { get; set; }
-
     public bool IsDelete { get; set; }
+
+    public decimal? TongTien { get; set; }
 
     public virtual PhieuNhap PhieuNhap { get; set; } = null!;
 

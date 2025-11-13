@@ -11,7 +11,7 @@ public partial class TemNhan
 
     public string NoiDungTem { get; set; } = null!;
 
-    public DateOnly NgayIn { get; set; }
+    public DateTime NgayIn { get; set; }
 
     public bool IsDelete { get; set; }
 

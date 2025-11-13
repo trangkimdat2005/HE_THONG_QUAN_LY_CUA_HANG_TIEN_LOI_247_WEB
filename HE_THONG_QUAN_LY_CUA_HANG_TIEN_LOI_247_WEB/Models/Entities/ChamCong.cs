@@ -9,11 +9,11 @@ public partial class ChamCong
 
     public string NhanVienId { get; set; } = null!;
 
-    public DateOnly Ngay { get; set; }
+    public DateTime Ngay { get; set; }
 
-    public DateTime GioVao { get; set; }
+    public TimeOnly GioVao { get; set; }
 
-    public DateTime GioRa { get; set; }
+    public TimeOnly GioRa { get; set; }
 
     public string? GhiChu { get; set; }
 

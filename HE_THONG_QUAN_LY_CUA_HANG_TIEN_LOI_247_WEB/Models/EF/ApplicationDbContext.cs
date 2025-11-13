@@ -26,8 +26,6 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<BaoCaoTonKho> BaoCaoTonKhos { get; set; }
 
-    public virtual DbSet<Barcode> Barcodes { get; set; }
-
     public virtual DbSet<CaLamViec> CaLamViecs { get; set; }
 
     public virtual DbSet<ChamCong> ChamCongs { get; set; }
@@ -110,8 +108,6 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<PhieuXuat> PhieuXuats { get; set; }
 
-    public virtual DbSet<Qrcode> Qrcodes { get; set; }
-
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<RolePermission> RolePermissions { get; set; }
@@ -146,6 +142,10 @@ public partial class ApplicationDbContext : DbContext
 
     public virtual DbSet<ViTri> ViTris { get; set; }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost,1434;Database=QuanLyCuaHangTienLoi;User Id=sa;Password=Password123!;TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AnhSanPhamDonVi>(entity =>
@@ -162,7 +162,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("sanPhamDonViId");
             entity.Property(e => e.IsDelete)
                 .HasDefaultValue(false)
-                .HasColumnName("isDelete").HasDefaultValue(false).HasDefaultValue(false);
+                .HasColumnName("isDelete");
 
             entity.HasOne(d => d.Anh).WithMany(p => p.AnhSanPhamDonVis)
                 .HasForeignKey(d => d.AnhId)
@@ -186,11 +186,14 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("id");
             entity.Property(e => e.DenNgay).HasColumnName("denNgay");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false).HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.LoaiBaoCao)
                 .HasMaxLength(20)
                 .HasColumnName("loaiBaoCao");
-            entity.Property(e => e.NgayLap).HasColumnName("ngayLap");
+            entity.Property(e => e.NgayLap)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayLap");
             entity.Property(e => e.TuNgay).HasColumnName("tuNgay");
         });
 
@@ -215,7 +218,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false).HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuongBan).HasColumnName("soLuongBan");
 
             entity.HasOne(d => d.BaoCao).WithMany(p => p.BaoCaoBanChays)
@@ -243,7 +246,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.BaoCaoId)
                 .HasMaxLength(50)
                 .HasColumnName("baoCaoId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KyBaoCao)
                 .HasMaxLength(100)
                 .HasColumnName("kyBaoCao");
@@ -271,7 +274,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.BaoCaoId)
                 .HasMaxLength(50)
                 .HasColumnName("baoCaoId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NhapTrongKy).HasColumnName("nhapTrongKy");
             entity.Property(e => e.SanPhamDonViId)
                 .HasMaxLength(50)
@@ -292,38 +295,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK_BCTK_SPDV");
         });
 
-        modelBuilder.Entity<Barcode>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__Barcode__3213E83F1D9006F9");
-
-            entity.ToTable("Barcode", "core");
-
-            entity.HasIndex(e => e.MaDinhDanhId, "IX_Barcode_maDinhDanhId");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .HasColumnName("id");
-
-            entity.Property(e => e.AnhId)
-                .HasMaxLength(50)
-                .HasColumnName("anhId");
-
-            entity.HasOne(d => d.Anh).WithMany(p => p.Barcodes)
-                .HasForeignKey(d => d.AnhId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BarCode_Anh");
-
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.MaDinhDanhId)
-                .HasMaxLength(50)
-                .HasColumnName("maDinhDanhId");
-
-            entity.HasOne(d => d.MaDinhDanh).WithMany(p => p.Barcodes)
-                .HasForeignKey(d => d.MaDinhDanhId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Bar_MDD");
-        });
-
         modelBuilder.Entity<CaLamViec>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__CaLamVie__3213E83FCF27A89E");
@@ -333,16 +304,12 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.TenCa)
                 .HasMaxLength(100)
                 .HasColumnName("tenCa");
-            entity.Property(e => e.ThoiGianBatDau)
-                .HasPrecision(0)
-                .HasColumnName("thoiGianBatDau");
-            entity.Property(e => e.ThoiGianKetThuc)
-                .HasPrecision(0)
-                .HasColumnName("thoiGianKetThuc");
+            entity.Property(e => e.ThoiGianBatDau).HasColumnName("thoiGianBatDau");
+            entity.Property(e => e.ThoiGianKetThuc).HasColumnName("thoiGianKetThuc");
         });
 
         modelBuilder.Entity<ChamCong>(entity =>
@@ -359,14 +326,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GhiChu)
                 .HasMaxLength(500)
                 .HasColumnName("ghiChu");
-            entity.Property(e => e.GioRa)
-                .HasPrecision(0)
-                .HasColumnName("gioRa");
-            entity.Property(e => e.GioVao)
-                .HasPrecision(0)
-                .HasColumnName("gioVao");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.Ngay).HasColumnName("ngay");
+            entity.Property(e => e.GioRa).HasColumnName("gioRa");
+            entity.Property(e => e.GioVao).HasColumnName("gioVao");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.Ngay)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngay");
             entity.Property(e => e.NhanVienId)
                 .HasMaxLength(50)
                 .HasColumnName("nhanVienId");
@@ -401,7 +367,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
 
             entity.HasOne(d => d.DonHang).WithMany(p => p.ChiTietDonOnlines)
@@ -433,7 +399,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DonGia)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("donGia");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
             entity.Property(e => e.ThanhTien)
                 .HasDefaultValue(0m)
@@ -474,8 +440,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GiamGia)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("giamGia");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
+            entity.Property(e => e.TongTien)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("tongTien");
 
             entity.HasOne(d => d.HoaDon).WithMany(p => p.ChiTietHoaDons)
                 .HasForeignKey(d => d.HoaDonId)
@@ -518,7 +487,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.HoaDon).WithMany(p => p.ChiTietHoaDonKhuyenMais)
                 .HasForeignKey(d => d.HoaDonId)
@@ -554,9 +523,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DonGia)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("donGia");
-            entity.Property(e => e.HanSuDung).HasColumnName("hanSuDung");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
+            entity.Property(e => e.TongTien)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("tongTien");
 
             entity.HasOne(d => d.PhieuNhap).WithMany(p => p.ChiTietPhieuNhaps)
                 .HasForeignKey(d => d.PhieuNhapId)
@@ -587,8 +558,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DonGia)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("donGia");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
+            entity.Property(e => e.TongTien)
+                .HasColumnType("decimal(18, 2)")
+                .HasColumnName("tongTien");
 
             entity.HasOne(d => d.PhieuXuat).WithMany(p => p.ChiTietPhieuXuats)
                 .HasForeignKey(d => d.PhieuXuatId)
@@ -611,15 +585,19 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.ApDungDenNgay).HasColumnName("apDungDenNgay");
+            entity.Property(e => e.ApDungDenNgay)
+                .HasColumnType("datetime")
+                .HasColumnName("apDungDenNgay");
             entity.Property(e => e.ApDungToanBo)
                 .HasDefaultValue(false)
                 .HasColumnName("apDungToanBo");
-            entity.Property(e => e.ApDungTuNgay).HasColumnName("apDungTuNgay");
+            entity.Property(e => e.ApDungTuNgay)
+                .HasColumnType("datetime")
+                .HasColumnName("apDungTuNgay");
             entity.Property(e => e.DieuKien)
                 .HasMaxLength(500)
                 .HasColumnName("dieuKien");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.TenChinhSach)
                 .HasMaxLength(200)
                 .HasColumnName("tenChinhSach");
@@ -647,7 +625,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.ChinhSach).WithMany(p => p.ChinhSachHoanTraDanhMucs)
                 .HasForeignKey(d => d.ChinhSachId)
@@ -669,13 +647,17 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.Loai)
                 .HasMaxLength(30)
                 .HasColumnName("loai");
             entity.Property(e => e.MoTa).HasColumnName("moTa");
-            entity.Property(e => e.NgayBatDau).HasColumnName("ngayBatDau");
-            entity.Property(e => e.NgayKetThuc).HasColumnName("ngayKetThuc");
+            entity.Property(e => e.NgayBatDau)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayBatDau");
+            entity.Property(e => e.NgayKetThuc)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayKetThuc");
             entity.Property(e => e.Ten)
                 .HasMaxLength(255)
                 .HasColumnName("ten");
@@ -690,7 +672,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.Ten)
                 .HasMaxLength(200)
                 .HasColumnName("ten");
@@ -722,7 +704,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GiamTheo)
                 .HasMaxLength(20)
                 .HasColumnName("giamTheo");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.ChuongTrinh).WithMany(p => p.DieuKienApDungs)
                 .HasForeignKey(d => d.ChuongTrinhId)
@@ -749,7 +731,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DieuKienId)
                 .HasMaxLength(50)
                 .HasColumnName("dieuKienId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.DanhMuc).WithMany(p => p.DieuKienApDungDanhMucs)
                 .HasForeignKey(d => d.DanhMucId)
@@ -778,7 +760,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DieuKienId)
                 .HasMaxLength(50)
                 .HasColumnName("dieuKienId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SanPhamId)
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamId");
@@ -811,7 +793,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GhiChu)
                 .HasMaxLength(500)
                 .HasColumnName("ghiChu");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.DieuKien).WithMany(p => p.DieuKienApDungToanBos)
                 .HasForeignKey(d => d.DieuKienId)
@@ -839,8 +821,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoaDonId)
                 .HasMaxLength(50)
                 .HasColumnName("hoaDonId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayGiao).HasColumnName("ngayGiao");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayGiao)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayGiao");
             entity.Property(e => e.PhiVanChuyenId)
                 .HasMaxLength(50)
                 .HasColumnName("phiVanChuyenId");
@@ -885,14 +869,17 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoaDonId)
                 .HasMaxLength(50)
                 .HasColumnName("hoaDonId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KenhDat)
                 .HasMaxLength(20)
                 .HasColumnName("kenhDat");
             entity.Property(e => e.KhachHangId)
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
-            entity.Property(e => e.NgayDat).HasColumnName("ngayDat");
+            entity.Property(e => e.NgayDat)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayDat");
             entity.Property(e => e.TongTien)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("tongTien");
@@ -917,7 +904,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KyHieu)
                 .HasMaxLength(50)
                 .HasColumnName("kyHieu");
@@ -942,14 +929,17 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoaDonId)
                 .HasMaxLength(50)
                 .HasColumnName("hoaDonId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KenhThanhToanId)
                 .HasMaxLength(50)
                 .HasColumnName("kenhThanhToanId");
             entity.Property(e => e.MoTa)
                 .HasMaxLength(500)
                 .HasColumnName("moTa");
-            entity.Property(e => e.NgayGd).HasColumnName("ngayGD");
+            entity.Property(e => e.NgayGd)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayGD");
             entity.Property(e => e.SoTien)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("soTien");
@@ -977,16 +967,16 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.SanPhamDonViId)
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamDonViId");
-            entity.Property(e => e.CreatedAt)
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayCapNhat)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
-                .HasColumnName("createdAt");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+                .HasColumnName("ngayCapNhat");
+            entity.Property(e => e.NgayTao)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayTao");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
-            entity.Property(e => e.UpdatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("updatedAt");
 
             entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.GioHangs)
                 .HasPrincipalKey(p => p.Id)
@@ -1003,6 +993,8 @@ public partial class ApplicationDbContext : DbContext
         modelBuilder.Entity<HinhAnh>(entity =>
         {
             entity.ToTable("HinhAnh", "core");
+
+            entity.HasIndex(e => e.TenAnh, "Index_HinhAnh_1").IsUnique();
 
             entity.Property(e => e.Id).HasMaxLength(50);
             entity.Property(e => e.TenAnh).HasMaxLength(100);
@@ -1021,17 +1013,19 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KhachHangId)
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
             entity.Property(e => e.NgayLap)
-                .HasPrecision(0)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
                 .HasColumnName("ngayLap");
             entity.Property(e => e.NhanVienId)
                 .HasMaxLength(50)
                 .HasColumnName("nhanVienId");
             entity.Property(e => e.TongTien)
+                .HasDefaultValue(0m)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("tongTien");
             entity.Property(e => e.TrangThai)
@@ -1059,14 +1053,18 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("id");
             entity.Property(e => e.CauHinh).HasColumnName("cauHinh");
-            entity.Property(e => e.CreatedAt)
-                .HasPrecision(0)
-                .HasDefaultValueSql("(sysutcdatetime())")
-                .HasColumnName("createdAt");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.LoaiKenh)
                 .HasMaxLength(20)
                 .HasColumnName("loaiKenh");
+            entity.Property(e => e.NgayCapNhat)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayCapNhat");
+            entity.Property(e => e.NgayTao)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayTao");
             entity.Property(e => e.PhiGiaoDich)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("phiGiaoDich");
@@ -1077,10 +1075,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(20)
                 .HasDefaultValue("Active")
                 .HasColumnName("trangThai");
-            entity.Property(e => e.UpdatedAt)
-                .HasPrecision(0)
-                .HasDefaultValueSql("(sysutcdatetime())")
-                .HasColumnName("updatedAt");
         });
 
         modelBuilder.Entity<KhachHang>(entity =>
@@ -1109,8 +1103,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoTen)
                 .HasMaxLength(200)
                 .HasColumnName("hoTen");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayDangKy).HasColumnName("ngayDangKy");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayDangKy)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayDangKy");
             entity.Property(e => e.SoDienThoai)
                 .HasMaxLength(50)
                 .HasColumnName("soDienThoai");
@@ -1120,7 +1117,6 @@ public partial class ApplicationDbContext : DbContext
 
             entity.HasOne(d => d.Anh).WithMany(p => p.KhachHangs)
                 .HasForeignKey(d => d.AnhId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_KhachHang_Anh");
         });
 
@@ -1135,11 +1131,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KetQua)
                 .HasMaxLength(500)
                 .HasColumnName("ketQua");
-            entity.Property(e => e.NgayKiemKe).HasColumnName("ngayKiemKe");
+            entity.Property(e => e.NgayKiemKe)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayKiemKe");
             entity.Property(e => e.NhanVienId)
                 .HasMaxLength(50)
                 .HasColumnName("nhanVienId");
@@ -1177,9 +1175,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GiaBan)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("giaBan");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayBatDau).HasColumnName("ngayBatDau");
-            entity.Property(e => e.NgayKetThuc).HasColumnName("ngayKetThuc");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayBatDau)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayBatDau");
+            entity.Property(e => e.NgayKetThuc)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayKetThuc");
             entity.Property(e => e.SanPhamId)
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamId");
@@ -1206,8 +1208,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayGd).HasColumnName("ngayGD");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayGd)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayGD");
             entity.Property(e => e.NhaCungCapId)
                 .HasMaxLength(50)
                 .HasColumnName("nhaCungCapId");
@@ -1235,8 +1240,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoaDonId)
                 .HasMaxLength(50)
                 .HasColumnName("hoaDonId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayMua).HasColumnName("ngayMua");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayMua)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayMua");
             entity.Property(e => e.TongTien)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("tongTien");
@@ -1263,10 +1271,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
+            entity.Property(e => e.AnhId)
+                .HasMaxLength(50)
+                .HasColumnName("anhId");
             entity.Property(e => e.DuongDan)
                 .HasMaxLength(500)
                 .HasColumnName("duongDan");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.LoaiMa)
                 .HasMaxLength(10)
                 .HasColumnName("loaiMa");
@@ -1276,6 +1287,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.SanPhamDonViId)
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamDonViId");
+
+            entity.HasOne(d => d.Anh).WithMany(p => p.MaDinhDanhSanPhams)
+                .HasForeignKey(d => d.AnhId)
+                .HasConstraintName("FK_MaDinhDanhSanPham_HinhAnh");
 
             entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.MaDinhDanhSanPhams)
                 .HasPrincipalKey(p => p.Id)
@@ -1306,9 +1321,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GiaTri)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("giaTri");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayBatDau).HasColumnName("ngayBatDau");
-            entity.Property(e => e.NgayKetThuc).HasColumnName("ngayKetThuc");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLanSuDung).HasColumnName("soLanSuDung");
             entity.Property(e => e.TrangThai)
                 .HasMaxLength(20)
@@ -1339,7 +1352,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Email)
                 .HasMaxLength(200)
                 .HasColumnName("email");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MaSoThue)
                 .HasMaxLength(50)
                 .HasColumnName("maSoThue");
@@ -1360,7 +1373,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.Ten)
                 .HasMaxLength(200)
                 .HasColumnName("ten");
@@ -1371,6 +1384,10 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK__NhanVien__3213E83F4D14CBFC");
 
             entity.ToTable("NhanVien", "core");
+
+            entity.HasIndex(e => e.Email, "Index_NhanVien_1").IsUnique();
+
+            entity.HasIndex(e => e.SoDienThoai, "Index_NhanVien_2").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
@@ -1391,11 +1408,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoTen)
                 .HasMaxLength(200)
                 .HasColumnName("hoTen");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.LuongCoBan)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("luongCoBan");
-            entity.Property(e => e.NgayVaoLam).HasColumnName("ngayVaoLam");
+            entity.Property(e => e.NgayVaoLam)
+                .HasColumnType("datetime")
+                .HasColumnName("ngayVaoLam");
             entity.Property(e => e.SoDienThoai)
                 .HasMaxLength(50)
                 .HasColumnName("soDienThoai");
@@ -1423,12 +1442,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HanhDong)
                 .HasMaxLength(500)
                 .HasColumnName("hanhDong");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.TaiKhoanId)
                 .HasMaxLength(50)
                 .HasColumnName("taiKhoanId");
             entity.Property(e => e.ThoiGian)
-                .HasPrecision(0)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
                 .HasColumnName("thoiGian");
 
             entity.HasOne(d => d.TaiKhoan).WithMany(p => p.NhatKyHoatDongs)
@@ -1451,7 +1471,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Code)
                 .HasMaxLength(100)
                 .HasColumnName("code");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MoTa)
                 .HasMaxLength(500)
                 .HasColumnName("moTa");
@@ -1478,11 +1498,13 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.CaLamViecId)
                 .HasMaxLength(50)
                 .HasColumnName("caLamViecId");
-            entity.Property(e => e.Ngay).HasColumnName("ngay");
+            entity.Property(e => e.Ngay)
+                .HasColumnType("datetime")
+                .HasColumnName("ngay");
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.CaLamViec).WithMany(p => p.PhanCongCaLamViecs)
                 .HasForeignKey(d => d.CaLamViecId)
@@ -1504,7 +1526,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.PhuongThucTinh)
                 .HasMaxLength(100)
                 .HasColumnName("phuongThucTinh");
@@ -1534,11 +1556,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoaDonId)
                 .HasMaxLength(50)
                 .HasColumnName("hoaDonId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.LyDo)
                 .HasMaxLength(500)
                 .HasColumnName("lyDo");
-            entity.Property(e => e.NgayDoiTra).HasColumnName("ngayDoiTra");
+            entity.Property(e => e.NgayDoiTra)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayDoiTra");
             entity.Property(e => e.SanPhamDonViId)
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamDonViId");
@@ -1576,8 +1601,11 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.NgayNhap).HasColumnName("ngayNhap");
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.NgayNhap)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayNhap");
             entity.Property(e => e.NhaCungCapId)
                 .HasMaxLength(50)
                 .HasColumnName("nhaCungCapId");
@@ -1612,11 +1640,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KhachHangId)
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
-            entity.Property(e => e.NgayXuat).HasColumnName("ngayXuat");
+            entity.Property(e => e.NgayXuat)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayXuat");
             entity.Property(e => e.NhanVienId)
                 .HasMaxLength(50)
                 .HasColumnName("nhanVienId");
@@ -1635,38 +1666,6 @@ public partial class ApplicationDbContext : DbContext
                 .HasConstraintName("FK_PX_NV");
         });
 
-        modelBuilder.Entity<Qrcode>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__QRCode__3213E83FF13BADA6");
-
-            entity.ToTable("QRCode", "core");
-
-            entity.HasIndex(e => e.MaDinhDanhId, "IX_QRCode_maDinhDanhId");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .HasColumnName("id");
-            
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
-            entity.Property(e => e.MaDinhDanhId)
-                .HasMaxLength(50)
-                .HasColumnName("maDinhDanhId");
-
-            entity.Property(e => e.AnhId)
-                .HasMaxLength(50)
-                .HasColumnName("anhId");
-
-            entity.HasOne(d => d.Anh).WithMany(p => p.Qrcodes)
-                .HasForeignKey(d => d.AnhId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_QRCode_Anh");
-
-            entity.HasOne(d => d.MaDinhDanh).WithMany(p => p.Qrcodes)
-                .HasForeignKey(d => d.MaDinhDanhId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_QR_MDD");
-        });
-
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__Role__3213E83F6D7FA3BA");
@@ -1681,7 +1680,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Code)
                 .HasMaxLength(100)
                 .HasColumnName("code");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MoTa)
                 .HasMaxLength(500)
                 .HasColumnName("moTa");
@@ -1715,7 +1714,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.Permission).WithMany(p => p.RolePermissions)
                 .HasForeignKey(d => d.PermissionId)
@@ -1739,7 +1738,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MoTa).HasColumnName("moTa");
             entity.Property(e => e.NhanHieuId)
                 .HasMaxLength(50)
@@ -1778,7 +1777,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.DanhMuc).WithMany(p => p.SanPhamDanhMucs)
                 .HasForeignKey(d => d.DanhMucId)
@@ -1796,6 +1795,8 @@ public partial class ApplicationDbContext : DbContext
             entity.HasKey(e => new { e.SanPhamId, e.DonViId });
 
             entity.ToTable("SanPhamDonVi", "core");
+
+            entity.HasIndex(e => e.Id, "AK_SanPhamDonVi_id").IsUnique();
 
             entity.HasIndex(e => e.Id, "IX_SPDV_id");
 
@@ -1818,7 +1819,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.DonVi).WithMany(p => p.SanPhamDonVis)
                 .HasForeignKey(d => d.DonViId)
@@ -1852,7 +1853,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
 
             entity.HasOne(d => d.SanPhamDonVi).WithMany(p => p.SanPhamViTris)
@@ -1881,7 +1882,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.HoTen)
                 .HasMaxLength(200)
                 .HasColumnName("hoTen");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoDienThoai)
                 .HasMaxLength(50)
                 .HasColumnName("soDienThoai");
@@ -1893,13 +1894,19 @@ public partial class ApplicationDbContext : DbContext
 
             entity.ToTable("TaiKhoan", "core");
 
+            entity.HasIndex(e => e.Email, "Index_TaiKhoan_1").IsUnique();
+
+            entity.HasIndex(e => e.TenDangNhap, "Index_TaiKhoan_2").IsUnique();
+
+            entity.HasIndex(e => e.MatKhauHash, "Index_TaiKhoan_3").IsUnique();
+
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
             entity.Property(e => e.Email)
                 .HasMaxLength(200)
                 .HasColumnName("email");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MatKhauHash)
                 .HasMaxLength(255)
                 .HasColumnName("matKhauHash");
@@ -1925,7 +1932,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.TaiKhoanid)
                 .HasMaxLength(50)
                 .HasColumnName("taiKhoanid");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.KhachHang).WithMany(p => p.TaiKhoanKhachHangs)
                 .HasForeignKey(d => d.KhachHangId)
@@ -1952,7 +1959,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.TaiKhoanId)
                 .HasMaxLength(50)
                 .HasColumnName("taiKhoanId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.NhanVien).WithMany(p => p.TaiKhoanNhanViens)
                 .HasForeignKey(d => d.NhanVienId)
@@ -1979,11 +1986,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.AnhId)
                 .HasMaxLength(50)
                 .HasColumnName("anhId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.MaDinhDanhId)
                 .HasMaxLength(50)
                 .HasColumnName("maDinhDanhId");
-            entity.Property(e => e.NgayIn).HasColumnName("ngayIn");
+            entity.Property(e => e.NgayIn)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayIn");
             entity.Property(e => e.NoiDungTem).HasColumnName("noiDungTem");
 
             entity.HasOne(d => d.Anh).WithMany(p => p.TemNhans)
@@ -2012,11 +2022,14 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Hang)
                 .HasMaxLength(20)
                 .HasColumnName("hang");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.KhachHangId)
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
-            entity.Property(e => e.NgayCap).HasColumnName("ngayCap");
+            entity.Property(e => e.NgayCap)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("ngayCap");
 
             entity.HasOne(d => d.KhachHang).WithMany(p => p.TheThanhViens)
                 .HasForeignKey(d => d.KhachHangId)
@@ -2035,7 +2048,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SanPhamDonViId)
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamDonViId");
@@ -2065,9 +2078,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GhiChu)
                 .HasMaxLength(500)
                 .HasColumnName("ghiChu");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayCapNhat)
-                .HasPrecision(0)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
                 .HasColumnName("ngayCapNhat");
             entity.Property(e => e.TrangThai)
                 .HasMaxLength(20)
@@ -2093,9 +2107,10 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DonHangId)
                 .HasMaxLength(50)
                 .HasColumnName("donHangId");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayCapNhat)
-                .HasPrecision(0)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
                 .HasColumnName("ngayCapNhat");
             entity.Property(e => e.TrangThai)
                 .HasMaxLength(20)
@@ -2125,12 +2140,16 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.RoleId)
                 .HasMaxLength(50)
                 .HasColumnName("roleId");
-            entity.Property(e => e.HieuLucDen).HasColumnName("hieuLucDen");
-            entity.Property(e => e.HieuLucTu).HasColumnName("hieuLucTu");
+            entity.Property(e => e.HieuLucDen)
+                .HasColumnType("datetime")
+                .HasColumnName("hieuLucDen");
+            entity.Property(e => e.HieuLucTu)
+                .HasColumnType("datetime")
+                .HasColumnName("hieuLucTu");
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
 
             entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.RoleId)
@@ -2152,7 +2171,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Id)
                 .HasMaxLength(50)
                 .HasColumnName("id");
-            entity.Property(e => e.IsDelete).HasColumnName("isDelete").HasDefaultValue(false);
+            entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.LoaiViTri)
                 .HasMaxLength(20)
                 .HasColumnName("loaiViTri");

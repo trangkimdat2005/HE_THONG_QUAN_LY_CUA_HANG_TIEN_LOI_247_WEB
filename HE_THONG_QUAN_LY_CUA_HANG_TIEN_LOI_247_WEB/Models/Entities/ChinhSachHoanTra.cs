@@ -15,9 +15,9 @@ public partial class ChinhSachHoanTra
 
     public bool? ApDungToanBo { get; set; }
 
-    public DateOnly ApDungTuNgay { get; set; }
+    public DateTime ApDungTuNgay { get; set; }
 
-    public DateOnly ApDungDenNgay { get; set; }
+    public DateTime ApDungDenNgay { get; set; }
 
     public bool IsDelete { get; set; }
 

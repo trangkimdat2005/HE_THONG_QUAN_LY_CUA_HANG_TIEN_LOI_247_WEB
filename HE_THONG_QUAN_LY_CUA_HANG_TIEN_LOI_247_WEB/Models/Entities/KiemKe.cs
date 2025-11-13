@@ -7,7 +7,7 @@ public partial class KiemKe
 {
     public string Id { get; set; } = null!;
 
-    public DateOnly NgayKiemKe { get; set; }
+    public DateTime NgayKiemKe { get; set; }
 
     public string KetQua { get; set; } = null!;
 

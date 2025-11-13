@@ -11,7 +11,7 @@ public partial class PhieuDoiTra
 
     public string SanPhamDonViId { get; set; } = null!;
 
-    public DateOnly NgayDoiTra { get; set; }
+    public DateTime NgayDoiTra { get; set; }
 
     public string LyDo { get; set; } = null!;
 

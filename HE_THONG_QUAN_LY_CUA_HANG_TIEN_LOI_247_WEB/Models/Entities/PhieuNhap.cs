@@ -9,7 +9,7 @@ public partial class PhieuNhap
 
     public string NhaCungCapId { get; set; } = null!;
 
-    public DateOnly NgayNhap { get; set; }
+    public DateTime NgayNhap { get; set; }
 
     public decimal TongTien { get; set; }
 

@@ -13,9 +13,9 @@ public partial class GioHang
 
     public bool IsDelete { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime NgayTao { get; set; }
 
-    public DateTime UpdatedAt { get; set; }
+    public DateTime NgayCapNhat { get; set; }
 
     public virtual SanPhamDonVi SanPhamDonVi { get; set; } = null!;
 
