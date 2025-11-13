@@ -15,11 +15,9 @@ public partial class HinhAnh
 
     public virtual ICollection<KhachHang> KhachHangs { get; set; } = new List<KhachHang>();
 
+    public virtual ICollection<MaDinhDanhSanPham> MaDinhDanhSanPhams { get; set; } = new List<MaDinhDanhSanPham>();
+
     public virtual ICollection<NhanVien> NhanViens { get; set; } = new List<NhanVien>();
-
-    public virtual ICollection<Barcode> Barcodes { get; set; } = new List<Barcode>();
-
-    public virtual ICollection<Qrcode> Qrcodes { get; set; } = new List<Qrcode>();
 
     public virtual ICollection<TemNhan> TemNhans { get; set; } = new List<TemNhan>();
 }

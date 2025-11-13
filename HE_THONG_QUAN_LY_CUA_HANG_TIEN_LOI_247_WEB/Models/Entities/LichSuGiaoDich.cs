@@ -9,7 +9,7 @@ public partial class LichSuGiaoDich
 
     public string NhaCungCapId { get; set; } = null!;
 
-    public DateOnly NgayGd { get; set; }
+    public DateTime NgayGd { get; set; }
 
     public decimal TongTien { get; set; }
 

@@ -9,7 +9,7 @@ public partial class PhieuXuat
 
     public string KhachHangId { get; set; } = null!;
 
-    public DateOnly NgayXuat { get; set; }
+    public DateTime NgayXuat { get; set; }
 
     public decimal TongTien { get; set; }
 

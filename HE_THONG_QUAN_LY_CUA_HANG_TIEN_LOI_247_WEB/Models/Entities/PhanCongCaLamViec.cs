@@ -9,7 +9,7 @@ public partial class PhanCongCaLamViec
 
     public string CaLamViecId { get; set; } = null!;
 
-    public DateOnly Ngay { get; set; }
+    public DateTime Ngay { get; set; }
 
     public string? Id { get; set; }
 

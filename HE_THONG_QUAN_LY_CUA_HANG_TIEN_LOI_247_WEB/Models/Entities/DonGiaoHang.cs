@@ -13,7 +13,7 @@ public partial class DonGiaoHang
 
     public string PhiVanChuyenId { get; set; } = null!;
 
-    public DateOnly NgayGiao { get; set; }
+    public DateTime NgayGiao { get; set; }
 
     public string TrangThaiHienTai { get; set; } = null!;
 

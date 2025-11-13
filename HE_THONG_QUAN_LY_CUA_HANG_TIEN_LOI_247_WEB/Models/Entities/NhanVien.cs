@@ -19,7 +19,7 @@ public partial class NhanVien
 
     public string DiaChi { get; set; } = null!;
 
-    public DateOnly NgayVaoLam { get; set; }
+    public DateTime NgayVaoLam { get; set; }
 
     public string TrangThai { get; set; } = null!;
 

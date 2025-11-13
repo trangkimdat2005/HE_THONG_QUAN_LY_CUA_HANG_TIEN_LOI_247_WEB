@@ -11,7 +11,7 @@ public partial class GiaoDichThanhToan
 
     public decimal SoTien { get; set; }
 
-    public DateOnly NgayGd { get; set; }
+    public DateTime NgayGd { get; set; }
 
     public string KenhThanhToanId { get; set; } = null!;
 

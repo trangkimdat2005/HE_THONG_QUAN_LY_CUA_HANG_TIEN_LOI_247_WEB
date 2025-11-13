@@ -11,9 +11,9 @@ public partial class ChuongTrinhKhuyenMai
 
     public string Loai { get; set; } = null!;
 
-    public DateOnly NgayBatDau { get; set; }
+    public DateTime NgayBatDau { get; set; }
 
-    public DateOnly NgayKetThuc { get; set; }
+    public DateTime NgayKetThuc { get; set; }
 
     public string? MoTa { get; set; }
 

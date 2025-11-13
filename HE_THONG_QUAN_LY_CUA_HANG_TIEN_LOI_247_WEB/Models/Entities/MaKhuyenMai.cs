@@ -17,10 +17,6 @@ public partial class MaKhuyenMai
 
     public string TrangThai { get; set; } = null!;
 
-    public DateOnly NgayBatDau { get; set; }
-
-    public DateOnly NgayKetThuc { get; set; }
-
     public bool IsDelete { get; set; }
 
     public virtual ICollection<ChiTietHoaDonKhuyenMai> ChiTietHoaDonKhuyenMais { get; set; } = new List<ChiTietHoaDonKhuyenMai>();

@@ -9,7 +9,7 @@ public partial class BaoCao
 
     public string LoaiBaoCao { get; set; } = null!;
 
-    public DateOnly NgayLap { get; set; }
+    public DateTime NgayLap { get; set; }
 
     public bool IsDelete { get; set; }
 

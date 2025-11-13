@@ -11,7 +11,7 @@ public partial class LichSuMuaHang
 
     public decimal TongTien { get; set; }
 
-    public DateOnly NgayMua { get; set; }
+    public DateTime NgayMua { get; set; }
 
     public bool IsDelete { get; set; }
 

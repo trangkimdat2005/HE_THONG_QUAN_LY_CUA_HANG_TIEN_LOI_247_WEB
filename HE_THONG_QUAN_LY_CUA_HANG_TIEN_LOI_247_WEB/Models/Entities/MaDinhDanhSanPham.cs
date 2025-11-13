@@ -17,9 +17,9 @@ public partial class MaDinhDanhSanPham
 
     public bool IsDelete { get; set; }
 
-    public virtual ICollection<Barcode> Barcodes { get; set; } = new List<Barcode>();
+    public string? AnhId { get; set; }
 
-    public virtual ICollection<Qrcode> Qrcodes { get; set; } = new List<Qrcode>();
+    public virtual HinhAnh? Anh { get; set; }
 
     public virtual SanPhamDonVi SanPhamDonVi { get; set; } = null!;
 

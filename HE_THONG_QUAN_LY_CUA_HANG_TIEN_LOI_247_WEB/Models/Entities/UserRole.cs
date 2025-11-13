@@ -9,9 +9,9 @@ public partial class UserRole
 
     public string RoleId { get; set; } = null!;
 
-    public DateOnly? HieuLucTu { get; set; }
+    public DateTime? HieuLucTu { get; set; }
 
-    public DateOnly? HieuLucDen { get; set; }
+    public DateTime? HieuLucDen { get; set; }
 
     public string? Id { get; set; }
 

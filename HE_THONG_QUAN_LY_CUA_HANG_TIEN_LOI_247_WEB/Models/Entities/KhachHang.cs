@@ -15,7 +15,7 @@ public partial class KhachHang
 
     public string DiaChi { get; set; } = null!;
 
-    public DateOnly NgayDangKy { get; set; }
+    public DateTime NgayDangKy { get; set; }
 
     public string TrangThai { get; set; } = null!;
 
@@ -23,9 +23,9 @@ public partial class KhachHang
 
     public bool GioiTinh { get; set; }
 
-    public string AnhId { get; set; } = null!;
+    public string? AnhId { get; set; }
 
-    public virtual HinhAnh Anh { get; set; } = null!;
+    public virtual HinhAnh? Anh { get; set; }
 
     public virtual ICollection<DonHangOnline> DonHangOnlines { get; set; } = new List<DonHangOnline>();
 

@@ -13,7 +13,7 @@ public partial class DonHangOnline
 
     public string KenhDat { get; set; } = null!;
 
-    public DateOnly NgayDat { get; set; }
+    public DateTime NgayDat { get; set; }
 
     public decimal TongTien { get; set; }
 
