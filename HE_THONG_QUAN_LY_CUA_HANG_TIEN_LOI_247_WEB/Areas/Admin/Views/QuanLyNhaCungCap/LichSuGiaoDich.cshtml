@@ -63,7 +63,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    @* <tr>
                       <td>GDNCC001</td>
                       <td>CP Foods Việt Nam</td>
                       <td>01/11/2025</td>
@@ -73,7 +73,27 @@
                           <i class="bi bi-eye"></i>
                         </button>
                       </td>
-                    </tr>
+                    </tr> *@
+                                    @{
+                                        if (ViewData["lstLichSuGD"] != null)
+                                        {
+                                            List<LichSuGiaoDich> lsgds = ViewBag.lstLichSuGD;
+                                            foreach(LichSuGiaoDich lsgd in lsgds)
+                                            {
+                                                <tr>
+                                                    <td>@lsgd.Id</td>
+                                                    <td>@lsgd.NhaCungCap.Ten</td>
+                                                    <td>@lsgd.NgayGd</td>
+                                                    <td class="fw-bold">@lsgd.TongTien.ToString("N0") VND</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-info btn-sm js-view-detail" data-id="@lsgd.Id" title="Xem chi tiết">
+                                                            <i class="bi bi-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
                  
                   </tbody>
                 </table>
