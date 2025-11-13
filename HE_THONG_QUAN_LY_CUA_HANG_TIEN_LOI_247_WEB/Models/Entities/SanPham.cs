@@ -13,8 +13,6 @@ public partial class SanPham
 
     public string? MoTa { get; set; }
 
-    public string TrangThai { get; set; } = null!;
-
     public bool IsDelete { get; set; }
 
     public virtual ICollection<BaoCaoBanChay> BaoCaoBanChays { get; set; } = new List<BaoCaoBanChay>();

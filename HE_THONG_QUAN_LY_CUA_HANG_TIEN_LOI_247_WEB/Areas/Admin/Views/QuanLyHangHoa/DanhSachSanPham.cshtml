@@ -4,11 +4,11 @@
 
     ViewData["title"] = "Danh Sách Sản Phẩm";
 }
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/ThemHangHoa.css">
+<!-- Css riêng ở đây nha -->
+<link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="~/assets/css/ThemHangHoa.css">
 
-  <!-- Main sidebar ở đây nha -->
+<!-- Main sidebar ở đây nha -->
 
 
 
@@ -50,28 +50,43 @@
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr data-id="CK001" data-name="Thịt gà công nghiệp" data-danh-muc-ids='["DM_TP"]'
-                                    data-nhan-hieu-id="NH_CP" data-don-vi-id="DV_KG" data-price="85000"
-                                    data-mo-ta="Thịt gà tươi, đã làm sạch." data-trang-thai="ConHang">
-                                    <td>CK001</td>
-                                    <td>Thịt gà công nghiệp</td>
-                                    <td>Thực phẩm</td>
-                                    <td>CP Foods</td>
-                                    <td>KG</td>
-                                    <td>85,000 đ</td>
-                                    <td><span class="badge bg-success">Còn hàng</span></td>
-                                    <td class="text-center">
-                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" title="Sửa">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                               
-                            </tbody>
+                            @{
+                                if (ViewData["lstSanPham"] != null)
+                                {
+                                    List<SanPham> sanPhams = ViewBag.lstSanPham;
+                                    foreach (SanPham sanPham in sanPhams)
+                                    {
+                                        foreach (SanPhamDonVi sanPhamDonVi in sanPham.SanPhamDonVis)
+                                        {
+                                            <tbody>
+                                                <tr data-id="CK001" data-name="Thịt gà công nghiệp" data-danh-muc-ids='["DM_TP"]'
+                                                    data-nhan-hieu-id="NH_CP" data-don-vi-id="DV_KG" data-price="85000"
+                                                    data-mo-ta="Thịt gà tươi, đã làm sạch." data-trang-thai="ConHang">
+                                                    <td>@sanPham.Id</td>
+                                                    <td>@sanPham.Ten</td>
+                                                    <td>
+                                                        @String.Join(", ", sanPham.SanPhamDanhMucs.Select(x => x.DanhMuc.Ten.ToString()))
+                                                    </td>
+                                                    <td>@sanPham.NhanHieu.Ten</td>
+                                                    <td>@sanPhamDonVi.DonVi.Ten</td>
+                                                    <td>@sanPhamDonVi.GiaBan</td>
+                                                    <td><span class="badge bg-success">@sanPhamDonVi.TrangThai</span></td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        }
+                                    }
+                                }
+                            }
+
                         </table>
                     </div>
                 </div>
@@ -205,6 +220,6 @@
 </main>
 
 
-  <!-- js riêng ở đây nha! -->
+<!-- js riêng ở đây nha! -->
 <script src="~/assets/lib/select2/dist/js/select2.min.js" asp-append-version="true" defer></script>
- <script src="~/assets/js/DanhSachSanPham.js" asp-append-version="true" defer></script>
+<script src="~/assets/js/DanhSachSanPham.js" asp-append-version="true" defer></script>

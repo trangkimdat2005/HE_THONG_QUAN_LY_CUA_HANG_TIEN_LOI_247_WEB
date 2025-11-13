@@ -17,6 +17,8 @@ public partial class SanPhamDonVi
 
     public bool IsDelete { get; set; }
 
+    public string TrangThai { get; set; } = null!;
+
     public virtual ICollection<AnhSanPhamDonVi> AnhSanPhamDonVis { get; set; } = new List<AnhSanPhamDonVi>();
 
     public virtual ICollection<BaoCaoTonKho> BaoCaoTonKhos { get; set; } = new List<BaoCaoTonKho>();
