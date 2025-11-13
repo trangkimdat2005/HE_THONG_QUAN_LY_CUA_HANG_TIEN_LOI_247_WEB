@@ -4,79 +4,70 @@
 
     ViewData["title"] = "Danh Sách Tài Khoản";
 }
-  <!-- Main sidebar ở đây nha -->
+<!-- Main sidebar ở đây nha -->
 
 
 
 
 
 
-  
-  <main class="app-content">
+
+<main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-person-gear"></i> Quản lý Quyền</h1>
-        <p>Quản lý các vai trò (roles) và phân quyền (permissions)</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb side">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item">Quản lý bảo mật</li>
-        <li class="breadcrumb-item active"><a asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoan">Quản lý quyền</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-person-gear"></i> Quản lý Quyền</h1>
+            <p>Quản lý các vai trò (roles) và phân quyền (permissions)</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Quản lý bảo mật</li>
+            <li class="breadcrumb-item active"><a asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoan">Quản lý quyền</a></li>
+        </ul>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
-            <h3 class="title" style="margin-bottom: 0">Danh Sách Vai Trò</h3>
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+                    <h3 class="title" style="margin-bottom: 0">Danh Sách Vai Trò</h3>
                     <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemTaiKhoan">
-              <i class="fas fa-plus"></i> Thêm vai trò mới
-            </a>
-          </div>
+                        <i class="fas fa-plus"></i> Thêm vai trò mới
+                    </a>
+                </div>
 
-          <div class="tile-body">
-            <div class="table-responsive">
-              <table class="table table-hover table-bordered" id="sampleTable">
-                <thead>
-                  <tr>
-                    <th>Mã Vai Trò</th>
-                    <th>Tên Vai Trò</th>
-                    <th>Mô Tả</th>
-                    <th>Trạng Thái</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>ADMIN</td>
-                    <td>Quản trị viên</td>
-                    <td>Có toàn quyền truy cập hệ thống.</td>
-                    <td >
-                      <span class="badge bg-success">Hoạt động</span>
-                    </td>
-                    <td>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>Mã Vai Trò</th>
+                                    <th>Tên Vai Trò</th>
+                                    <th>Mô Tả</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ADMIN</td>
+                                    <td>Quản trị viên</td>
+                                    <td>Có toàn quyền truy cập hệ thống.</td>
+                                    <td>
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    </td>
+                                    <td>
                                         <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                    </td>
-                  </tr>
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
 
-                 
-                </tbody>
-              </table>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </main>
-
-
-
-
-
-
-
-
-
+</main>

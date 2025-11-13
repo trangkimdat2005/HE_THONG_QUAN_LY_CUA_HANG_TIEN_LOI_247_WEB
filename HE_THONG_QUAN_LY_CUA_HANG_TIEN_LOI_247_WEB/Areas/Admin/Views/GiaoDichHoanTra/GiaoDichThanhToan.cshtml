@@ -1,8 +1,7 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
-    ViewData["title"] = "Chính sách đổi trả";
+    ViewData["title"] = "Giao dịch thanh toán";
 }
   <link rel="stylesheet" type="text/css" href="~/assets/css/GiaoDichThanhToan.css" />
 
@@ -54,19 +53,34 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>GD001</td>
-                      <td>HD001</td>
-                      <td>02/11/2025, 14:30</td>
-                      <td>Tiền mặt</td>
-                      <td class="text-end fw-bold">151,000 đ</td>
-                      <td>Thanh toán hóa đơn</td>
-                      <td class="text-center">
-                        <button class="btn btn-info btn-sm js-view-invoice" data-id="HD001" title="Xem chi tiết">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                      </td>
-                    </tr>
+                    @{
+                      if (ViewData["lstGiaoDichThanhToan"] != null)
+                      {
+                          List<GiaoDichThanhToan> giaoDichs = ViewData["lstGiaoDichThanhToan"] as List<GiaoDichThanhToan>;
+                          foreach (GiaoDichThanhToan giaoDich in giaoDichs)
+                          {
+                              <tr>
+                                  <td>@giaoDich.Id</td>
+                                  <td>@giaoDich.HoaDonId</td>
+                                  <td>@giaoDich.NgayGd.ToString("dd/MM/yyyy")</td>
+                                  <td>@giaoDich.KenhThanhToan?.TenKenh</td>
+                                  <td class="text-end fw-bold">@giaoDich.SoTien.ToString("N0") đ</td>
+                                  <td>@giaoDich.MoTa</td>
+                                  <td class="text-center">
+                                      <button class="btn btn-info btn-sm js-view-invoice" data-id="@giaoDich.HoaDonId" title="Xem chi tiết">
+                                          <i class="fas fa-eye"></i>
+                                      </button>
+                                  </td>
+                              </tr>
+                          }
+                      }
+                      // else
+                      // {
+                      //     <tr>
+                      //         <td colspan="7" class="text-center text-muted">Chưa có giao dịch nào</td>
+                      //     </tr>
+                      // }
+                    }
                   </tbody>
                 </table>
               </div>

@@ -1,79 +1,145 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Báo Cáo Tồn Kho";
 }
-  <!-- Main sidebar ở đây nha -->
-
 
 <main class="app-content">
-  <div class="app-title">
-    <div>
-      <h1><i class="bi bi-box-seam"></i> Báo cáo Tồn Kho</h1>
-      <p>Thống kê tình hình tồn kho theo kỳ</p>
-    </div>
-    <ul class="app-breadcrumb breadcrumb side">
-      <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-      <li class="breadcrumb-item">Phân tích & Báo cáo</li>
-      <li class="breadcrumb-item active"><a href="#">Báo cáo tồn kho</a></li>
-    </ul>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <div class="tile">
-        
-        <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
-          <h3 class="title" style="margin-bottom: 0;">Lịch Sử Báo Cáo Tồn Kho</h3>
+    <div class="app-title">
+        <div>
+            <h1><i class="bi bi-box-seam"></i> Báo cáo Tồn Kho</h1>
+            <p>Thống kê tình hình tồn kho theo kỳ</p>
         </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Phân tích & Báo cáo</li>
+            <li class="breadcrumb-item active"><a asp-controller="PhanTichBaoCao" asp-action="BaoCaoTonKho">Báo cáo tồn kho</a></li>
+        </ul>
+    </div>
 
-        <div class="tile-body">
-          
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <label class="form-label">Từ ngày</label>
-              <input class="form-control" type="date" />
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Đến ngày</label>
-              <input class="form-control" type="date" />
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
-              <button class="btn btn-primary btn-add-khoi" type="button">
-                <i class="fas fa-filter"></i> Lọc
-              </button>
-            </div>
-          </div>
+    <!-- Tồn kho hiện tại -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <h3 class="tile-title">
+                    <i class="bi bi-clipboard-data"></i> Tồn Kho Hiện Tại (Top 20 Ít Nhất)
+                </h3>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th>Đơn Vị</th>
+                                    <th class="text-end">Số Lượng Tồn</th>
+                                    <th class="text-center">Trạng Thái</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var tonKhoHienTai = ViewData["TonKhoHienTai"] as List<dynamic>;
+                                    if (tonKhoHienTai != null && tonKhoHienTai.Any())
+                                    {
+                                        int stt = 1;
+                                        foreach (var tk in tonKhoHienTai)
+                                        {
+                                            var cssClass = tk.SoLuongTon < 5 ? "table-danger" : 
+                                                          tk.SoLuongTon < 10 ? "table-warning" : "";
+                                            var badge = tk.SoLuongTon < 5 ? "bg-danger" : 
+                                                       tk.SoLuongTon < 10 ? "bg-warning" : "bg-success";
+                                            var status = tk.SoLuongTon < 5 ? "Nguy hiểm" : 
+                                                        tk.SoLuongTon < 10 ? "Cảnh báo" : "Ổn định";
+                                            
 
-          <div class="table-responsive">
-            <table
-              class="table table-hover table-bordered"
-              id="sampleTable" 
-            >
-              <thead>
-                <tr>
-                  <th>Mã Báo Cáo</th>
-                  <th>Ngày Lập</th>
-                  <th>Tổng Số Lượng Tồn</th> <th class="text-center">Thao tác</th> </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>BCTK001</td>
-                  <td>01/11/2025</td>
-                  <td>1250</td> <td class="text-center">
-                    <a class="btn btn-success btn-sm" href="#" title="Tải về (Excel)">
-                      <i class="fas fa-download"></i>
+                                            <tr class="@cssClass">
+                                                <td>@stt</td>
+                                                <td>@tk.TenSP</td>
+                                                <td>@tk.DonVi</td>
+                                                <td class="text-end fw-bold">@tk.SoLuongTon</td>
+                                                <td class="text-center">
+                                                    <span class="badge @badge">@status</span>
+                                                </td>
+                                            </tr>
+                                            stt++;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">Không có dữ liệu tồn kho</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lịch sử báo cáo -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+                    <h3 class="title" style="margin-bottom: 0;">Lịch Sử Báo Cáo Tồn Kho</h3>
+                    <a class="btn btn-success" href="#">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
                     </a>
-                  </td>
-                </tr>
+                </div>
 
-                
-              </tbody>
-            </table>
-          </div>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>Mã Báo Cáo</th>
+                                    <th>Ngày Lập</th>
+                                    <th>Sản Phẩm</th>
+                                    <th class="text-end">Tồn Đầu Kỳ</th>
+                                    <th class="text-end">Nhập Trong Kỳ</th>
+                                    <th class="text-end">Xuất Trong Kỳ</th>
+                                    <th class="text-end">Tồn Cuối Kỳ</th>
+                                    <th class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var lstBaoCao = ViewData["lstBaoCao"] as List<BaoCaoTonKho>;
+                                    if (lstBaoCao != null && lstBaoCao.Any())
+                                    {
+                                        foreach (var bc in lstBaoCao)
+                                        {
+                                            <tr>
+                                                <td>@bc.Id</td>
+                                                <td>@bc.BaoCao.NgayLap.ToString("dd/MM/yyyy")</td>
+                                                <td>@bc.SanPhamDonVi?.SanPham?.Ten</td>
+                                                <td class="text-end">@bc.TonDauKy</td>
+                                                <td class="text-end text-success">+@bc.NhapTrongKy</td>
+                                                <td class="text-end text-danger">-@bc.XuatTrongKy</td>
+                                                <td class="text-end fw-bold">@bc.TonCuoiKy</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-success btn-sm" href="#" title="Tải về (Excel)">
+                                                        <i class="fas fa-download"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    // else
+                                    // {
+                                    //     <tr>
+                                    //         <td colspan="8" class="text-center text-muted">Chưa có báo cáo nào</td>
+                                    //     </tr>
+                                    // }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </main>
