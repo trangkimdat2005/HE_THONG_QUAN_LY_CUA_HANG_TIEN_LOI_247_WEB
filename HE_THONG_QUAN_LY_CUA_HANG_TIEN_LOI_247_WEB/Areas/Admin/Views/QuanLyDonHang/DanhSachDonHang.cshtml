@@ -69,23 +69,41 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>HD001</td>
-                    <td>02/11/2025, 14:30</td>
-                    <td>John Doe</td>
-                    <td>Khách lẻ</td>
-                    <td>151,000 đ</td>
-                    <td>
-                      <span class="badge bg-success">Đã Thanh Toán</span>
-                    </td>
-                    <td>
-                                        <a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon" title="Xem chi tiết">
-                        <i class="fas fa-eye"></i>
-                      </a>
-                    </td>
-                  </tr>
+                  @{
+                    var lstHoaDon = ViewData["lstHoaDon"] as List<HoaDon>;
+                    if (lstHoaDon != null && lstHoaDon.Any())
+                    {
+                      foreach (var hd in lstHoaDon)
+                      {
+                        var statusClass = hd.TrangThai == "DaThanhToan" ? "bg-success" 
+                                        : hd.TrangThai == "ChuaThanhToan" ? "bg-warning" 
+                                        : "bg-danger";
+                        var statusText = hd.TrangThai == "DaThanhToan" ? "Đã Thanh Toán" 
+                                       : hd.TrangThai == "ChuaThanhToan" ? "Chưa Thanh Toán" 
+                                       : "Đã Hủy";
 
-                 
+                        <tr>
+                          <td>@hd.Id</td>
+                          <td>@hd.NgayLap.ToString("dd/MM/yyyy, HH:mm")</td>
+                          <td>@hd.NhanVien?.HoTen</td>
+                          <td>@hd.KhachHang?.HoTen</td>
+                          <td>@hd.TongTien?.ToString("N0") đ</td>
+                          <td>
+                            <span class="badge @statusClass">@statusText</span>
+                          </td>
+                          <td>
+                            <a class="btn btn-info btn-sm" 
+                               asp-controller="QuanLyDonHang" 
+                               asp-action="XemChiTietHoaDon" 
+                               asp-route-id="@hd.Id"
+                               title="Xem chi tiết">
+                              <i class="fas fa-eye"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      }
+                    }
+                  }
                 </tbody>
               </table>
             </div>

@@ -1,20 +1,11 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Danh Sách Tem Nhãn";
 }
   <!-- Css riêng ở đây nha -->
 <link rel="stylesheet" href="~/assets/css/DanhSachTemNhan.css" >
 
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
-
-
-  
   <main class="app-content">
     <div class="app-title">
       <div>
@@ -24,8 +15,7 @@
       <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item">Quản lý barcode</li>
-            <li class="breadcrumb-item active"><a asp-controller="QuanLyBarCode" asp-action="DanhSachTemNhan">Danh sách tem nhãn</a>
-        </li>
+        <li class="breadcrumb-item active"><a asp-controller="QuanLyBarCode" asp-action="DanhSachTemNhan">Danh sách tem nhãn</a></li>
       </ul>
     </div>
 
@@ -54,27 +44,39 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-id="TEM001" 
-                      data-ma-dinh-danh-id="MDD_001" 
-                      data-noi-dung="Sữa TH (Lốc), HSD: 12/2026" 
-                      data-ngay-in="2025-11-01"
-                      data-image-url="https://barcode.tec-it.com/barcode.ashx?data=8935049001438&code=EAN13&dpi=96"
-                      data-ma-code="8935049001438">
-                    <td>Sữa tươi TH True Milk</td>
-                    <td>Lốc 4</td>
-                    <td>8935049001438</td>
-                    <td>Sữa TH (Lốc), HSD: 12/2026</td>
-                    <td>01/11/2025</td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa mẫu tem">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-                 
+                  @{
+                    var lstTemNhan = ViewData["lstTemNhan"] as List<TemNhan>;
+                    if (lstTemNhan != null && lstTemNhan.Any())
+                    {
+                      foreach (var tem in lstTemNhan)
+                      {
+                        var maDinhDanh = tem.MaDinhDanh;
+                        var sanPham = maDinhDanh?.SanPhamDonVi?.SanPham;
+                        var donVi = maDinhDanh?.SanPhamDonVi?.DonVi;
+
+                        <tr data-id="@tem.Id" 
+                            data-ma-dinh-danh-id="@tem.MaDinhDanhId" 
+                            data-noi-dung="@tem.NoiDungTem" 
+                            data-ngay-in="@tem.NgayIn.ToString("yyyy-MM-dd")"
+                            data-image-url="@maDinhDanh?.DuongDan"
+                            data-ma-code="@maDinhDanh?.MaCode">
+                          <td>@sanPham?.Ten</td>
+                          <td>@donVi?.Ten</td>
+                          <td>@maDinhDanh?.MaCode</td>
+                          <td>@tem.NoiDungTem</td>
+                          <td>@tem.NgayIn.ToString("dd/MM/yyyy")</td>
+                          <td class="text-center">
+                            <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa mẫu tem">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                              <i class="fas fa-trash-alt"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      }
+                    }
+                  }
                 </tbody>
               </table>
             </div>
@@ -103,10 +105,21 @@
                 <label class="form-label">Mã Định Danh Sản Phẩm</label>
                 <select class="form-control" id="form-select-identifier" style="width: 100%;">
                   <option value="">-- Chọn mã định danh --</option>
-                  <option value="MDD_001" data-image-url="https://barcode.tec-it.com/barcode.ashx?data=8935049001438&code=EAN13&dpi=96" data-ma-code="8935049001438">
-                    8935049001438 (Sữa TH)
-                  </option>
-
+                  @{
+                    var lstMaDinhDanh = ViewData["lstMaDinhDanh"] as List<MaDinhDanhSanPham>;
+                    if (lstMaDinhDanh != null)
+                    {
+                      foreach (var mdd in lstMaDinhDanh)
+                      {
+                        var sanPhamTen = mdd.SanPhamDonVi?.SanPham?.Ten;
+                        <option value="@mdd.Id" 
+                                data-image-url="@mdd.DuongDan" 
+                                data-ma-code="@mdd.MaCode">
+                          @mdd.MaCode (@sanPhamTen)
+                        </option>
+                      }
+                    }
+                  }
                 </select>
               </div>
 
@@ -140,17 +153,7 @@
     </div>
   </main>
 
-
-
-
-
-
-
-
-
-
-
   <!-- js riêng ở đây nha! -->
-    <script src="~/assets/js/DanhSachTemNhan.js " asp-append-version="true" defer></script>
+  <script src="~/assets/js/DanhSachTemNhan.js" asp-append-version="true" defer></script>
 
 
