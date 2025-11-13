@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using Microsoft.EntityFrameworkCore;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
 
@@ -1746,9 +1746,6 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.Ten)
                 .HasMaxLength(255)
                 .HasColumnName("ten");
-            entity.Property(e => e.TrangThai)
-                .HasMaxLength(30)
-                .HasColumnName("trangThai");
 
             entity.HasOne(d => d.NhanHieu).WithMany(p => p.SanPhams)
                 .HasForeignKey(d => d.NhanHieuId)
@@ -1820,6 +1817,9 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("id");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
+            entity.Property(e => e.TrangThai)
+                .HasMaxLength(30)
+                .HasColumnName("trangThai");
 
             entity.HasOne(d => d.DonVi).WithMany(p => p.SanPhamDonVis)
                 .HasForeignKey(d => d.DonViId)
