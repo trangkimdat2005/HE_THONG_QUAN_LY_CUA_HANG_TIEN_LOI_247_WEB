@@ -1,7 +1,6 @@
 ﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Phiếu đổi trả";
 }
 
@@ -42,20 +41,28 @@
                                         <th>Thao tác</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>PDT001</td>
-                                        <td>HD003</td>
-                                        <td>01/11/2025</td>
-                                        <td class="text-end">12,000 đ</td>
-                                        <td class="text-center">
-                                            <button class="btn btn-info btn-sm js-view-detail" data-id="PDT001" title="Xem chi tiết">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                   
-                                </tbody>
+                                @{
+                                    if (ViewData["lstPhieuDoiTra"] != null)
+                                    {
+                                        List<PhieuDoiTra> phieuDoiTras = ViewData["lstPhieuDoiTra"] as List<PhieuDoiTra>;
+                                        foreach (PhieuDoiTra phieu in phieuDoiTras)
+                                        {
+                                            <tbody>
+                                                <tr>
+                                                    <td>@phieu.Id</td>
+                                                    <td>@phieu.HoaDonId</td>
+                                                    <td>@phieu.NgayDoiTra.ToString("dd/MM/yyyy")</td>
+                                                    <td class="text-end">@phieu.SoTienHoan.ToString("N0") đ</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-info btn-sm js-view-detail" data-id="@phieu.Id" title="Xem chi tiết">
+                                                            <i class="fas fa-eye"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        }
+                                    }
+                                }
                             </table>
                         </div>
                     </div>

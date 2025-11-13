@@ -1,7 +1,6 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Chính Sách Đổi Trả";
 }
 
@@ -45,24 +44,33 @@
                     <th  >Thao tác</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Chính sách đổi trả 7 ngày</td>
-                    <td  >7</td>
-                    <td>Áp dụng cho tất cả sản phẩm, còn nguyên tem mác.</td>
-                    <td  >01/01/2025</td>
-                    <td  >31/12/2025</td>
-                    <td class="text-center">
-                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoanTra">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-
-                </tbody>
+                @{
+                    if (ViewData["lstChinhSachDoiTra"] != null)
+                    {
+                        List<ChinhSachHoanTra> chinhSachs = ViewData["lstChinhSachDoiTra"] as List<ChinhSachHoanTra>;
+                        foreach (ChinhSachHoanTra chinhSach in chinhSachs)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>@chinhSach.TenChinhSach</td>
+                                    <td>@chinhSach.ThoiHan</td>
+                                    <td>@chinhSach.DieuKien</td>
+                                    <td>@chinhSach.ApDungTuNgay.ToString("dd/MM/yyyy")</td>
+                                    <td>@chinhSach.ApDungDenNgay.ToString("dd/MM/yyyy")</td>
+                                    <td class="text-center">
+                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoanTra" asp-route-id="@chinhSach.Id">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" data-id="@chinhSach.Id" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
+                    }
+                }
+               
               </table>
             </div>
           </div>

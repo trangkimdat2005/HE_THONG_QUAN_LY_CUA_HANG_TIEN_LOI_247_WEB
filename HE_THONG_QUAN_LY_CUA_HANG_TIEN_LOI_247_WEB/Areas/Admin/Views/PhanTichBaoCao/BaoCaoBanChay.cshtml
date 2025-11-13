@@ -1,87 +1,101 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Báo Cáo Bán Chạy";
 }
 
-  <!-- Main sidebar ở đây nha -->
-
-
-
-  <main class="app-content">
+<main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-graph-up-arrow"></i> Báo cáo Bán chạy</h1>
-        <p>Thống kê các sản phẩm bán chạy nhất hệ thống</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb side">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item">Phân tích & Báo cáo</li>
-        <li class="breadcrumb-item active"><a href="#">Báo cáo bán chạy</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-graph-up-arrow"></i> Báo cáo Bán chạy</h1>
+            <p>Thống kê các sản phẩm bán chạy nhất hệ thống</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Phân tích & Báo cáo</li>
+            <li class="breadcrumb-item active"><a asp-controller="PhanTichBaoCao" asp-action="BaoCaoBanChay">Báo cáo bán chạy</a></li>
+        </ul>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
+        <div class="col-md-12">
+            <div class="tile">
+                <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+                    <h3 class="title" style="margin-bottom: 0;">Top Sản Phẩm Bán Chạy</h3>
+                    <a class="btn btn-success" href="#">
+                        <i class="fas fa-file-excel"></i> Xuất Excel
+                    </a>
+                </div>
 
-          <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
-            <h3 class="title" style="margin-bottom: 0;">Top Sản Phẩm Bán Chạy</h3>
-            <a class="btn btn-success" href="xuat-excel-banchay.html">
-                        @* chưa có *@
-              <i class="fas fa-file-excel"></i> Xuất Excel
-            </a>
-          </div>
+                <div class="tile-body">
+                    <form method="get" asp-controller="PhanTichBaoCao" asp-action="BaoCaoBanChay">
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Từ ngày</label>
+                                <input class="form-control" type="date" name="tuNgay" value="@ViewData["TuNgay"]" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Đến ngày</label>
+                                <input class="form-control" type="date" name="denNgay" value="@ViewData["DenNgay"]" />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Hiển thị Top</label>
+                                <select class="form-select" name="top">
+                                    <option value="10" selected="@(ViewData["Top"]?.ToString() == "10")">Top 10</option>
+                                    <option value="20" selected="@(ViewData["Top"]?.ToString() == "20")">Top 20</option>
+                                    <option value="50" selected="@(ViewData["Top"]?.ToString() == "50")">Top 50</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 d-flex align-items-end">
+                                <button class="btn btn-primary btn-add-khoi" type="submit">
+                                    <i class="fas fa-filter"></i> Lọc
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
-          <div class="tile-body">
-
-            <div class="row mb-3">
-              <div class="col-md-3">
-                <label class="form-label">Từ ngày</label>
-                <input class="form-control" type="date" />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Đến ngày</label>
-                <input class="form-control" type="date" />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Hiển thị Top</label>
-                <select class="form-select">
-                  <option value="10">Top 10</option>
-                  <option value="20">Top 20</option>
-                  <option value="50">Top 50</option>
-                </select>
-              </div>
-              <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-primary btn-add-khoi" type="button">
-                  <i class="fas fa-filter"></i> Lọc
-                </button>
-              </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Mã Sản Phẩm</th>
+                                    <th>Tên Sản Phẩm</th>
+                                    <th class="text-end">Số Lượng Bán</th>
+                                    <th class="text-end">Doanh Thu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var topSanPham = ViewData["TopSanPham"] as List<dynamic>;
+                                    if (topSanPham != null && topSanPham.Any())
+                                    {
+                                        int stt = 1;
+                                        foreach (var sp in topSanPham)
+                                        {
+                                            <tr>
+                                                <td>@stt</td>
+                                                <td>@sp.MaSanPham</td>
+                                                <td>@sp.TenSanPham</td>
+                                                <td class="text-end fw-bold">@sp.SoLuongBan</td>
+                                                <td class="text-end text-success fw-bold">@(((decimal)sp.DoanhThu).ToString("N0")) đ</td>
+                                            </tr>
+                                            stt++;
+                                        }
+                                    }
+                                    // else
+                                    // {
+                                    //     <tr>
+                                    //         <td colspan="5" class="text-center text-muted">Không có dữ liệu trong khoảng thời gian này</td>
+                                    //     </tr>
+                                    // }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
-            <div class="table-responsive">
-              <table class="table table-hover table-bordered" id="sampleTable">
-                <thead>
-                  <tr>
-                    <th>Mã Sản Phẩm</th>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Số Lượng Bán</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>ST001</td>
-                    <td>Sữa tươi TH True Milk (Lốc 4)</td>
-                    <td>550</td>
-                  </tr>
-
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </main>
+</main>
 
