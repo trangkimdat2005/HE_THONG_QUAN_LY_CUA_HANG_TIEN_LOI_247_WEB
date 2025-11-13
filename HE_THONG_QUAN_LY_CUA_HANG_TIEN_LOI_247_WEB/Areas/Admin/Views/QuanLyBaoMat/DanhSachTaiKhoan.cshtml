@@ -48,7 +48,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
+                  @* <tr>
                     <td>ADMIN</td>
                     <td>Quản trị viên</td>
                     <td>Có toàn quyền truy cập hệ thống.</td>
@@ -60,7 +60,29 @@
                         <i class="fas fa-edit"></i>
                       </a>
                     </td>
-                  </tr>
+                  </tr> *@
+                                @{
+                                    if (ViewData["lstRole"] != null)
+                                    {
+                                        List<TaiKhoan> rls = ViewBag.lstTK;
+                                        foreach (var rl in rls)
+                                        {
+                                            <tr>
+                                                <td>//none</td>
+                                                <td>Quản trị viên</td>
+                                                <td>Có toàn quyền truy cập hệ thống.</td>
+                                                <td>
+                                                    <span class="badge bg-success">Hoạt động</span>
+                                                </td>
+                                                <td>
+                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
 
                  
                 </tbody>

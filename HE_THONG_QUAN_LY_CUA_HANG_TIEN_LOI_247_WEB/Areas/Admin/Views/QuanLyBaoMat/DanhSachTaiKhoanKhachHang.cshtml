@@ -53,7 +53,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    @* <tr>
                       <td>nguyenvana</td>
                       <td>Nguyễn Văn A</td>
                       <td>nguyenvana@gmail.com</td>
@@ -75,9 +75,9 @@
                           <i class="fas fa-lock"></i>
                         </a>
                       </td>
-                    </tr>
+                    </tr> *@
 
-                    <tr>
+                    @* <tr>
                       <td>tranthib</td>
                       <td>Trần Thị B</td>
                       <td>tranthib@hotmail.com</td>
@@ -100,8 +100,59 @@
                           <i class="fas fa-unlock"></i>
                         </a>
                       </td>
-                    </tr>
-
+                    </tr> *@
+                                @{
+                                    if (ViewData["lstTKKH"] != null)
+                                    {
+                                        List<TaiKhoanKhachHang> tkkhs = ViewBag.lstTKKH;
+                                        foreach(var tkkh in tkkhs)
+                                        {
+                                            bool isActive = string.Equals(tkkh.TaiKhoan.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
+                                            <tr>
+                                                <td>@tkkh.TaiKhoan.TenDangNhap</td>
+                                                <td>@tkkh.KhachHang.HoTen</td>
+                                                <td>@tkkh.KhachHang.Email</td>
+                                                <td>
+                                                    @{
+                                                        if (isActive)
+                                                        {
+                                                            <span class="badge bg-success">@tkkh.TaiKhoan.TrangThai</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-danger">@tkkh.TaiKhoan.TrangThai</span>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi"
+                                                       asp-controller="QuanLyBaoMat" asp-action="LichSuMuaHang"
+                                                       title="Xem lịch sử mua hàng">
+                                                        <i class="fas fa-history"></i>
+                                                    </a>
+                                                    @{
+                                                        if (isActive)
+                                                        {
+                                                            <a class="btn btn-success btn-sm"
+                                                               href="#"
+                                                               title="Khóa tài khoản">
+                                                                <i class="fa-solid fa-lock"></i>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a class="btn btn-success btn-sm"
+                                                               href="#"
+                                                               title="Mở khóa tài khoản">
+                                                                <i class="fas fa-unlock"></i>
+                                                            </a>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
                   </tbody>
                 </table>
               </div>

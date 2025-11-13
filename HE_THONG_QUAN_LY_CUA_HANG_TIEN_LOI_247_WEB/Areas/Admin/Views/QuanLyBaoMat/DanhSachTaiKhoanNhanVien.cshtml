@@ -56,7 +56,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    @* <tr>
                       <td>admin</td>
                       <td>John Doe</td>
                       <td>admin@example.com</td>
@@ -79,7 +79,47 @@
                           <i class="fas fa-key"></i>
                         </a>
                       </td>
-                    </tr>
+                    </tr> *@
+                                @{
+                                    if (ViewData["lstTKNV"] != null)
+                                    {
+                                        List<TaiKhoanNhanVien> taiKhoanNhanViens = ViewBag.lstTKNV;
+                                        foreach(var tknv in taiKhoanNhanViens)
+                                        {
+                                            bool isActive = string.Equals(tknv.TaiKhoan.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
+
+                                            <tr>
+                                                <td>@tknv.TaiKhoan.TenDangNhap</td>
+                                                <td>@tknv.NhanVien.HoTen</td>
+                                                <td>@tknv.NhanVien.Email</td>
+                                                <td>@String.Join(", ", tknv.TaiKhoan.UserRoles.Select(x => x.Role.Ten.ToString()))</td>
+                                                <td>
+                                                    @{
+                                                        if (isActive)
+                                                        {
+                                                            <span class="badge bg-success">@tknv.TaiKhoan.TrangThai</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-danger">@tknv.TaiKhoan.TrangThai</span>
+                                                        }
+                                                    }
+                                                </td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan" "
+                                                       title="Sửa">
+                                                        <i class="fas fa-user-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-secondary btn-sm me-1"
+                                                       href="#"
+                                                       title="Đặt lại mật khẩu">
+                                                        <i class="fas fa-key"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
 
                     
 

@@ -12,8 +12,6 @@
 
 
 
-
-
   <main class="app-content">
     <div class="app-title">
       <div>
@@ -45,16 +43,16 @@
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
-                    <th>Mã Thẻ (id) </th>
-                    <th>Tên Khách Hàng (hoTen) </th>
-                    <th>Hạng Thẻ (hang) </th>
-                    <th>Điểm Tích Lũy (diemTichLuy) </th>
-                    <th>Ngày Cấp (ngayCap) </th>
+                    <th>Mã Thẻ </th>
+                    <th>Tên Khách Hàng  </th>
+                    <th>Hạng Thẻ  </th>
+                    <th>Điểm Tích Lũy </th>
+                    <th>Ngày Cấp </th>
                     <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr data-id="TTV001"
+                  @* <tr data-id="TTV001"
                       data-khach-hang-id="KH001"
                       data-ten-khach-hang="Nguyễn Văn A"
                       data-sdt="090xxxx123"
@@ -76,7 +74,39 @@
                         <i class="fas fa-trash-alt"></i>
                       </a>
                     </td>
-                  </tr>
+                  </tr> *@
+                                @{
+                                    if (ViewData["lstTheThanhVien"] != null)
+                                    {
+                                        List<TheThanhVien> ttvs = ViewBag.lstTheThanhVien;
+                                        foreach(TheThanhVien ttv in ttvs)
+                                        {
+                                            <tr data--id="@ttv.Id"
+                                                data-khach-hang-id="@ttv.KhachHangId"
+                                                data-ten-khach-hang="@ttv.KhachHang.HoTen"
+                                                data-sdt="@ttv.KhachHang.SoDienThoai"
+                                                data-hang="@ttv.Hang"
+                                                data-diem="@ttv.DiemTichLuy"
+                                                data-ngay-cap="@ttv.NgayCap.ToString("dd/MM/yyy")">
+                                                <td>@ttv.Id</td>
+                                                <td>@ttv.KhachHang.HoTen</td>
+                                                <td>
+                                                    <span class="badge bg-warning">@ttv.Hang</span>
+                                                </td>
+                                                <td>@ttv.DiemTichLuy</td>
+                                                <td>@ttv.NgayCap.ToString("dd/MM/yyyy")</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
 
                 
                 </tbody>
