@@ -1,5 +1,5 @@
 
-$(document).ready(function () {
+$(function () {
 
     // --- 1. KHỞI TẠO CÁC THÀNH PHẦN ---
     $('#form-select-nhan-hieu').select2({ width: '100%', dropdownParent: $('#product-form-col') });
@@ -117,11 +117,16 @@ $(document).ready(function () {
             dt = new DataTransfer();
             formImagesUpload[0].files = dt.files;
             renderPreview();
+            callApiGetNextId(); // Gọi API để lấy mã sản phẩm tiếp theo
 
             inputId.val('Tự động tạo').prop('readonly', true);
             btnSubmit.html('<i class="bi bi-check-circle-fill me-2"></i>Thêm').show();
             btnCancel.html('<i class="bi bi-x-circle-fill me-2"></i>Huỷ').show();
             btnEditMode.hide();
+            // Khóa select2 (khi sử dụng Select2)
+            $('#form-select-nhan-hieu').prop('disabled', false).trigger('change');
+            $('#form-select-don-vi').prop('disabled', false).trigger('change');
+            $('#form-select-danh-muc').prop('disabled', false).trigger('change');
         }
         else {
             inputId.val(data.id);
@@ -144,12 +149,21 @@ $(document).ready(function () {
                 btnSubmit.hide();
                 btnCancel.text('Đóng').show();
                 btnEditMode.show();
+                // Khóa select2 (khi sử dụng Select2)
+                $('#form-select-nhan-hieu').prop('disabled', true).trigger('change');
+                $('#form-select-don-vi').prop('disabled', true).trigger('change');
+                $('#form-select-danh-muc').prop('disabled', true).trigger('change');
             } else {
                 formTitle.text('Sửa Sản Phẩm');
                 inputId.prop('readonly', true);
                 btnSubmit.html('<i class="bi bi-check-circle-fill me-2"></i>Lưu').show();
                 btnCancel.text('Huỷ').show();
+                $('#form-select-nhan-hieu').prop('disabled', false).trigger('change');
+                $('#form-select-don-vi').prop('disabled', false).trigger('change');
+                $('#form-select-danh-muc').prop('disabled', false).trigger('change');
                 btnEditMode.hide();
+                
+
             }
         }
     }
@@ -203,6 +217,10 @@ $(document).ready(function () {
         inputId.prop('readonly', true);
         btnSubmit.html('<i class="bi bi-check-circle-fill me-2"></i>Lưu').show();
         btnCancel.text('Huỷ').show();
+        // Khóa select2 (khi sử dụng Select2)
+        $('#form-select-nhan-hieu').prop('disabled', false).trigger('change');
+        $('#form-select-don-vi').prop('disabled', false).trigger('change');
+        $('#form-select-danh-muc').prop('disabled', false).trigger('change');
         btnEditMode.hide();
     });
 
@@ -214,3 +232,56 @@ $(document).ready(function () {
         closeForm();
     });
 });
+
+
+
+
+
+//Sự kiện Trang Kim Đạt làm
+
+document.addEventListener('DOMContentLoaded', function () {
+    var btnThem = document.getElementById('btn-submit');
+    var title = document.getElementById('form-title').value;
+    var productImages = document.getElementById('form-images-upload').files; // Dữ liệu hình ảnh
+    var productId = document.getElementById('form-product-id').value; // Mã sản phẩm
+    var productName = document.getElementById('form-product-name').value; // Tên sản phẩm
+    var brand = document.getElementById('form-select-nhan-hieu').value; // Nhãn hiệu
+    var categories = Array.from(document.getElementById('form-select-danh-muc').selectedOptions).map(option => option.value); // Danh mục
+    var unit = document.getElementById('form-select-don-vi').value; // Đơn vị cơ sở
+    var exchangeRate = document.querySelector('form-select-he-so-quy-doi').value; // Hệ số quy đổi
+    var price = document.getElementById('form-product-price').value; // Giá bán
+    var description = document.getElementById('form-product-description').value; // Mô tả sản phẩm
+    var status = document.querySelector('input[name="trangThaiSP"]:checked').value; // Trạng thái (ConHang, HetHang, NgungKinhDoanh)
+
+
+
+
+    
+
+});
+
+
+async function callApiGetNextId() {
+    const dataToSend = {
+        prefix: "SP",
+        totalLength: 6
+    };
+    try {
+        const response = await fetch('/API/get-next-id-SP',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend)
+            });
+        const data = await response.json();
+        if (data) {
+            document.getElementById('form-product-id').value = data.nextId;
+        }
+        else {
+            alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
+        }
+    } catch (error) {
+        console.error('Lỗi khi lấy mã sản phẩm:', error);
+        alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
+    }
+}
