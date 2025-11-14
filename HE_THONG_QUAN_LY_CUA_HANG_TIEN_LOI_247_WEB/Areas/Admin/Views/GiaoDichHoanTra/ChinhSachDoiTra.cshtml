@@ -4,7 +4,7 @@
     ViewData["title"] = "Chính Sách Đổi Trả";
 }
 
-  <main class="app-content">
+<main class="app-content">
     <div class="app-title">
       <div>
         <h1>
@@ -15,9 +15,25 @@
       <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item">Giao dịch & hoàn trả</li>
-        <li class ="breadcrumb-item"><a asp-controller="GiaoDichHoanTra" asp-action="ChinhSachDoiTra">Chính sách hoàn trả</a> </li>
+        <li class="breadcrumb-item active"><a asp-controller="GiaoDichHoanTra" asp-action="ChinhSachDoiTra">Chính sách hoàn trả</a></li>
       </ul>
     </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
 
     <div class="row">
       <div class="col-md-12">
@@ -26,7 +42,7 @@
             <h3 class="title" style="margin-bottom: 0">
               Danh Sách Chính Sách
             </h3>
-                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemHoanTra">
+            <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemChinhSachHoanTra">
               <i class="fas fa-plus"></i> Thêm chính sách mới
             </a>
           </div>
@@ -36,46 +52,127 @@
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
+                    <th>Mã CS</th>
                     <th>Tên Chính Sách</th>
-                    <th >Thời Hạn (Ngày)</th>
-                    <th>Điều Kiện Áp Dụng</th>
-                    <th  >Hiệu Lực Từ</th>
-                    <th  >Hiệu Lực Đến</th>
-                    <th  >Thao tác</th>
+                    <th>Thời Hạn (Ngày)</th>
+                    <th>Áp Dụng</th>
+                    <th>Hiệu Lực Từ</th>
+                    <th>Hiệu Lực Đến</th>
+                    <th class="text-center">Thao tác</th>
                   </tr>
                 </thead>
+                <tbody>
                 @{
                     if (ViewData["lstChinhSachDoiTra"] != null)
                     {
                         List<ChinhSachHoanTra> chinhSachs = ViewData["lstChinhSachDoiTra"] as List<ChinhSachHoanTra>;
-                        foreach (ChinhSachHoanTra chinhSach in chinhSachs)
+                        
+                        if (chinhSachs != null && chinhSachs.Any())
                         {
-                            <tbody>
-                                <tr>
-                                    <td>@chinhSach.TenChinhSach</td>
-                                    <td>@chinhSach.ThoiHan</td>
-                                    <td>@chinhSach.DieuKien</td>
+                            foreach (ChinhSachHoanTra chinhSach in chinhSachs)
+                            {
+                                var isActive = chinhSach.ApDungTuNgay.Date <= DateTime.Now.Date && 
+                                               chinhSach.ApDungDenNgay.Date >= DateTime.Now.Date;
+                                
+                                <tr class="@(isActive ? "" : "table-secondary")">
+                                    <td><strong>@chinhSach.Id</strong></td>
+                                    <td>
+                                        @chinhSach.TenChinhSach
+                                        @if (isActive)
+                                        {
+                                            <span class="badge bg-success ms-2">Đang áp dụng</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">@(chinhSach.ThoiHan?.ToString() ?? "Không giới hạn")</td>
+                                    <td>
+                                        @if (chinhSach.ApDungToanBo == true)
+                                        {
+                                            <span class="badge bg-primary">Toàn bộ</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-info">Theo danh mục</span>
+                                        }
+                                    </td>
                                     <td>@chinhSach.ApDungTuNgay.ToString("dd/MM/yyyy")</td>
                                     <td>@chinhSach.ApDungDenNgay.ToString("dd/MM/yyyy")</td>
                                     <td class="text-center">
-                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoanTra" asp-route-id="@chinhSach.Id">
+                                        <a class="btn btn-info btn-sm me-1" 
+                                           asp-controller="Sua" 
+                                           asp-action="SuaChinhSachHoanTra" 
+                                           asp-route-id="@chinhSach.Id"
+                                           title="Sửa">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" data-id="@chinhSach.Id" title="Xóa">
+                                        <button class="btn btn-danger btn-sm btn-delete-chinh-sach" 
+                                                data-id="@chinhSach.Id" 
+                                                title="Xóa">
                                             <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
-                            </tbody>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                                    Chưa có chính sách hoàn trả nào
+                                </td>
+                            </tr>
                         }
                     }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                                Chưa có chính sách hoàn trả nào
+                            </td>
+                        </tr>
+                    }
                 }
-               
+                </tbody>
               </table>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </main>
+</main>
+
+<script src="~/assets/js/ChinhSachHoanTra.js" asp-append-version="true" defer></script>
+
+<script>
+$(document).ready(function() {
+    // Xử lý xóa chính sách
+    $('.btn-delete-chinh-sach').click(function(e) {
+        e.preventDefault();
+        
+        const id = $(this).data('id');
+        const row = $(this).closest('tr');
+        
+        if (confirm('Bạn có chắc chắn muốn xóa chính sách này?')) {
+            $.ajax({
+                url: '/GiaoDichHoanTra/DeleteChinhSach/' + id,
+                type: 'POST',
+                success: function(result) {
+                    if (result.success) {
+                        row.fadeOut(300, function() {
+                            $(this).remove();
+                        });
+                        alert('Xóa chính sách thành công!');
+                    } else {
+                        alert('Có lỗi xảy ra: ' + result.message);
+                    }
+                },
+                error: function() {
+                    alert('Không thể xóa chính sách!');
+                }
+            });
+        }
+    });
+});
+</script>
 

@@ -1,19 +1,13 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Thêm Phiếu Đổi Trả";
+    var danhSachHoaDon = ViewData["DanhSachHoaDon"] as List<HoaDon>;
+    var danhSachChinhSach = ViewData["DanhSachChinhSach"] as List<ChinhSachHoanTra>;
 }
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/ThemNhanSu.css">
-
-
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
+<!-- Css riêng ở đây nha -->
+<link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="~/assets/css/ThemNhanSu.css">
 
 <main class="app-content">
     <div class="app-title">
@@ -24,134 +18,198 @@
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item">Giao dịch & hoàn trả</li>
-        <li class="breadcrumb-item active"><a asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra">Phiếu đổi trả</a></li>
+        <li class="breadcrumb-item"><a asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra">Phiếu đổi trả</a></li>
         <li class="breadcrumb-item active"><a asp-controller="Them" asp-action="ThemPhieuDoiTra">Tạo phiếu đổi trả</a></li>
       </ul>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          <h3 class="tile-title">Thông tin Hoàn Trả</h3>
-          <div class="tile-body">
-            <div class="row">
-              <div class="col-md-3">
-                <label class="form-label fw-bold">Mã Hóa Đơn Gốc (*)</label>
-                <div class="input-group">
-                  <input class="form-control" type="text" id="input-ma-hoa-don" placeholder="VD: HD001">
-                  <button class="btn btn-primary" type="button" id="btn-check-hd">
-                      <i class="bi bi-search"></i>
-                  </button>
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>@TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @* Debug info *@
+    @if (danhSachHoaDon == null || !danhSachHoaDon.Any())
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Chú ý:</strong> Không có hóa đơn nào đã thanh toán để tạo phiếu đổi trả. 
+            Vui lòng tạo và thanh toán hóa đơn trước.
+        </div>
+    }
+
+    @if (danhSachChinhSach == null || !danhSachChinhSach.Any())
+    {
+        <div class="alert alert-warning">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <strong>Chú ý:</strong> Không có chính sách hoàn trả nào đang còn hiệu lực.
+        </div>
+    }
+
+    <form asp-controller="Them" asp-action="ThemPhieuDoiTra" method="post" id="form-phieu-doi-tra">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="tile">
+              <h3 class="tile-title">Thông tin Hoàn Trả</h3>
+              <div class="tile-body">
+                <div class="row">
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold">Hóa Đơn Gốc <span class="text-danger">*</span></label>
+                    <select class="form-select" id="select-hoa-don" name="HoaDonId" required>
+                      <option value="">-- Chọn hóa đơn --</option>
+                      @if (danhSachHoaDon != null && danhSachHoaDon.Any())
+                      {
+                          foreach (var hoaDon in danhSachHoaDon)
+                          {
+                              <option value="@hoaDon.Id" 
+                                      data-khach-hang="@hoaDon.KhachHang?.HoTen" 
+                                      data-ngay-lap="@hoaDon.NgayLap.ToString("dd/MM/yyyy")"
+                                      data-tong-tien="@hoaDon.TongTien">
+                                  @hoaDon.Id - @hoaDon.KhachHang?.HoTen - @hoaDon.NgayLap.ToString("dd/MM/yyyy") - @((hoaDon.TongTien ?? 0).ToString("N0"))đ
+                              </option>
+                          }
+                      }
+                      else
+                      {
+                          <option value="" disabled>Không có hóa đơn nào</option>
+                      }
+                    </select>
+                    @if (danhSachHoaDon != null && danhSachHoaDon.Any())
+                    {
+                        <small class="text-muted">Tìm thấy @danhSachHoaDon.Count hóa đơn đã thanh toán</small>
+                    }
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label">Khách hàng</label>
+                    <input class="form-control bg-light" type="text" id="input-khach-hang" readonly placeholder="---">
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label">Chính sách áp dụng <span class="text-danger">*</span></label>
+                    <select class="form-select" id="select-chinh-sach" name="ChinhSachId" required>
+                      <option value="">-- Chọn chính sách --</option>
+                      @if (danhSachChinhSach != null && danhSachChinhSach.Any())
+                      {
+                          foreach (var chinhSach in danhSachChinhSach)
+                          {
+                              <option value="@chinhSach.Id">
+                                  @chinhSach.TenChinhSach @(chinhSach.ThoiHan != null ? $"({chinhSach.ThoiHan} ngày)" : "")
+                              </option>
+                          }
+                      }
+                      else
+                      {
+                          <option value="" disabled>Không có chính sách nào</option>
+                      }
+                    </select>
+                    @if (danhSachChinhSach != null && danhSachChinhSach.Any())
+                    {
+                        <small class="text-muted">Tìm thấy @danhSachChinhSach.Count chính sách</small>
+                    }
+                  </div>
+
+                  <div class="col-md-2">
+                    <label class="form-label">Ngày đổi trả</label>
+                    <input class="form-control bg-light" type="date" id="input-ngay-tra" 
+                           value="@DateTime.Now.ToString("yyyy-MM-dd")" readonly>
+                  </div>
                 </div>
               </div>
 
-              <div class="col-md-3">
-                <label class="form-label">Khách hàng</label>
-                <input class="form-control" type="text" id="input-khach-hang" readonly placeholder="---">
-                <input type="hidden" id="input-khach-hang-id">
+              <hr>
+
+              <h3 class="tile-title">Chi Tiết Sản Phẩm Trả</h3>
+              <div class="tile-body">
+                <div class="row mb-3 p-3 bg-light border rounded ms-1 me-1">
+                  <div class="col-md-5">
+                    <label class="form-label">Chọn sản phẩm từ hóa đơn <span class="text-danger">*</span></label>
+                    <select class="form-select" id="select-san-pham-tra" disabled>
+                      <option value="">-- Vui lòng chọn hóa đơn trước --</option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-md-5">
+                    <label class="form-label">Lý do trả hàng <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="input-ly-do" 
+                           placeholder="VD: Hàng lỗi, khách đổi ý..." disabled>
+                  </div>
+
+                  <div class="col-md-2 d-flex align-items-end">
+                    <button class="btn btn-primary w-100" type="button" id="btn-add-return-item" disabled>
+                      <i class="bi bi-plus-lg"></i> Thêm
+                    </button>
+                  </div>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                      <tr>
+                        <th style="width: 35%;">Tên sản phẩm</th>
+                        <th style="width: 10%;">Đơn vị</th>
+                        <th style="width: 15%;" class="text-end">Giá bán</th>
+                        <th style="width: 25%;">Lý do hoàn trả</th>
+                        <th style="width: 15%;" class="text-end">Tiền hoàn</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-tra-hang">
+                       <tr>
+                        <td colspan="5" class="text-center text-muted fst-italic py-4">
+                            <i class="bi bi-inbox fs-3 d-block mb-2"></i>
+                            Chưa có sản phẩm nào được chọn
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="row mt-3">
+                  <div class="col-md-8">
+                     <label class="form-label">Ghi chú chung:</label>
+                     <textarea class="form-control" rows="2" id="input-ghi-chu" 
+                               placeholder="Nhập ghi chú thêm nếu cần..."></textarea>
+                  </div>
+                  <div class="col-md-4 text-end">
+                    <div class="p-3 bg-light border rounded">
+                        <h4 class="mb-2">Tổng tiền hoàn lại:</h4>
+                        <h2 class="fw-bold text-danger" id="lbl-tong-tien-hoan">0 đ</h2>
+                        <input type="hidden" name="SoTienHoan" id="hidden-tong-tien-hoan" value="0">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Hidden fields for form data -->
+                <input type="hidden" name="SanPhamDonViId" id="hidden-san-pham-don-vi-id">
+                <input type="hidden" name="LyDo" id="hidden-ly-do">
+
               </div>
 
-              <div class="col-md-3">
-                <label class="form-label">Chính sách áp dụng (*)</label>
-                <select class="form-select" id="select-chinh-sach">
-                  <option value="">-- Chọn chính sách --</option>
-                  <option value="CS01">Đổi trả trong 7 ngày (Lỗi NSX)</option>
-                  <option value="CS02">Khách VIP (Hoàn tiền 100%)</option>
-                  <option value="CS03">Hoàn trả có thu phí (Khách đổi ý)</option>
-                </select>
-              </div>
-
-              <div class="col-md-3">
-                <label class="form-label">Ngày đổi trả (*)</label>
-                <input class="form-control" type="date" id="input-ngay-tra">
-              </div>
-            </div>
-          </div>
-
-          <hr>
-
-          <h3 class="tile-title">Chi Tiết Sản Phẩm Trả</h3>
-          <div class="tile-body">
-            <div class="row mb-3 p-3 bg-light border rounded ms-1 me-1">
-              <div class="col-md-4">
-                <label class="form-label">Chọn sản phẩm từ hóa đơn</label>
-                <select class="form-select" id="select-san-pham-tra" disabled>
-                  <option value="">-- Vui lòng nhập Mã HĐ trước --</option>
-                </select>
-              </div>
-
-              <div class="col-md-2">
-                <label class="form-label">Số lượng trả</label>
-                <input class="form-control" type="number" id="input-sl-tra" min="1" value="1" disabled>
-              </div>
-              
-               <div class="col-md-4">
-                <label class="form-label">Lý do trả hàng</label>
-                <input class="form-control" type="text" id="input-ly-do" placeholder="VD: Hàng lỗi, khách đổi ý~" disabled>
-              </div>
-
-              <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-primary w-100" type="button" id="btn-add-return-item" disabled>
-                  <i class="bi bi-plus-lg"></i> Thêm dòng
+              <div class="tile-footer text-end">
+                <a class="btn btn-secondary me-2" asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra">
+                    <i class="bi bi-x-circle me-2"></i>Hủy bỏ
+                </a>
+                <button class="btn btn-success" type="submit" id="btn-submit" 
+                        @((danhSachHoaDon == null || !danhSachHoaDon.Any() || danhSachChinhSach == null || !danhSachChinhSach.Any()) ? "disabled" : "")>
+                    <i class="bi bi-floppy-fill me-2"></i>Hoàn tất phiếu
                 </button>
               </div>
             </div>
-
-            <div class="table-responsive">
-              <table class="table table-hover table-bordered align-middle">
-                <thead class="table-light">
-                  <tr>
-                    <th>Mã SP</th>
-                    <th>Tên sản phẩm</th>
-                    <th>Đơn giá mua</th>
-                    <th style="width: 100px;">SL Trả</th>
-                    <th>Lý do hoàn trả</th>
-                    <th class="text-end">Thành tiền hoàn</th>
-                    <th class="text-center" style="width: 50px;"><i class="bi bi-trash"></i></th>
-                  </tr>
-                </thead>
-                <tbody id="tbody-tra-hang">
-                   <tr>
-                    <td colspan="7" class="text-center text-muted fst-italic">Chưa có sản phẩm nào được chọn</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div class="row mt-3">
-              <div class="col-md-8">
-                 <label class="form-label">Ghi chú chung:</label>
-                 <textarea class="form-control" rows="2" placeholder="Nhập ghi chú thêm nếu cần~"></textarea>
-              </div>
-              <div class="col-md-4 text-end">
-                <div class="p-3 bg-light border rounded">
-                    <h4 class="mb-2">Tổng tiền hoàn lại:</h4>
-                    <h2 class="fw-bold text-danger" id="lbl-tong-tien-hoan">0 đ</h2>
-                    <input type="hidden" id="hidden-tong-tien-hoan" value="0">
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="tile-footer text-end">
-                    <a class="btn btn-secondary me-2" id="btn-cancel">
-                <i class="bi bi-x-circle me-2"></i>Hủy bỏ
-            </a>
-            <button class="btn btn-success" type="button" onclick="alert('Lưu phiếu thành công (Demo)!')">
-                <i class="bi bi-floppy-fill me-2"></i>Hoàn tất phiếu
-            </button>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
+    </form>
+</main>
 
-
-
-
-
-
-
-  <!-- js riêng ở đây nha! -->
-<script src="~/assets/js/ThemPhieuDoiTra.js" asp-append-version="true" defer></script>
+<!-- JavaScript riêng -->
+<script src="~/assets/js/PhieuDoiTra.js" asp-append-version="true" defer></script>

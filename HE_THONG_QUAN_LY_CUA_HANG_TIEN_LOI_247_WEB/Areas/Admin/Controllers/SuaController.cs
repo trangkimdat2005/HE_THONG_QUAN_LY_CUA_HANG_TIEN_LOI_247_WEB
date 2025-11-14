@@ -9,10 +9,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
     public class SuaController : Controller
     {
         private readonly IQuanLyServices _quanLySevices;
+        private readonly IChinhSachHoanTraServices _chinhSachHoanTraServices;
 
-        public SuaController(IQuanLyServices quanLySevices)
+        public SuaController(
+            IQuanLyServices quanLySevices,
+            IChinhSachHoanTraServices chinhSachHoanTraServices)
         {
             _quanLySevices = quanLySevices;
+            _chinhSachHoanTraServices = chinhSachHoanTraServices;
         }
 
         [Route("/Sua/SuaHoaDon")] 
@@ -79,113 +83,118 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             return View();
         }
-        //[HttpPost]
-        //public IActionResult SuaKhachHang(KhachHang customer, IFormFile Avatar)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var existingCustomer = _quanLySevices.GetList<KhachHang>().FirstOrDefault(kh => kh.Id == customer.Id);
-        //        if (existingCustomer == null)
-        //        {
-        //            return Json(new { success = false }); // Không tìm thấy khách hàng
-        //        }
 
-        //        existingCustomer.HoTen = customer.HoTen;
-        //        existingCustomer.SoDienThoai = customer.SoDienThoai;
-        //        existingCustomer.Email = customer.Email;
-        //        existingCustomer.DiaChi = customer.DiaChi;
-        //        existingCustomer.NgayDangKy = customer.NgayDangKy;
-        //        existingCustomer.TrangThai = customer.TrangThai;
+        // ==================== CHÍNH SÁCH HOÀN TRẢ ====================
+        
+        [HttpGet]
+        [Route("/Sua/SuaChinhSachHoanTra/{id}")]
+        public IActionResult SuaChinhSachHoanTra(string id)
+        {
+            var chinhSach = _chinhSachHoanTraServices.GetChinhSachById(id);
+            
+            if (chinhSach == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy chính sách hoàn trả!";
+                return RedirectToAction("ChinhSachDoiTra", "GiaoDichHoanTra");
+            }
 
-        //        // Nếu có ảnh mới, lưu ảnh vào bảng Anh
-        //        if (Avatar != null)
-        //        {
-        //            using (var memoryStream = new MemoryStream())
-        //            {
-        //                Avatar.CopyTo(memoryStream);
-        //                var imageData = memoryStream.ToArray();  // Chuyển file ảnh thành mảng byte
+            ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+            return View(chinhSach);
+        }
 
-        //                // Lưu ảnh vào bảng Anh
-        //                var anh = new HinhAnh
-        //                {
-        //                    Id=existingCustomer.AnhId,
-        //                    TenAnh = Avatar.FileName, // Lưu tên ảnh
-        //                    Anh = imageData // Lưu dữ liệu ảnh
-        //                };
-        //                _quanLySevices.Update<HinhAnh>(anh);
+        [HttpPost]
+        [Route("/Sua/SuaChinhSachHoanTra/{id}")]
+        public IActionResult SuaChinhSachHoanTra(
+            string id,
+            string TenChinhSach, 
+            int? ThoiHan, 
+            string DieuKien, 
+            bool ApDungToanBo, 
+            DateTime ApDungTuNgay, 
+            DateTime ApDungDenNgay,
+            List<string> DanhMucIds)
+        {
+            try
+            {
+                // Validate dữ liệu
+                if (string.IsNullOrWhiteSpace(TenChinhSach))
+                {
+                    TempData["ErrorMessage"] = "Tên chính sách không được để trống!";
+                    var chinhSachError1 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError1);
+                }
 
-        //                // Cập nhật AnhId của khách hàng
-        //                existingCustomer.AnhId = anh.Id;
-        //            }
-        //        }
-        //        else if (Avatar == null)
-        //        {
-        //            return Json(new { success = false, message = "Ảnh không được để trống." });
-        //        }
+                if (string.IsNullOrWhiteSpace(DieuKien))
+                {
+                    TempData["ErrorMessage"] = "Điều kiện áp dụng không được để trống!";
+                    var chinhSachError2 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError2);
+                }
 
-        //        if (existingCustomer == null)
-        //        {
-        //            return Json(new { success = false, message = "Không tìm thấy khách hàng." });
-        //        }
+                if (ApDungTuNgay >= ApDungDenNgay)
+                {
+                    TempData["ErrorMessage"] = "Ngày áp dụng đến phải sau ngày áp dụng từ!";
+                    var chinhSachError3 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError3);
+                }
 
-        //        _quanLySevices.Update<KhachHang>(existingCustomer);
+                if (!ApDungToanBo && (DanhMucIds == null || !DanhMucIds.Any()))
+                {
+                    TempData["ErrorMessage"] = "Vui lòng chọn ít nhất một danh mục hoặc chọn 'Áp dụng toàn bộ'!";
+                    var chinhSachError4 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError4);
+                }
 
-        //        return Json(new { success = true });
-        //    }
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Json(new { success = false, message = "Dữ liệu không hợp lệ." });
-        //    }
-        //    return Json(new { success = false, message = "Lỗi không xác định, chắc do Khôi code ẩu" });
-        //}
-        //[HttpPost]
-        //[Route("/Sua/SuaKhachHang")] // Giữ Route này nếu bạn đã sửa ở bước trước
-        //[IgnoreAntiforgeryToken] // Tạm thời thêm dòng này để loại trừ lỗi 400
-        //public IActionResult SuaKhachHang(KhachHang customer, IFormFile Avatar,
-        //                                        string hangThe,
-        //                                        int? diemTichLuy, // <-- SỬA Ở ĐÂY: int thành int?
-        //                                        DateTime? ngayCapThe)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // ... (code tìm existingCustomer) ...
+                // Tạo object ChinhSachHoanTra
+                var chinhSach = new ChinhSachHoanTra
+                {
+                    Id = id,
+                    TenChinhSach = TenChinhSach,
+                    ThoiHan = ThoiHan,
+                    DieuKien = DieuKien,
+                    ApDungToanBo = ApDungToanBo,
+                    ApDungTuNgay = ApDungTuNgay,
+                    ApDungDenNgay = ApDungDenNgay
+                };
 
-        //        // *** XỬ LÝ THẺ THÀNH VIÊN ***
-        //        if (ngayCapThe.HasValue)
-        //        {
-        //            var ttv = _quanLySevices.GetList<TheThanhVien>().FirstOrDefault(t => t.KhachHangId == customer.Id);
-        //            if (ttv == null)
-        //            {
-        //                // Tạo mới thẻ
-        //                ttv = new TheThanhVien
-        //                {
-        //                    Id = Guid.NewGuid().ToString(),
-        //                    KhachHangId = customer.Id,
-        //                    Hang = hangThe,
-        //                    DiemTichLuy = diemTichLuy ?? 0, // <-- SỬA Ở ĐÂY: thêm ?? 0
-        //                    NgayCap = ngayCapThe.Value
-        //                };
-        //                _quanLySevices.Add<TheThanhVien>(ttv);
-        //            }
-        //            else
-        //            {
-        //                // Cập nhật thẻ
-        //                ttv.Hang = hangThe;
-        //                ttv.DiemTichLuy = diemTichLuy ?? 0; // <-- SỬA Ở ĐÂY: thêm ?? 0
-        //                ttv.NgayCap = ngayCapThe.Value;
-        //                _quanLySevices.Update<TheThanhVien>(ttv);
-        //            }
-        //        }
+                var result = _chinhSachHoanTraServices.UpdateChinhSach(chinhSach);
+                
+                if (result)
+                {
+                    // Cập nhật danh mục
+                    if (!ApDungToanBo && DanhMucIds != null && DanhMucIds.Any())
+                    {
+                        _chinhSachHoanTraServices.AddDanhMucToChinhSach(id, DanhMucIds);
+                    }
+                    else if (ApDungToanBo)
+                    {
+                        // Nếu áp dụng toàn bộ, xóa tất cả danh mục
+                        _chinhSachHoanTraServices.AddDanhMucToChinhSach(id, new List<string>());
+                    }
 
-        //        return Json(new { success = true });
-        //    }
+                    TempData["SuccessMessage"] = "Cập nhật chính sách hoàn trả thành công!";
+                    return RedirectToAction("ChinhSachDoiTra", "GiaoDichHoanTra");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật chính sách!";
+                }
 
-        //    // Lấy lỗi validation
-        //    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
-        //    return Json(new { success = false, message = "Dữ liệu không hợp lệ.", errors = errors });
-        //}
-
-
-
+                var chinhSachReload = _chinhSachHoanTraServices.GetChinhSachById(id);
+                ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                return View(chinhSachReload);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+                var chinhSachException = _chinhSachHoanTraServices.GetChinhSachById(id);
+                ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                return View(chinhSachException);
+            }
+        }
     }
 }
