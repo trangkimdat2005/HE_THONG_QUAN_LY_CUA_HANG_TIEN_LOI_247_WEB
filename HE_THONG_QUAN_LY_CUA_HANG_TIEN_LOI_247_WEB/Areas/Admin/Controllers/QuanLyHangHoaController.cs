@@ -76,103 +76,155 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         [HttpPost("get-next-id-SP")]
-        public Task<IActionResult> GetNextId([FromBody] GetNextIdSPRequest request)
+        public Task<IActionResult> GetNextIdSP([FromBody] Dictionary<string, object> request)
         {
-            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<SanPham>(request.prefix, request.totalLength)}));
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<SanPham>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString()))}));
+        }
+
+        [HttpPost("get-next-id-NH")]
+        public Task<IActionResult> GetNextIdNH([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<NhanHieu>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
         }
 
         [HttpPost("add-SP")]
-        public async Task<IActionResult> AddSanPham([FromForm] ProductFormData request)
+        public async Task<IActionResult> AddSanPham([FromForm] ProductFormData request)         
         {
-            if (request == null)
+            try
             {
-                return BadRequest("Dữ liệu không hợp lệ.");
-            }
-
-            SanPham sanPham = new SanPham
-            {
-                Id = request.ProductId,
-                Ten = request.ProductName,
-                NhanHieuId = request.Brand,
-                MoTa = request.Description,
-            };
-
-            if (!_quanLySevices.Add<SanPham>(sanPham))
-            {
-                return BadRequest("không thể thêm sản phẩm");
-            }
-
-            SanPhamDonVi sanPhamDonVi = new SanPhamDonVi
-            {
-                SanPhamId = sanPham.Id,
-                DonViId = request.Unit,
-                Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV",8),
-                HeSoQuyDoi = request.ConversionFactor,
-                GiaBan = request.Price,
-                TrangThai = request.Status
-            };
-
-            if (!_quanLySevices.Add<SanPhamDonVi>(sanPhamDonVi))
-            {
-                return BadRequest("không thể thêm sản phẩm đơn vị");
-            }
-
-            List<HinhAnh> hinhAnhs = new List<HinhAnh>();
-
-            foreach(IFormFile image in request.ImagesUpload)
-            {
-                HinhAnh hinhAnh = new HinhAnh
+                if (request == null)
                 {
-                    Id = _quanLySevices.GenerateNewId<HinhAnh>("HA",6),
-                    TenAnh = image.FileName,
-                    Anh = await _quanLySevices.ConvertImageToByteArray(image)
+                    return BadRequest("Dữ liệu không hợp lệ.");
+                }
+
+                var images = request.ImagesUpload; // Các ảnh tải lên
+                var productId = request.ProductId; // Mã sản phẩm
+                var productName = request.ProductName; // Tên sản phẩm
+                var brand = request.Brand; // Nhãn hiệu
+                var categories = request.Categories; // Các danh mục
+                var unit = request.Unit; // Đơn vị cơ sở
+                var conversionFactor = request.ConversionFactor; // Hệ số quy đổi
+                var price = request.Price; // Giá bán
+                var description = request.Description; // Mô tả sản phẩm
+                var status = request.Status; // Trạng thái sản phẩm
+
+
+                SanPham sanPham = new SanPham
+                {
+                    Id = productId,
+                    Ten = productName,
+                    NhanHieuId = brand,
+                    MoTa = description,
                 };
 
-                hinhAnhs.Add(hinhAnh);
-            }
-
-            foreach(HinhAnh hinhAnh in hinhAnhs) {
-                if (!_quanLySevices.Add<HinhAnh>(hinhAnh))
+                if (!_quanLySevices.Add<SanPham>(sanPham))
                 {
-                    return BadRequest("không thể thêm ảnh");
+                    return BadRequest("không thể thêm sản phẩm");
                 }
-                AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
+
+                SanPhamDonVi sanPhamDonVi = new SanPhamDonVi
                 {
-                    SanPhamDonViId = sanPhamDonVi.Id,
-                    AnhId = hinhAnh.Id,
+                    SanPhamId = sanPham.Id,
+                    DonViId = unit,
+                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 8),
+                    HeSoQuyDoi = conversionFactor,
+                    GiaBan = price,
+                    TrangThai = status
                 };
-                if (!_quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi))
-                {
-                    return BadRequest("không thể thêm ảnh sản phẩm đơn vị");
-                }
-            }
 
+                if (!_quanLySevices.Add<SanPhamDonVi>(sanPhamDonVi))
+                {
+                    return BadRequest("không thể thêm sản phẩm đơn vị");
+                }
+
+                List<HinhAnh> hinhAnhs = new List<HinhAnh>();
+
+                foreach (IFormFile image in images)
+                {
+                    HinhAnh hinhAnh = new HinhAnh
+                    {
+                        Id = _quanLySevices.GenerateNewId<HinhAnh>("HA", 6),
+                        TenAnh = image.FileName,
+                        Anh = await _quanLySevices.ConvertImageToByteArray(image)
+                    };
+
+                    hinhAnhs.Add(hinhAnh);
+                }
+
+                foreach (HinhAnh hinhAnh in hinhAnhs)
+                {
+                    if (!_quanLySevices.Add<HinhAnh>(hinhAnh))
+                    {
+                        return BadRequest("không thể thêm ảnh");
+                    }
+                    AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
+                    {
+                        SanPhamDonViId = sanPhamDonVi.Id,
+                        AnhId = hinhAnh.Id,
+                    };
+                    if (!_quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi))
+                    {
+                        return BadRequest("không thể thêm ảnh sản phẩm đơn vị");
+                    }
+                }
+
+
+
+
+                return Ok(new { message = "Thêm sản phẩm thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm sản phẩm: {ex.Message}" });
+            }
             
+        }
+
+        [HttpPost("add-NH")]
+        public async Task<IActionResult> AddNhanHieu([FromBody] NhanHieu nhanHieu)
+        {
+            try
+            {
+                if (nhanHieu.Id == null || nhanHieu.Ten == null)
+                {
+                    return BadRequest("Dữ liệu không hợp lệ.");
+                }
 
 
-            return Ok(new { message = "Thêm sản phẩm thành công!" });
+                if (_quanLySevices.Add<NhanHieu>(nhanHieu))
+                {
+                    return Ok(new { message = "Thêm nhãn hiệu thành công!" });
+                }
+
+                return BadRequest("thêm nhãn hiệu thất bại");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm nhãn hiệu: {ex.Message}" });
+            }
+
         }
 
     }
-    public class GetNextIdSPRequest
-    {
-        public string prefix { get; set; }
-        public int totalLength { get; set; }
-    }
+
 
     public class ProductFormData
     {
-        public List<IFormFile> ImagesUpload { get; set; }  // Dữ liệu ảnh (danh sách ảnh)
-        public string ProductId { get; set; }  // Mã sản phẩm (id)
-        public string ProductName { get; set; }  // Tên sản phẩm
-        public string Brand { get; set; }  // Nhãn hiệu
-        public List<string> Categories { get; set; }  // Danh mục
-        public string Unit { get; set; }  // Đơn vị cơ sở
-        public decimal ConversionFactor { get; set; }  // Hệ số quy đổi
-        public decimal Price { get; set; }  // Giá bán
-        public string Description { get; set; }  // Mô tả sản phẩm
-        public string Status { get; set; }  // Trạng thái (Còn hàng, Hết hàng, Ngừng kinh doanh)
+        // Các ảnh tải lên
+        public List<IFormFile> ImagesUpload { get; set; }
+
+        // Các trường thông tin khác
+        public string ProductId { get; set; } // Mã sản phẩm
+        public string ProductName { get; set; } // Tên sản phẩm
+        public string Brand { get; set; } // Nhãn hiệu
+        public List<string> Categories { get; set; } // Danh mục (có thể chọn nhiều)
+        public string Unit { get; set; } // Đơn vị cơ sở
+        public decimal ConversionFactor { get; set; } // Hệ số quy đổi
+        public decimal Price { get; set; } // Giá bán
+        public string Description { get; set; } // Mô tả sản phẩm
+        public string Status { get; set; } // Trạng thái sản phẩm (Còn hàng, Hết hàng, Ngừng kinh doanh)
     }
+
 
 
 }

@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Nút Huỷ
     const cancelAddBtn = document.getElementById('cancel-add-form-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-form-btn');
+    const addBtn = document.getElementById('btn-add');
 
     // Form Sửa Inputs
     const editIdInput = document.getElementById('edit-id-input');
@@ -70,9 +71,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- GÁN SỰ KIỆN CHO NÚT "THÊM" ---
     showAddFormBtn.addEventListener('click', function (e) {
+        callApiGetNextIdNH();
         e.preventDefault();
         openForm('add');
     });
+
+    addBtn.addEventListener('click', function () {
+        callApiAddNH();
+        closeForm();
+    })
 
     // --- GÁN SỰ KIỆN CHO CÁC NÚT "HUỶ" ---
     cancelAddBtn.addEventListener('click', function (e) {
@@ -124,3 +131,101 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+
+
+
+
+async function callApiAddNH() {
+    try {
+        const id = document.getElementById('add-id-input').value;
+        const ten = document.getElementById('add-ten-input').value;
+
+        if (!id || !ten) {
+            alert('Các trường "id" và "ten" là ten buộc!');
+            return;
+        }
+
+        const duLieu = {
+            Id: id,
+            Ten: ten
+        }
+
+        // Gửi request
+        const response = await fetch('/API/add-NH', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(duLieu)
+            // KHÔNG thêm Content-Type header
+        });
+
+        // Kiểm tra response
+        if (!response.ok) {
+            const contentType = response.headers.get("content-type");
+            let errorMessage = `HTTP error! Status: ${response.status}`;
+
+            console.log('Response content-type:', contentType);
+
+            if (contentType && contentType.includes("application/json")) {
+                const errorData = await response.json();
+                errorMessage = errorData.message || errorMessage;
+                console.error('===== ERROR RESPONSE (JSON) =====');
+                console.error(errorData);
+                console.error('=================================');
+            } else {
+                const errorText = await response.text();
+                console.error('===== ERROR RESPONSE (TEXT) =====');
+                console.error(errorText);
+                console.error('=================================');
+                errorMessage = errorText || errorMessage;
+            }
+
+            throw new Error(errorMessage);
+        }
+
+        const data = await response.json();
+        console.log('===== SUCCESS RESPONSE =====');
+        console.log(data);
+        console.log('============================');
+
+        // Hiển thị thông báo thành công
+        alert(data.message || 'Thêm nhãn hiệu thành công!');
+
+
+
+        return data;
+
+    } catch (error) {
+        console.error('===== EXCEPTION =====');
+        console.error('Message:', error.message);
+        console.error('Stack:', error.stack);
+        console.error('=====================');
+        alert('Lỗi: ' + error.message);
+    }
+}
+
+
+async function callApiGetNextIdNH() {
+    const dataToSend = {
+        prefix: "NH",
+        totalLength: 6
+    };
+    try {
+        const response = await fetch('/API/get-next-id-NH',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend)
+            });
+        const data = await response.json();
+        if (data) {
+            document.getElementById('add-id-input').value = data.nextId;
+        }
+        else {
+            alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
+        }
+    } catch (error) {
+        console.error('Lỗi khi lấy mã nhãn hiệu:', error);
+        alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
+    }
+}
