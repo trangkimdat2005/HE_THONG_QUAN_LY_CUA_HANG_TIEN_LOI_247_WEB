@@ -1,15 +1,11 @@
 ﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Danh Sách Đơn Vị";
 }
 <!-- Css riêng ở đây nha -->
 <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="~/assets/css/ThemDonVi.css">
-<!-- Main sidebar ở đây nha -->
-
-
 
 <main class="app-content">
     <div class="app-title">
@@ -25,7 +21,6 @@
     </div>
 
     <div class="row" id="main-row-container">
-
         <div class="col-md-12" id="list-col">
             <div class="tile">
                 <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
@@ -40,27 +35,44 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
-                                    <th>Mã Đơn Vị (id)</th>
-                                    <th>Tên Đơn Vị (ten)</th>
-                                    <th>Ký Hiệu (kyHieu)</th>
+                                    <th>Mã Đơn Vị</th>
+                                    <th>Tên Đơn Vị</th>
+                                    <th>Ký Hiệu</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>KG</td>
-                                    <td>Kilogram</td>
-                                    <td>kg</td>
-                                    <td class="text-center">
-                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                               
+                                @{
+                                    if (ViewData["lstDonViDoLuong"] != null)
+                                    {
+                                        List<DonViDoLuong> donVis = ViewData["lstDonViDoLuong"] as List<DonViDoLuong>;
+                                        if (donVis != null && donVis.Any())
+                                        {
+                                            foreach (DonViDoLuong dv in donVis)
+                                            {
+                                                <tr>
+                                                    <td>@dv.Id</td>
+                                                    <td>@dv.Ten</td>
+                                                    <td>@dv.KyHieu</td>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="#" 
+                                                           data-id="@dv.Id" 
+                                                           data-ten="@dv.Ten" 
+                                                           data-kyhieu="@dv.KyHieu" 
+                                                           title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" 
+                                                           data-id="@dv.Id" 
+                                                           title="Xóa">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -69,7 +81,6 @@
         </div>
 
         <div class="col-md-0" id="form-col">
-
             <div id="add-form-wrapper">
                 <div class="tile">
                     <h3 class="tile-title">Thêm Đơn Vị Mới</h3>
@@ -78,7 +89,7 @@
                         <form id="add-unit-form">
                             <div class="mb-3">
                                 <label class="form-label">Mã đơn vị</label>
-                                <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
+                                <input class="form-control" id="add-id-input" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tên đơn vị</label>
@@ -86,12 +97,12 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Ký hiệu</label>
-                                <input class="form-control" id="add-kyhieu-input" type="text" placeholder="V.d: Hộp" required>
+                                <input class="form-control" id="add-kyhieu-input" type="text" placeholder="V.d: hộp" required>
                             </div>
                         </form>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Thêm</button>
+                        <button class="btn btn-primary" id="btn-add-submit" type="button"><i class="bi bi-check-circle-fill me-2"></i>Thêm</button>
                         <a class="btn btn-secondary" href="#" id="cancel-add-form-btn">
                             <i class="bi bi-x-circle-fill me-2"></i>Huỷ
                         </a>
@@ -120,19 +131,16 @@
                         </form>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+                        <button class="btn btn-primary" id="btn-edit-submit" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
                         <a class="btn btn-secondary" href="#" id="cancel-edit-form-btn">
                             <i class="bi bi-x-circle-fill me-2"></i>Huỷ
                         </a>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </main>
-
-
 
 <!-- js riêng ở đây nha! -->
 <script src="~/assets/lib/select2/dist/js/select2.min.js" asp-append-version="true" defer></script>

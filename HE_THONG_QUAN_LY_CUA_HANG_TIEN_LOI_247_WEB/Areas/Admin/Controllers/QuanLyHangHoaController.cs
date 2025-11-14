@@ -27,13 +27,23 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyHangHoa/DanhSachDonVi")]
         public IActionResult DanhSachDonVi()
         {
+            var lstDonViDoLuong = _quanLySevices.GetList<DonViDoLuong>();
+            
+            ViewData["lstDonViDoLuong"] = lstDonViDoLuong;
+            
             return View();
         }
+        
         [Route("/QuanLyHangHoa/DanhSachNhanHieu")]
         public IActionResult DanhSachNhanHieu()
         {
+            var lstNhanHieu = _quanLySevices.GetList<NhanHieu>();
+            
+            ViewData["lstNhanHieu"] = lstNhanHieu;
+            
             return View();
         }
+        
         [Route("/QuanLyHangHoa/DanhSachSanPham")]
         public IActionResult DanhSachSanPham()
         {
@@ -47,6 +57,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyHangHoa/LichSuGiaBan")]
         public IActionResult LichSuGiaBan()
         {
+            var lstLichSuGiaBan = _quanLySevices.GetList<LichSuGiaBan>();
+            
+            ViewData["lstLichSuGiaBan"] = lstLichSuGiaBan;
+            
             return View();
         }
 

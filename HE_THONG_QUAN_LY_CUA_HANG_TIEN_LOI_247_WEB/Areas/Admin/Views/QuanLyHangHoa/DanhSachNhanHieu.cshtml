@@ -26,7 +26,6 @@
     </div>
 
     <div class="row" id="main-row-container">
-      
       <div class="col-md-12" id="list-col">
         <div class="tile">
           <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
@@ -43,40 +42,33 @@
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
-                    <th>Mã Nhãn Hiệu (id)</th>
-                    <th>Tên Nhãn Hiệu (ten)</th>
-                    <th>Số Lượng Sản Phẩm</th>
+                    <th>Mã Nhãn Hiệu</th>
+                    <th>Tên Nhãn Hiệu</th>
                     <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>CP</td>
-                    <td>CP Foods</td>
-                    <td>1</td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>TH</td>
-                    <td>TH True Milk</td>
-                    <td>1</td>
-                    <td class="text-center">
-                      <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                      <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                        <i class="fas fa-trash-alt"></i>
-                      </a>
-                    </td>
-                  </tr>
-                  
+                  @{
+                    if (ViewData["lstNhanHieu"] != null)
+                    {
+                        List<NhanHieu> nhanHieus = ViewData["lstNhanHieu"] as List<NhanHieu>;
+                        foreach (NhanHieu nh in nhanHieus)
+                        {
+                            <tr>
+                                <td>@nh.Id</td>
+                                <td>@nh.Ten</td>
+                                <td class="text-center">
+                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaNhanHieu" asp-route-id="@nh.Id" title="Sửa">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" data-id="@nh.Id" title="Xóa">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                  }
                 </tbody>
               </table>
             </div>
@@ -85,7 +77,6 @@
       </div>
 
       <div class="col-md-0" id="form-col">
-
         <div id="add-form-wrapper">
           <div class="tile">
             <h3 class="tile-title">Thêm Nhãn Hiệu Mới</h3>
@@ -133,7 +124,6 @@
             </div>
           </div>
         </div>
-
       </div> </div>
   </main>
 
