@@ -1,12 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     // --- KHỞI TẠO SELECT2 ---
-    const selectNhaCungCap = $('#select-nha-cung-cap');
-    const selectNhanVien = $('#select-nhan-vien');
     const selectSanPham = $('#select-san-pham');
     
-    selectNhaCungCap.select2({ width: '100%' });
-    selectNhanVien.select2({ width: '100%' });
     selectSanPham.select2({ width: '100%' });
 
     // --- ĐỊNH DẠNG TIỀN TỆ ---
@@ -29,38 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnEdit = document.getElementById('btn-edit');
     const btnSave = document.getElementById('btn-save');
     
-    // Các trường thông tin chung
-    const inputNgayNhap = document.getElementById('input-ngay-nhap');
-    
-    // --- DỮ LIỆU MẪU (Giả lập trang chi tiết đã có dữ liệu) ---
-    function loadMockData() {
-        // Dữ liệu mẫu
-        const mockItems = [
-            { id: 'SPDV_001', name: 'Sting Dâu (Chai 330ml)', soLuong: 50, donGia: 8000, hsd: '2026-11-01' },
-            { id: 'SPDV_002', name: 'Bánh Chocopie (Hộp 12 cái)', soLuong: 20, donGia: 45000, hsd: '2026-05-15' }
-        ];
-
-        tableBody.innerHTML = ''; // Xoá bảng trước khi tải
-
-        mockItems.forEach(item => {
-            const thanhTien = item.soLuong * item.donGia;
-            const row = tableBody.insertRow();
-            row.innerHTML = `
-              <td>${item.name} (ID: ${item.id})</td>
-              <td>${item.soLuong}</td>
-              <td>${formatter.format(item.donGia)}</td>
-              <td>${item.hsd}</td>
-              <td class="row-total" data-total="${thanhTien}">${formatter.format(thanhTien)}</td>
-              <td class="delete-column"><button class="btn btn-danger btn-sm remove-item-btn"><i class="bi bi-trash"></i></button></td>
-            `;
-        });
-        
-        updateTotal();
-    }
-    
-    // Tải dữ liệu mẫu khi trang được mở
-    loadMockData();
-    
+    // --- CẬP NHẬT TỔNG TIỀN KHI TRANG LOAD ---
+    updateTotal();
     
     // --- LOGIC CHUYỂN CHẾ ĐỘ XEM / CHỈNH SỬA ---
     
@@ -68,10 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Bật container sang chế độ 'edit-mode' (CSS sẽ xử lý ẩn/hiện)
         container.classList.add('edit-mode');
         
-        // Kích hoạt các trường nhập liệu
-        selectNhaCungCap.prop('disabled', false).trigger('change');
-        selectNhanVien.prop('disabled', false).trigger('change');
-        inputNgayNhap.disabled = false;
+        // Kích hoạt các trường nhập liệu (nếu cần)
     });
 
     btnSave.addEventListener('click', function() {
@@ -80,11 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Tắt chế độ 'edit-mode'
         container.classList.remove('edit-mode');
-        
-        // Vô hiệu hoá các trường nhập liệu
-        selectNhaCungCap.prop('disabled', true).trigger('change');
-        selectNhanVien.prop('disabled', true).trigger('change');
-        inputNgayNhap.disabled = true;
     });
 
 
@@ -119,12 +77,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Tạo hàng mới
         const row = tableBody.insertRow();
+        row.setAttribute('data-id', productId);
         row.innerHTML = `
           <td>${productName} (ID: ${productId})</td>
           <td>${soLuong}</td>
-          <td>${formatter.format(donGia)}</td>
+          <td class="don-gia">${donGia.toLocaleString('vi-VN')}</td>
           <td>${hsd}</td>
-          <td class="row-total" data-total="${thanhTien}">${formatter.format(thanhTien)}</td>
+          <td class="row-total" data-total="${thanhTien}">${thanhTien.toLocaleString('vi-VN')}</td>
           <td class="delete-column"><button class="btn btn-danger btn-sm remove-item-btn"><i class="bi bi-trash"></i></button></td>
         `;
 
@@ -154,17 +113,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         allRows.forEach(row => {
             const totalCell = row.querySelector('.row-total');
-            total += parseFloat(totalCell.getAttribute('data-total'));
+            if (totalCell) {
+                const cellTotal = parseFloat(totalCell.getAttribute('data-total'));
+                if (!isNaN(cellTotal)) {
+                    total += cellTotal;
+                }
+            }
         });
 
-        totalSpan.textContent = formatter.format(total);
-    }
-    
-    // --- BỎ QUA LOGIC IMPORT EXCEL (vì đây là trang chi tiết) ---
-    // (Đoạn code import excel của bạn đã bị loại bỏ vì không phù hợp với trang "Chi tiết")
-    const importBtn = document.getElementById('import-excel-btn');
-    if(importBtn) {
-        importBtn.style.display = 'none'; // Ẩn nếu còn sót
+        totalSpan.textContent = total.toLocaleString('vi-VN') + ' đ';
     }
 
 });

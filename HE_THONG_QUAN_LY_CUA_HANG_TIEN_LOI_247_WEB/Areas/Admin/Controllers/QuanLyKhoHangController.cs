@@ -9,10 +9,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
     {
 
         private readonly IQuanLyServices _quanLySevices;
+        private readonly ITonKhoServices _tonKhoServices;
 
-        public QuanLyKhoHangController(IQuanLyServices quanLySevices)
+        public QuanLyKhoHangController(IQuanLyServices quanLySevices, ITonKhoServices tonKhoServices)
         {
             _quanLySevices = quanLySevices;
+            _tonKhoServices = tonKhoServices;
         }
 
         [Route("/QuanLyKhoHang/DanhSachHangTonKho")]
@@ -70,9 +72,26 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             return View();
         }
-        [Route("/QuanLyKhoHang/XemNhapKho")]
-        public IActionResult XemNhapKho()
+        [Route("/QuanLyKhoHang/XemNhapKho/{id}")]
+        public IActionResult XemNhapKho(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return RedirectToAction("DanhSachPhieuNhap");
+            }
+
+            var phieuNhap = _tonKhoServices.GetPhieuNhapById(id);
+            if (phieuNhap == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy phiếu nhập";
+                return RedirectToAction("DanhSachPhieuNhap");
+            }
+
+            var chiTietList = _tonKhoServices.GetChiTietPhieuNhap(id);
+
+            ViewData["PhieuNhap"] = phieuNhap;
+            ViewData["ChiTietPhieuNhap"] = chiTietList;
+
             return View();
         }
     }
