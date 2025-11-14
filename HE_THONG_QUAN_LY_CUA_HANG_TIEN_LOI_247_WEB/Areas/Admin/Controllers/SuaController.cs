@@ -64,14 +64,26 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
         [Route("/Sua/SuaNCC")]
-        public IActionResult SuaNCC()
+        public IActionResult SuaNCC(string id)
         {
-            return View();
+            var ncc = _quanLySevices.GetList<NhaCungCap>().FirstOrDefault(ncc => ncc.Id == $"{id}");
+
+            if (ncc == null)
+            {
+                return NotFound();
+            }
+            return View(ncc);
         }
         [Route("/Sua/SuaNhanSu")]
-        public IActionResult SuaNhanSu()
+        public IActionResult SuaNhanSu(string id)
         {
-            return View();
+            var nv = _quanLySevices.GetList<NhanVien>().FirstOrDefault(nv => nv.Id == $"{id}");
+
+            if (nv == null)
+            {
+                return NotFound();
+            }
+            return View(nv);
         }
         [Route("/Sua/SuaPhanCongCaLamViec")]
         public IActionResult SuaPhanCongCaLamViec()

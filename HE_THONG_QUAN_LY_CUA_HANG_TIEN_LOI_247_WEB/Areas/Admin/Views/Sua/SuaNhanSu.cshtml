@@ -1,5 +1,5 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
-
+@model HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhanVien
 @{
 
     ViewData["title"] = "Sửa Thông tin Nhân Sự";
@@ -33,7 +33,7 @@
       <div class="col-md-8">
         <div class="tile">
           <h3 class="tile-title">Phân Công Ca Làm Việc</h3>
-          <p>Chọn các ca làm việc cho nhân viên trong tuần. (Dữ liệu sẽ được lưu vào bảng <strong>PhanCongCaLamViec</strong>)</p>
+          <p>Chọn các ca làm việc cho nhân viên trong tuần</p>
 
           <div class="table-responsive">
             <table class="table table-bordered shift-schedule-table">
@@ -89,7 +89,7 @@
       <div class="col-md-4">
         <div class="tile">
           <h3 class="tile-title">Thông tin Nhân viên</h3>
-          <p>Dữ liệu sẽ được lưu vào bảng <strong>NhanVien</strong></p>
+          <p>Sửa thông tin của nhân viên</p>
           <div class="tile-body">
             <form>
 
@@ -102,62 +102,91 @@
 
               <div class="mb-3">
                 <label class="form-label">Họ và tên</label>
-                <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn A">
+                <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn A" value="@Model.HoTen">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Giới tính</label>
                 <div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" checked>
+                  @* <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="true" checked>
                     <label class="form-check-label" for="radioNam">Nam</label>
                   </div>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu">
+                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="false">
                     <label class="form-check-label" for="radioNu">Nữ</label>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Chức vụ</label>
-                <select class="form-select" id="select-chuc-vu">
+                  </div> *@
+                                @{
+                                    string ischecked = Model.GioiTinh ? "selected" : "";
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="true" ischecked>
+                                        <label class="form-check-label" for="radioNam">Nam</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="false" ischecked>
+                                        <label class="form-check-label" for="radioNu">Nữ</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Chức vụ</label>
+                            @* <select class="form-select" id="select-chuc-vu">
                   <option value="Admin">Admin</option>
                   <option value="QuanLy">Quản lí</option>
                   <option value="NhanVien">Nhân viên</option>
-                </select>
+                </select> *@
+                            @{
+                                <select class="form-select" id="select-chuc-vu">
+                                    <option value="khongxacdinh">@Model.ChucVu</option>
+                                      <option value="Admin">Admin</option>
+                                      <option value="QuanLy">Quản lí</option>
+                                      <option value="NhanVien">Nhân viên</option>
+                                    </select>
+                                }
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Lương cơ bản</label>
-                <input class="form-control" type="number" placeholder="V.d: 5000000">
+                <input class="form-control" type="number" placeholder="V.d: 5000000" value="@Model.LuongCoBan.ToString("N0")">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Số điện thoại</label>
-                <input class="form-control" type="tel" placeholder="V.d: 090xxxx123">
+                <input class="form-control" type="tel" placeholder="V.d: 090xxxx123" value="@Model.SoDienThoai">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" placeholder="V.d: example@gmail.com">
+                <input class="form-control" type="email" placeholder="V.d: example@gmail.com" value="@Model.Email">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Địa chỉ</label>
-                <input class="form-control" type="text" placeholder="V.d: 123 Nguyễn Huệ, Q.1">
+                <input class="form-control" type="text" placeholder="V.d: 123 Nguyễn Huệ, Q.1" value="@Model.DiaChi">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Ngày vào làm</label>
-                <input class="form-control" type="date">
+                <input class="form-control" type="date" value="@Model.NgayVaoLam">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Trạng thái</label>
                 <select class="form-select" id="select-trang-thai">
-                  <option value="DangLam">Đang làm</option>
-                  <option value="NghiPhep">Nghỉ phép</option>
-                  <option value="DaNghi">Đã nghỉ</option>
+                                @{
+                                    string isWorking = Model.TrangThai == "Active" ? "checked" : "";
+                                    if (Model.TrangThai == "Active")
+                                    {
+                                        <option value="DangLam" selected>Đang làm</option>
+                                        <option value="NghiPhep">Nghỉ</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="DangLam">Đang làm</option>
+                                      <option value="NghiPhep" selected>Nghỉ</option>
+                                    }
+                                }
                 </select>
               </div>
 
