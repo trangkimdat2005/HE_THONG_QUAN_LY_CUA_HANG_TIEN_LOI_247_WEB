@@ -19,6 +19,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             var lstRole= _quanLySevices.GetList<Role>();
             ViewData["lstRole"] = lstRole;
+            var lstPer = _quanLySevices.GetList<Permission>();
+            ViewData["lstPer"] = lstPer;
             return View();
         }
         [Route("/QuanLyBaoMat/DanhSachTaiKhoanKhachHang")]
