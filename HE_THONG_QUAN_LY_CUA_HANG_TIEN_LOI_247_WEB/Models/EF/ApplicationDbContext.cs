@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
 
@@ -157,7 +157,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("sanPhamDonViId");
             entity.Property(e => e.IsDelete)
-                .HasDefaultValue(false)
+                .HasDefaultValue(false, "DEFAULT_Anh_SanPhamDonVi_isDelete")
                 .HasColumnName("isDelete");
 
             entity.HasOne(d => d.Anh).WithMany(p => p.AnhSanPhamDonVis)
@@ -187,7 +187,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("loaiBaoCao");
             entity.Property(e => e.NgayLap)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_BaoCao_ngayLap")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayLap");
             entity.Property(e => e.TuNgay).HasColumnName("tuNgay");
@@ -326,7 +326,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.GioVao).HasColumnName("gioVao");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.Ngay)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_ChamCong_ngay")
                 .HasColumnType("datetime")
                 .HasColumnName("ngay");
             entity.Property(e => e.NhanVienId)
@@ -398,7 +398,7 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
             entity.Property(e => e.ThanhTien)
-                .HasDefaultValue(0m)
+                .HasDefaultValue(0m, "DEFAULT_ChiTietGiaoDichNCC_thanhTien")
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("thanhTien");
 
@@ -519,6 +519,9 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.DonGia)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("donGia");
+            entity.Property(e => e.HanSuDung)
+                .HasColumnType("datetime")
+                .HasColumnName("hanSuDung");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
             entity.Property(e => e.TongTien)
@@ -585,7 +588,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("apDungDenNgay");
             entity.Property(e => e.ApDungToanBo)
-                .HasDefaultValue(false)
+                .HasDefaultValue(false, "DEFAULT_ChinhSachHoanTra_apDungToanBo")
                 .HasColumnName("apDungToanBo");
             entity.Property(e => e.ApDungTuNgay)
                 .HasColumnType("datetime")
@@ -873,7 +876,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
             entity.Property(e => e.NgayDat)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_DonHangOnline_ngayDat")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayDat");
             entity.Property(e => e.TongTien)
@@ -933,7 +936,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("moTa");
             entity.Property(e => e.NgayGd)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_GiaoDichThanhToan_ngayGD")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayGD");
             entity.Property(e => e.SoTien)
@@ -1014,14 +1017,14 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
             entity.Property(e => e.NgayLap)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_HoaDon_ngayLap")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayLap");
             entity.Property(e => e.NhanVienId)
                 .HasMaxLength(50)
                 .HasColumnName("nhanVienId");
             entity.Property(e => e.TongTien)
-                .HasDefaultValue(0m)
+                .HasDefaultValue(0m, "DEFAULT_HoaDon_tongTien")
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("tongTien");
             entity.Property(e => e.TrangThai)
@@ -1054,11 +1057,11 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(20)
                 .HasColumnName("loaiKenh");
             entity.Property(e => e.NgayCapNhat)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_KenhThanhToan_ngayCapNhat")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayCapNhat");
             entity.Property(e => e.NgayTao)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_KenhThanhToan_ngayTao")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayTao");
             entity.Property(e => e.PhiGiaoDich)
@@ -1101,7 +1104,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("hoTen");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayDangKy)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_KhachHang_ngayDangKy")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayDangKy");
             entity.Property(e => e.SoDienThoai)
@@ -1206,7 +1209,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayGd)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_LichSuGiaoDich_ngayGD")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayGD");
             entity.Property(e => e.NhaCungCapId)
@@ -1238,7 +1241,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("hoaDonId");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayMua)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_LichSuMuaHang_ngayMua")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayMua");
             entity.Property(e => e.TongTien)
@@ -1443,7 +1446,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("taiKhoanId");
             entity.Property(e => e.ThoiGian)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_NhatKyHoatDong_thoiGian")
                 .HasColumnType("datetime")
                 .HasColumnName("thoiGian");
 
@@ -1557,7 +1560,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("lyDo");
             entity.Property(e => e.NgayDoiTra)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_PhieuDoiTra_ngayDoiTra")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayDoiTra");
             entity.Property(e => e.SanPhamDonViId)
@@ -1599,7 +1602,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayNhap)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_PhieuNhap_ngayNhap")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayNhap");
             entity.Property(e => e.NhaCungCapId)
@@ -1641,7 +1644,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
             entity.Property(e => e.NgayXuat)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_PhieuXuat_ngayXuat")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayXuat");
             entity.Property(e => e.NhanVienId)
@@ -1987,7 +1990,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("maDinhDanhId");
             entity.Property(e => e.NgayIn)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_TemNhan_ngayIn")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayIn");
             entity.Property(e => e.NoiDungTem).HasColumnName("noiDungTem");
@@ -2023,7 +2026,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("khachHangId");
             entity.Property(e => e.NgayCap)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_TheThanhVien_ngayCap")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayCap");
 
@@ -2076,7 +2079,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("ghiChu");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayCapNhat)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_TrangThaiGiaoHang_ngayCapNhat")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayCapNhat");
             entity.Property(e => e.TrangThai)
@@ -2105,7 +2108,7 @@ public partial class ApplicationDbContext : DbContext
                 .HasColumnName("donHangId");
             entity.Property(e => e.IsDelete).HasColumnName("isDelete");
             entity.Property(e => e.NgayCapNhat)
-                .HasDefaultValueSql("(getdate())")
+                .HasDefaultValueSql("(getdate())", "DEFAULT_TrangThaiXuLy_ngayCapNhat")
                 .HasColumnType("datetime")
                 .HasColumnName("ngayCapNhat");
             entity.Property(e => e.TrangThai)
