@@ -163,12 +163,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 int newNumericPart = 1;
                 if (lastEntity != null)
                 {
-                    var lastId = EF.Property<string>(lastEntity, "Id");
-                    var numericPart = lastId.Substring(prefix.Length);
-                    if (int.TryParse(numericPart, out int lastNumericPart))
+                    var lastId = lastEntity.GetType().GetProperty("Id")?.GetValue(lastEntity) as string;
+                     if (lastId != null)
                     {
-                        newNumericPart = lastNumericPart + 1;
+                        var numericPart = lastId.Substring(prefix.Length);
+                        if (int.TryParse(numericPart, out int lastNumericPart))
+                        {
+                            newNumericPart = lastNumericPart + 1;
+                        }
                     }
+                    
                 }
                 string newId = prefix + newNumericPart.ToString().PadLeft(totalLength - prefix.Length, '0');
                 return newId;
