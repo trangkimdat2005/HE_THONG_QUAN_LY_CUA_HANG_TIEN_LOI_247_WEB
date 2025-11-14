@@ -1,6 +1,7 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -35,10 +36,24 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstTTV"] = lstTTV;
             // Lấy thông tin khách hàng từ cơ sở dữ liệu bằng Id
             var khachHang = _quanLySevices.GetList<KhachHang>().FirstOrDefault(kh => kh.Id == $"{id}");
+
+
             // Nếu không tìm thấy khách hàng, trả về lỗi
             if (khachHang == null)
             {
                 return NotFound();
+            }
+            var anh = _quanLySevices.GetList<HinhAnh>().FirstOrDefault(a => a.Id == khachHang.AnhId);
+            if (anh != null)
+            {
+                // Chuyển ảnh thành Base64
+                string base64String = Convert.ToBase64String(anh.Anh);
+                ViewBag.AvatarImage = "data:image/jpeg;base64," + base64String;
+            }
+            else
+            {
+                // Nếu không có ảnh, dùng ảnh mặc định
+                ViewBag.AvatarImage = "https://placehold.co/600x400/EEE/31343C";
             }
             // Trả về view sửa thông tin khách hàng với dữ liệu
             return View(khachHang);

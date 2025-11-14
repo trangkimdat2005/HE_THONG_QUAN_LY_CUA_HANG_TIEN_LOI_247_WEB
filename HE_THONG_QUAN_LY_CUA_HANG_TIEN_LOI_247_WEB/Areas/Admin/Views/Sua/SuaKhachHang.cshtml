@@ -41,7 +41,7 @@
                     TheThanhVien ttv = null;
                     if (ViewData["lstTTV"] != null)
                     {
-                        List<TheThanhVien> ttvs = ViewBag.lstTTT;
+                        List<TheThanhVien> ttvs = ViewBag.lstTTV;
                         ttv = ttvs.FirstOrDefault(t => t.KhachHangId == Model.Id);
                     }
                     if (ttv == null)
@@ -73,29 +73,151 @@
                     }
                     else
                     {
-                        <div class="tile-body">
+                        // <div class="tile-body">
 
-                            <div class="mb-3">
-                                <label class="form-label">Hạng thẻ</label>
-                                <select class="form-select" id="select-hang-the">
-                                    <option value="Bronze">Bronze (Mặc định)</option>
-                                    <option value="Silver">Silver </option>
-                                    <option value="Gold">Gold</option>
-                                    <option value="Platinum">Platinum</option>
-                                </select>
+                        //     <div class="mb-3">
+                        //         <label class="form-label">Hạng thẻ</label>
+                        //         <select class="form-select" id="select-hang-the">
+                        //             <option value="Bronze" selected>Bronze (Mặc định)</option>
+                        //             <option value="Silver">Silver </option>
+                        //             <option value="Gold">Gold</option>
+                        //             <option value="Platinum">Platinum</option>
+                        //         </select>
+                        //     </div>
+
+                        //     <div class="mb-3">
+                        //         <label class="form-label">Điểm tích luỹ ban đầu</label>
+                        //         <input class="form-control" type="number" value="0">
+                        //     </div>
+
+                        //     <div class="mb-3">
+                        //         <label class="form-label">Ngày cấp thẻ</label>
+                        //         <input class="form-control" type="date" id="input-ngay-cap">
+                        //     </div>
+
+                        // </div>
+                        int hang = 0;
+                        switch (ttv.Hang)
+                        {
+                            case "Đồng":
+                                hang = 1;
+                                break;
+                            case "Bạc":
+                                hang = 2;
+                                break;
+                            case "Vàng":
+                                hang = 3;
+                                break;
+                            case "Bạch Kim":
+                                hang = 4;
+                                break;
+                            default:
+                                hang = 0; 
+                                break;
+                        }
+                        if (hang == 1)
+                        {
+                            <div class="tile-body">
+
+                                <div class="mb-3">
+                                    <label class="form-label">Hạng thẻ</label>
+                                    <select class="form-select" id="select-hang-the" name="hang">
+                                        <option value="Bronze" selected>Bronze (Mặc định)</option>
+                                        <option value="Silver">Silver </option>
+                                        <option value="Gold">Gold</option>
+                                        <option value="Platinum">Platinum</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
+                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày cấp thẻ</label>
+                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
+                                </div>
+
                             </div>
+                        } else if(hang == 2)
+                        {
+                            <div class="tile-body">
 
-                            <div class="mb-3">
-                                <label class="form-label">Điểm tích luỹ ban đầu</label>
-                                <input class="form-control" type="number" value="0">
+                                <div class="mb-3">
+                                    <label class="form-label">Hạng thẻ</label>
+                                    <select class="form-select" id="select-hang-the" name="hang">
+                                        <option value="Bronze" >Bronze (Mặc định)</option>
+                                        <option value="Silver" selected>Silver </option>
+                                        <option value="Gold">Gold</option>
+                                        <option value="Platinum">Platinum</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
+                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày cấp thẻ</label>
+                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
+                                </div>
+
                             </div>
+                        }
+                        else if (hang == 3)
+                        {
+                            <div class="tile-body">
 
-                            <div class="mb-3">
-                                <label class="form-label">Ngày cấp thẻ</label>
-                                <input class="form-control" type="date" id="input-ngay-cap">
+                                <div class="mb-3">
+                                    <label class="form-label">Hạng thẻ</label>
+                                    <select class="form-select" id="select-hang-the" name="hang">
+                                        <option value="Bronze">Bronze (Mặc định)</option>
+                                        <option value="Silver" >Silver </option>
+                                        <option value="Gold" selected>Gold</option>
+                                        <option value="Platinum">Platinum</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
+                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày cấp thẻ</label>
+                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
+                                </div>
+
                             </div>
+                        }
+                        else if (hang == 3)
+                        {
+                            <div class="tile-body">
 
-                        </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Hạng thẻ</label>
+                                    <select class="form-select" id="select-hang-the" name="hang">
+                                        <option value="Bronze">Bronze (Mặc định)</option>
+                                        <option value="Silver">Silver </option>
+                                        <option value="Gold" >Gold</option>
+                                        <option value="Platinum" selected>Platinum</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
+                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày cấp thẻ</label>
+                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
+                                </div>
+
+                            </div>
+                        }
                     }
 
                 }
@@ -103,21 +225,23 @@
       </div>
 
       <div class="col-md-6 mx-auto" id="customer-form-container">
-        <div class="tile">
+        <form class="tile" id="editCustomerForm" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="Id" value="@Model.Id" />
           <h3 class="tile-title">Thông tin Khách Hàng</h3>
           <p>Sửa thông tin khách hàng</strong>.</p>
           <div class="tile-body">
-            
-            <div class="avatar-upload-container">
-                <img class="avatar-preview" id="avatarPreview" src="https://via.placeholder.com/128?text=Avatar"
-                  alt="Avatar">
-                <input class="avatar-edit-input" type="file" id="avatarUpload" accept=".png, .jpg, .jpeg">
-                <label class="avatar-edit-label" for="avatarUpload"><i class="bi bi-camera-fill"></i></label>
-            </div>
+                    <div class="avatar-upload-container">
+                        <!-- Hiển thị ảnh hiện tại hoặc ảnh mặc định nếu không có ảnh -->
+                        <img class="avatar-preview" id="avatarPreview" src="@ViewBag.AvatarImage" alt="Avatar">
+                        <input class="avatar-edit-input" type="file" id="avatarUpload" accept=".png, .jpg, .jpeg" name="Anh">
+                        <label class="avatar-edit-label" for="avatarUpload">
+                            <i class="bi bi-camera-fill"></i>
+                        </label>
+                    </div>
 
             <div class="mb-3">
               <label class="form-label">Họ và tên</label>
-              <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn B" value="@Model.HoTen">
+              <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn B" value="@Model.HoTen" name="hoTen">
             </div>
 
             <div class="mb-3">
@@ -139,13 +263,13 @@
                             {
                                 <div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" checked>
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="true" checked>
                                         <label class="form-check-label" for="radioNam">
                                             Nam
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="false">
                                         <label class="form-check-label" for="radioNu">Nữ</label>
                                     </div>
                                 </div>
@@ -154,13 +278,13 @@
                             {
                                 <div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" >
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="true" >
                                         <label class="form-check-label" for="radioNam">
                                             Nam
                                         </label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu" checked>
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="false" checked>
                                         <label class="form-check-label" for="radioNu">Nữ</label>
                                     </div>
                                 </div>
@@ -171,27 +295,27 @@
 
             <div class="mb-3">
               <label class="form-label">Số điện thoại</label>
-              <input class="form-control" type="tel" placeholder="V.d: 091xxxx789" value="@Model.SoDienThoai">
+              <input class="form-control" type="tel" placeholder="V.d: 091xxxx789" value="@Model.SoDienThoai" name="soDienThoai">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Email</label>
-              <input class="form-control" type="email" placeholder="V.d: v.b@email.com" value="@Model.Email">
+              <input class="form-control" type="email" placeholder="V.d: v.b@email.com" value="@Model.Email" name="email">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Địa chỉ</label>
-              <input class="form-control" type="text" placeholder="V.d: 456 Lê Lợi, Q.3" value="@Model.DiaChi">
+              <input class="form-control" type="text" placeholder="V.d: 456 Lê Lợi, Q.3" value="@Model.DiaChi" name="DiaChi">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Ngày đăng ký</label>
-              <input class="form-control" type="date" id="input-ngay-dang-ky" value="@Model.NgayDangKy.ToString("dd/MM/yyyy")">
+              <input class="form-control" type="date" id="input-ngay-dang-ky" value="@Model.NgayDangKy.ToString("yyyy/MM/dd)") name="ngayDangKy">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Trạng thái</label>
-              <select class="form-select" id="select-trang-thai">
+              <select class="form-select" id="select-trang-thai" name="trangThai">
                 @* <option value="Active">Active (Mặc định)</option>
                 <option value="Inactive">Inactive</option> *@
                             @{
@@ -224,11 +348,11 @@
 
           </div>
           <div class="tile-footer">
-            <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu thông
+            <button class="btn btn-primary" type="button" id="saveButton">><i class="bi bi-check-circle-fill me-2"></i>Lưu thông
               tin</button>
             <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
           </div>
-        </div>
+        </form>
       </div>
 
     </div>

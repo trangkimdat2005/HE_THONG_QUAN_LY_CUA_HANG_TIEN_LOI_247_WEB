@@ -1,8 +1,9 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Chi Tiết Phiếu Xuất";
+    var phieuXuat = ViewData["PhieuXuat"] as PhieuXuat;
+    var chiTietList = ViewData["ChiTietPhieuXuat"] as List<ChiTietPhieuXuat>;
 }
   <!-- Css riêng ở đây nha -->
    <link rel="stylesheet" href="~/assets/css/XemChiTietPhieuXuat.css">
@@ -18,13 +19,13 @@
     <div class="app-title">
       <div>
         <h1><i class="bi bi-file-earmark-text"></i> Chi Tiết Phiếu Xuất Kho</h1>
-        <p>Thông tin chi tiết của phiếu xuất PX20251108-001</p>
+        <p>Thông tin chi tiết của phiếu xuất @phieuXuat?.Id</p>
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item">Quản lý kho hàng</li>
-        <li class="breadcrumb-item active"><a asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuXuat">Danh sách phiếu xuất</a>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="XemChiTietPhieuXuat" title="Xem chi tiết">Chi tiết phiếu xuất</a></li>
+        <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuXuat">Danh sách phiếu xuất</a></li>
+        <li class="breadcrumb-item active">Chi tiết phiếu xuất</li>
       </ul>
     </div>
 
@@ -32,25 +33,25 @@
       <div class="col-md-12">
         <div class="tile">
           
-          <h3 class="tile-title">Thông tin Phiếu Xuất (PX20251108-001)</h3>
+          <h3 class="tile-title">Thông tin Phiếu Xuất: @phieuXuat?.Id</h3>
           <div class="tile-body">
             <div class="row">
               
               <div class="col-md-4 info-group">
                 <label>Mã Phiếu Xuất</label>
-                <p>PX20251108-001</p>
+                <p>@phieuXuat?.Id</p>
               </div>
               <div class="col-md-4 info-group">
                 <label>Khách Hàng</label>
-                <p>Trần Thị B (KH002)</p>
+                <p>@phieuXuat?.KhachHang?.HoTen (@phieuXuat?.KhachHangId)</p>
               </div>
               <div class="col-md-4 info-group">
-                <label>Ngày Xuất (ngayXuat)</label>
-                <p>08/11/2025</p>
+                <label>Ngày Xuất</label>
+                <p>@phieuXuat?.NgayXuat.ToString("dd/MM/yyyy")</p>
               </div>
               <div class="col-md-4 info-group">
-                <label>Nhân Viên Xuất </label>
-                <p>Nguyễn Văn A (NV001)</p>
+                <label>Nhân Viên Xuất</label>
+                <p>@phieuXuat?.NhanVien?.HoTen (@phieuXuat?.NhanVienId)</p>
               </div>
 
             </div>
@@ -58,7 +59,7 @@
           
           <hr>
 
-          <h3 class="tile-title">Danh Sách Sản Phẩm </h3>
+          <h3 class="tile-title">Danh Sách Sản Phẩm</h3>
           <div class="tile-body">
             <div class="table-responsive">
               <table class="table table-bordered">
@@ -72,32 +73,42 @@
                   </tr>
                 </thead>
                 <tbody id="chi-tiet-phieu-xuat-body">
-                  <tr>
-                    <td>1</td>
-                    <td>Sting Dâu (Chai 330ml) (SPDV_001)</td>
-                    <td class="text-end">10</td>
-                    <td class="text-end">8,000 đ</td>
-                    <td class="text-end">80,000 đ</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Bánh Chocopie (Hộp 12 cái) (SPDV_002)</td>
-                    <td class="text-end">5</td>
-                    <td class="text-end">45,000 đ</td>
-                    <td class="text-end">225,000 đ</td>
-                  </tr>
-                   <tr>
-                    <td>3</td>
-                    <td>Pepsi Lon (Lon 330ml) (SPDV_003)</td>
-                    <td class="text-end">24</td>
-                    <td class="text-end">7,500 đ</td>
-                    <td class="text-end">180,000 đ</td>
-                  </tr>
+                  @if (chiTietList != null && chiTietList.Any())
+                  {
+                      var index = 1;
+                      decimal tongTien = 0;
+                      foreach (var chiTiet in chiTietList)
+                      {
+                          var tenSanPham = chiTiet.SanPhamDonVi?.SanPham?.Ten ?? "N/A";
+                          var donVi = chiTiet.SanPhamDonVi?.DonVi?.Ten ?? "";
+                          var thanhTien = chiTiet.SoLuong * chiTiet.DonGia;
+                          tongTien += thanhTien;
+                          
+                          <tr>
+                              <td>@index</td>
+                              <td>@tenSanPham (@donVi) - @chiTiet.SanPhamDonViId</td>
+                              <td class="text-end">@chiTiet.SoLuong</td>
+                              <td class="text-end">@chiTiet.DonGia.ToString("N0") đ</td>
+                              <td class="text-end">@thanhTien.ToString("N0") đ</td>
+                          </tr>
+                          
+                          index++;
+                      }
+                      
+                      ViewData["TongTienTinhToan"] = tongTien;
+                  }
                 </tbody>
                 <tfoot>
                   <tr>
                     <td colspan="4" class="fw-bold text-end">Tổng Tiền</td>
-                    <td class="fw-bold text-end h5 text-primary">485,000 đ</td>
+                    <td class="fw-bold text-end h5 text-primary">
+                        @{
+                            var tongTienHienThi = ViewData["TongTienTinhToan"] != null 
+                                ? ((decimal)ViewData["TongTienTinhToan"]).ToString("N0") 
+                                : phieuXuat?.TongTien.ToString("N0") ?? "0";
+                        }
+                        @tongTienHienThi đ
+                    </td>
                   </tr>
                 </tfoot>
               </table>
@@ -107,7 +118,7 @@
           <div class="tile-footer">
             <div class="d-flex justify-content-end">
               <div>
-                            <a class="btn btn-secondary" asp-controller="QuanLyKhoHang"asp-action="DanhSachPhieuXuat"><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
+                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuXuat"><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
                 <button class="btn btn-primary" type="button" onclick="window.print();">
                   <i class="bi bi-printer-fill me-2"></i>In Phiếu
                 </button>
