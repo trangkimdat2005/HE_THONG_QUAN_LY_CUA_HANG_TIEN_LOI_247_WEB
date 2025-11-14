@@ -1,0 +1,235 @@
+﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+    ViewData["title"] = "Chi Tiết Phiếu Đổi Trả";
+    var phieuDoiTra = ViewData["PhieuDoiTra"] as PhieuDoiTra;
+    var hoaDon = ViewData["HoaDon"] as HoaDon;
+    var chinhSach = ViewData["ChinhSach"] as ChinhSachHoanTra;
+}
+<!-- Css riêng ở đây nha -->
+<link rel="stylesheet" href="~/assets/css/PhieuDoiTra.css">
+
+<main class="app-content">
+  <div class="app-title">
+    <div>
+      <h1><i class="bi bi-arrow-left-right"></i> Chi Tiết Phiếu Đổi Trả</h1>
+      <p>Thông tin chi tiết của phiếu đổi trả @phieuDoiTra?.Id</p>
+    </div>
+    <ul class="app-breadcrumb breadcrumb side">
+      <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+      <li class="breadcrumb-item">Giao dịch & hoàn trả</li>
+      <li class="breadcrumb-item"><a asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra">Phiếu đổi trả</a></li>
+      <li class="breadcrumb-item active">
+        <a asp-controller="GiaoDichHoanTra" asp-action="XemChiTietPhieuDoiTra" title="Xem chi tiết">Chi tiết phiếu</a>
+      </li>
+    </ul>
+  </div>
+
+  @if (phieuDoiTra != null && hoaDon != null)
+  {
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tile">
+          <div class="tile-title-w-btn d-flex justify-content-between align-items-center mb-3">
+            <h3 class="title">Phiếu đổi trả: @phieuDoiTra.Id</h3>
+            <button class="btn btn-primary btn-add-khoi" onclick="window.print();">
+              <i class="fas fa-print"></i> In phiếu
+            </button>
+          </div>
+          
+          <div class="tile-body" id="phieu-content-to-print">
+                        <!-- Header -->
+                        <div class="row invoice-header mb-4 border-bottom pb-3">
+                            <div class="col-8">
+                                <h3 class="text-primary fw-bold"><i class="fas fa-store me-2"></i>VALI MART</h3>
+                                <div>Địa chỉ: 123 Đường ABC, Quận XYZ, TP.HCM</div>
+                                <div>Hotline: 1900 1234</div>
+                            </div>
+                            <div class="col-4 text-end">
+                                <h4 class="fw-bold">PHIẾU ĐỔI TRẢ HÀNG</h4>
+                                <div>Mã Phiếu: <strong class="text-danger">@phieuDoiTra.Id</strong></div>
+                                <div>Ngày: <strong>@phieuDoiTra.NgayDoiTra.ToString("dd/MM/yyyy")</strong></div>
+                                <div>
+                                    Trạng thái:
+                                    <span class="badge bg-warning">Đã Xử Lý</span>
+                                </div>
+                            </div>
+                        </div>
+            <!-- Thông tin phiếu đổi trả -->
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <h4 class="mb-3"><i class="bi bi-arrow-left-right me-2"></i>Thông Tin Phiếu Đổi Trả</h4>
+              </div>
+              <div class="col-md-4">
+                <p><strong>Mã phiếu:</strong> @phieuDoiTra.Id</p>
+                <p><strong>Ngày đổi trả:</strong> @phieuDoiTra.NgayDoiTra.ToString("dd/MM/yyyy")</p>
+                <p><strong>Hóa đơn gốc:</strong> @phieuDoiTra.HoaDonId</p>
+              </div>
+              <div class="col-md-4">
+                <p><strong>Chính sách:</strong> @chinhSach?.TenChinhSach</p>
+                <p><strong>Lý do đổi trả:</strong> @phieuDoiTra.LyDo</p>
+              </div>
+              <div class="col-md-4">
+                <p><strong>Số tiền hoàn:</strong> <span class="text-danger fs-5">@phieuDoiTra.SoTienHoan.ToString("N0") đ</span></p>
+              </div>
+            </div>
+
+   
+
+            <!-- Thông tin khách hàng và nhân viên -->
+            <div class="row info-section mb-4">
+              <div class="col-md-6">
+                <h5><i class="bi bi-person me-2"></i>Thông tin Khách hàng</h5>
+                <p><strong>Họ tên:</strong> @hoaDon.KhachHang?.HoTen</p>
+                <p><strong>Mã KH:</strong> @hoaDon.KhachHangId</p>
+                <p><strong>SĐT:</strong> @hoaDon.KhachHang?.SoDienThoai</p>
+                @if (!string.IsNullOrEmpty(hoaDon.KhachHang?.Email))
+                {
+                  <p><strong>Email:</strong> @hoaDon.KhachHang?.Email</p>
+                }
+                <p><strong>Địa chỉ:</strong> @hoaDon.KhachHang?.DiaChi</p>
+              </div>
+              <div class="col-md-6">
+                <h5><i class="bi bi-person-badge me-2"></i>Thông tin Nhân viên xử lý</h5>
+                <p><strong>Họ tên:</strong> @hoaDon.NhanVien?.HoTen</p>
+                <p><strong>Mã NV:</strong> @hoaDon.NhanVienId</p>
+                <p><strong>Chức vụ:</strong> @hoaDon.NhanVien?.ChucVu</p>
+                <p><strong>SĐT:</strong> @hoaDon.NhanVien?.SoDienThoai</p>
+              </div>
+            </div>
+            
+            <hr>
+
+            <!-- Thông tin sản phẩm đổi trả -->
+            <h5 class="mb-3"><i class="bi bi-box-seam me-2"></i>Sản phẩm đổi trả</h5>
+            <div class="table-responsive mb-4">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th style="width: 40%;">Tên sản phẩm</th>
+                    <th style="width: 10%;" class="text-center">Đơn vị</th>
+                    <th style="width: 30%;">Lý do đổi trả</th>
+                    <th style="width: 20%;" class="text-end">Số tiền hoàn</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>@phieuDoiTra.SanPhamDonVi?.SanPham?.Ten</td>
+                    <td class="text-center">@phieuDoiTra.SanPhamDonVi?.DonVi?.Ten</td>
+                    <td>@phieuDoiTra.LyDo</td>
+                    <td class="text-end fw-bold text-danger">@phieuDoiTra.SoTienHoan.ToString("N0") đ</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Thông tin hóa đơn gốc -->
+            <div class="row mb-4">
+              <div class="col-md-12">
+                <div class="border p-3 bg-white">
+                  <h5 class="mb-3"><i class="bi bi-receipt me-2"></i>Thông tin hóa đơn gốc</h5>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><strong>Mã hóa đơn:</strong> @hoaDon.Id</p>
+                      <p><strong>Ngày lập:</strong> @hoaDon.NgayLap.ToString("dd/MM/yyyy HH:mm")</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><strong>Tổng tiền hóa đơn:</strong> @(hoaDon.TongTien?.ToString("N0") ?? "0") đ</p>
+                      <p>
+                        <strong>Trạng thái:</strong>
+                        @{
+                          var statusClass = hoaDon.TrangThai == "DaThanhToan" ? "bg-success" 
+                                          : hoaDon.TrangThai == "ChuaThanhToan" ? "bg-warning" 
+                                          : "bg-danger";
+                          var statusText = hoaDon.TrangThai == "DaThanhToan" ? "Đã Thanh Toán" 
+                                         : hoaDon.TrangThai == "ChuaThanhToan" ? "Chưa Thanh Toán" 
+                                         : "Đã Hủy";
+                        }
+                        <span class="badge @statusClass">@statusText</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Chính sách đổi trả -->
+            @if (chinhSach != null)
+            {
+              <div class="row mb-4">
+                <div class="col-md-12">
+                  <div class="border p-3 bg-info bg-opacity-10">
+                    <h5 class="mb-3"><i class="bi bi-shield-check me-2"></i>Chính sách áp dụng</h5>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <p><strong>Tên chính sách:</strong> @chinhSach.TenChinhSach</p>
+                        <p><strong>Thời hạn:</strong> @chinhSach.ThoiHan ngày</p>
+                      </div>
+                      <div class="col-md-6">
+                        <p><strong>Điều kiện:</strong> @chinhSach.DieuKien</p>
+                        <p><strong>Áp dụng toàn bộ:</strong> @(chinhSach.ApDungToanBo == true ? "Có" : "Không")</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- Tổng kết -->
+            <div class="row justify-content-end">
+              <div class="col-md-5">
+                <div class="border p-3 bg-light">
+                  <div class="d-flex justify-content-between mb-3">
+                    <span class="fs-4 fw-bold">TỔNG TIỀN HOÀN LẠI:</span>
+                    <span class="fs-4 fw-bold text-danger">@phieuDoiTra.SoTienHoan.ToString("N0") đ</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Phương thức hoàn tiền:</span>
+                    <span class="text-primary fw-bold">Tiền mặt</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <a class="btn btn-secondary" asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra">
+                <i class="fas fa-arrow-left"></i> Quay lại danh sách
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  else
+  {
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-warning">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          Không tìm thấy thông tin phiếu đổi trả.
+        </div>
+        <a class="btn btn-secondary" asp-controller="GiaoDichHoanTra" asp-action="PhieuDoiTra">
+          <i class="fas fa-arrow-left"></i> Quay lại danh sách
+        </a>
+      </div>
+    </div>
+  }
+</main>
+
+<!-- CSS cho print -->
+<style>
+  @@media print {
+    .app-title,
+    .btn,
+    .breadcrumb {
+      display: none !important;
+    }
+    
+    .tile {
+      border: none !important;
+      box-shadow: none !important;
+    }
+  }
+</style>

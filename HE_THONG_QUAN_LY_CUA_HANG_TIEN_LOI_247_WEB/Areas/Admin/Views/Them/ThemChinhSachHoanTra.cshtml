@@ -1,0 +1,133 @@
+﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+    ViewData["title"] = "Thêm Chính Sách Hoàn Trả";
+    var danhSachDanhMuc = ViewData["DanhSachDanhMuc"] as List<DanhMuc>;
+}
+
+<!-- CSS riêng -->
+<link rel="stylesheet" href="~/assets/css/ThemNhanSu.css">
+
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="bi bi-shield-check"></i> Tạo Chính Sách Hoàn Trả</h1>
+            <p>Thiết lập chính sách đổi trả sản phẩm cho cửa hàng</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Giao dịch & hoàn trả</li>
+            <li class="breadcrumb-item"><a asp-controller="GiaoDichHoanTra" asp-action="ChinhSachDoiTra">Chính sách đổi trả</a></li>
+            <li class="breadcrumb-item active">Tạo chính sách</li>
+        </ul>
+    </div>
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>@TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <form asp-controller="Them" asp-action="ThemChinhSachHoanTra" method="post" id="form-chinh-sach">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="tile">
+                    <h3 class="tile-title">Thông Tin Chính Sách</h3>
+                    <div class="tile-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Tên chính sách <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="TenChinhSach" 
+                                       placeholder="VD: Đổi trả trong 7 ngày" required>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label fw-bold">Thời hạn (ngày)</label>
+                                <input type="number" class="form-control" name="ThoiHan" 
+                                       placeholder="VD: 7" min="1">
+                                <small class="text-muted">Để trống nếu không giới hạn</small>
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label fw-bold">Áp dụng toàn bộ</label>
+                                <select class="form-select" name="ApDungToanBo" id="select-ap-dung-toan-bo">
+                                    <option value="true">Có - Tất cả sản phẩm</option>
+                                    <option value="false" selected>Không - Chọn danh mục</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label fw-bold">Điều kiện áp dụng <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="DieuKien" rows="3" 
+                                          placeholder="VD: Sản phẩm còn nguyên tem, hộp. Không áp dụng cho sản phẩm đã qua sử dụng..." required></textarea>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Áp dụng từ ngày <span class="text-danger">*</span></label>
+                                <input type="datetime-local" class="form-control" name="ApDungTuNgay" 
+                                       value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Áp dụng đến ngày <span class="text-danger">*</span></label>
+                                <input type="datetime-local" class="form-control" name="ApDungDenNgay" 
+                                       value="@DateTime.Now.AddYears(1).ToString("yyyy-MM-ddTHH:mm")" required>
+                            </div>
+                        </div>
+
+                        <!-- Danh mục áp dụng -->
+                        <div id="danh-muc-section">
+                            <hr>
+                            <h5 class="mb-3"><i class="bi bi-tags me-2"></i>Danh Mục Áp Dụng</h5>
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <strong>Lưu ý:</strong> Nếu chọn "Áp dụng toàn bộ", chính sách sẽ áp dụng cho tất cả sản phẩm. 
+                                Nếu không, vui lòng chọn các danh mục cụ thể bên dưới.
+                            </div>
+
+                            <!-- Hidden container để chứa danh mục đã chọn -->
+                            <div id="selected-danh-muc-container"></div>
+
+                            <div class="row" id="danh-muc-checkboxes">
+                                @if (danhSachDanhMuc != null && danhSachDanhMuc.Any())
+                                {
+                                    foreach (var danhMuc in danhSachDanhMuc)
+                                    {
+                                        <div class="col-md-3 mb-2">
+                                            <div class="form-check">
+                                                <input class="form-check-input danh-muc-check" type="checkbox" 
+                                                       value="@danhMuc.Id" id="dm-@danhMuc.Id"
+                                                       data-danh-muc-id="@danhMuc.Id">
+                                                <label class="form-check-label" for="dm-@danhMuc.Id">
+                                                    @danhMuc.Ten
+                                                </label>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-muted">Không có danh mục nào.</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tile-footer text-end">
+                        <a class="btn btn-secondary me-2" asp-controller="GiaoDichHoanTra" asp-action="ChinhSachDoiTra">
+                            <i class="bi bi-x-circle me-2"></i>Hủy bỏ
+                        </a>
+                        <button class="btn btn-success" type="submit">
+                            <i class="bi bi-floppy-fill me-2"></i>Lưu chính sách
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+<!-- JavaScript riêng -->
+<script src="~/assets/js/ChinhSachHoanTra.js" asp-append-version="true" defer></script>

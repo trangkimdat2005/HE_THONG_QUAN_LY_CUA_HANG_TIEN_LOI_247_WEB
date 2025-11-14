@@ -8,10 +8,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
     public class SuaController : Controller
     {
         private readonly IQuanLyServices _quanLySevices;
+        private readonly IChinhSachHoanTraServices _chinhSachHoanTraServices;
 
-        public SuaController(IQuanLyServices quanLySevices)
+        public SuaController(
+            IQuanLyServices quanLySevices,
+            IChinhSachHoanTraServices chinhSachHoanTraServices)
         {
             _quanLySevices = quanLySevices;
+            _chinhSachHoanTraServices = chinhSachHoanTraServices;
         }
 
         [Route("/Sua/SuaHoaDon")] 
@@ -63,6 +67,119 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public IActionResult SuaTaiKhoan()
         {
             return View();
+        }
+
+        // ==================== CHÍNH SÁCH HOÀN TRẢ ====================
+        
+        [HttpGet]
+        [Route("/Sua/SuaChinhSachHoanTra/{id}")]
+        public IActionResult SuaChinhSachHoanTra(string id)
+        {
+            var chinhSach = _chinhSachHoanTraServices.GetChinhSachById(id);
+            
+            if (chinhSach == null)
+            {
+                TempData["ErrorMessage"] = "Không tìm thấy chính sách hoàn trả!";
+                return RedirectToAction("ChinhSachDoiTra", "GiaoDichHoanTra");
+            }
+
+            ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+            return View(chinhSach);
+        }
+
+        [HttpPost]
+        [Route("/Sua/SuaChinhSachHoanTra/{id}")]
+        public IActionResult SuaChinhSachHoanTra(
+            string id,
+            string TenChinhSach, 
+            int? ThoiHan, 
+            string DieuKien, 
+            bool ApDungToanBo, 
+            DateTime ApDungTuNgay, 
+            DateTime ApDungDenNgay,
+            List<string> DanhMucIds)
+        {
+            try
+            {
+                // Validate dữ liệu
+                if (string.IsNullOrWhiteSpace(TenChinhSach))
+                {
+                    TempData["ErrorMessage"] = "Tên chính sách không được để trống!";
+                    var chinhSachError1 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError1);
+                }
+
+                if (string.IsNullOrWhiteSpace(DieuKien))
+                {
+                    TempData["ErrorMessage"] = "Điều kiện áp dụng không được để trống!";
+                    var chinhSachError2 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError2);
+                }
+
+                if (ApDungTuNgay >= ApDungDenNgay)
+                {
+                    TempData["ErrorMessage"] = "Ngày áp dụng đến phải sau ngày áp dụng từ!";
+                    var chinhSachError3 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError3);
+                }
+
+                if (!ApDungToanBo && (DanhMucIds == null || !DanhMucIds.Any()))
+                {
+                    TempData["ErrorMessage"] = "Vui lòng chọn ít nhất một danh mục hoặc chọn 'Áp dụng toàn bộ'!";
+                    var chinhSachError4 = _chinhSachHoanTraServices.GetChinhSachById(id);
+                    ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                    return View(chinhSachError4);
+                }
+
+                // Tạo object ChinhSachHoanTra
+                var chinhSach = new ChinhSachHoanTra
+                {
+                    Id = id,
+                    TenChinhSach = TenChinhSach,
+                    ThoiHan = ThoiHan,
+                    DieuKien = DieuKien,
+                    ApDungToanBo = ApDungToanBo,
+                    ApDungTuNgay = ApDungTuNgay,
+                    ApDungDenNgay = ApDungDenNgay
+                };
+
+                var result = _chinhSachHoanTraServices.UpdateChinhSach(chinhSach);
+                
+                if (result)
+                {
+                    // Cập nhật danh mục
+                    if (!ApDungToanBo && DanhMucIds != null && DanhMucIds.Any())
+                    {
+                        _chinhSachHoanTraServices.AddDanhMucToChinhSach(id, DanhMucIds);
+                    }
+                    else if (ApDungToanBo)
+                    {
+                        // Nếu áp dụng toàn bộ, xóa tất cả danh mục
+                        _chinhSachHoanTraServices.AddDanhMucToChinhSach(id, new List<string>());
+                    }
+
+                    TempData["SuccessMessage"] = "Cập nhật chính sách hoàn trả thành công!";
+                    return RedirectToAction("ChinhSachDoiTra", "GiaoDichHoanTra");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật chính sách!";
+                }
+
+                var chinhSachReload = _chinhSachHoanTraServices.GetChinhSachById(id);
+                ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                return View(chinhSachReload);
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = $"Có lỗi xảy ra: {ex.Message}";
+                var chinhSachException = _chinhSachHoanTraServices.GetChinhSachById(id);
+                ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
+                return View(chinhSachException);
+            }
         }
     }
 }
