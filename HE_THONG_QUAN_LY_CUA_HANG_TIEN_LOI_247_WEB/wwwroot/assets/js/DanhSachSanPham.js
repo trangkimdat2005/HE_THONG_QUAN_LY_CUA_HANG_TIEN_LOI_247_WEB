@@ -253,163 +253,162 @@ $(function () {
     //Sự kiện Trang Kim Đạt làm
 
 
-    
+
+    async function callApiAddSP() {
+        try {
+            // Lấy dữ liệu từ form
+            const imagesUpload = document.getElementById('form-images-upload').files;
+            const productId = document.getElementById('form-product-id').value;
+            const productName = document.getElementById('form-product-name').value;
+            const brand = document.getElementById('form-select-nhan-hieu').value;
+            const categories = Array.from(document.getElementById('form-select-danh-muc').selectedOptions).map(option => option.value);
+            const unit = document.getElementById('form-select-don-vi').value;
+            const conversionFactor = document.getElementById('form-select-he-so-quy-doi').value;
+            const price = document.getElementById('form-product-price').value;
+            const description = document.getElementById('form-product-description').value;
+            const statusElement = document.querySelector('input[name="trangThaiSP"]:checked');
+            const status = statusElement ? statusElement.value : '';
+
+            if (!productName || productName.trim() === '') {
+                alert('Vui lòng nhập tên sản phẩm!');
+                return;
+            }
+
+            if (!price || price.trim() === '') {
+                alert('Vui lòng nhập giá bán!');
+                return;
+            }
+
+            if (!brand || brand === '') {
+                alert('Vui lòng chọn nhãn hiệu!');
+                return;
+            }
+
+            if (!unit || unit === '') {
+                alert('Vui lòng chọn đơn vị!');
+                return;
+            }
+
+            if (!status || status === '') {
+                alert('Vui lòng chọn trạng thái sản phẩm!');
+                return;
+            }
+
+            // Parse số
+            const conversionFactorNum = parseFloat(conversionFactor);
+            const priceNum = parseFloat(price);
+
+            // Tạo FormData
+            const formData = new FormData();
+
+            // Thêm tất cả ảnh - QUAN TRỌNG: tên phải là "ImagesUpload"
+            for (let i = 0; i < imagesUpload.length; i++) {
+                formData.append('ImagesUpload', imagesUpload[i]);
+            }
+
+            // Thêm các field khác - TÊN PHẢI KHỚP VỚI C# (PascalCase)
+            formData.append('ProductId', productId.trim());
+            formData.append('ProductName', productName.trim());
+            formData.append('Brand', brand);
+
+            // Thêm categories - mỗi category là 1 entry riêng
+            if (categories.length > 0) {
+                categories.forEach(category => {
+                    formData.append('Categories', category);
+                });
+            }
+
+            formData.append('Unit', unit);
+            formData.append('ConversionFactor', conversionFactorNum.toString());
+            formData.append('Price', priceNum.toString());
+            formData.append('Description', description || '');
+            formData.append('Status', status);
+
+
+            // Gửi request
+            const response = await fetch('/API/add-SP', {
+                method: 'POST',
+                body: formData
+                // KHÔNG thêm Content-Type header
+            });
+
+            // Kiểm tra response
+            if (!response.ok) {
+                const contentType = response.headers.get("content-type");
+                let errorMessage = `HTTP error! Status: ${response.status}`;
+
+                console.log('Response content-type:', contentType);
+
+                if (contentType && contentType.includes("application/json")) {
+                    const errorData = await response.json();
+                    errorMessage = errorData.message || errorMessage;
+                    console.error('===== ERROR RESPONSE (JSON) =====');
+                    console.error(errorData);
+                    console.error('=================================');
+                } else {
+                    const errorText = await response.text();
+                    console.error('===== ERROR RESPONSE (TEXT) =====');
+                    console.error(errorText);
+                    console.error('=================================');
+                    errorMessage = errorText || errorMessage;
+                }
+
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+            console.log('===== SUCCESS RESPONSE =====');
+            console.log(data);
+            console.log('============================');
+
+            // Hiển thị thông báo thành công
+            alert(data.message || 'Thêm sản phẩm thành công!');
+
+
+
+            return data;
+
+        } catch (error) {
+            showLoading(false);
+            console.error('===== EXCEPTION =====');
+            console.error('Message:', error.message);
+            console.error('Stack:', error.stack);
+            console.error('=====================');
+            alert('Lỗi: ' + error.message);
+        }
+    }
+
+
+
+
+
+    async function callApiGetNextId() {
+        const dataToSend = {
+            prefix: "SP",
+            totalLength: 6
+        };
+        try {
+            const response = await fetch('/API/get-next-id-SP',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend)
+                });
+            const data = await response.json();
+            if (data) {
+                document.getElementById('form-product-id').value = data.nextId;
+            }
+            else {
+                alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy mã sản phẩm:', error);
+            alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
+        }
+    }
 
 
 
 });
 
 
-
-async function callApiAddSP() {
-    try {
-        // Lấy dữ liệu từ form
-        const imagesUpload = document.getElementById('form-images-upload').files;
-        const productId = document.getElementById('form-product-id').value;
-        const productName = document.getElementById('form-product-name').value;
-        const brand = document.getElementById('form-select-nhan-hieu').value;
-        const categories = Array.from(document.getElementById('form-select-danh-muc').selectedOptions).map(option => option.value);
-        const unit = document.getElementById('form-select-don-vi').value;
-        const conversionFactor = document.getElementById('form-select-he-so-quy-doi').value;
-        const price = document.getElementById('form-product-price').value;
-        const description = document.getElementById('form-product-description').value;
-        const statusElement = document.querySelector('input[name="trangThaiSP"]:checked');
-        const status = statusElement ? statusElement.value : '';
-
-        if (!productName || productName.trim() === '') {
-            alert('Vui lòng nhập tên sản phẩm!');
-            return;
-        }
-
-        if (!price || price.trim() === '') {
-            alert('Vui lòng nhập giá bán!');
-            return;
-        }
-
-        if (!brand || brand === '') {
-            alert('Vui lòng chọn nhãn hiệu!');
-            return;
-        }
-
-        if (!unit || unit === '') {
-            alert('Vui lòng chọn đơn vị!');
-            return;
-        }
-
-        if (!status || status === '') {
-            alert('Vui lòng chọn trạng thái sản phẩm!');
-            return;
-        }
-
-        // Parse số
-        const conversionFactorNum = parseFloat(conversionFactor);
-        const priceNum = parseFloat(price);
-
-        // Tạo FormData
-        const formData = new FormData();
-
-        // Thêm tất cả ảnh - QUAN TRỌNG: tên phải là "ImagesUpload"
-        for (let i = 0; i < imagesUpload.length; i++) {
-            formData.append('ImagesUpload', imagesUpload[i]);
-        }
-
-        // Thêm các field khác - TÊN PHẢI KHỚP VỚI C# (PascalCase)
-        formData.append('ProductId', productId.trim());
-        formData.append('ProductName', productName.trim());
-        formData.append('Brand', brand);
-
-        // Thêm categories - mỗi category là 1 entry riêng
-        if (categories.length > 0) {
-            categories.forEach(category => {
-                formData.append('Categories', category);
-            });
-        }
-
-        formData.append('Unit', unit);
-        formData.append('ConversionFactor', conversionFactorNum.toString());
-        formData.append('Price', priceNum.toString());
-        formData.append('Description', description || '');
-        formData.append('Status', status);
-
-
-        // Gửi request
-        const response = await fetch('/API/add-SP', {
-            method: 'POST',
-            body: formData
-            // KHÔNG thêm Content-Type header
-        });
-
-        // Kiểm tra response
-        if (!response.ok) {
-            const contentType = response.headers.get("content-type");
-            let errorMessage = `HTTP error! Status: ${response.status}`;
-
-            console.log('Response content-type:', contentType);
-
-            if (contentType && contentType.includes("application/json")) {
-                const errorData = await response.json();
-                errorMessage = errorData.message || errorMessage;
-                console.error('===== ERROR RESPONSE (JSON) =====');
-                console.error(errorData);
-                console.error('=================================');
-            } else {
-                const errorText = await response.text();
-                console.error('===== ERROR RESPONSE (TEXT) =====');
-                console.error(errorText);
-                console.error('=================================');
-                errorMessage = errorText || errorMessage;
-            }
-
-            throw new Error(errorMessage);
-        }
-
-        const data = await response.json();
-        console.log('===== SUCCESS RESPONSE =====');
-        console.log(data);
-        console.log('============================');
-
-        // Hiển thị thông báo thành công
-        alert(data.message || 'Thêm sản phẩm thành công!');
-
-      
-
-        return data;
-
-    } catch (error) {
-        showLoading(false);
-        console.error('===== EXCEPTION =====');
-        console.error('Message:', error.message);
-        console.error('Stack:', error.stack);
-        console.error('=====================');
-        alert('Lỗi: ' + error.message);
-    }
-}
-
-
-
-
-
-async function callApiGetNextId() {
-    const dataToSend = {
-        prefix: "SP",
-        totalLength: 6
-    };
-    try {
-        const response = await fetch('/API/get-next-id-SP',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataToSend)
-            });
-        const data = await response.json();
-        if (data) {
-            document.getElementById('form-product-id').value = data.nextId;
-        }
-        else {
-            alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
-        }
-    } catch (error) {
-        console.error('Lỗi khi lấy mã sản phẩm:', error);
-        alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
-    }
-}

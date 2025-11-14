@@ -115,94 +115,108 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    async function callApiAddNH() {
+        try {
+            const id = document.getElementById('add-id-input').value;
+            const ten = document.getElementById('add-ten-input').value;
+
+            if (!id || !ten) {
+                alert('Các trường "id" và "ten" là ten buộc!');
+                return;
+            }
+
+            const duLieu = {
+                Id: id,
+                Ten: ten
+            }
+
+            // Gửi request
+            const response = await fetch('/API/add-NH', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(duLieu)
+                // KHÔNG thêm Content-Type header
+            });
+
+            // Kiểm tra response
+            if (!response.ok) {
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+            // Hiển thị thông báo thành công
+            alert(data.message || 'Thêm nhãn hiệu thành công!');
+
+            closeForm();
+
+            return data;
+
+        } catch (error) {
+            alert('Lỗi: ' + error.message);
+        }
+    }
+
+
+    async function callApiGetNextIdNH() {
+        const dataToSend = {
+            prefix: "NH",
+            totalLength: 6
+        };
+        try {
+            const response = await fetch('/API/get-next-id-NH',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSend)
+                });
+            const data = await response.json();
+            if (data) {
+                document.getElementById('add-id-input').value = data.nextId;
+            }
+            else {
+                alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy mã nhãn hiệu:', error);
+            alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
+        }
+    }
+
+    // --- HÀM ĐÓNG FORM (CHUNG) ---
+    function closeForm() {
+        // 1. Phình Bảng
+        listCol.classList.remove('col-md-8');
+        listCol.classList.add('col-md-12');
+
+        // 2. Ẩn Form
+        formCol.classList.remove('col-md-4');
+        formCol.classList.add('col-md-0');
+
+        // 3. Xoá class điểu khiển
+        mainRow.classList.remove('form-open');
+
+        // 4. Hiện lại nút "Thêm"
+        showAddFormBtn.style.display = 'block';
+    }
+
 });
 
 
 
-
-
-async function callApiAddNH() {
-    try {
-        const id = document.getElementById('add-id-input').value;
-        const ten = document.getElementById('add-ten-input').value;
-
-        if (!id || !ten) {
-            alert('Các trường "id" và "ten" là ten buộc!');
-            return;
-        }
-
-        const duLieu = {
-            Id: id,
-            Ten: ten
-        }
-
-        // Gửi request
-        const response = await fetch('/API/add-NH', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(duLieu)
-            // KHÔNG thêm Content-Type header
-        });
-
-        // Kiểm tra response
-        if (!response.ok) {
-            throw new Error(errorMessage);
-        }
-
-        const data = await response.json();
-        console.log(data);
-
-        // Hiển thị thông báo thành công
-        alert(data.message || 'Thêm nhãn hiệu thành công!');
-
-        closeForm();
-
-        return data;
-
-    } catch (error) {
-        alert('Lỗi: ' + error.message);
-    }
-}
-
-
-async function callApiGetNextIdNH() {
-    const dataToSend = {
-        prefix: "NH",
-        totalLength: 6
-    };
-    try {
-        const response = await fetch('/API/get-next-id-NH',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dataToSend)
-            });
-        const data = await response.json();
-        if (data) {
-            document.getElementById('add-id-input').value = data.nextId;
-        }
-        else {
-            alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
-        }
-    } catch (error) {
-        console.error('Lỗi khi lấy mã nhãn hiệu:', error);
-        alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
-    }
-}
-
-// --- HÀM ĐÓNG FORM (CHUNG) ---
-function closeForm() {
-    // 1. Phình Bảng
-    listCol.classList.remove('col-md-8');
-    listCol.classList.add('col-md-12');
-
-    // 2. Ẩn Form
-    formCol.classList.remove('col-md-4');
-    formCol.classList.add('col-md-0');
-
-    // 3. Xoá class điểu khiển
-    mainRow.classList.remove('form-open');
-
-    // 4. Hiện lại nút "Thêm"
-    showAddFormBtn.style.display = 'block';
-}
