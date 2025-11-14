@@ -183,5 +183,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 return null;
             }
         }
+
+        public async Task<byte[]> ConvertImageToByteArray(IFormFile file)
+        {
+            if (file.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    // Đọc nội dung của file vào memoryStream
+                    await file.CopyToAsync(memoryStream);
+
+                    // Chuyển đổi stream thành mảng byte
+                    return memoryStream.ToArray();
+                }
+            }
+            return null; // Trả về null nếu file không hợp lệ
+        }
     }
 }
