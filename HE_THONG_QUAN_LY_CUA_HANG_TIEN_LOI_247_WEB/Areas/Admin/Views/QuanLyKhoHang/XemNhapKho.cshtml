@@ -1,8 +1,9 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Nhập Kho";
+    var phieuNhap = ViewData["PhieuNhap"] as PhieuNhap;
+    var chiTietList = ViewData["ChiTietPhieuNhap"] as List<ChiTietPhieuNhap>;
 }
   <!-- Css riêng ở đây nha -->
   <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
@@ -18,13 +19,13 @@
     <div class="app-title">
       <div>
         <h1><i class="bi bi-file-earmark-text"></i> Chi Tiết Phiếu Nhập Kho</h1>
-        <p>Mã phiếu: PN20251108-001</p>
+        <p>Mã phiếu: @phieuNhap?.Id</p>
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item">Quản lý kho hàng</li>
-        <li class="breadcrumb-item active"> <a asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap">Danh sách phiếu nhập</a>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="XemNhapKho">Chi tiết phiếu nhập</a></li>
+        <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap">Danh sách phiếu nhập</a></li>
+        <li class="breadcrumb-item active">Chi tiết phiếu nhập</li>
       </ul>
     </div>
 
@@ -32,31 +33,22 @@
       <div class="col-md-12">
         <div class="tile" id="phieu-nhap-container">
           
-          <h3 class="tile-title">Thông tin Phiếu Nhập (PN20251108-001)</h3>
+          <h3 class="tile-title">Thông tin Phiếu Nhập (@phieuNhap?.Id)</h3>
           <div class="tile-body">
             <div class="row">
               <div class="col-md-4">
                 <label class="form-label">Nhà cung cấp</label>
-                <select class="form-control" id="select-nha-cung-cap" disabled>
-                  <option value="">-- Chọn nhà cung cấp --</option>
-                  <option value="NCC_VINAMILK" selected>CTCP Sữa Việt Nam (Vinamilk)</option>
-                  <option value="NCC_ORION">CT TNHH Orion Vina</option>
-                  <option value="NCC_PEPSI">Suntory Pepsico Việt Nam</option>
-                </select>
+                <input type="text" class="form-control" value="@phieuNhap?.NhaCungCap?.Ten" disabled />
               </div>
 
               <div class="col-md-4">
                 <label class="form-label">Nhân viên nhập</label>
-                <select class="form-control" id="select-nhan-vien" disabled>
-                  <option value="">-- Chọn nhân viên --</option>
-                  <option value="NV_001">Nguyễn Văn A (Quản lý)</option>
-                  <option value="NV_002" selected>Trần Thị B (Nhân viên kho)</option>
-                </select>
+                <input type="text" class="form-control" value="@phieuNhap?.NhanVien?.HoTen" disabled />
               </div>
               
               <div class="col-md-4">
                 <label class="form-label">Ngày nhập</label>
-                <input class="form-control" type="date" id="input-ngay-nhap" value="2025-11-08" disabled>
+                <input class="form-control" type="date" id="input-ngay-nhap" value="@phieuNhap?.NgayNhap.ToString("yyyy-MM-dd")" disabled>
               </div>
             </div>
           </div>
@@ -110,13 +102,31 @@
                   </tr>
                 </thead>
                 <tbody id="chi-tiet-phieu-nhap-body">
-                  </tbody>
+                  @if (chiTietList != null && chiTietList.Any())
+                  {
+                      foreach (var chiTiet in chiTietList)
+                      {
+                          var tenSanPham = chiTiet.SanPhamDonVi?.SanPham?.Ten ?? "N/A";
+                          var donVi = chiTiet.SanPhamDonVi?.DonVi?.Ten ?? "";
+                          var thanhTien = chiTiet.SoLuong * chiTiet.DonGia;
+                          
+                          <tr data-id="@chiTiet.SanPhamDonViId">
+                              <td>@tenSanPham (@donVi) - ID: @chiTiet.SanPhamDonViId</td>
+                              <td>@chiTiet.SoLuong</td>
+                              <td class="don-gia">@chiTiet.DonGia.ToString("N0")</td>
+                              <td>@chiTiet.HanSuDung.ToString("yyyy-MM-dd")</td>
+                              <td class="row-total" data-total="@thanhTien">@thanhTien.ToString("N0")</td>
+                              <td class="delete-column"><button class="btn btn-danger btn-sm remove-item-btn"><i class="bi bi-trash"></i></button></td>
+                          </tr>
+                      }
+                  }
+                </tbody>
               </table>
             </div>
             
             <div class="row mt-3">
               <div class="col-12 text-end">
-                <h3 class="fw-bold">Tổng Tiền: <span id="tong-tien-phieu-nhap" class="text-primary">0 đ</span></h3>
+                <h3 class="fw-bold">Tổng Tiền: <span id="tong-tien-phieu-nhap" class="text-primary">@phieuNhap?.TongTien.ToString("N0") đ</span></h3>
               </div>
             </div>
 
@@ -125,7 +135,7 @@
           <div class="tile-footer">
             <div class="d-flex justify-content-end">
               <div>
-                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuXuat" ><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
+                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap" ><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
                 
                 <button class="btn btn-warning" type="button" id="btn-edit">
                   <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa

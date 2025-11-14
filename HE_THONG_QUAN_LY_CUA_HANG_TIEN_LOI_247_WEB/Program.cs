@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IQuanLyServices, QuanLyServices>();
 builder.Services.AddScoped<IDashboardServices, DashboardServices>();
+builder.Services.AddScoped<ITonKhoServices, TonKhoServices>();
 
 var app = builder.Build();
 
