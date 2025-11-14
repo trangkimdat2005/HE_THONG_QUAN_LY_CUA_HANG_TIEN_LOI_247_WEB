@@ -52,9 +52,16 @@
                   <label class="form-label">Tên ca</label>
                   <select class="form-select">
                     <option value="">Tất cả các ca</option>
-                    <option value="CA_SANG">Ca Sáng</option>
-                    <option value="CA_CHIEU">Ca Chiều</option>
-                    <option value="CA_TOI">Ca Tối</option>
+                                @{
+                                    if (ViewData["lstCaLamViec"] != null)
+                                    {
+                                        List<CaLamViec> clvs = ViewBag.lstCaLamViec;
+                                        foreach(var clv in clvs)
+                                        {
+                                            <option value="">@clv.TenCa</option>
+                                        }
+                                    }
+                                }
                   </select>
                 </div>
                 <div class="col-md-3">
@@ -84,7 +91,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    @* <tr>
                       <td>02/11/2025</td>
                       <td>John Doe</td>
                       <td>Ca Sáng</td>
@@ -103,7 +110,33 @@
                           <i class="fas fa-trash-alt"></i>
                         </a>
                       </td>
-                    </tr>
+                    </tr> *@
+                                @{
+                                    if (ViewData["lstPhanCong"] != null)
+                                    {
+                                        List<PhanCongCaLamViec> pcs = ViewBag.lstPhanCong;
+                                        foreach (var pc in pcs)
+                                        {
+                                            <tr>
+                                                <td>@pc.Ngay</td>
+                                                <td>@pc.NhanVien.HoTen</td>
+                                                <td>@pc.CaLamViec.TenCa</td>
+                                                <td>@pc.CaLamViec.ThoiGianBatDau</td>
+                                                <td>@pc.CaLamViec.ThoiGianKetThuc</td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi "
+                                                       asp-controller="Sua" asp-action="SuaPhanCongCaLamViec"
+                                                       title="Sửa">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
        
              
                   </tbody>

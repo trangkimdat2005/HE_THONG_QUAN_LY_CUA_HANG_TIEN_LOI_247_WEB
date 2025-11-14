@@ -2,100 +2,172 @@
 
 @{
 
-    ViewData["title"] = "Danh Sách Tài Khoản";
+    ViewData["title"] = "Danh Sách quyền";
 }
   <!-- Main sidebar ở đây nha -->
+ <link href="~/assets/css/DanhSachRole.css" rel="stylesheet" >
 
 
 
 
-
-
-  
-  <main class="app-content">
+<main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-person-gear"></i> Quản lý Quyền</h1>
-        <p>Quản lý các vai trò (roles) và phân quyền (permissions)</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb side">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item">Quản lý bảo mật</li>
-        <li class="breadcrumb-item active"><a asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoan">Quản lý quyền</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-person-gear"></i> Quản lý Quyền</h1>
+            <p>Quản lý các vai trò và phân quyền</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Quản lý bảo mật</li>
+            <li class="breadcrumb-item active"><a href="#">Quản lý quyền</a></li>
+        </ul>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
-            <h3 class="title" style="margin-bottom: 0">Danh Sách Vai Trò</h3>
-                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemTaiKhoan">
-              <i class="fas fa-plus"></i> Thêm vai trò mới
-            </a>
-          </div>
+        <div class="col-lg-12" id="table-panel">
+            <div class="tile">
+                <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+                    <h3 class="title" style="margin-bottom: 0">Danh Sách Vai Trò</h3>
+                    <a class="btn btn-primary btn-add-khoi" href="#">
+                        <i class="fas fa-plus"></i> Thêm vai trò mới
+                    </a>
+                </div>
 
-          <div class="tile-body">
-            <div class="table-responsive">
-              <table class="table table-hover table-bordered" id="sampleTable">
-                <thead>
-                  <tr>
-                    <th>Mã Vai Trò</th>
-                    <th>Tên Vai Trò</th>
-                    <th>Mô Tả</th>
-                    <th>Trạng Thái</th>
-                    <th>Thao tác</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @* <tr>
-                    <td>ADMIN</td>
-                    <td>Quản trị viên</td>
-                    <td>Có toàn quyền truy cập hệ thống.</td>
-                    <td >
-                      <span class="badge bg-success">Hoạt động</span>
-                    </td>
-                    <td>
-                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan">
-                        <i class="fas fa-edit"></i>
-                      </a>
-                    </td>
-                  </tr> *@
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>Mã Vai Trò</th>
+                                    <th>Tên Vai Trò</th>
+                                    <th>Mô Tả</th>
+                                    <th>Trạng Thái</th>
+                                    <th class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @* <tr>
+                                    <td>SALE_STAFF</td>
+                                    <td>Nhân viên bán hàng</td>
+                                    <td>Chỉ truy cập các chức năng bán hàng và hóa đơn.</td>
+                                    <td>
+                                        <span class="badge bg-success">Hoạt động</span>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="#" title="Sửa"
+                                           data-code="SALE_STAFF"
+                                           data-ten="Nhân viên bán hàng"
+                                           data-mota="Chỉ truy cập các chức năng bán hàng và hóa đơn."
+                                           data-trangthai="Active">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </td>
+                                </tr> *@
                                 @{
                                     if (ViewData["lstRole"] != null)
                                     {
-                                        List<TaiKhoan> rls = ViewBag.lstTK;
-                                        foreach (var rl in rls)
+                                        List<Role> roles = ViewBag.lstRole;
+                                        foreach(var role in roles)
                                         {
+                                            bool isActive = string.Equals(role.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
                                             <tr>
-                                                <td>//none</td>
-                                                <td>Quản trị viên</td>
-                                                <td>Có toàn quyền truy cập hệ thống.</td>
+                                                <td>@role.Code</td>
+                                                <td>@role.Ten</td>
+                                                <td>@role.MoTa</td>
                                                 <td>
-                                                    <span class="badge bg-success">Hoạt động</span>
+                                                    @{
+                                                        if (isActive)
+                                                        {
+                                                            <span class="badge bg-success">@role.TrangThai</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-danger">@role.TrangThai</span>
+                                                        }
+                                                    }
                                                 </td>
                                                 <td>
-                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="Sua" asp-action="SuaTaiKhoan">
+                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="#" title="Sửa"
+                                                       data-code="@role.Code"
+                                                       data-ten="@role.Ten"
+                                                       data-mota="@role.MoTa"
+                                                       data-trangthai="@role.TrangThai">
                                                         <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                                        <i class="fas fa-trash-alt"></i>
                                                     </a>
                                                 </td>
                                             </tr>
                                         }
                                     }
                                 }
-
-                 
-                </tbody>
-              </table>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
+
+        <div class="col-lg-4" id="form-panel" style="display: none;">
+            <div class="tile">
+                <h3 class="tile-title" id="form-title">Thêm Vai Trò Mới</h3>
+                <div class="tile-body">
+                    <form id="role-form">
+                        <div class="mb-3">
+                            <label class="form-label" for="roleCode">Mã Vai Trò</label>
+                            <input class="form-control" id="roleCode" type="text" placeholder="Vd: SALE_MANAGER" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="roleName">Tên Vai Trò</label>
+                            <input class="form-control" id="roleName" type="text" placeholder="Vd: Quản lý bán hàng" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="roleDescription">Mô Tả</label>
+                            <textarea class="form-control" id="roleDescription" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3" id="field-chon-quyen">
+                            <label class="form-label">Gán Quyền</label>
+                            <select class="form-control" id="select-quyen" multiple="multiple" style="width: 100%;">
+                           
+                                @{
+                                    if (ViewData["lstPer"] != null)
+                                    {
+                                        List<Permission> pers = ViewBag.lstPer;
+                                        foreach (var per in pers)
+                                        {
+                                            <option value="ADMIN">@per.Ten (@per.Code)</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="roleStatus">Trạng Thái</label>
+                            <select class="form-select" id="roleStatus">
+                                <option value="Active">Hoạt động (Active)</option>
+                                <option value="Inactive">Không hoạt động (Inactive)</option>
+                            </select>
+                        </div>
+                        <div class="tile-footer">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-check-circle-fill me-2"></i>Lưu
+                            </button>
+                            <a class="btn btn-secondary" href="#" id="btn-cancel-form">
+                                <i class="bi bi-x-circle-fill me-2"></i>Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-  </main>
-
-
-
+</main>
+<script src="~/assets/js/DanhSachRole.js"></script>
 
 
 

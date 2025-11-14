@@ -1,5 +1,5 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
-
+@model HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang
 @{
 
     ViewData["title"] = "Sửa Thông Tin Khách Hàng";
@@ -20,8 +20,8 @@
 <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="bi bi-person-plus-fill"></i> Thêm Khách Hàng Mới</h1>
-        <p>Thêm thông tin khách hàng và tạo thẻ thành viên</p>
+        <h1><i class="bi bi-person-plus-fill"></i> Sửa Khách Hàng Mới</h1>
+        <p>Sửa thông tin khách hàng và sửa thẻ thành viên</p>
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
@@ -36,36 +36,76 @@
       <div class="col-md-6" id="membership-form-container">
         <div class="tile">
           <h3 class="tile-title">Thông tin Thẻ Thành Viên</h3>
-          <p>Dữ liệu sẽ được lưu vào bảng <strong>TheThanhVien</strong>.</p>
-          <div class="tile-body">
+          <p>Thông tin thẻ thành viên</p>
+                @{
+                    TheThanhVien ttv = null;
+                    if (ViewData["lstTTV"] != null)
+                    {
+                        List<TheThanhVien> ttvs = ViewBag.lstTTT;
+                        ttv = ttvs.FirstOrDefault(t => t.KhachHangId == Model.Id);
+                    }
+                    if (ttv == null)
+                    {
+                        <div class="tile-body">
 
-            <div class="mb-3">
-              <label class="form-label">Hạng thẻ</label>
-              <select class="form-select" id="select-hang-the">
-                <option value="Silver">Silver (Mặc định)</option>
-                <option value="Gold">Gold</option>
-                <option value="Platinum">Platinum</option>
-              </select>
-            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Hạng thẻ</label>
+                                <select class="form-select" id="select-hang-the">
+                                    <option value="Bronze">Bronze (Mặc định)</option>
+                                    <option value="Silver">Silver </option>
+                                    <option value="Gold">Gold</option>
+                                    <option value="Platinum">Platinum</option> 
 
-            <div class="mb-3">
-              <label class="form-label">Điểm tích luỹ ban đầu</label>
-              <input class="form-control" type="number" value="0">
-            </div>
+                                </select>
+                            </div>
 
-            <div class="mb-3">
-              <label class="form-label">Ngày cấp thẻ</label>
-              <input class="form-control" type="date" id="input-ngay-cap">
-            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Điểm tích luỹ ban đầu</label>
+                                <input class="form-control" type="number" value="0">
+                            </div>
 
-          </div>
+                            <div class="mb-3">
+                                <label class="form-label">Ngày cấp thẻ</label>
+                                <input class="form-control" type="date" id="input-ngay-cap">
+                            </div>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="tile-body">
+
+                            <div class="mb-3">
+                                <label class="form-label">Hạng thẻ</label>
+                                <select class="form-select" id="select-hang-the">
+                                    <option value="Bronze">Bronze (Mặc định)</option>
+                                    <option value="Silver">Silver </option>
+                                    <option value="Gold">Gold</option>
+                                    <option value="Platinum">Platinum</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Điểm tích luỹ ban đầu</label>
+                                <input class="form-control" type="number" value="0">
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Ngày cấp thẻ</label>
+                                <input class="form-control" type="date" id="input-ngay-cap">
+                            </div>
+
+                        </div>
+                    }
+
+                }
         </div>
       </div>
 
       <div class="col-md-6 mx-auto" id="customer-form-container">
         <div class="tile">
           <h3 class="tile-title">Thông tin Khách Hàng</h3>
-          <p>Dữ liệu sẽ được lưu vào bảng <strong>KhachHang</strong>.</p>
+          <p>Sửa thông tin khách hàng</strong>.</p>
           <div class="tile-body">
             
             <div class="avatar-upload-container">
@@ -77,48 +117,97 @@
 
             <div class="mb-3">
               <label class="form-label">Họ và tên</label>
-              <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn B">
+              <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn B" value="@Model.HoTen">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Giới tính</label>
-                <div>
+                @* <div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" checked>
-                    <label class="form-check-label" for="radioNam">Nam</label>
+                                <label class="form-check-label" for="radioNam">
+                                    Nam
+                                </label>
                   </div>
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu">
                     <label class="form-check-label" for="radioNu">Nữ</label>
                   </div>
-                </div>
+                </div> *@
+                        @{
+                            if (Model.GioiTinh)
+                            {
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" checked>
+                                        <label class="form-check-label" for="radioNam">
+                                            Nam
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu">
+                                        <label class="form-check-label" for="radioNu">Nữ</label>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" >
+                                        <label class="form-check-label" for="radioNam">
+                                            Nam
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu" checked>
+                                        <label class="form-check-label" for="radioNu">Nữ</label>
+                                    </div>
+                                </div>
+                            }
+
+                }
             </div>
 
             <div class="mb-3">
               <label class="form-label">Số điện thoại</label>
-              <input class="form-control" type="tel" placeholder="V.d: 091xxxx789">
+              <input class="form-control" type="tel" placeholder="V.d: 091xxxx789" value="@Model.SoDienThoai">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Email</label>
-              <input class="form-control" type="email" placeholder="V.d: v.b@email.com">
+              <input class="form-control" type="email" placeholder="V.d: v.b@email.com" value="@Model.Email">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Địa chỉ</label>
-              <input class="form-control" type="text" placeholder="V.d: 456 Lê Lợi, Q.3">
+              <input class="form-control" type="text" placeholder="V.d: 456 Lê Lợi, Q.3" value="@Model.DiaChi">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Ngày đăng ký</label>
-              <input class="form-control" type="date" id="input-ngay-dang-ky">
+              <input class="form-control" type="date" id="input-ngay-dang-ky" value="@Model.NgayDangKy.ToString("dd/MM/yyyy")">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Trạng thái</label>
               <select class="form-select" id="select-trang-thai">
-                <option value="Active">Active (Mặc định)</option>
-                <option value="Inactive">Inactive</option>
+                @* <option value="Active">Active (Mặc định)</option>
+                <option value="Inactive">Inactive</option> *@
+                            @{
+                                bool isActive = string.Equals(Model.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
+                                if (isActive)
+                                {
+                                    <option value="Active">Active (Mặc định)</option>
+                                    <option value="Inactive">Inactive</option>
+                                }
+                                else
+                                {
+                                    <option value="Inactive">Inactive</option>
+                                    <option value="Active">Active</option>
+
+                                }
+                            }
               </select>
             </div>
 
