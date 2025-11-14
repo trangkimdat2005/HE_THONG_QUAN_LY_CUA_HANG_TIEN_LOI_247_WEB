@@ -87,6 +87,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<NhanHieu>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
         }
 
+        [HttpPost("get-next-id-DM")]
+        public Task<IActionResult> GetNextIdDM([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<DanhMuc>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
+        [HttpPost("get-next-id-DV")]
+        public Task<IActionResult> GetNextIdDV([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<DonViDoLuong>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
         [HttpPost("add-SP")]
         public async Task<IActionResult> AddSanPham([FromForm] ProductFormData request)         
         {
@@ -120,6 +132,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 if (!_quanLySevices.Add<SanPham>(sanPham))
                 {
                     return BadRequest("không thể thêm sản phẩm");
+                }
+
+                foreach(string danhMucId in categories)
+                {
+                    SanPhamDanhMuc sanPhamDanhMuc = new SanPhamDanhMuc
+                    {
+                        SanPhamId = productId,
+                        DanhMucId = danhMucId,
+                        Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 8)
+                    };
+                    if (!_quanLySevices.Add<SanPhamDanhMuc>(sanPhamDanhMuc))
+                    {
+                        return BadRequest("không thể thêm sản phẩm danh mục");
+                    }
                 }
 
                 SanPhamDonVi sanPhamDonVi = new SanPhamDonVi
@@ -201,6 +227,57 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = $"Lỗi khi thêm nhãn hiệu: {ex.Message}" });
+            }
+
+        }
+
+
+        [HttpPost("add-DM")]
+        public async Task<IActionResult> AddDanhMuc([FromBody] DanhMuc danhMuc)
+        {
+            try
+            {
+                if (danhMuc.Id == null || danhMuc.Ten == null)
+                {
+                    return BadRequest("Dữ liệu không hợp lệ.");
+                }
+
+
+                if (_quanLySevices.Add<DanhMuc>(danhMuc))
+                {
+                    return Ok(new { message = "Thêm danh mục thành công!" });
+                }
+
+                return BadRequest("thêm danh mục thất bại");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm danh mục: {ex.Message}" });
+            }
+
+        }
+
+        [HttpPost("add-DV")]
+        public async Task<IActionResult> AddDonVi([FromBody] DonViDoLuong donViDoLuong)
+        {
+            try
+            {
+                if (donViDoLuong.Id == null || donViDoLuong.Ten == null || donViDoLuong.KyHieu == null)
+                {
+                    return BadRequest("Dữ liệu không hợp lệ.");
+                }
+
+
+                if (_quanLySevices.Add<DonViDoLuong>(donViDoLuong))
+                {
+                    return Ok(new { message = "Thêm đơn vị thành công!" });
+                }
+
+                return BadRequest("thêm đơn vị thất bại");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm đơn vị: {ex.Message}" });
             }
 
         }

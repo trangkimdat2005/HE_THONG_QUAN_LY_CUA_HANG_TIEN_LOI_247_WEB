@@ -52,22 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- HÀM ĐÓNG FORM (CHUNG) ---
-    function closeForm() {
-        // 1. Phình Bảng
-        listCol.classList.remove('col-md-8');
-        listCol.classList.add('col-md-12');
-
-        // 2. Ẩn Form
-        formCol.classList.remove('col-md-4');
-        formCol.classList.add('col-md-0');
-
-        // 3. Xoá class điểu khiển
-        mainRow.classList.remove('form-open');
-
-        // 4. Hiện lại nút "Thêm"
-        showAddFormBtn.style.display = 'block';
-    }
+    
 
     // --- GÁN SỰ KIỆN CHO NÚT "THÊM" ---
     showAddFormBtn.addEventListener('click', function (e) {
@@ -78,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addBtn.addEventListener('click', function () {
         callApiAddNH();
-        closeForm();
+        
     })
 
     // --- GÁN SỰ KIỆN CHO CÁC NÚT "HUỶ" ---
@@ -161,45 +146,20 @@ async function callApiAddNH() {
 
         // Kiểm tra response
         if (!response.ok) {
-            const contentType = response.headers.get("content-type");
-            let errorMessage = `HTTP error! Status: ${response.status}`;
-
-            console.log('Response content-type:', contentType);
-
-            if (contentType && contentType.includes("application/json")) {
-                const errorData = await response.json();
-                errorMessage = errorData.message || errorMessage;
-                console.error('===== ERROR RESPONSE (JSON) =====');
-                console.error(errorData);
-                console.error('=================================');
-            } else {
-                const errorText = await response.text();
-                console.error('===== ERROR RESPONSE (TEXT) =====');
-                console.error(errorText);
-                console.error('=================================');
-                errorMessage = errorText || errorMessage;
-            }
-
             throw new Error(errorMessage);
         }
 
         const data = await response.json();
-        console.log('===== SUCCESS RESPONSE =====');
         console.log(data);
-        console.log('============================');
 
         // Hiển thị thông báo thành công
         alert(data.message || 'Thêm nhãn hiệu thành công!');
 
-
+        closeForm();
 
         return data;
 
     } catch (error) {
-        console.error('===== EXCEPTION =====');
-        console.error('Message:', error.message);
-        console.error('Stack:', error.stack);
-        console.error('=====================');
         alert('Lỗi: ' + error.message);
     }
 }
@@ -228,4 +188,21 @@ async function callApiGetNextIdNH() {
         console.error('Lỗi khi lấy mã nhãn hiệu:', error);
         alert('Không thể lấy mã nhãn hiệu, vui lòng thử lại.');
     }
+}
+
+// --- HÀM ĐÓNG FORM (CHUNG) ---
+function closeForm() {
+    // 1. Phình Bảng
+    listCol.classList.remove('col-md-8');
+    listCol.classList.add('col-md-12');
+
+    // 2. Ẩn Form
+    formCol.classList.remove('col-md-4');
+    formCol.classList.add('col-md-0');
+
+    // 3. Xoá class điểu khiển
+    mainRow.classList.remove('form-open');
+
+    // 4. Hiện lại nút "Thêm"
+    showAddFormBtn.style.display = 'block';
 }

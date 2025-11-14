@@ -45,7 +45,7 @@
                                 @{
                                     if (ViewData["lstDonViDoLuong"] != null)
                                     {
-                                        List<DonViDoLuong> donVis = ViewData["lstDonViDoLuong"] as List<DonViDoLuong>;
+                                        List<DonViDoLuong> donVis = ViewBag.lstDonViDoLuong;
                                         if (donVis != null && donVis.Any())
                                         {
                                             foreach (DonViDoLuong dv in donVis)
