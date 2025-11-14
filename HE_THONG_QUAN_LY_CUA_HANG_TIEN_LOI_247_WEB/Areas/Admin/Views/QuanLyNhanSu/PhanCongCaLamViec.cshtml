@@ -1,5 +1,4 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
-
 @{
 
     ViewData["title"] = "Phân Công Ca Làm Việc";
@@ -125,7 +124,7 @@
                                                 <td>@pc.CaLamViec.ThoiGianKetThuc</td>
                                                 <td class="text-center">
                                                     <a class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                                                       asp-controller="Sua" asp-action="SuaPhanCongCaLamViec"
+                                                       asp-controller="Sua" asp-action="SuaPhanCongCaLamViec" asp-route-id="@pc"
                                                        title="Sửa">
                                                         <i class="fas fa-edit"></i>
                                                     </a>

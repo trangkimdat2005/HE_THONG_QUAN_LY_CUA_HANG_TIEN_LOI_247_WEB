@@ -59,28 +59,6 @@
                     </tr>
                   </thead>
                   <tbody>
-                    @* <tr>
-                      <td>NV001</td>
-                      <td>John Doe</td>
-                      <td>Quản lý</td>
-                      <td>0901234567</td>
-                      <td>john.doe@example.com</td>
-                      <td>01/01/2025</td>
-                      <td><span class="badge bg-success">Đang làm</span></td>
-                      <td class="text-center">
-                        <a
-                          class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                        
-                                           asp-controller="Sua" asp-action="SuaNhanSu"
-                          title="Sửa"
-                        >
-                          <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
-                          <i class="fas fa-trash-alt"></i>
-                        </a>
-                      </td>
-                    </tr> *@
                                 @{
                                     if (ViewData["lstNhanVien"] != null)
                                     {
@@ -109,7 +87,7 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <a class="btn btn-info btn-sm me-1 btn-edit-khoi "
-                                                       asp-controller="Sua" asp-action="SuaNhanSu"
+                                                       asp-controller="Sua" asp-action="SuaNhanSu" asp-route-id="@nv.Id"
                                                        title="Sửa">
                                                         <i class="fas fa-edit"></i>
                                                     </a>

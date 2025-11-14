@@ -1,5 +1,5 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
-
+@model HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.NhaCungCap
 @{
 
     ViewData["title"] = "Sửa Nhà Cung Cấp";
@@ -9,8 +9,6 @@
 
 
   <!-- Main sidebar ở đây nha -->
-
-
 
 
   <main class="app-content">
@@ -30,38 +28,38 @@
     <div class="row">
       <div class="col-md-8 mx-auto" id="customer-form-container">
         <div class="tile">
-          <h3 class="tile-title">Thông tin Nhà Cung Cấp (NCC001)</h3>
+          <h3 class="tile-title">Thông tin Nhà Cung Cấp</h3>
           <p>Dữ liệu sẽ được cập nhật vào bảng <strong>NhaCungCap</strong> .</p>
           <div class="tile-body">
             <form>
             <div class="mb-3">
-                <label class="form-label">Mã nhà cung cấp (id)</label>
-                <input class="form-control" type="text" value="NCC001" readonly>
+                <label class="form-label">Mã nhà cung cấp</label>
+                <input class="form-control" type="text" value="@Model.Id" readonly>
             </div>
 
               <div class="mb-3">
                 <label class="form-label">Tên nhà cung cấp</label>
-                <input class="form-control" type="text" value="Công ty Cổ phần Sữa Việt Nam (Vinamilk)" required>
+                <input class="form-control" type="text" value="@Model.Ten" required>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Số điện thoại</label>
-                <input class="form-control" type="tel" value="02854155555" required>
+                <input class="form-control" type="tel" value="@Model.SoDienThoai" required>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" value="info@vinamilk.com.vn" required>
+                <input class="form-control" type="email" value="@Model.Email" required>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Địa chỉ</label>
-                <textarea class="form-control" rows="3" required>Số 10, Tân Trào, P. Tân Phú, Q.7, TP. HCM</textarea>
+                <textarea class="form-control" rows="3" required>@Model.DiaChi</textarea>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Mã số thuế</label>
-                <input class="form-control" type="text" value="0300588569" required>
+                <input class="form-control" type="text" value="@Model.MaSoThue" required>
               </div>
 
             </form>
