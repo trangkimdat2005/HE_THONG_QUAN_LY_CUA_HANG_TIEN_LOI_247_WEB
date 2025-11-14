@@ -78,9 +78,13 @@
 												<td>@phieuXuat.Id</td>
 												<td>@phieuXuat.KhachHang.HoTen</td>
 												<td>@phieuXuat.NgayXuat.ToString("dd/MM/yyyy")</td>
-												<td>@phieuXuat.TongTien</td>
+												<td>@phieuXuat.TongTien.ToString("N0") VNĐ</td>
 												<td class="text-center">
-													<a class="btn btn-info btn-sm me-1 btn-edit-khoi " asp-controller="QuanLyKhoHang" asp-action="XemChiTietPhieuXuat" title="Xem chi tiết">
+													<a class="btn btn-info btn-sm me-1 btn-edit-khoi" 
+													   asp-controller="QuanLyKhoHang" 
+													   asp-action="XemChiTietPhieuXuat"
+													   asp-route-id="@phieuXuat.Id"
+													   title="Xem chi tiết">
 														<i class="fas fa-eye"></i>
 													</a>
 												</td>
@@ -98,6 +102,16 @@
 		</div>
 	</div>
 </main>
+
+
+
+
+
+
+
+
+
+
 
 
 

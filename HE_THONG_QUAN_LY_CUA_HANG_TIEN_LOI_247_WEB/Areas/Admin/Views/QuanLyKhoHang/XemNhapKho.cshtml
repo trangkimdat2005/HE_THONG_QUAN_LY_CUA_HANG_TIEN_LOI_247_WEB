@@ -1,163 +1,154 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-    ViewData["title"] = "Nhập Kho";
-    var phieuNhap = ViewData["PhieuNhap"] as PhieuNhap;
-    var chiTietList = ViewData["ChiTietPhieuNhap"] as List<ChiTietPhieuNhap>;
+	ViewData["title"] = "Nhập Kho";
+	var phieuNhap = ViewData["PhieuNhap"] as PhieuNhap;
+	var chiTietList = ViewData["ChiTietPhieuNhap"] as List<ChiTietPhieuNhap>;
 }
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/XemNhapKho.css">
+<!-- Css riêng ở đây nha -->
+<link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="~/assets/css/XemNhapKho.css">
 
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
-
-  <main class="app-content">
-    <div class="app-title">
-      <div>
-        <h1><i class="bi bi-file-earmark-text"></i> Chi Tiết Phiếu Nhập Kho</h1>
-        <p>Mã phiếu: @phieuNhap?.Id</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item">Quản lý kho hàng</li>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap">Danh sách phiếu nhập</a></li>
-        <li class="breadcrumb-item active">Chi tiết phiếu nhập</li>
-      </ul>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="tile" id="phieu-nhap-container">
-          
-          <h3 class="tile-title">Thông tin Phiếu Nhập (@phieuNhap?.Id)</h3>
-          <div class="tile-body">
-            <div class="row">
-              <div class="col-md-4">
-                <label class="form-label">Nhà cung cấp</label>
-                <input type="text" class="form-control" value="@phieuNhap?.NhaCungCap?.Ten" disabled />
-              </div>
-
-              <div class="col-md-4">
-                <label class="form-label">Nhân viên nhập</label>
-                <input type="text" class="form-control" value="@phieuNhap?.NhanVien?.HoTen" disabled />
-              </div>
-              
-              <div class="col-md-4">
-                <label class="form-label">Ngày nhập</label>
-                <input class="form-control" type="date" id="input-ngay-nhap" value="@phieuNhap?.NgayNhap.ToString("yyyy-MM-dd")" disabled>
-              </div>
-            </div>
-          </div>
-          
-          <hr>
-
-          <h3 class="tile-title">Chi Tiết Hàng Hoá Nhập</h3>
-          <div class="tile-body">
-            <div class="row mb-3" id="item-entry-form">
-              <div class="col-md-4">
-                <label class="form-label">Tìm sản phẩm</label>
-                <select class="form-control" id="select-san-pham">
-                  <option value="">-- Tìm theo tên hoặc mã --</option>
-                  <option value="SPDV_001" data-name="Sting Dâu (Chai 330ml)">Sting Dâu (Chai 330ml)</option>
-                  <option value="SPDV_002" data-name="Bánh Chocopie (Hộp 12 cái)">Bánh Chocopie (Hộp 12 cái)</option>
-                  <option value="SPDV_003" data-name="Pepsi Lon (Lon 330ml)">Pepsi Lon (Lon 330ml)</option>
-                  <option value="SPDV_004" data-name="Thùng Sting Dâu (24 Chai)">Thùng Sting Dâu (24 Chai)</option>
-                </select>
-              </div>
-              
-              <div class="col-md-2">
-                <label class="form-label">Số lượng</label>
-                <input class="form-control" type="number" id="input-so-luong" min="1" value="1">
-              </div>
-
-              <div class="col-md-2">
-                <label class="form-label">Đơn giá nhập</label>
-                <input class="form-control" type="number" id="input-don-gia" min="0">
-              </div>
-
-              <div class="col-md-2">
-                <label class="form-label">Hạn sử dụng</label>
-                <input class="form-control" type="date" id="input-hsd">
-              </div>
-
-              <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-primary" type="button" id="add-item-btn"><i class="bi bi-plus-lg"></i> Thêm vào phiếu</button>
-              </div>
-            </div>
-
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Sản phẩm</th>
-                    <th>Số lượng</th>
-                    <th>Đơn giá nhập</th>
-                    <th>Hạn sử dụng</th>
-                    <th>Thành tiền</th>
-                    <th class="delete-column" style="width: 50px;">Xoá</th>
-                  </tr>
-                </thead>
-                <tbody id="chi-tiet-phieu-nhap-body">
-                  @if (chiTietList != null && chiTietList.Any())
-                  {
-                      foreach (var chiTiet in chiTietList)
-                      {
-                          var tenSanPham = chiTiet.SanPhamDonVi?.SanPham?.Ten ?? "N/A";
-                          var donVi = chiTiet.SanPhamDonVi?.DonVi?.Ten ?? "";
-                          var thanhTien = chiTiet.SoLuong * chiTiet.DonGia;
-                          
-                          <tr data-id="@chiTiet.SanPhamDonViId">
-                              <td>@tenSanPham (@donVi) - ID: @chiTiet.SanPhamDonViId</td>
-                              <td>@chiTiet.SoLuong</td>
-                              <td class="don-gia">@chiTiet.DonGia.ToString("N0")</td>
-                              <td>@chiTiet.HanSuDung.ToString("yyyy-MM-dd")</td>
-                              <td class="row-total" data-total="@thanhTien">@thanhTien.ToString("N0")</td>
-                              <td class="delete-column"><button class="btn btn-danger btn-sm remove-item-btn"><i class="bi bi-trash"></i></button></td>
-                          </tr>
-                      }
-                  }
-                </tbody>
-              </table>
-            </div>
-            
-            <div class="row mt-3">
-              <div class="col-12 text-end">
-                <h3 class="fw-bold">Tổng Tiền: <span id="tong-tien-phieu-nhap" class="text-primary">@phieuNhap?.TongTien.ToString("N0") đ</span></h3>
-              </div>
-            </div>
-
-          </div>
-
-          <div class="tile-footer">
-            <div class="d-flex justify-content-end">
-              <div>
-                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap" ><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
-                
-                <button class="btn btn-warning" type="button" id="btn-edit">
-                  <i class="bi bi-pencil-square me-2"></i>Chỉnh sửa
-                </button>
-                
-                <button class="btn btn-primary" type="button" id="btn-save">
-                  <i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi
-                </button>
-                <button class="btn btn-primary" type="button" id="btn-print" onclick="window.print();">
-                  <i class="fas fa-print"></i> In
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+<!-- Main sidebar ở đây nha -->
 
 
 
 
 
-  <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/XemNhapKho.js" asp-append-version="true" defer></script>
+<main class="app-content">
+	<div class="app-title">
+		<div>
+			<h1><i class="bi bi-file-earmark-text"></i> Chi Tiết Phiếu Nhập Kho</h1>
+			<p>Mã phiếu: @phieuNhap?.Id</p>
+		</div>
+		<ul class="app-breadcrumb breadcrumb">
+			<li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+			<li class="breadcrumb-item">Quản lý kho hàng</li>
+			<li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap">Danh sách phiếu nhập</a></li>
+			<li class="breadcrumb-item active">Chi tiết phiếu nhập</li>
+		</ul>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="tile" id="phieu-nhap-container">
+
+				<h3 class="tile-title">Thông tin Phiếu Nhập: @phieuNhap?.Id</h3>
+				<div class="tile-body">
+					<div class="row">
+						<div class="col-md-4">
+							<label class="form-label">Nhà cung cấp</label>
+							<input type="text" class="form-control" value="@phieuNhap?.NhaCungCap?.Ten" disabled />
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label">Nhân viên nhập</label>
+							<input type="text" class="form-control" value="@phieuNhap?.NhanVien?.HoTen" disabled />
+						</div>
+
+						<div class="col-md-4">
+							<label class="form-label">Ngày nhập</label>
+							<input class="form-control" id="input-ngay-nhap" value="@phieuNhap?.NgayNhap.ToString("dd-MM-yyyy")" disabled>
+						</div>
+					</div>
+				</div>
+
+				<hr>
+
+				<h3 class="tile-title">Chi Tiết Hàng Hoá Nhập</h3>
+				<div class="tile-body">
+					<div class="row mb-3" id="item-entry-form">
+						
+
+						<div class="col-md-2">
+							<label class="form-label">Số lượng</label>
+							<input class="form-control" type="number" id="input-so-luong" min="1" value="1">
+						</div>
+
+						<div class="col-md-2">
+							<label class="form-label">Đơn giá nhập</label>
+							<input class="form-control" type="number" id="input-don-gia" min="0">
+						</div>
+
+						<div class="col-md-2">
+							<label class="form-label">Hạn sử dụng</label>
+							<input class="form-control" type="date" id="input-hsd">
+						</div>
+
+						<div class="col-md-2 d-flex align-items-end">
+							<button class="btn btn-primary" type="button" id="add-item-btn"><i class="bi bi-plus-lg"></i> Thêm vào phiếu</button>
+						</div>
+					</div>
+
+					<div class="table-responsive">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>Sản phẩm</th>
+									<th>Số lượng</th>
+									<th>Đơn giá nhập</th>
+									<th>Hạn sử dụng</th>
+									<th>Thành tiền</th>
+									<th class="delete-column" style="width: 50px;">Xoá</th>
+								</tr>
+							</thead>
+							<tbody id="chi-tiet-phieu-nhap-body">
+								@if (chiTietList != null && chiTietList.Any())
+								{
+									foreach (var chiTiet in chiTietList)
+									{
+										var tenSanPham = chiTiet.SanPhamDonVi?.SanPham?.Ten ?? "N/A";
+										var donVi = chiTiet.SanPhamDonVi?.DonVi?.Ten ?? "";
+										var thanhTien = chiTiet.SoLuong * chiTiet.DonGia;
+
+										<tr data-id="@chiTiet.SanPhamDonViId">
+											<td>@tenSanPham (@donVi) - ID: @chiTiet.SanPhamDonViId</td>
+											<td>@chiTiet.SoLuong</td>
+											<td class="don-gia">@chiTiet.DonGia.ToString("N0")</td>
+											<td>@chiTiet.HanSuDung.ToString("dd-MM-yyyy")</td>
+											<td class="row-total" data-total="@thanhTien">@thanhTien.ToString("N0")</td>
+											<td class="delete-column"><button class="btn btn-danger btn-sm remove-item-btn"><i class="bi bi-trash"></i></button></td>
+										</tr>
+									}
+								}
+							</tbody>
+						</table>
+					</div>
+
+					<div class="row mt-3">
+						<div class="col-12 text-end">
+							<h3 class="fw-bold">Tổng Tiền: <span id="tong-tien-phieu-nhap" class="text-primary">@phieuNhap?.TongTien.ToString("N0") đ</span></h3>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="tile-footer">
+					<div class="d-flex justify-content-end">
+						<div>
+							<a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap"><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
+
+							<button class="btn btn-warning" type="button" id="btn-edit">
+								<i class="bi bi-pencil-square me-2"></i>Chỉnh sửa
+							</button>
+
+							<button class="btn btn-primary" type="button" id="btn-save">
+								<i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi
+							</button>
+							<button class="btn btn-primary" type="button" id="btn-print" onclick="window.print();">
+								<i class="fas fa-print"></i> In
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+
+
+
+<!-- js riêng ở đây nha! -->
+<script src="~/assets/js/XemNhapKho.js" asp-append-version="true" defer></script>

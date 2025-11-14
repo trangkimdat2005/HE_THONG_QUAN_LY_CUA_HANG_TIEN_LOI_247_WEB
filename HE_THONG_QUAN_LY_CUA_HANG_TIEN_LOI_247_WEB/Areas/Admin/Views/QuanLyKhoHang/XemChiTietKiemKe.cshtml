@@ -1,120 +1,91 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Chi Tiết Kiểm Kê";
+
+    // Lấy dữ liệu từ ViewData
+    var phieuKiemKe = ViewData["PhieuKiemKe"] as KiemKe;
+    // Bỏ chiTietList
+
+    var pageTitle = "Chi Tiết Phiếu Kiểm Kê";
+    var pageSubtitle = "Thông tin chi tiết phiếu kiểm kê";
+    if (phieuKiemKe != null)
+    {
+        pageTitle = $"Chi Tiết Phiếu Kiểm Kê {phieuKiemKe.Id}";
+        pageSubtitle = $"Thông tin chi tiết của phiếu kiểm kê {phieuKiemKe.Id}";
+    }
 }
-  <!-- Css riêng ở đây nha -->
 <link rel="stylesheet" href="~/assets/css/XemChiTietKiemKe.css">
-
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
 
 <main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-clipboard-check"></i> Chi Tiết Phiếu Kiểm Kê</h1>
-        <p>Thông tin chi tiết của phiếu kiểm kê KK001</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item">Quản lý kho hàng</li>
-        <li class="breadcrumb-item active"><a asp-controller="QuanLyKhoHang" asp-action="KiemKeSanPham">Kiểm kê sản phẩm</a></li>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="XemChiTietKiemKe">Chi tiết</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-clipboard-check"></i> @pageTitle</h1>
+            <p>@pageSubtitle</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Quản lý kho hàng</li>
+            <li class="breadcrumb-item active"><a asp-controller="QuanLyKhoHang" asp-action="KiemKeSanPham">Kiểm kê sản phẩm</a></li>
+            <li class="breadcrumb-item"><a asp-controller="QuanLyKhoHang" asp-action="XemChiTietKiemKe">Chi tiết</a></li>
+        </ul>
     </div>
 
     <div class="row">
-      <div class="col-md-12">
-        <div class="tile">
-          
-          <h3 class="tile-title">Thông tin Phiếu Kiểm Kê (KK001)</h3>
-          <div class="tile-body">
-            <div class="row">
-              
-              <div class="col-md-4 info-group">
-                <label>Mã Phiếu Kiểm Kê (id)</label>
-                <p>KK001</p>
-              </div>
-              <div class="col-md-4 info-group">
-                <label>Ngày Kiểm Kê (ngayKiemKe)</label>
-                <p>01/11/2025</p>
-              </div>
-              <div class="col-md-4 info-group">
-                <label>Nhân Viên Thực Hiện (nhanVienId)</label>
-                <p>John Doe (NV001)</p>
-              </div>
-              
-            </div>
-          </div>
-          
-          <hr>
+        <div class="col-md-12">
+            <div class="tile">
 
-          <h3 class="tile-title">Chi Tiết Sản Phẩm Đã Kiểm Kê</h3>
-          <div class="tile-body">
-            <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Sản phẩm (sanPhamDonViID)</th>
-                    <th class="text-end">Tồn Hệ Thống (Từ TonKho)</th>
-                    <th class="text-end">Tồn Thực Tế (Đếm được)</th>
-                    <th class="text-end">Chênh Lệch</th>
-                    <th>Kết Quả (ketQua)</th>
-                  </tr>
-                </thead>
-                <tbody id="chi-tiet-kiem-ke-body">
-                  <tr>
-                    <td>1</td>
-                    <td>Sữa TH True Milk (Hộp 1L) (SPDV_005)</td>
-                    <td class="text-end">100</td>
-                    <td class="text-end">98</td>
-                    <td class="text-end chenh-lech-am">-2</td>
-                    <td>Lệch 2</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Thịt gà C.P (Khay 500g) (SPDV_006)</td>
-                    <td class="text-end">50</td>
-                    <td class="text-end">51</td>
-                    <td class="text-end chenh-lech-duong">+1</td>
-                    <td>Thừa 1</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Sting Dâu (Chai 330ml) (SPDV_001)</td>
-                    <td class="text-end">150</td>
-                    <td class="text-end">150</td>
-                    <td class="text-end chenh-lech-khop">0</td>
-                    <td>Khớp</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+                @if (phieuKiemKe != null)
+                {
+                    <h3 class="tile-title">Thông tin Phiếu Kiểm Kê: @phieuKiemKe.Id</h3>
+                    <div class="tile-body">
+                        <div class="row">
 
-          <div class="tile-footer">
-            <div class="d-flex justify-content-end">
-              <div>
-                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="KiemKeSanPham"><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
-                <button class="btn btn-primary" type="button" onclick="window.print();">
-                  <i class="bi bi-printer-fill me-2"></i>In Phiếu
-                </button>
-              </div>
+                            <div class="col-md-4 info-group">
+                                <label>Mã Phiếu Kiểm Kê</label>
+                                <p>@phieuKiemKe.Id</p>
+                            </div>
+                            <div class="col-md-4 info-group">
+                                <label>Ngày Kiểm Kê</label>
+                                <p>@phieuKiemKe.NgayKiemKe.ToString("dd/MM/yyyy")</p>
+                            </div>
+                            <div class="col-md-4 info-group">
+                                <label>Nhân Viên Thực Hiện</label>
+                                <p>@(phieuKiemKe.NhanVien?.HoTen ?? "N/A")</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h3 class="tile-title">Kết Quả Kiểm Kê</h3>
+                    <div class="tile-body">
+                        <div class="info-group">
+                            <label>Ghi Chú / Kết Quả Tóm Tắt</label>
+                            <p>@phieuKiemKe.KetQua</p>
+                        </div>
+                    </div>
+
+                    <div class="tile-footer">
+                        <div class="d-flex justify-content-end">
+                            <div>
+                                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="KiemKeSanPham"><i class="bi bi-x-circle-fill me-2"></i>Quay lại</a>
+                                <button class="btn btn-primary" type="button" onclick="window.print();">
+                                    <i class="bi bi-printer-fill me-2"></i>In Phiếu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Không tìm thấy dữ liệu cho phiếu kiểm kê này.
+                        <a asp-action="KiemKeSanPham" class="alert-link">Quay lại danh sách</a>.
+                    </div>
+                }
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </main>
-
-
-
-
-
-
-
+</main>
