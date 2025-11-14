@@ -2,7 +2,7 @@
 
 @{
 
-    ViewData["title"] = "Lịch Sử Bán";
+    ViewData["title"] = "Lịch Sử Giá Bán";
 }
   <!-- Main sidebar ở đây nha -->
 
@@ -37,6 +37,7 @@
                 >
                   <thead>
                     <tr>
+                      <th>Mã Lịch Sử</th>
                       <th>Tên Sản Phẩm</th>
                       <th>Đơn Vị Tính</th>
                       <th>Giá Bán</th>
@@ -45,15 +46,34 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>Thịt gà công nghiệp</td>
-                      <td>KG</td>
-                      <td>85,000 đ</td>
-                      <td>01/10/2025</td>
-                      <td>31/12/2025</td>
-                    </tr>
-
-                   
+                    @{
+                                    if (ViewData["lstLichSuGiaBan"] != null)
+                                    {
+                                        List<LichSuGiaBan> lichSus = ViewData["lstLichSuGiaBan"] as List<LichSuGiaBan>;
+                                        if (lichSus != null && lichSus.Any())
+                                        {
+                                            foreach (LichSuGiaBan ls in lichSus)
+                                            {
+                                                <tr>
+                                                    <td>@ls.Id</td>
+                                                    <td>
+                                                        <strong>@ls.SanPham.Ten</strong>
+                                                        <br />
+                                                        <small class="text-muted">Mã SP: @ls.SanPhamId</small>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-info">@ls.DonVi.Ten (@ls.DonVi.KyHieu)</span>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <strong class="text-success">@ls.GiaBan.ToString("N0") đ</strong>
+                                                    </td>
+                                                    <td>@ls.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                                                    <td>@ls.NgayKetThuc.ToString("dd/MM/yyyy")</td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
                   </tbody>
                 </table>
               </div>
