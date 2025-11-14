@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 //builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Scoped);
 
 builder.Services.AddScoped<IQuanLyServices, QuanLyServices>();
+builder.Services.AddScoped<IDashboardServices, DashboardServices>();
 
 var app = builder.Build();
 

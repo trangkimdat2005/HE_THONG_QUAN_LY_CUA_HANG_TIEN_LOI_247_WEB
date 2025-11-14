@@ -1,45 +1,24 @@
-﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
-using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class QuanLyBarCodeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IQuanLyServices _quanLySevices;
 
-        public QuanLyBarCodeController(ApplicationDbContext context)
+        public QuanLyBarCodeController(IQuanLyServices quanLySevices)
         {
-            _context = context;
+            _quanLySevices = quanLySevices;
         }
 
         [Route("/QuanLyBarCode/DanhSachTemNhan")]
         public IActionResult DanhSachTemNhan()
         {
-            // Lấy danh sách tem nhãn với thông tin liên quan
-            var lstTemNhan = _context.TemNhans
-                .Where(t => !t.IsDelete)
-                .Include(t => t.MaDinhDanh)
-                    .ThenInclude(m => m.SanPhamDonVi)
-                        .ThenInclude(sp => sp.SanPham)
-                .Include(t => t.MaDinhDanh)
-                    .ThenInclude(m => m.SanPhamDonVi)
-                        .ThenInclude(sp => sp.DonVi)
-                .OrderByDescending(t => t.NgayIn)
-                .AsNoTracking()
-                .ToList();
-
-            // Lấy danh sách mã định danh để chọn khi tạo tem mới
-            var lstMaDinhDanh = _context.MaDinhDanhSanPhams
-                .Where(m => !m.IsDelete)
-                .Include(m => m.SanPhamDonVi)
-                    .ThenInclude(sp => sp.SanPham)
-                .Include(m => m.SanPhamDonVi)
-                    .ThenInclude(sp => sp.DonVi)
-                .AsNoTracking()
-                .ToList();
+            var lstTemNhan = _quanLySevices.GetList<TemNhan>();
+            var lstMaDinhDanh = _quanLySevices.GetList<MaDinhDanhSanPham>();
 
             ViewData["lstTemNhan"] = lstTemNhan;
             ViewData["lstMaDinhDanh"] = lstMaDinhDanh;
@@ -50,25 +29,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyBarCode/DinhDanhSanPham")]
         public IActionResult DinhDanhSanPham()
         {
-            // Lấy danh sách mã định danh sản phẩm
-            var lstMaDinhDanh = _context.MaDinhDanhSanPhams
-                .Where(m => !m.IsDelete)
-                .Include(m => m.SanPhamDonVi)
-                    .ThenInclude(sp => sp.SanPham)
-                .Include(m => m.SanPhamDonVi)
-                    .ThenInclude(sp => sp.DonVi)
-                .OrderBy(m => m.SanPhamDonVi.SanPham.Ten)
-                .AsNoTracking()
-                .ToList();
-
-            // Lấy danh sách sản phẩm đơn vị để chọn khi tạo mã mới
-            var lstSanPhamDonVi = _context.SanPhamDonVis
-                .Where(sp => !sp.IsDelete)
-                .Include(sp => sp.SanPham)
-                .Include(sp => sp.DonVi)
-                .OrderBy(sp => sp.SanPham.Ten)
-                .AsNoTracking()
-                .ToList();
+            var lstMaDinhDanh = _quanLySevices.GetList<MaDinhDanhSanPham>();
+            var lstSanPhamDonVi = _quanLySevices.GetList<SanPhamDonVi>();
 
             ViewData["lstMaDinhDanh"] = lstMaDinhDanh;
             ViewData["lstSanPhamDonVi"] = lstSanPhamDonVi;

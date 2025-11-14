@@ -35,47 +35,49 @@
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Đơn Vị Tính</th>
+                    <th>Mã Định Danh</th>
+                    <th>Sản Phẩm Đơn Vị ID</th>
                     <th>Loại Mã</th>
-                    <th>Mã Code (Dạng chữ)</th>
-                    <th>Hình Ảnh</th>
+                    <th>Mã Code</th>
+                    <th>Đường Dẫn</th>
                     <th>Thao tác</th>
                   </tr>
                 </thead>
                 <tbody>
                   @{
-                    var lstMaDinhDanh = ViewData["lstMaDinhDanh"] as List<MaDinhDanhSanPham>;
-                    if (lstMaDinhDanh != null && lstMaDinhDanh.Any())
+                    if (ViewData["lstMaDinhDanh"] != null)
                     {
-                      foreach (var mdd in lstMaDinhDanh)
+                      List<MaDinhDanhSanPham> maDinhDanhs = ViewData["lstMaDinhDanh"] as List<MaDinhDanhSanPham>;
+                      foreach (MaDinhDanhSanPham mdd in maDinhDanhs)
                       {
                         <tr data-id="@mdd.Id" 
                             data-san-pham-don-vi-id="@mdd.SanPhamDonViId" 
                             data-loai-ma="@mdd.LoaiMa"
                             data-ma-code="@mdd.MaCode" 
-                            data-duong-dan="@mdd.DuongDan"
-                            data-ten-sp="@mdd.SanPhamDonVi?.SanPham?.Ten">
-                          <td>@mdd.SanPhamDonVi?.SanPham?.Ten</td>
-                          <td>@mdd.SanPhamDonVi?.DonVi?.Ten</td>
-                          <td>@mdd.LoaiMa</td>
+                            data-duong-dan="@mdd.DuongDan">
+                          <td>@mdd.Id</td>
+                          <td>@mdd.SanPhamDonViId</td>
+                          <td>
+                            <span class="badge @(mdd.LoaiMa == "QR" ? "bg-info" : "bg-primary")">
+                              @mdd.LoaiMa
+                            </span>
+                          </td>
                           <td>@mdd.MaCode</td>
                           <td>
                             @if (!string.IsNullOrEmpty(mdd.DuongDan))
                             {
-                              var imageStyle = mdd.LoaiMa == "QR" ? "height: 40px; width: 40px" : "height: 40px; width: 100px; object-fit: cover";
-                              <img src="@mdd.DuongDan" alt="@mdd.LoaiMa" style="@imageStyle" />
+                              <small>@mdd.DuongDan</small>
                             }
                             else
                             {
-                              <span class="text-muted">Chưa có ảnh</span>
+                              <span class="text-muted">Chưa có</span>
                             }
                           </td>
                           <td class="text-center">
-                            <a class="btn btn-info btn-sm me-1 btn-edit" href="#" title="Sửa">
+                            <a class="btn btn-info btn-sm me-1 btn-edit" title="Sửa">
                               <i class="fas fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                            <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" data-id="@mdd.Id" title="Xóa">
                               <i class="fas fa-trash-alt"></i>
                             </a>
                           </td>
@@ -112,12 +114,12 @@
                 <select class="form-control" id="form-select-sanpham" style="width: 100%;">
                   <option value="">-- Chọn sản phẩm & đơn vị --</option>
                   @{
-                    var lstSanPhamDonVi = ViewData["lstSanPhamDonVi"] as List<SanPhamDonVi>;
-                    if (lstSanPhamDonVi != null)
+                    if (ViewData["lstSanPhamDonVi"] != null)
                     {
-                      foreach (var sp in lstSanPhamDonVi)
+                      List<SanPhamDonVi> sanPhamDonVis = ViewData["lstSanPhamDonVi"] as List<SanPhamDonVi>;
+                      foreach (SanPhamDonVi sp in sanPhamDonVis)
                       {
-                        <option value="@sp.Id">@sp.SanPham?.Ten (@sp.DonVi?.Ten)</option>
+                        <option value="@sp.Id">@sp.Id</option>
                       }
                     }
                   }

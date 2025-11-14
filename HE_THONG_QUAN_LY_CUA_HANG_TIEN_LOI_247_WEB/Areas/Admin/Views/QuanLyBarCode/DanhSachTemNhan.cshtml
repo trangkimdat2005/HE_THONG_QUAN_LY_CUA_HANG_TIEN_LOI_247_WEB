@@ -35,9 +35,8 @@
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Đơn Vị Tính</th>
-                    <th>Mã Code (Định danh)</th>
+                    <th>Mã Tem</th>
+                    <th>Mã Định Danh</th>
                     <th>Nội Dung Tem</th>
                     <th>Ngày In</th>
                     <th>Thao tác</th>
@@ -45,31 +44,24 @@
                 </thead>
                 <tbody>
                   @{
-                    var lstTemNhan = ViewData["lstTemNhan"] as List<TemNhan>;
-                    if (lstTemNhan != null && lstTemNhan.Any())
+                    if (ViewData["lstTemNhan"] != null)
                     {
-                      foreach (var tem in lstTemNhan)
+                      List<TemNhan> temNhans = ViewData["lstTemNhan"] as List<TemNhan>;
+                      foreach (TemNhan tem in temNhans)
                       {
-                        var maDinhDanh = tem.MaDinhDanh;
-                        var sanPham = maDinhDanh?.SanPhamDonVi?.SanPham;
-                        var donVi = maDinhDanh?.SanPhamDonVi?.DonVi;
-
                         <tr data-id="@tem.Id" 
                             data-ma-dinh-danh-id="@tem.MaDinhDanhId" 
                             data-noi-dung="@tem.NoiDungTem" 
-                            data-ngay-in="@tem.NgayIn.ToString("yyyy-MM-dd")"
-                            data-image-url="@maDinhDanh?.DuongDan"
-                            data-ma-code="@maDinhDanh?.MaCode">
-                          <td>@sanPham?.Ten</td>
-                          <td>@donVi?.Ten</td>
-                          <td>@maDinhDanh?.MaCode</td>
+                            data-ngay-in="@tem.NgayIn.ToString("yyyy-MM-dd")">
+                          <td>@tem.Id</td>
+                          <td>@tem.MaDinhDanhId</td>
                           <td>@tem.NoiDungTem</td>
                           <td>@tem.NgayIn.ToString("dd/MM/yyyy")</td>
                           <td class="text-center">
-                            <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa mẫu tem">
+                            <a class="btn btn-info btn-sm me-1 btn-edit-khoi" title="Sửa">
                               <i class="fas fa-edit"></i>
                             </a>
-                            <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                            <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" data-id="@tem.Id" title="Xóa">
                               <i class="fas fa-trash-alt"></i>
                             </a>
                           </td>
@@ -106,16 +98,14 @@
                 <select class="form-control" id="form-select-identifier" style="width: 100%;">
                   <option value="">-- Chọn mã định danh --</option>
                   @{
-                    var lstMaDinhDanh = ViewData["lstMaDinhDanh"] as List<MaDinhDanhSanPham>;
-                    if (lstMaDinhDanh != null)
+                    if (ViewData["lstMaDinhDanh"] != null)
                     {
-                      foreach (var mdd in lstMaDinhDanh)
+                      List<MaDinhDanhSanPham> maDinhDanhs = ViewData["lstMaDinhDanh"] as List<MaDinhDanhSanPham>;
+                      foreach (MaDinhDanhSanPham mdd in maDinhDanhs)
                       {
-                        var sanPhamTen = mdd.SanPhamDonVi?.SanPham?.Ten;
                         <option value="@mdd.Id" 
-                                data-image-url="@mdd.DuongDan" 
                                 data-ma-code="@mdd.MaCode">
-                          @mdd.MaCode (@sanPhamTen)
+                          @mdd.MaCode - @mdd.SanPhamDonViId
                         </option>
                       }
                     }
