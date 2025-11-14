@@ -37,6 +37,14 @@ $(function () {
     // --- 3. LOGIC XỬ LÝ NHIỀU ẢNH ---
     let dt = new DataTransfer();
 
+
+
+
+   
+
+
+
+
     // Hàm vẽ lại vùng preview ảnh
     function renderPreview() {
         imagesPreviewContainer.empty();
@@ -127,6 +135,17 @@ $(function () {
             $('#form-select-nhan-hieu').prop('disabled', false).trigger('change');
             $('#form-select-don-vi').prop('disabled', false).trigger('change');
             $('#form-select-danh-muc').prop('disabled', false).trigger('change');
+
+
+
+
+
+
+
+
+
+
+
         }
         else {
             inputId.val(data.id);
@@ -227,38 +246,87 @@ $(function () {
     btnSubmit.on('click', function (e) {
         e.preventDefault();
         if (!$('#form-product-name').val().trim()) { alert('Nhập tên SP!'); return; }
+        callApiAddSP();
         alert('Đã lưu! (Xem console để thấy file ảnh)');
         console.log(dt.files);
         closeForm();
     });
-});
-
-
-
-
-
-//Sự kiện Trang Kim Đạt làm
-
-document.addEventListener('DOMContentLoaded', function () {
-    var btnThem = document.getElementById('btn-submit');
-    var title = document.getElementById('form-title').value;
-    var productImages = document.getElementById('form-images-upload').files; // Dữ liệu hình ảnh
-    var productId = document.getElementById('form-product-id').value; // Mã sản phẩm
-    var productName = document.getElementById('form-product-name').value; // Tên sản phẩm
-    var brand = document.getElementById('form-select-nhan-hieu').value; // Nhãn hiệu
-    var categories = Array.from(document.getElementById('form-select-danh-muc').selectedOptions).map(option => option.value); // Danh mục
-    var unit = document.getElementById('form-select-don-vi').value; // Đơn vị cơ sở
-    var exchangeRate = document.querySelector('form-select-he-so-quy-doi').value; // Hệ số quy đổi
-    var price = document.getElementById('form-product-price').value; // Giá bán
-    var description = document.getElementById('form-product-description').value; // Mô tả sản phẩm
-    var status = document.querySelector('input[name="trangThaiSP"]:checked').value; // Trạng thái (ConHang, HetHang, NgungKinhDoanh)
-
-
+    //Sự kiện Trang Kim Đạt làm
 
 
     
 
+
+
 });
+
+$(function () {
+
+
+    
+});
+
+// Lấy dữ liệu từ form
+    const form = document.getElementById('product-form');
+
+    // Lấy các trường dữ liệu
+    const imagesUpload = document.getElementById('form-images-upload').files;  // Lấy các file ảnh được chọn
+    const productId = document.getElementById('form-product-id').value;  // Mã sản phẩm (id)
+    const productName = document.getElementById('form-product-name').value;  // Tên sản phẩm
+    const brand = document.getElementById('form-select-nhan-hieu').value;  // Nhãn hiệu
+    const categories = Array.from(document.getElementById('form-select-danh-muc').selectedOptions).map(option => option.value);  // Danh mục (có thể chọn nhiều)    
+    const unit = document.getElementById('form-select-don-vi').value;  // Đơn vị cơ sở
+    const conversionFactor = document.getElementById('form-select-he-so-quy-doi').value;  // Hệ số quy đổi
+    const price = document.getElementById('form-product-price').value;  // Giá bán
+    const description = document.getElementById('form-product-description').value;  // Mô tả sản phẩm
+    const status = document.querySelector('input[name="trangThaiSP"]:checked').value;  // Trạng thái (Còn hàng, Hết hàng, Ngừng kinh doanh)
+
+
+
+async function callApiAddSP() {
+    const formData = new FormData();
+
+    // Thêm các dữ liệu khác vào formData
+    formData.append('productId', productId);
+    formData.append('productName', productName);
+    formData.append('brand', brand);
+    formData.append('unit', unit);
+    formData.append('conversionFactor', conversionFactor);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('status', status);
+
+    // Thêm danh mục vào formData (danh mục có thể là một mảng)
+    categories.forEach((category, index) => {
+        formData.append(`categories[${index}]`, category);
+    });
+
+    // Thêm các ảnh vào formData
+    Array.from(imagesUpload).forEach((image, index) => {
+        formData.append(`imagesUpload[${index}]`, image);
+    });
+
+    console.log(formData);
+    // Gửi yêu cầu POST với dữ liệu formData
+    try {
+        const response = await fetch('/API/add-SP', {
+            method: 'POST',
+            body: formData // Không cần thiết lập Content-Type ở đây
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Sản phẩm đã được thêm:', data);
+    } catch (error) {
+        console.error('Lỗi khi thêm sản phẩm:', error);
+    }
+}
+
+
+
 
 
 async function callApiGetNextId() {

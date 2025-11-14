@@ -15,5 +15,7 @@
         bool SoftDelete<T>(T entity) where T : class;
 
         string GenerateNewId<T>(string prefix, int totalLength) where T : class;
+
+        Task<byte[]> ConvertImageToByteArray(IFormFile file);
     }
 }

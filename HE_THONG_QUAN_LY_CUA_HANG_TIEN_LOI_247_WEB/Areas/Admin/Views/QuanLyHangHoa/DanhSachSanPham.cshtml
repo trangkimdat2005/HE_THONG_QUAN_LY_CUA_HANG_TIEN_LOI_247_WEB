@@ -129,23 +129,34 @@
                         <div class="mb-3">
                             <label class="form-label">Nhãn hiệu</label>
                             <select class="form-control" id="form-select-nhan-hieu" style="width: 100%;">
-                                <option value="">-- Chọn nhãn hiệu --</option>
-                                <option value="NH_PEPSI">PepsiCo</option>
-                                <option value="NH_ORION">Orion</option>
-                                <option value="NH_VNM">Vinamilk</option>
-                                <option value="NH_TH">TH True Milk</option>
-                                <option value="NH_CP">CP Foods</option>
+                                @{
+                                    if (ViewData["lstNhanHieu"] != null)
+                                    {
+                                        List<NhanHieu> nhanHieus = ViewBag.lstNhanHieu;
+                                        foreach (NhanHieu nhanHieu in nhanHieus)
+                                        {
+                                            <option value="@nhanHieu.Id">@nhanHieu.Ten</option>
+                                        }
+                                    }
+
+                                }
                             </select>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">Danh mục</label>
                             <select class="form-control" id="form-select-danh-muc" multiple="multiple" style="width: 100%;">
-                                <option value="DM_DU">Đồ uống</option>
-                                <option value="DM_AN">Đồ ăn nhanh</option>
-                                <option value="DM_SUA">Sản phẩm từ sữa</option>
-                                <option value="DM_TP">Thực phẩm</option>
-                                <option value="DM_HS">Hải sản</option>
+                                @{
+                                    if (ViewData["lstDanhMuc"] != null)
+                                    {
+                                        List<DanhMuc> danhMucs = ViewBag.lstDanhMuc;
+                                        foreach (DanhMuc danhMuc in danhMucs)
+                                        {
+                                            <option value="@danhMuc.Id">@danhMuc.Ten</option>
+                                        }
+                                    }
+
+                                }
                             </select>
                         </div>
 
@@ -154,13 +165,16 @@
                                 <div class="mb-3">
                                     <label class="form-label">Đơn vị cơ sở</label>
                                     <select class="form-control" id="form-select-don-vi" style="width: 100%;">
-                                        <option value="DV_CHAI">Chai</option>
-                                        <option value="DV_LON">Lon</option>
-                                        <option value="DV_GOI">Gói</option>
-                                        <option value="DV_HOP">Hộp</option>
-                                        <option value="DV_LOC">Lốc</option>
-                                        <option value="DV_KG">KG</option>
-                                        <option value="DV_GRAM">Gram</option>
+                                        @{
+                                            if (ViewData["lstDonVi"] != null)
+                                            {
+                                                List<DonViDoLuong> donVis = ViewBag.lstDonVi;
+                                                foreach (DonViDoLuong donVi in donVis)
+                                                {
+                                                    <option value="@donVi.Id">@donVi.Ten</option>
+                                                }
+                                            }
+                                        }
                                     </select>
                                 </div>
                             </div>
