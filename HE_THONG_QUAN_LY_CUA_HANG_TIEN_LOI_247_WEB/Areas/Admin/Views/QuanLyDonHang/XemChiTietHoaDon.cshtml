@@ -38,15 +38,13 @@
               <div class="row info-section">
                 <div class="col-md-6">
                   <h5>Thông tin Khách hàng</h5>
-                  <p><strong>Tên Khách Hàng:</strong> @(hoaDon.KhachHang?.HoTen ?? "Khách lẻ")</p>
-                  <p><strong>Số Điện Thoại:</strong> @(hoaDon.KhachHang?.SoDienThoai ?? "(Không có)")</p>
-                  <p><strong>Email:</strong> @(hoaDon.KhachHang?.Email ?? "(Không có)")</p>
+                  <p><strong>Mã Khách Hàng:</strong> @hoaDon.KhachHangId</p>
                 </div>
                 <div class="col-md-6">
                   <h5>Thông tin Đơn hàng</h5>
                   <p><strong>Mã Hoá Đơn:</strong> @hoaDon.Id</p>
-                  <p><strong>Ngày Lập:</strong> @hoaDon.NgayLap.ToString("dd/MM/yyyy, HH:mm")</p>
-                  <p><strong>Nhân Viên Lập:</strong> @hoaDon.NhanVien?.HoTen (@hoaDon.NhanVienId)</p>
+                  <p><strong>Ngày Lập:</strong> @hoaDon.NgayLap.ToString("dd/MM/yyyy HH:mm")</p>
+                  <p><strong>Mã Nhân Viên:</strong> @hoaDon.NhanVienId</p>
                   <p>
                     <strong>Trạng Thái:</strong>
                     @{
@@ -64,78 +62,16 @@
               
               <hr>
 
-              <h3 class="tile-title">Chi Tiết Sản Phẩm</h3>
-              <div class="table-responsive">
-                <table class="table table-hover table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Sản Phẩm</th>
-                      <th>Số Lượng</th>
-                      <th>Đơn Giá</th>
-                      <th>Giảm Giá</th>
-                      <th>Thành Tiền</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @{
-                      decimal tamTinh = 0;
-                      decimal tongGiamGia = 0;
-
-                      if (hoaDon.ChiTietHoaDons != null && hoaDon.ChiTietHoaDons.Any())
-                      {
-                        foreach (var ct in hoaDon.ChiTietHoaDons.Where(c => !c.IsDelete))
-                        {
-                          var tenSanPham = ct.SanPhamDonVi?.SanPham?.Ten ?? "N/A";
-                          var tenDonVi = ct.SanPhamDonVi?.DonVi?.Ten ?? "";
-                          var thanhTien = ct.SoLuong * ct.DonGia;
-                          var giamGia = ct.GiamGia ?? 0;
-
-                          tamTinh += thanhTien;
-                          tongGiamGia += giamGia;
-
-                          <tr>
-                            <td>@tenSanPham @(!string.IsNullOrEmpty(tenDonVi) ? $"({tenDonVi})" : "")</td>
-                            <td>@ct.SoLuong</td>
-                            <td>@ct.DonGia.ToString("N0") đ</td>
-                            <td>@giamGia.ToString("N0") đ</td>
-                            <td>@thanhTien.ToString("N0") đ</td>
-                          </tr>
-                        }
-                      }
-                    }
-                  </tbody>
-                </table>
-              </div>
-              
-              <hr>
-
               <div class="row total-section">
-                <div class="col-md-6">
-                  <h5>Thông tin Thanh toán</h5>
-                  @{
-                    var giaoDich = hoaDon.GiaoDichThanhToans?.FirstOrDefault(gd => !gd.IsDelete);
-                    if (giaoDich != null)
-                    {
-                      <p><strong>Ngày Giao Dịch:</strong> @giaoDich.NgayGd.ToString("dd/MM/yyyy")</p>
-                      <p>
-                        <strong>Kênh Thanh Toán:</strong> 
-                        <span class="badge bg-info">@giaoDich.KenhThanhToan?.LoaiKenh</span> 
-                        (@giaoDich.KenhThanhToan?.TenKenh)
-                      </p>
-                      <p><strong>Mô Tả:</strong> @(giaoDich.MoTa ?? "Không có ghi chú")</p>
-                    }
-                    else
-                    {
-                      <p class="text-muted">Chưa có thông tin thanh toán</p>
-                    }
-                  }
+                <div class="col-md-12 text-end">
+                  <h3 class="fw-bold">Tổng Cộng: <span class="text-primary">@(hoaDon.TongTien?.ToString("N0") ?? "0") đ</span></h3>
                 </div>
-                <div class="col-md-6 text-end">
-                  <h4>Tạm tính: @tamTinh.ToString("N0") đ</h4>
-                  <h4>Giảm giá (Khuyến mãi): <span class="text-danger">- @tongGiamGia.ToString("N0") đ</span></h4>
-                  <hr>
-                  <h3 class="fw-bold">Tổng Cộng: <span class="text-primary">@hoaDon.TongTien?.ToString("N0") đ</span></h3>
-                </div>
+              </div>
+
+              <div class="mt-3">
+                <a class="btn btn-secondary" asp-controller="QuanLyDonHang" asp-action="DanhSachDonHang">
+                  <i class="fas fa-arrow-left"></i> Quay lại danh sách
+                </a>
               </div>
 
             </div>
@@ -151,6 +87,9 @@
             <i class="bi bi-exclamation-triangle me-2"></i>
             Không tìm thấy thông tin hóa đơn.
           </div>
+          <a class="btn btn-secondary" asp-controller="QuanLyDonHang" asp-action="DanhSachDonHang">
+            <i class="fas fa-arrow-left"></i> Quay lại danh sách
+          </a>
         </div>
       </div>
     }

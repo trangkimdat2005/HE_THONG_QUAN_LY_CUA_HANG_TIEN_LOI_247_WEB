@@ -1,16 +1,8 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Danh Sách Đơn Hàng";
 }
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
-
-
 
   <main class="app-content">
     <div class="app-title">
@@ -21,7 +13,7 @@
       <ul class="app-breadcrumb breadcrumb side">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
         <li class="breadcrumb-item active">
-          <a >Danh Sách Đơn Hàng</a>
+          <a>Danh Sách Đơn Hàng</a>
         </li>
       </ul>
     </div>
@@ -30,39 +22,14 @@
       <div class="col-md-12">
         <div class="tile">
           <div class="tile-body">
-            <div class="row mb-3">
-              <div class="col-md-3">
-                <label class="form-label">Từ ngày</label>
-                <input class="form-control" type="date" />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Đến ngày</label>
-                <input class="form-control" type="date" />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Trạng thái</label>
-                <select class="form-select">
-                  <option value="">Tất cả trạng thái</option>
-                  <option value="DaThanhToan">Đã Thanh Toán</option>
-                  <option value="ChuaThanhToan">Chưa Thanh Toán</option>
-                  <option value="Huy">Đã Hủy</option>
-                </select>
-              </div>
-              <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-primary btn-add-khoi" type="button">
-                  <i class="fas fa-filter"></i> Lọc
-                </button>
-              </div>
-            </div>
-
             <div class="table-responsive">
               <table class="table table-hover table-bordered" id="sampleTable">
                 <thead>
                   <tr>
                     <th>Mã Hóa Đơn</th>
                     <th>Ngày Lập</th>
-                    <th>Nhân Viên Lập</th>
-                    <th>Khách Hàng</th>
+                    <th>Mã Nhân Viên</th>
+                    <th>Mã Khách Hàng</th>
                     <th>Tổng Tiền</th>
                     <th>Trạng Thái</th>
                     <th>Thao tác</th>
@@ -70,10 +37,10 @@
                 </thead>
                 <tbody>
                   @{
-                    var lstHoaDon = ViewData["lstHoaDon"] as List<HoaDon>;
-                    if (lstHoaDon != null && lstHoaDon.Any())
+                    if (ViewData["lstHoaDon"] != null)
                     {
-                      foreach (var hd in lstHoaDon)
+                      List<HoaDon> hoaDons = ViewData["lstHoaDon"] as List<HoaDon>;
+                      foreach (HoaDon hd in hoaDons)
                       {
                         var statusClass = hd.TrangThai == "DaThanhToan" ? "bg-success" 
                                         : hd.TrangThai == "ChuaThanhToan" ? "bg-warning" 
@@ -84,14 +51,14 @@
 
                         <tr>
                           <td>@hd.Id</td>
-                          <td>@hd.NgayLap.ToString("dd/MM/yyyy, HH:mm")</td>
-                          <td>@hd.NhanVien?.HoTen</td>
-                          <td>@hd.KhachHang?.HoTen</td>
-                          <td>@hd.TongTien?.ToString("N0") đ</td>
-                          <td>
+                          <td>@hd.NgayLap.ToString("dd/MM/yyyy HH:mm")</td>
+                          <td>@hd.NhanVienId</td>
+                          <td>@hd.KhachHangId</td>
+                          <td class="text-end fw-bold">@(hd.TongTien?.ToString("N0") ?? "0") đ</td>
+                          <td class="text-center">
                             <span class="badge @statusClass">@statusText</span>
                           </td>
-                          <td>
+                          <td class="text-center">
                             <a class="btn btn-info btn-sm" 
                                asp-controller="QuanLyDonHang" 
                                asp-action="XemChiTietHoaDon" 

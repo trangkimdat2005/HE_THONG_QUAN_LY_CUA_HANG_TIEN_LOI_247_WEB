@@ -1,31 +1,23 @@
-﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
-using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class QuanLyDonHangController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IQuanLyServices _quanLySevices;
 
-        public QuanLyDonHangController(ApplicationDbContext context)
+        public QuanLyDonHangController(IQuanLyServices quanLySevices)
         {
-            _context = context;
+            _quanLySevices = quanLySevices;
         }
 
         [Route("/QuanLyDonHang/DanhSachDonHang")]
         public IActionResult DanhSachDonHang()
         {
-            // Lấy danh sách hóa đơn
-            var lstHoaDon = _context.HoaDons
-                .Where(hd => !hd.IsDelete)
-                .Include(hd => hd.NhanVien)
-                .Include(hd => hd.KhachHang)
-                .OrderByDescending(hd => hd.NgayLap)
-                .AsNoTracking()
-                .ToList();
+            var lstHoaDon = _quanLySevices.GetList<HoaDon>();
 
             ViewData["lstHoaDon"] = lstHoaDon;
 
@@ -35,21 +27,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyDonHang/XemChiTietHoaDon")]
         public IActionResult XemChiTietHoaDon(string id)
         {
-            // Lấy thông tin hóa đơn
-            var hoaDon = _context.HoaDons
-                .Where(hd => hd.Id == id && !hd.IsDelete)
-                .Include(hd => hd.NhanVien)
-                .Include(hd => hd.KhachHang)
-                .Include(hd => hd.ChiTietHoaDons)
-                    .ThenInclude(ct => ct.SanPhamDonVi)
-                        .ThenInclude(sp => sp.SanPham)
-                .Include(hd => hd.ChiTietHoaDons)
-                    .ThenInclude(ct => ct.SanPhamDonVi)
-                        .ThenInclude(sp => sp.DonVi)
-                .Include(hd => hd.GiaoDichThanhToans)
-                    .ThenInclude(gd => gd.KenhThanhToan)
-                .AsNoTracking()
-                .FirstOrDefault();
+            var hoaDon = _quanLySevices.GetById<HoaDon>(id);
 
             if (hoaDon == null)
             {

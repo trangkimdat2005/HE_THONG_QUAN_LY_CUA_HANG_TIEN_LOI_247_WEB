@@ -17,74 +17,12 @@
         </ul>
     </div>
 
-    <!-- Tồn kho hiện tại -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="tile">
-                <h3 class="tile-title">
-                    <i class="bi bi-clipboard-data"></i> Tồn Kho Hiện Tại (Top 20 Ít Nhất)
-                </h3>
-                <div class="tile-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-bordered">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên Sản Phẩm</th>
-                                    <th>Đơn Vị</th>
-                                    <th class="text-end">Số Lượng Tồn</th>
-                                    <th class="text-center">Trạng Thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @{
-                                    var tonKhoHienTai = ViewData["TonKhoHienTai"] as List<dynamic>;
-                                    if (tonKhoHienTai != null && tonKhoHienTai.Any())
-                                    {
-                                        int stt = 1;
-                                        foreach (var tk in tonKhoHienTai)
-                                        {
-                                            var cssClass = tk.SoLuongTon < 5 ? "table-danger" : 
-                                                          tk.SoLuongTon < 10 ? "table-warning" : "";
-                                            var badge = tk.SoLuongTon < 5 ? "bg-danger" : 
-                                                       tk.SoLuongTon < 10 ? "bg-warning" : "bg-success";
-                                            var status = tk.SoLuongTon < 5 ? "Nguy hiểm" : 
-                                                        tk.SoLuongTon < 10 ? "Cảnh báo" : "Ổn định";
-                                            
-
-                                            <tr class="@cssClass">
-                                                <td>@stt</td>
-                                                <td>@tk.TenSP</td>
-                                                <td>@tk.DonVi</td>
-                                                <td class="text-end fw-bold">@tk.SoLuongTon</td>
-                                                <td class="text-center">
-                                                    <span class="badge @badge">@status</span>
-                                                </td>
-                                            </tr>
-                                            stt++;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        <tr>
-                                            <td colspan="5" class="text-center text-muted">Không có dữ liệu tồn kho</td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lịch sử báo cáo -->
+    <!-- Danh sách báo cáo -->
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
                 <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
-                    <h3 class="title" style="margin-bottom: 0;">Lịch Sử Báo Cáo Tồn Kho</h3>
+                    <h3 class="title" style="margin-bottom: 0;">Danh Sách Báo Cáo Tồn Kho</h3>
                     <a class="btn btn-success" href="#">
                         <i class="fas fa-file-excel"></i> Xuất Excel
                     </a>
@@ -95,9 +33,9 @@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
+                                    <th>STT</th>
                                     <th>Mã Báo Cáo</th>
-                                    <th>Ngày Lập</th>
-                                    <th>Sản Phẩm</th>
+                                    <th>Mã Sản Phẩm Đơn Vị</th>
                                     <th class="text-end">Tồn Đầu Kỳ</th>
                                     <th class="text-end">Nhập Trong Kỳ</th>
                                     <th class="text-end">Xuất Trong Kỳ</th>
@@ -107,33 +45,33 @@
                             </thead>
                             <tbody>
                                 @{
-                                    var lstBaoCao = ViewData["lstBaoCao"] as List<BaoCaoTonKho>;
-                                    if (lstBaoCao != null && lstBaoCao.Any())
+                                    if (ViewData["lstBaoCaoTonKho"] != null)
                                     {
-                                        foreach (var bc in lstBaoCao)
+                                        List<BaoCaoTonKho> baoCaos = ViewData["lstBaoCaoTonKho"] as List<BaoCaoTonKho>;
+                                        int stt = 1;
+                                        foreach (BaoCaoTonKho bc in baoCaos)
                                         {
-                                            <tr>
-                                                <td>@bc.Id</td>
-                                                <td>@bc.BaoCao.NgayLap.ToString("dd/MM/yyyy")</td>
-                                                <td>@bc.SanPhamDonVi?.SanPham?.Ten</td>
+                                            var cssClass = bc.TonCuoiKy < 5 ? "table-danger" : 
+                                                          bc.TonCuoiKy < 10 ? "table-warning" : "";
+                                            
+
+                                            <tr class="@cssClass">
+                                                <td>@stt</td>
+                                                <td>@bc.BaoCaoId</td>
+                                                <td>@bc.SanPhamDonViId</td>
                                                 <td class="text-end">@bc.TonDauKy</td>
                                                 <td class="text-end text-success">+@bc.NhapTrongKy</td>
                                                 <td class="text-end text-danger">-@bc.XuatTrongKy</td>
                                                 <td class="text-end fw-bold">@bc.TonCuoiKy</td>
-                                                <td class="text-center">
-                                                    <a class="btn btn-success btn-sm" href="#" title="Tải về (Excel)">
+                                                <td class="text-center">                                          
+                                                    <a class="btn btn-success btn-sm" href="#" title="Tải về">
                                                         <i class="fas fa-download"></i>
                                                     </a>
                                                 </td>
                                             </tr>
+                                            stt++;
                                         }
                                     }
-                                    // else
-                                    // {
-                                    //     <tr>
-                                    //         <td colspan="8" class="text-center text-muted">Chưa có báo cáo nào</td>
-                                    //     </tr>
-                                    // }
                                 }
                             </tbody>
                         </table>
