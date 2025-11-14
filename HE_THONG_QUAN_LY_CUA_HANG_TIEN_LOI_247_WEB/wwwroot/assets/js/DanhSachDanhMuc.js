@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Nút Huỷ
     const cancelAddBtn = document.getElementById('cancel-add-form-btn');
     const cancelEditBtn = document.getElementById('cancel-edit-form-btn');
+    const addBtn = document.getElementById('btn-add');
 
     // Form Sửa
     const editIdInput = document.getElementById('edit-id-input');
@@ -50,28 +51,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // --- HÀM ĐÓNG FORM (CHUNG) ---
-    function closeForm() {
-        // 1. Phình Bảng
-        listCol.classList.remove('col-md-8');
-        listCol.classList.add('col-md-12');
-
-        // 2. Ẩn Form
-        formCol.classList.remove('col-md-4');
-        formCol.classList.add('col-md-0');
-
-        // 3. Xoá class điều khiển
-        mainRow.classList.remove('form-open');
-
-        // 4. Hiện lại nút "Thêm"
-        showAddFormBtn.style.display = 'block';
-    }
+    
 
     // --- GÁN SỰ KIỆN CHO NÚT "THÊM" ---
     showAddFormBtn.addEventListener('click', function (e) {
+        callApiGetNextIdDM()
         e.preventDefault();
         openForm('add');
     });
+
+    addBtn.addEventListener('click', function () {
+        callApiAddDM();
+    })
 
     // --- GÁN SỰ KIỆN CHO CÁC NÚT "HUỶ" ---
     cancelAddBtn.addEventListener('click', function (e) {
@@ -123,3 +114,91 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+
+
+
+async function callApiAddDM() {
+    try {
+        const id = document.getElementById('add-id-input').value;
+        const ten = document.getElementById('add-ten-input').value;
+
+        if (!id || !ten) {
+            alert('Các trường "id" và "ten" là bắt buộc!');
+            return;
+        }
+
+        const duLieu = {
+            Id: id,
+            Ten: ten
+        }
+
+        // Gửi request
+        const response = await fetch('/API/add-DM', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(duLieu)
+            // KHÔNG thêm Content-Type header
+        });
+
+        // Kiểm tra response
+        if (!response.ok) {
+            throw new Error(errorMessage);
+        }
+
+        alert(data.message || 'Thêm danh mục thành công!');
+
+        closeForm();
+
+        return data;
+
+    } catch (error) {
+        alert('Lỗi: ' + error.message);
+    }
+}
+
+
+async function callApiGetNextIdDM() {
+    const dataToSend = {
+        prefix: "DM",
+        totalLength: 6
+    };
+    try {
+        const response = await fetch('/API/get-next-id-DM',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend)
+            });
+        const data = await response.json();
+        if (data) {
+            document.getElementById('add-id-input').value = data.nextId;
+        }
+        else {
+            alert('Không thể lấy mã danh mục, vui lòng thử lại.');
+        }
+    } catch (error) {
+        console.error('Lỗi khi lấy mã danh mục:', error);
+        alert('Không thể lấy mã danh mục, vui lòng thử lại.');
+    }
+}
+
+
+
+
+// --- HÀM ĐÓNG FORM (CHUNG) ---
+function closeForm() {
+    // 1. Phình Bảng
+    listCol.classList.remove('col-md-8');
+    listCol.classList.add('col-md-12');
+
+    // 2. Ẩn Form
+    formCol.classList.remove('col-md-4');
+    formCol.classList.add('col-md-0');
+
+    // 3. Xoá class điều khiển
+    mainRow.classList.remove('form-open');
+
+    // 4. Hiện lại nút "Thêm"
+    showAddFormBtn.style.display = 'block';
+}
