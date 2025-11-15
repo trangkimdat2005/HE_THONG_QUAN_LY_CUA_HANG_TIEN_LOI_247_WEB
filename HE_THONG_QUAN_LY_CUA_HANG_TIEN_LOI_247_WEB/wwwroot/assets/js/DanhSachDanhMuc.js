@@ -52,7 +52,22 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    
+    // --- HÀM ĐÓNG FORM (CHUNG) ---
+    function closeForm() {
+        // 1. Phình Bảng
+        listCol.classList.remove('col-md-8');
+        listCol.classList.add('col-md-12');
+
+        // 2. Ẩn Form
+        formCol.classList.remove('col-md-4');
+        formCol.classList.add('col-md-0');
+
+        // 3. Xoá class điều khiển
+        mainRow.classList.remove('form-open');
+
+        // 4. Hiện lại nút "Thêm"
+        showAddFormBtn.style.display = 'block';
+    }
 
     // --- GÁN SỰ KIỆN CHO NÚT "THÊM" ---
     showAddFormBtn.addEventListener('click', function (e) {
@@ -120,25 +135,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+    
 
 
 
+    //$(".btn-edit-khoi").click(function () {
+    //    // Lấy dữ liệu từ thuộc tính data-id và data-ten
+    //    var id = $(this).data("id");
 
-        //$(".btn-edit-khoi").click(function () {
-        //    // Lấy dữ liệu từ thuộc tính data-id và data-ten
-        //    var id = $(this).data("id");
+    //    // Thực hiện công việc bạn muốn với dữ liệu này
+    //    console.log("ID:", id);
+    //    console.log("Tên:", ten);
 
-        //    // Thực hiện công việc bạn muốn với dữ liệu này
-        //    console.log("ID:", id);
-        //    console.log("Tên:", ten);
+    //    // Ví dụ: Hiển thị dữ liệu vào một form chỉnh sửa
+    //    $("#editFormId").val(id);
+    //    $("#editFormTen").val(ten);
 
-        //    // Ví dụ: Hiển thị dữ liệu vào một form chỉnh sửa
-        //    $("#editFormId").val(id);
-        //    $("#editFormTen").val(ten);
-
-        //    // Hoặc mở một modal để chỉnh sửa
-        //    $('#editModal').modal('show');
-        //});
+    //    // Hoặc mở một modal để chỉnh sửa
+    //    $('#editModal').modal('show');
+    //});
 
 
 
@@ -199,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(errorMessage);
             }
 
-            alert((data && data.message) || 'Xóa danh mục thành công!');
 
             // TODO: nếu m có hàm reload lại bảng thì gọi ở đây
             // loadDanhMuc();
@@ -238,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(errorMessage);
             }
 
-            alert(data.message || 'Sửa danh mục thành công!');
 
             closeForm();
 
@@ -278,7 +291,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(errorMessage);
             }
 
-            alert(data.message || 'Thêm danh mục thành công!');
 
             closeForm();
 
@@ -317,23 +329,40 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    // --- HÀM ĐÓNG FORM (CHUNG) ---
-    function closeForm() {
-        // 1. Phình Bảng
-        listCol.classList.remove('col-md-8');
-        listCol.classList.add('col-md-12');
+    
 
-        // 2. Ẩn Form
-        formCol.classList.remove('col-md-4');
-        formCol.classList.add('col-md-0');
+});
 
-        // 3. Xoá class điều khiển
-        mainRow.classList.remove('form-open');
-
-        // 4. Hiện lại nút "Thêm"
-        showAddFormBtn.style.display = 'block';
-    }
-
+$(async function () {
+    await appRealtimeList.initEntityTable({
+        key: 'DanhMuc',                  // key dùng cho SignalR: NotifyReloadAsync("DanhMuc")
+        apiUrl: '/API/get-all-DM',       // API lấy dữ liệu
+        tableId: 'sampleTable',
+        tbodyId: 'tbody-danh-muc',
+        buildRow: dm => {
+            // return 1 dòng <tr> cho DanhMuc
+            return `
+                        <tr>
+                            <td>${dm.id}</td>
+                            <td>${dm.ten}</td>
+                            <td>${dm.soSanPham}</td>
+                            <td class="text-center">
+                                <a class="btn btn-info btn-sm me-1 btn-edit-khoi"
+                                   href="#"
+                                   data-id="${dm.id}"
+                                   title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a class="btn btn-danger btn-sm btn-delete-khoi"
+                                   href="#"
+                                   data-id="${dm.id}"
+                                   title="Xóa">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </td>
+                        </tr>`;
+        }
+    });
 });
 
 
