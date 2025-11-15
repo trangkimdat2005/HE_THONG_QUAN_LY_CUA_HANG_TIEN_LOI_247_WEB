@@ -1,3 +1,4 @@
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseLazyLoadingProxies()
@@ -20,6 +22,7 @@ builder.Services.AddScoped<ITonKhoServices, TonKhoServices>();
 builder.Services.AddScoped<IGiaoDichThanhToanServices, GiaoDichThanhToanServices>();
 builder.Services.AddScoped<IPhieuDoiTraServices, PhieuDoiTraServices>();
 builder.Services.AddScoped<IChinhSachHoanTraServices, ChinhSachHoanTraServices>();
+builder.Services.AddScoped<IRealtimeNotifier, RealtimeNotifier>();
 
 var app = builder.Build();
 
@@ -30,6 +33,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.MapHub<ReloadHub>("/hubs/reload");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

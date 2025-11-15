@@ -2,19 +2,23 @@
 
   <PropertyGroup>
 	<TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Controllers\**" />
     <Compile Remove="Models\NewFolder\**" />
+    <Compile Remove="Services\NewFolder\**" />
     <Content Remove="Controllers\**" />
     <Content Remove="Models\NewFolder\**" />
+    <Content Remove="Services\NewFolder\**" />
     <EmbeddedResource Remove="Controllers\**" />
     <EmbeddedResource Remove="Models\NewFolder\**" />
+    <EmbeddedResource Remove="Services\NewFolder\**" />
     <None Remove="Controllers\**" />
     <None Remove="Models\NewFolder\**" />
+    <None Remove="Services\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -38,6 +38,7 @@
 
                 <div class="tile-body">
                     <div class="table-responsive">
+                        @* //thêm id="sampleTable" *@
                         <table class="table table-hover table-bordered" id="sampleTable">
                             <thead>
                                 <tr>
@@ -47,13 +48,15 @@
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
-                            @{
-                                if (ViewBag.lstDanhMuc != null)
-                                {
-                                    var danhSachDanhMuc = (List<DanhMuc>)ViewBag.lstDanhMuc;
-                                    foreach (var danhMuc in danhSachDanhMuc)
+                            @* thêm id="tbody-danh-muc"  xử lý bên js*@
+                            <tbody id="tbody-danh-muc">
+                                @* @{
+                                    if (ViewBag.lstDanhMuc != null)
                                     {
-                                        <tbody>
+                                        var danhSachDanhMuc = (List<DanhMuc>)ViewBag.lstDanhMuc;
+                                        foreach (var danhMuc in danhSachDanhMuc)
+                                        {
+
                                             <tr>
                                                 <td>@danhMuc.Id</td>
                                                 <td>@danhMuc.Ten</td>
@@ -62,17 +65,17 @@
                                                     <a class="btn btn-info btn-sm me-1 btn-edit-khoi " data-id="@danhMuc.Id" href="#" title="Sửa">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" data-id="@danhMuc.Id" href="#" title="Xóa">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </a>
                                                 </td>
                                             </tr>
 
-                                        </tbody>
+
+                                        }
                                     }
-                                }
-                            }
-                            
+                                } *@
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -123,7 +126,7 @@
                         </form>
                     </div>
                     <div class="tile-footer">
-                        <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+                        <button class="btn btn-primary" id="btn-edit" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
                         <a class="btn btn-secondary" href="#" id="cancel-edit-form-btn">
                             <i class="bi bi-x-circle-fill me-2"></i>Huỷ
                         </a>
