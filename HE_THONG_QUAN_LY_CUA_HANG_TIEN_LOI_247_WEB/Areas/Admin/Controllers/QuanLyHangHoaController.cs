@@ -339,6 +339,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             if (_quanLySevices.SoftDelete<DanhMuc>(danhMuc))
             {
+                //tên NotifyReloadAsync("DanhMuc") = key: 'DanhMuc'(bên js)
                 await _notifier.NotifyReloadAsync("DanhMuc");
 
                 return Ok(new { message = "Xóa thành công!" });

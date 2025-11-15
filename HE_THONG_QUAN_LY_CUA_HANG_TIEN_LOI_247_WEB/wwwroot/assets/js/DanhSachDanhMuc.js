@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-
+    //hàm chèn dữ liệu vào form mới(vd: khi xem chi tiết....)
 
     document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit-khoi');
@@ -332,6 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
 });
+
 
 $(async function () {
     await appRealtimeList.initEntityTable({
