@@ -1,82 +1,206 @@
-
 $(document).ready(function () {
-    // ================== PHẦN 1: XỬ LÝ CHO BẢNG SẢN PHẨM TẠI VỊ TRÍ ==================
     let currentRowSPVT = null;
+    let currentSanPhamDonViId = null;
+    let currentViTriId = null;
 
+    // ================== XỬ LÝ BẢNG SẢN PHẨM VỊ TRÍ ==================
     $(document).on('click', '.btn-edit-sp-vt', function () {
         currentRowSPVT = $(this).closest('tr');
-        let tenSP = currentRowSPVT.find('td:eq(0)').text();
-        let maViTri = currentRowSPVT.find('td:eq(2)').text();
-        let soLuong = currentRowSPVT.find('td:eq(4)').text();
+        
+        // Lấy dữ liệu từ row
+        let tenSP = currentRowSPVT.find('td:eq(0)').text().trim();
+        let maViTriCu = currentRowSPVT.find('td:eq(2)').text().trim();
+        let soLuong = currentRowSPVT.find('td:eq(4)').text().trim();
+        
+        // Lưu ID sản phẩm và vị trí (cần được render từ server)
+        currentSanPhamDonViId = currentRowSPVT.data('sanpham-id');
+        currentViTriId = currentRowSPVT.data('vitri-id');
+        
+        console.log('Editing:', { currentSanPhamDonViId, currentViTriId, soLuong });
 
-        // Điền dữ liệu vào Modal 1
         $('#sp-vt-ten').text(tenSP);
-        $('#sp-vt-ma-cu').val(maViTri);
-        $('#sp-vt-ma-moi').val(maViTri); // Mặc định chọn vị trí hiện tại
+        $('#sp-vt-ma-cu').val(maViTriCu);
+        $('#sp-vt-ma-moi').val(currentViTriId); 
         $('#sp-vt-so-luong').val(soLuong);
 
         $('#modalSuaSanPhamViTri').modal('show');
     });
 
-    $('#btn-luu-sp-vt').click(function () {
-        if (currentRowSPVT) {
-            let viTriMoi = $('#sp-vt-ma-moi').val();
-            let soLuongMoi = $('#sp-vt-so-luong').val();
-            // Lấy text của loại vị trí tương ứng với mã mới chọn (cần xử lý thêm nếu muốn chuẩn xác)
-            let loaiViTriMoiText = $("#sp-vt-ma-moi option:selected").text().includes("Kho") ? "Kho" : "Trưng bày";
+    $('#btn-luu-sp-vt').click(async function () {
+        if (!currentSanPhamDonViId || !currentViTriId) {
+            alert('Không tìm thấy thông tin sản phẩm!');
+            return;
+        }
 
-            currentRowSPVT.find('td:eq(2)').text(viTriMoi);
-            currentRowSPVT.find('td:eq(3)').text(loaiViTriMoiText); // Cập nhật tạm loại vị trí
-            currentRowSPVT.find('td:eq(4)').text(soLuongMoi);
+        let viTriMoi = $('#sp-vt-ma-moi').val();
+        let soLuongMoi = parseInt($('#sp-vt-so-luong').val());
 
-            $('#modalSuaSanPhamViTri').modal('hide');
-            alert("Đã cập nhật sản phẩm tại vị trí thành công!");
+        if (isNaN(soLuongMoi) || soLuongMoi <= 0) {
+            alert('Số lượng phải lớn hơn 0!');
+            return;
+        }
+
+        const requestData = {
+            sanPhamDonViId: currentSanPhamDonViId,
+            viTriIdCu: currentViTriId,
+            viTriIdMoi: viTriMoi,
+            soLuong: soLuongMoi
+        };
+
+        console.log('Sending update request:', requestData);
+
+        try {
+            const response = await fetch('/CapNhatSanPhamViTri', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || 'Cập nhật thành công!');
+                location.reload(); // Reload để cập nhật dữ liệu
+            } else {
+                alert('Lỗi: ' + (result.message || 'Không thể cập nhật'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra: ' + error.message);
         }
     });
 
-    // ================== PHẦN 2: XỬ LÝ CHO BẢNG DANH MỤC VỊ TRÍ ==================
+    $(document).on('click', '.btn-delete-sp-vt', async function () {
+        if (!confirm('Bạn chắc chắn muốn xóa sản phẩm này khỏi vị trí?')) {
+            return;
+        }
+
+        const row = $(this).closest('tr');
+        const sanPhamDonViId = row.data('sanpham-id');
+        const viTriId = row.data('vitri-id');
+
+        console.log('Deleting:', { sanPhamDonViId, viTriId });
+
+        try {
+            const response = await fetch('/XoaSanPhamViTri', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ sanPhamDonViId, viTriId })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || 'Xóa thành công!');
+                row.fadeOut(300, function() { $(this).remove(); });
+            } else {
+                alert('Lỗi: ' + (result.message || 'Không thể xóa'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra: ' + error.message);
+        }
+    });
+
+    // ================== XỬ LÝ BẢNG DANH MỤC VỊ TRÍ ==================
     let currentRowDMVT = null;
+    let currentViTriDMId = null;
 
     $(document).on('click', '.btn-edit-dm-vt', function () {
         currentRowDMVT = $(this).closest('tr');
-        let maViTri = currentRowDMVT.find('td:eq(0)').text();
-        let loaiViTri = currentRowDMVT.find('td:eq(1)').text();
-        let moTa = currentRowDMVT.find('td:eq(2)').text();
+        currentViTriDMId = currentRowDMVT.data('vitri-id');
+        
+        let maViTri = currentRowDMVT.find('td:eq(0)').text().trim();
+        let loaiViTri = currentRowDMVT.find('td:eq(1)').text().trim();
+        let moTa = currentRowDMVT.find('td:eq(2)').text().trim();
 
-        // Điền dữ liệu vào Modal 2
+        console.log('Editing ViTri:', { currentViTriDMId, maViTri, loaiViTri });
+
         $('#dm-vt-ma').val(maViTri);
-        // Chọn đúng loại vị trí trong select
-        $('#dm-vt-loai option').filter(function () {
-            return $(this).text() === loaiViTri;
-        }).prop('selected', true);
+        $('#dm-vt-loai').val(loaiViTri);
         $('#dm-vt-mo-ta').val(moTa);
 
         $('#modalSuaDanhMucViTri').modal('show');
     });
 
-    $('#btn-luu-dm-vt').click(function () {
-        if (currentRowDMVT) {
-            let maMoi = $('#dm-vt-ma').val();
-            let loaiMoi = $('#dm-vt-loai option:selected').text();
-            let moTaMoi = $('#dm-vt-mo-ta').val();
+    $('#btn-luu-dm-vt').click(async function () {
+        if (!currentViTriDMId) {
+            alert('Không tìm thấy thông tin vị trí!');
+            return;
+        }
 
-            currentRowDMVT.find('td:eq(0)').text(maMoi);
-            currentRowDMVT.find('td:eq(1)').text(loaiMoi);
-            currentRowDMVT.find('td:eq(2)').text(moTaMoi);
+        let maViTri = $('#dm-vt-ma').val().trim();
+        let loaiViTri = $('#dm-vt-loai').val();
+        let moTa = $('#dm-vt-mo-ta').val().trim();
 
-            $('#modalSuaDanhMucViTri').modal('hide');
-            alert("Đã cập nhật thông tin danh mục vị trí!");
+        if (!maViTri) {
+            alert('Vui lòng nhập mã vị trí!');
+            return;
+        }
+
+        const requestData = {
+            id: currentViTriDMId,
+            maViTri: maViTri,
+            loaiViTri: loaiViTri,
+            moTa: moTa
+        };
+
+        console.log('Updating ViTri:', requestData);
+
+        try {
+            const response = await fetch('/CapNhatViTri', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || 'Cập nhật thành công!');
+                location.reload();
+            } else {
+                alert('Lỗi: ' + (result.message || 'Không thể cập nhật'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra: ' + error.message);
         }
     });
 
-    // Xử lý nút xóa chung (nếu muốn) hoặc viết riêng tương tự nút sửa
-    $(document).on('click', '.btn-delete-sp-vt, .btn-delete-dm-vt', function () {
-        if (confirm("Bạn chắc chắn muốn xóa dòng này?")) {
-            $(this).closest('tr').remove();
+    $(document).on('click', '.btn-delete-dm-vt', async function () {
+        if (!confirm('Bạn chắc chắn muốn xóa vị trí này? (Chỉ có thể xóa nếu vị trí chưa được sử dụng)')) {
+            return;
+        }
+
+        const row = $(this).closest('tr');
+        const viTriId = row.data('vitri-id');
+
+        console.log('Deleting ViTri:', viTriId);
+
+        try {
+            const response = await fetch('/XoaViTri', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: viTriId })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert(result.message || 'Xóa thành công!');
+                row.fadeOut(300, function() { $(this).remove(); });
+            } else {
+                alert('Lỗi: ' + (result.message || 'Không thể xóa'));
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra: ' + error.message);
         }
     });
+
     // 5. Nút HỦY BỎ (Reset Form) - Đã cập nhật ID thành #btn-cancel
-    $('#btn-cancel').click(function (e) { // <-- Đã thay đổi ở đây
+    $('#btn-cancel').click(function (e) { 
         e.preventDefault();
         resetForm();
     });

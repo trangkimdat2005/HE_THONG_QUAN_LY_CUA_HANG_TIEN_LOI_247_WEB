@@ -1,4 +1,4 @@
-@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+ @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
 
@@ -50,10 +50,10 @@
 										List<SanPhamViTri> sanPhamViTris = ViewBag.lstSanPhamViTri;
 										foreach (SanPhamViTri sanPhamViTri in sanPhamViTris)
 										{
-											<tr>
+											<tr data-sanpham-id="@sanPhamViTri.SanPhamDonViId" data-vitri-id="@sanPhamViTri.ViTriId">
 												<td>@sanPhamViTri.SanPhamDonVi.SanPham.Ten</td>
 												<td>@sanPhamViTri.SanPhamDonVi.DonVi.Ten</td>
-												<td>@sanPhamViTri.ViTri.Id</td>
+												<td>@sanPhamViTri.ViTri.MaViTri</td>
 												<td>@sanPhamViTri.ViTri.LoaiViTri</td>
 												<td>@sanPhamViTri.SoLuong</td>
 												<td class="text-center">
@@ -61,9 +61,7 @@
 													<button class="btn btn-danger btn-sm btn-delete-sp-vt" title="Xóa"><i class="fas fa-trash-alt"></i></button>
 												</td>
 											</tr>
-
 										}
-
 									}
 								}
 
@@ -98,20 +96,23 @@
 									if (ViewData["lstSanPhamViTri"] != null)
 									{
 										List<SanPhamViTri> sanPhamViTris = ViewBag.lstSanPhamViTri;
-										foreach (SanPhamViTri sanPhamViTri in sanPhamViTris)
+										var uniqueViTris = sanPhamViTris
+											.Select(spvt => spvt.ViTri)
+											.Distinct()
+											.ToList();
+	
+										foreach (var viTri in uniqueViTris)
 										{
-											<tr>
-												<td>@sanPhamViTri.ViTri.Id</td>
-												<td>@sanPhamViTri.ViTri.LoaiViTri</td>
-												<td>@sanPhamViTri.ViTri.MoTa</td>
+											<tr data-vitri-id="@viTri.Id">
+												<td>@viTri.MaViTri</td>
+												<td>@viTri.LoaiViTri</td>
+												<td>@viTri.MoTa</td>
 												<td class="text-center">
 													<button class="btn btn-info btn-sm me-1 btn-edit-dm-vt" title="Sửa"><i class="fas fa-edit"></i></button>
 													<button class="btn btn-danger btn-sm btn-delete-dm-vt" title="Xóa"><i class="fas fa-trash-alt"></i></button>
 												</td>
 											</tr>
-
 										}
-
 									}
 								}
 
@@ -141,8 +142,19 @@
 							<div class="col-md-6">
 								<label class="form-label fw-bold">Chuyển đến vị trí mới</label>
 								<select class="form-select" id="sp-vt-ma-moi" required>
-									<option value="KHO-A1">KHO-A1 (Kho)</option>
-									<option value="TRUNGBAY-01">TRUNGBAY-01 (Trưng bày)</option>
+									@{
+										var allViTris = ViewBag.lstSanPhamViTri != null 
+											? ((List<SanPhamViTri>)ViewBag.lstSanPhamViTri)
+												.Select(spvt => spvt.ViTri)
+												.Distinct()
+												.ToList()
+											: new List<ViTri>();
+	
+										foreach (var vt in allViTris)
+										{
+											<option value="@vt.Id">@vt.MaViTri - @vt.LoaiViTri</option>
+										}
+									}
 								</select>
 							</div>
 							<div class="col-md-6">

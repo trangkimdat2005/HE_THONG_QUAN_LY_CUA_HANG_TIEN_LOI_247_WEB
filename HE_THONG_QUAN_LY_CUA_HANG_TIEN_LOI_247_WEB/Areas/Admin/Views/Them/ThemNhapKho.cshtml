@@ -1,8 +1,11 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Thêm Nhập Kho";
+    
+    var danhSachNhaCungCap = ViewData["DanhSachNhaCungCap"] as List<NhaCungCap>;
+    var danhSachNhanVien = ViewData["DanhSachNhanVien"] as List<NhanVien>;
+    var danhSachSanPhamDonVi = ViewData["DanhSachSanPhamDonVi"] as List<SanPhamDonVi>;
 }
   <!-- Css riêng ở đây nha -->
   <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
@@ -36,27 +39,36 @@
           <div class="tile-body">
             <div class="row">
               <div class="col-md-4">
-                <label class="form-label">Nhà cung cấp</label>
-                <select class="form-control" id="select-nha-cung-cap">
+                <label class="form-label">Nhà cung cấp <span class="text-danger">*</span></label>
+                <select class="form-control" id="select-nha-cung-cap" required>
                   <option value="">-- Chọn nhà cung cấp --</option>
-                  <option value="NCC_VINAMILK">CTCP Sữa Việt Nam (Vinamilk)</option>
-                  <option value="NCC_ORION">CT TNHH Orion Vina</option>
-                  <option value="NCC_PEPSI">Suntory Pepsico Việt Nam</option>
+                  @if (danhSachNhaCungCap != null && danhSachNhaCungCap.Any())
+                  {
+                      foreach (var ncc in danhSachNhaCungCap)
+                      {
+                          <option value="@ncc.Id">@ncc.Ten </option>
+                      }
+                  }
                 </select>
               </div>
 
               <div class="col-md-4">
-                <label class="form-label">Nhân viên nhập</label>
-                <select class="form-control" id="select-nhan-vien">
+                <label class="form-label">Nhân viên nhập <span class="text-danger">*</span></label>
+                <select class="form-control" id="select-nhan-vien" required>
                   <option value="">-- Chọn nhân viên --</option>
-                  <option value="NV_001">Nguyễn Văn A (Quản lý)</option>
-                  <option value="NV_002">Trần Thị B (Nhân viên kho)</option>
+                  @if (danhSachNhanVien != null && danhSachNhanVien.Any())
+                  {
+                      foreach (var nv in danhSachNhanVien)
+                      {
+                          <option value="@nv.Id">@nv.HoTen</option>
+                      }
+                  }
                 </select>
               </div>
               
               <div class="col-md-4">
-                <label class="form-label">Ngày nhập</label>
-                <input class="form-control" type="date" id="input-ngay-nhap">
+                <label class="form-label">Ngày nhập <span class="text-danger">*</span></label>
+                <input class="form-control" type="date" id="input-ngay-nhap" required>
               </div>
             </div>
           </div>
@@ -70,10 +82,16 @@
                 <label class="form-label">Tìm sản phẩm</label>
                 <select class="form-control" id="select-san-pham">
                   <option value="">-- Tìm theo tên hoặc mã --</option>
-                  <option value="SPDV_001" data-name="Sting Dâu (Chai 330ml)">Sting Dâu (Chai 330ml)</option>
-                  <option value="SPDV_002" data-name="Bánh Chocopie (Hộp 12 cái)">Bánh Chocopie (Hộp 12 cái)</option>
-                  <option value="SPDV_003" data-name="Pepsi Lon (Lon 330ml)">Pepsi Lon (Lon 330ml)</option>
-                  <option value="SPDV_004" data-name="Thùng Sting Dâu (24 Chai)">Thùng Sting Dâu (24 Chai)</option>
+                  @if (danhSachSanPhamDonVi != null && danhSachSanPhamDonVi.Any())
+                  {
+                      foreach (var spdv in danhSachSanPhamDonVi)
+                      {
+                          var tenSanPham = spdv.SanPham?.Ten ?? "N/A";
+                          var donVi = spdv.DonVi?.Ten ?? "";
+                          var displayName = $"{tenSanPham} ({donVi})";
+                          <option value="@spdv.Id" data-name="@displayName">@displayName - Mã: @spdv.Id</option>
+                      }
+                  }
                 </select>
               </div>
               
@@ -83,8 +101,8 @@
               </div>
 
               <div class="col-md-2">
-                <label class="form-label">Đơn giá nhập</label>
-                <input class="form-control" type="number" id="input-don-gia" min="0">
+                <label class="form-label">Đơn giá nhập (₫)</label>
+                <input class="form-control" type="number" id="input-don-gia" min="0" step="1000">
               </div>
 
               <div class="col-md-2">
@@ -93,13 +111,15 @@
               </div>
 
               <div class="col-md-2 d-flex align-items-end">
-                <button class="btn btn-primary" type="button" id="add-item-btn"><i class="bi bi-plus-lg"></i> Thêm vào phiếu</button>
+                <button class="btn btn-primary w-100" type="button" id="add-item-btn">
+                  <i class="bi bi-plus-lg"></i> Thêm
+                </button>
               </div>
             </div>
 
             <div class="table-responsive">
-              <table class="table table-bordered">
-                <thead>
+              <table class="table table-bordered table-hover">
+                <thead class="table-light">
                   <tr>
                     <th>Sản phẩm</th>
                     <th>Số lượng</th>
@@ -110,13 +130,18 @@
                   </tr>
                 </thead>
                 <tbody id="chi-tiet-phieu-nhap-body">
-                  </tbody>
+                  <tr data-placeholder="true">
+                    <td colspan="6" class="text-center text-muted">
+                      <i class="bi bi-inbox"></i> Chưa có sản phẩm nào. Vui lòng thêm sản phẩm vào phiếu nhập.
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
             
             <div class="row mt-3">
               <div class="col-12 text-end">
-                <h3 class="fw-bold">Tổng Tiền: <span id="tong-tien-phieu-nhap" class="text-primary">0 đ</span></h3>
+                <h3 class="fw-bold">Tổng Tiền: <span id="tong-tien-phieu-nhap" class="text-primary">0 ₫</span></h3>
               </div>
             </div>
 
@@ -125,15 +150,19 @@
           <div class="tile-footer">
             <div class="d-flex justify-content-between">
               <div>
-                <input type="file" id="import-excel-input" accept=".xlsx, .xls">
+                <input type="file" id="import-excel-input" accept=".xlsx, .xls" style="display: none;">
                 <button class="btn btn-success" type="button" id="import-excel-btn">
                   <i class="bi bi-file-earmark-excel me-2"></i>Import từ Excel
                 </button>
               </div>
 
               <div>
-                <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
-                <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu Phiếu Nhập (Thêm)</button>
+                <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="DanhSachPhieuNhap">
+                  <i class="bi bi-x-circle-fill me-2"></i>Huỷ
+                </a>
+                <button class="btn btn-primary" type="button" id="btn-save-phieu-nhap">
+                  <i class="bi bi-check-circle-fill me-2"></i>Lưu Phiếu Nhập
+                </button>
               </div>
             </div>
           </div>
@@ -147,4 +176,4 @@
   
 
   <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/NhapKho.js " asp-append-version="true" defer></script>
+  <script src="~/assets/js/NhapKho.js" asp-append-version="true" defer></script>

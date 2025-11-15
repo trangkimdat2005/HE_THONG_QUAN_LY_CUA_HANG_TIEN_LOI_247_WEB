@@ -1,7 +1,6 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Thêm Danh Mục Vị Trí";
 }
   <!-- Main sidebar ở đây nha -->
@@ -42,11 +41,6 @@
               </div>
 
               <div class="form-group col-md-4">
-                <label class="control-label fw-bold">Tên vị trí <span class="text-danger">*</span></label>
-                <input class="form-control" type="text" id="tenViTri" placeholder="VD: Kệ A tầng 1..." required>
-              </div>
-
-              <div class="form-group col-md-4">
                 <label class="control-label fw-bold">Loại vị trí <span class="text-danger">*</span></label>
                 <select class="form-select" id="loaiViTri" required>
                   <option value="">-- Chọn loại vị trí --</option>
@@ -56,6 +50,11 @@
                   <option value="Trưng bày">Kệ trưng bày (Cửa hàng)</option>
                   <option value="Kho tạm">Kho tạm / Hàng chờ xử lý</option>
                 </select>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label class="control-label fw-bold">Tên vị trí <span class="text-danger">*</span></label>
+                <input class="form-control" type="text" id="tenViTri" placeholder="VD: Kệ A tầng 1..." required>
               </div>
 
               <div class="form-group col-md-6">
@@ -69,7 +68,7 @@
               </div>
 
               <div class="tile-footer col-md-12 mt-4 text-end">
-                            <a class="btn btn-secondary me-2"  asp-controller="QuanLyKhoHang" asp-action="ViTriSanPham">
+                <a class="btn btn-secondary me-2" asp-controller="QuanLyKhoHang" asp-action="ViTriSanPham">
                     <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
                 </a>
                 <button class="btn btn-primary" type="button" id="btnLuuLai">
@@ -83,5 +82,5 @@
     </div>
   </main>
 
-  <script src="~/assets/js/ViTriSanPham.js" asp-append-version="true" defer></script>
+  <script src="~/assets/js/ThemDanhMucViTri.js" asp-append-version="true" defer></script>
 
