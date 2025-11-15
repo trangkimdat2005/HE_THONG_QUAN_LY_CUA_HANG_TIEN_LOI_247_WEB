@@ -47,8 +47,8 @@
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @{
+                            <tbody id="tbody-danh-muc">
+                                @* @{
                                     if (ViewBag.lstDanhMuc != null)
                                     {
                                         var danhSachDanhMuc = (List<DanhMuc>)ViewBag.lstDanhMuc;
@@ -72,7 +72,7 @@
 
                                         }
                                     }
-                                }
+                                } *@
                             </tbody>
                         </table>
                     </div>
