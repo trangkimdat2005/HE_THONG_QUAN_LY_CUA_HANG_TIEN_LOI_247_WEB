@@ -108,7 +108,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                     _context.Set<T>().Attach(entity);
                 }
 
-                var property = typeof(T).GetProperty("isDelete"); // hoặc "isDelete"
+                var property = typeof(T).GetProperty("IsDelete"); // hoặc "isDelete"
                 if (property != null && property.CanWrite)
                 {
                     property.SetValue(entity, true); // Set vào ENTITY

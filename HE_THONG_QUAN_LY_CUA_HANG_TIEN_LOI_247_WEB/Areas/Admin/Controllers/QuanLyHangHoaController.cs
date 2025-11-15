@@ -28,22 +28,22 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public IActionResult DanhSachDonVi()
         {
             var lstDonViDoLuong = _quanLySevices.GetList<DonViDoLuong>();
-            
+
             ViewData["lstDonViDoLuong"] = lstDonViDoLuong;
-            
+
             return View();
         }
-        
+
         [Route("/QuanLyHangHoa/DanhSachNhanHieu")]
         public IActionResult DanhSachNhanHieu()
         {
             var lstNhanHieu = _quanLySevices.GetList<NhanHieu>();
-            
+
             ViewData["lstNhanHieu"] = lstNhanHieu;
-            
+
             return View();
         }
-        
+
         [Route("/QuanLyHangHoa/DanhSachSanPham")]
         public IActionResult DanhSachSanPham()
         {
@@ -69,16 +69,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public IActionResult LichSuGiaBan()
         {
             var lstLichSuGiaBan = _quanLySevices.GetList<LichSuGiaBan>();
-            
+
             ViewData["lstLichSuGiaBan"] = lstLichSuGiaBan;
-            
+
             return View();
         }
 
         [HttpPost("get-next-id-SP")]
         public Task<IActionResult> GetNextIdSP([FromBody] Dictionary<string, object> request)
         {
-            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<SanPham>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString()))}));
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLySevices.GenerateNewId<SanPham>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
         }
 
         [HttpPost("get-next-id-NH")]
@@ -100,7 +100,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         [HttpPost("add-SP")]
-        public async Task<IActionResult> AddSanPham([FromForm] ProductFormData request)         
+        public async Task<IActionResult> AddSanPham([FromForm] ProductFormData request)
         {
             try
             {
@@ -134,7 +134,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest("không thể thêm sản phẩm");
                 }
 
-                foreach(string danhMucId in categories)
+                foreach (string danhMucId in categories)
                 {
                     SanPhamDanhMuc sanPhamDanhMuc = new SanPhamDanhMuc
                     {
@@ -203,7 +203,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             {
                 return StatusCode(500, new { message = $"Lỗi khi thêm sản phẩm: {ex.Message}" });
             }
-            
+
         }
 
         [HttpPost("add-NH")]
@@ -257,6 +257,57 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         }
 
+
+        [HttpPost("edit-DM")]
+        public async Task<IActionResult> EditDanhMuc([FromBody] DanhMuc danhMuc)
+        {
+            try
+            {
+                if (danhMuc.Id == null || danhMuc.Ten == null)
+                {
+                    return BadRequest("Dữ liệu không hợp lệ.");
+                }
+
+
+                if (_quanLySevices.Update<DanhMuc>(danhMuc))
+                {
+                    return Ok(new { message = "Sửa danh mục thành công!" });
+                }
+
+                return BadRequest("Sửa danh mục thất bại");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi sửa danh mục: {ex.Message}" });
+            }
+
+        }
+
+
+        
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var danhMuc = _quanLySevices.GetById<DanhMuc>(id);
+            if (danhMuc == null)
+            {
+                return NotFound(new { message = "Không tìm thấy danh mục." });
+            }
+
+
+            if (_quanLySevices.SoftDelete<DanhMuc>(danhMuc))
+            {
+                return Ok(new { message = "Xóa thành công!" });
+
+            }
+
+            return BadRequest("lỗi khi xoá dữ liệu");
+
+        }
+
+
+
+
         [HttpPost("add-DV")]
         public async Task<IActionResult> AddDonVi([FromBody] DonViDoLuong donViDoLuong)
         {
@@ -280,6 +331,26 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi khi thêm đơn vị: {ex.Message}" });
             }
 
+        }
+
+
+
+        [HttpGet("get-DM-by-id")]
+        public async Task<IActionResult> GetDanhMucById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest("Id không hợp lệ");
+
+            var danhMuc = _quanLySevices.GetById<DanhMuc>(id);
+
+            if (danhMuc == null)
+                return NotFound("Không tìm thấy danh mục");
+
+            return Ok(new
+            {
+                id = danhMuc.Id,
+                ten = danhMuc.Ten
+            });
         }
 
     }
