@@ -5,17 +5,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class NhaCungCap
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
-    public string Ten { get; set; } = null!;
+    public string Ten { get; set; }
 
-    public string SoDienThoai { get; set; } = null!;
+    public string SoDienThoai { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; }
 
-    public string DiaChi { get; set; } = null!;
+    public string DiaChi { get; set; }
 
-    public string MaSoThue { get; set; } = null!;
+    public string MaSoThue { get; set; }
 
     public bool IsDelete { get; set; }
 

@@ -59,8 +59,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View(khachHang);
         }
         [Route("/Sua/SuaMaKhuyenMai")]
-        public IActionResult SuaMaKhuyenMai()
+        public IActionResult SuaMaKhuyenMai(string id)
         {
+            // Load danh sách danh mục và sản phẩm
+            ViewData["DanhMucs"] = _quanLySevices.GetList<DanhMuc>();
+            ViewData["SanPhams"] = _quanLySevices.GetList<SanPham>();
+            ViewData["ChuongTrinhId"] = id;
+            
             return View();
         }
         [Route("/Sua/SuaNCC")]
@@ -206,6 +211,36 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 var chinhSachException = _chinhSachHoanTraServices.GetChinhSachById(id);
                 ViewData["DanhSachDanhMuc"] = _chinhSachHoanTraServices.GetAllDanhMuc();
                 return View(chinhSachException);
+            }
+        }
+        
+        //=========================================API Sửa Chương Trình Khuyến Mãi=======================================================================
+        [HttpPost]
+        [Route("/API/edit-CTKM")]
+        public async Task<IActionResult> EditChuongTrinhKhuyenMai([FromBody] ChuongTrinhKhuyenMai chuongTrinh)
+        {
+            try
+            {
+                if (chuongTrinh == null || string.IsNullOrEmpty(chuongTrinh.Id))
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                if (string.IsNullOrWhiteSpace(chuongTrinh.Ten))
+                {
+                    return BadRequest(new { message = "Tên chương trình không được để trống." });
+                }
+
+                if (_quanLySevices.Update<ChuongTrinhKhuyenMai>(chuongTrinh))
+                {
+                    return Ok(new { message = "Sửa chương trình khuyến mãi thành công!" });
+                }
+
+                return BadRequest(new { message = "Sửa chương trình khuyến mãi thất bại." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi sửa chương trình khuyến mãi: {ex.Message}" });
             }
         }
     }

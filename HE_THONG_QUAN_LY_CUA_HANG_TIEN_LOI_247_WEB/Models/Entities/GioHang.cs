@@ -5,9 +5,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class GioHang
 {
-    public string TaiKhoanId { get; set; } = null!;
+    public string TaiKhoanId { get; set; }
 
-    public string SanPhamDonViId { get; set; } = null!;
+    public string SanPhamDonViId { get; set; }
 
     public int SoLuong { get; set; }
 
@@ -17,7 +17,7 @@ public partial class GioHang
 
     public DateTime NgayCapNhat { get; set; }
 
-    public virtual SanPhamDonVi SanPhamDonVi { get; set; } = null!;
+    public virtual SanPhamDonVi SanPhamDonVi { get; set; }
 
-    public virtual TaiKhoan TaiKhoan { get; set; } = null!;
+    public virtual TaiKhoan TaiKhoan { get; set; }
 }

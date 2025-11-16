@@ -58,6 +58,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemMaKhuyenMai")]
         public IActionResult ThemMaKhuyenMai()
         {
+            // Load danh sách danh mục và sản phẩm
+            ViewData["DanhMucs"] = _quanLyServices.GetList<DanhMuc>();
+            ViewData["SanPhams"] = _quanLyServices.GetList<SanPham>();
+            
             return View();
         }
         
@@ -504,6 +508,174 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi khi thêm vị trí: {ex.Message}" });
             }
         }
+
+        //=========================================API Thêm Chương Trình Khuyến Mãi=======================================================================
+        [HttpPost]
+        [Route("/API/add-CTKM")]
+        public async Task<IActionResult> AddChuongTrinhKhuyenMai([FromBody] ChuongTrinhKhuyenMaiRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.Ten))
+                {
+                    return BadRequest(new { message = "Tên chương trình không được để trống." });
+                }
+
+                if (string.IsNullOrWhiteSpace(request.Loai))
+                {
+                    return BadRequest(new { message = "Loại khuyến mãi không được để trống." });
+                }
+
+                if (request.NgayKetThuc <= request.NgayBatDau)
+                {
+                    return BadRequest(new { message = "Ngày kết thúc phải sau ngày bắt đầu." });
+                }
+
+                // Tạo Chương trình khuyến mãi
+                ChuongTrinhKhuyenMai chuongTrinh = new ChuongTrinhKhuyenMai
+                {
+                    Id = _quanLyServices.GenerateNewId<ChuongTrinhKhuyenMai>("CTKM", 8),
+                    Ten = request.Ten,
+                    Loai = request.Loai,
+                    NgayBatDau = request.NgayBatDau,
+                    NgayKetThuc = request.NgayKetThuc,
+                    MoTa = request.MoTa,
+                    IsDelete = false
+                };
+
+                if (!_quanLyServices.Add<ChuongTrinhKhuyenMai>(chuongTrinh))
+                {
+                    return BadRequest(new { message = "Không thể thêm chương trình khuyến mãi." });
+                }
+
+                // Thêm Điều kiện áp dụng
+                if (request.DieuKienApDung != null)
+                {
+                    DieuKienApDung dieuKien = new DieuKienApDung
+                    {
+                        Id = _quanLyServices.GenerateNewId<DieuKienApDung>("DKAD", 8),
+                        ChuongTrinhId = chuongTrinh.Id,
+                        DieuKien = request.DieuKienApDung.DieuKien ?? "",
+                        GiaTriToiThieu = request.DieuKienApDung.GiaTriToiThieu,
+                        GiamTheo = request.DieuKienApDung.GiamTheo,
+                        GiaTriToiDa = request.DieuKienApDung.GiaTriToiDa,
+                        IsDelete = false
+                    };
+
+                    if (!_quanLyServices.Add<DieuKienApDung>(dieuKien))
+                    {
+                        return BadRequest(new { message = "Không thể thêm điều kiện áp dụng." });
+                    }
+
+                    // Thêm áp dụng theo phạm vi
+                    if (request.PhamViApDung == "DanhMuc" && request.DanhMucIds != null && request.DanhMucIds.Any())
+                    {
+                        foreach (var danhMucId in request.DanhMucIds)
+                        {
+                            DieuKienApDungDanhMuc dkadDanhMuc = new DieuKienApDungDanhMuc
+                            {
+                                Id = _quanLyServices.GenerateNewId<DieuKienApDungDanhMuc>("DKADDM", 10),
+                                DieuKienId = dieuKien.Id,
+                                DanhMucId = danhMucId,
+                                IsDelete = false
+                            };
+
+                            if (!_quanLyServices.Add<DieuKienApDungDanhMuc>(dkadDanhMuc))
+                            {
+                                return BadRequest(new { message = "Không thể thêm điều kiện áp dụng danh mục." });
+                            }
+                        }
+                    }
+                    else if (request.PhamViApDung == "SanPham" && request.SanPhamIds != null && request.SanPhamIds.Any())
+                    {
+                        foreach (var sanPhamId in request.SanPhamIds)
+                        {
+                            DieuKienApDungSanPham dkadSanPham = new DieuKienApDungSanPham
+                            {
+                                Id = _quanLyServices.GenerateNewId<DieuKienApDungSanPham>("DKADSP", 10),
+                                DieuKienId = dieuKien.Id,
+                                SanPhamId = sanPhamId,
+                                IsDelete = false
+                            };
+
+                            if (!_quanLyServices.Add<DieuKienApDungSanPham>(dkadSanPham))
+                            {
+                                return BadRequest(new { message = "Không thể thêm điều kiện áp dụng sản phẩm." });
+                            }
+                        }
+                    }
+                    else if (request.PhamViApDung == "ToanBo")
+                    {
+                        DieuKienApDungToanBo dkadToanBo = new DieuKienApDungToanBo
+                        {
+                            Id = _quanLyServices.GenerateNewId<DieuKienApDungToanBo>("DKADTB", 10),
+                            DieuKienId = dieuKien.Id,
+                            GhiChu = "Áp dụng toàn bộ cửa hàng",
+                            IsDelete = false
+                        };
+
+                        if (!_quanLyServices.Add<DieuKienApDungToanBo>(dkadToanBo))
+                        {
+                            return BadRequest(new { message = "Không thể thêm điều kiện áp dụng toàn bộ." });
+                        }
+                    }
+                }
+
+                // Thêm Mã khuyến mãi
+                if (request.MaKhuyenMai != null)
+                {
+                    MaKhuyenMai maKhuyenMai = new MaKhuyenMai
+                    {
+                        Id = _quanLyServices.GenerateNewId<MaKhuyenMai>("MKM", 8),
+                        ChuongTrinhId = chuongTrinh.Id,
+                        Code = request.MaKhuyenMai.Code,
+                        GiaTri = request.MaKhuyenMai.GiaTri,
+                        SoLanSuDung = request.MaKhuyenMai.SoLanSuDung,
+                        TrangThai = request.MaKhuyenMai.TrangThai,
+                        IsDelete = false
+                    };
+
+                    if (!_quanLyServices.Add<MaKhuyenMai>(maKhuyenMai))
+                    {
+                        return BadRequest(new { message = "Không thể thêm mã khuyến mãi." });
+                    }
+                }
+
+                return Ok(new { message = "Thêm chương trình khuyến mãi thành công!", chuongTrinhId = chuongTrinh.Id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm chương trình khuyến mãi: {ex.Message}" });
+            }
+        }
+
+        //=========================================API Get Next ID=======================================================================
+        [HttpPost]
+        [Route("/API/get-next-id-CTKM")]
+        public Task<IActionResult> GetNextIdCTKM([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<ChuongTrinhKhuyenMai>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
+        [HttpPost]
+        [Route("/API/get-next-id-MKM")]
+        public Task<IActionResult> GetNextIdMKM([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<MaKhuyenMai>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
+        [HttpPost]
+        [Route("/API/get-next-id-DKAD")]
+        public Task<IActionResult> GetNextIdDKAD([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<DieuKienApDung>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
     }
 
     public class PhieuNhapFormData
@@ -534,5 +706,36 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public string SanPhamDonViId { get; set; }
         public string ViTriId { get; set; }
         public int SoLuong { get; set; }
+    }
+
+    // Request classes cho Chương trình khuyến mãi
+    public class ChuongTrinhKhuyenMaiRequest
+    {
+        public string Ten { get; set; }
+        public string Loai { get; set; }
+        public DateTime NgayBatDau { get; set; }
+        public DateTime NgayKetThuc { get; set; }
+        public string MoTa { get; set; }
+        public DieuKienApDungRequest DieuKienApDung { get; set; }
+        public MaKhuyenMaiRequest MaKhuyenMai { get; set; }
+        public string PhamViApDung { get; set; } // "ToanBo", "DanhMuc", "SanPham"
+        public List<string> DanhMucIds { get; set; }
+        public List<string> SanPhamIds { get; set; }
+    }
+
+    public class DieuKienApDungRequest
+    {
+        public string DieuKien { get; set; }
+        public decimal GiaTriToiThieu { get; set; }
+        public string GiamTheo { get; set; }
+        public decimal GiaTriToiDa { get; set; }
+    }
+
+    public class MaKhuyenMaiRequest
+    {
+        public string Code { get; set; }
+        public decimal GiaTri { get; set; }
+        public int SoLanSuDung { get; set; }
+        public string TrangThai { get; set; }
     }
 }
