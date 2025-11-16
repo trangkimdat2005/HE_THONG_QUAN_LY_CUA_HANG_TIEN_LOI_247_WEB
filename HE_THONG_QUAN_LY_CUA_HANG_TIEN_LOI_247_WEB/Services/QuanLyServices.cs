@@ -1,4 +1,5 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
@@ -198,6 +199,32 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 }
             }
             return null; // Trả về null nếu file không hợp lệ
+        }
+
+
+        public string GetContentType(string fileName)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            if (provider.TryGetContentType(fileName, out string contentType))
+            {
+                return contentType;
+            }
+            return "application/octet-stream"; // Nếu không xác định được, trả về loại mặc định
+        }
+
+        // Hàm chuyển mảng byte thành IFormFile
+        public IFormFile ConvertByteArrayToFile(byte[] fileBytes, string fileName)
+        {
+            if (fileBytes == null || fileBytes.Length == 0)
+                return null;
+
+            var contentType = GetContentType(fileName); // Xác định Content-Type từ tên file
+            var memoryStream = new MemoryStream(fileBytes);
+
+            return new FormFile(memoryStream, 0, fileBytes.Length, "file", fileName)
+            {
+                ContentType = contentType
+            };
         }
     }
 }

@@ -40,7 +40,7 @@ $(function () {
 
 
 
-   
+
 
 
 
@@ -181,7 +181,7 @@ $(function () {
                 $('#form-select-don-vi').prop('disabled', false).trigger('change');
                 $('#form-select-danh-muc').prop('disabled', false).trigger('change');
                 btnEditMode.hide();
-                
+
 
             }
         }
@@ -212,6 +212,8 @@ $(function () {
         const target = $(e.target);
         const data = clickedRow.data();
         data.price = parseFloat(data.price); // Chuyển đổi giá trị số
+
+        callApiGetDataById(data.id);
 
         if (target.closest('.btn-delete-khoi').length) {
             e.stopPropagation();
@@ -407,8 +409,118 @@ $(function () {
         }
     }
 
-
-
 });
 
+
+
+
+$(async function () {
+    await appRealtimeList.initEntityTable({
+        key: 'SanPham',              
+        apiUrl: '/API/get-all-SP',       
+        tableId: 'sampleTable',
+        tbodyId: 'tbody-san-pham',
+        buildRow: sp => {
+            return `
+                <tr data-id ="${sp.Id}">
+                    <td>${sp.id}</td>
+                    <td>${sp.ten}</td>
+                    <td>
+                        ${sp.danhMucs.map(dm => {
+                            return `<span class="badge bg-info">${dm.danhMucTen}</span>`;
+                        }).join(' ')} <!-- Nối các danh mục với khoảng trắng -->
+                    </td>
+                    <td>${sp.nhanHieu}</td>
+                    <td>${sp.sanPhamDonVi[0].donVi}</td>
+                    <td>${sp.sanPhamDonVi[0].giaBan}</td>
+                    <td><span class="badge bg-success">${sp.sanPhamDonVi[0].trangThai}</span></td>
+                    <td class="text-center">
+                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" data-id ="${sp.Id}" title="Sửa">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </td>
+                </tr>
+            `
+        }
+    });
+});
+
+
+async function callApiGetDataById(id) {
+    try {
+        const response = await fetch(`/API/GetDataById?id=${encodeURIComponent(id)}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error('Lỗi khi gọi API');
+        }
+
+        const data = await response.json();
+        nhapDuLieu(data); // Gọi hàm nhập dữ liệu từ API
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu:', error);
+        alert('Không thể lấy dữ liệu, vui lòng thử lại.');
+    }
+}
+
+
+function nhapDuLieu(data) {
+    // Điền vào các trường trong form
+    document.getElementById('form-product-id').value = data.Id;
+    document.getElementById('form-product-name').value = data.Ten;
+
+    // Điền vào danh sách nhãn hiệu
+    const brandSelect = document.getElementById('form-select-nhan-hieu');
+    const brandOption = Array.from(brandSelect.options).find(option => option.value === data.NhanHieuId);
+    if (brandOption) brandOption.selected = true;
+
+    // Điền vào danh sách danh mục
+    const categorySelect = document.getElementById('form-select-danh-muc');
+    Array.from(categorySelect.options).forEach(option => {
+        // Kiểm tra xem danh mục có trong SanPhamDanhMucs không
+        if (data.SanPhamDanhMucs.some(sdm => sdm.DanhMucId === option.value)) {
+            option.selected = true;
+        }
+    });
+
+    // Điền vào đơn vị cơ sở
+    const unitSelect = document.getElementById('form-select-don-vi');
+    Array.from(unitSelect.options).forEach(option => {
+        // Kiểm tra xem đơn vị có trong SanPhamDonVis không
+        if (data.SanPhamDonVis.some(sd => sd.DonViId === option.value)) {
+            option.selected = true;
+        }
+    });
+
+    // Điền vào hệ số quy đổi
+    document.getElementById('form-select-he-so-quy-doi').value = data.ConversionRate;
+
+    // Điền vào giá bán
+    document.getElementById('form-product-price').value = data.Price;
+
+    // Điền vào mô tả sản phẩm
+    document.getElementById('form-product-description').value = data.MoTa;
+
+    // Điền vào trạng thái
+    const statusRadios = document.getElementsByName('trangThaiSP');
+    statusRadios.forEach(radio => {
+        if (radio.value === (data.IsDelete ? 'NgungKinhDoanh' : 'ConHang')) {
+            radio.checked = true;
+        }
+    });
+
+    // Hiển thị hình ảnh
+    const previewContainer = document.getElementById('images-preview-container');
+    previewContainer.innerHTML = ''; // Xóa các hình ảnh cũ trước khi thêm mới
+    data.Images.forEach(image => {
+        const imgPreview = `<div class="preview-image"><img src="${image}" class="img-thumbnail" width="100"></div>`;
+        previewContainer.innerHTML += imgPreview;
+    });
+    previewContainer.style.display = 'flex'; // Hiển thị hình ảnh đã tải lên
+}
 

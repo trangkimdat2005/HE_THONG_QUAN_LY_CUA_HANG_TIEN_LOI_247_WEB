@@ -50,6 +50,15 @@ window.appRealtimeList = (function () {
                 }
 
                 const data = await res.json();
+                console.log("Dữ liệu API:", data);
+                data.forEach(sp => {
+                    console.log(Array.isArray(sp.SanPhamDonVis));  // Kiểm tra nếu SanPhamDonVis là mảng
+                    if (Array.isArray(sp.SanPhamDonVis)) {
+                        console.log('SanPhamDonVis là mảng:', sp.SanPhamDonVis);
+                    } else {
+                        console.log('SanPhamDonVis không phải là mảng:', sp.SanPhamDonVis);
+                    }
+                });
                 if (!data || data.length === 0) {
                     tbody.innerHTML = '';
                     return;
