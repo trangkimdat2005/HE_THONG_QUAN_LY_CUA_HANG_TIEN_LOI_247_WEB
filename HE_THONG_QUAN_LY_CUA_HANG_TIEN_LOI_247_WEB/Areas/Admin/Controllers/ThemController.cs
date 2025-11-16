@@ -303,7 +303,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Tạo phiếu nhập
                 PhieuNhap phieuNhap = new PhieuNhap
                 {
-                    Id = _quanLyServices.GenerateNewId<PhieuNhap>("PN", 6),
+                    Id = _quanLyServices.GenerateNewId<PhieuNhap>("PN", 5),
                     NhaCungCapId = request.NhaCungCapId,
                     NhanVienId = request.NhanVienId,
                     NgayNhap = request.NgayNhap,
@@ -416,7 +416,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         // Tạo mới bản ghi SanPhamViTri
                         SanPhamViTri sanPhamViTri = new SanPhamViTri
                         {
-                            Id = _quanLyServices.GenerateNewId<SanPhamViTri>("SPVT", 8),
+                            Id = _quanLyServices.GenerateNewId<SanPhamViTri>("SPVT", 7),
                             SanPhamDonViId = chiTiet.SanPhamDonViId,
                             ViTriId = chiTiet.ViTriId,
                             SoLuong = chiTiet.SoLuong,
@@ -480,7 +480,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 // Tạo ID mới cho vị trí
                 Console.WriteLine("Generating new ID...");
-                viTri.Id = _quanLyServices.GenerateNewId<ViTri>("VT", 6);
+                viTri.Id = _quanLyServices.GenerateNewId<ViTri>("VT", 5);
                 Console.WriteLine($"Generated ID: {viTri.Id}");
 
                 viTri.IsDelete = false;
@@ -543,7 +543,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Tạo Chương trình khuyến mãi
                 ChuongTrinhKhuyenMai chuongTrinh = new ChuongTrinhKhuyenMai
                 {
-                    Id = _quanLyServices.GenerateNewId<ChuongTrinhKhuyenMai>("CTKM", 8),
+                    Id = _quanLyServices.GenerateNewId<ChuongTrinhKhuyenMai>("CTKM", 7),
                     Ten = request.Ten,
                     Loai = request.Loai,
                     NgayBatDau = request.NgayBatDau,
@@ -562,7 +562,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     DieuKienApDung dieuKien = new DieuKienApDung
                     {
-                        Id = _quanLyServices.GenerateNewId<DieuKienApDung>("DKAD", 8),
+                        Id = _quanLyServices.GenerateNewId<DieuKienApDung>("DK", 5),
                         ChuongTrinhId = chuongTrinh.Id,
                         DieuKien = request.DieuKienApDung.DieuKien ?? "",
                         GiaTriToiThieu = request.DieuKienApDung.GiaTriToiThieu,
@@ -583,7 +583,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         {
                             DieuKienApDungDanhMuc dkadDanhMuc = new DieuKienApDungDanhMuc
                             {
-                                Id = _quanLyServices.GenerateNewId<DieuKienApDungDanhMuc>("DKADDM", 10),
+                                Id = _quanLyServices.GenerateNewId<DieuKienApDungDanhMuc>("DKDM", 7),
                                 DieuKienId = dieuKien.Id,
                                 DanhMucId = danhMucId,
                                 IsDelete = false
@@ -601,7 +601,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         {
                             DieuKienApDungSanPham dkadSanPham = new DieuKienApDungSanPham
                             {
-                                Id = _quanLyServices.GenerateNewId<DieuKienApDungSanPham>("DKADSP", 10),
+                                Id = _quanLyServices.GenerateNewId<DieuKienApDungSanPham>("DKSP", 7),
                                 DieuKienId = dieuKien.Id,
                                 SanPhamId = sanPhamId,
                                 IsDelete = false
@@ -617,7 +617,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     {
                         DieuKienApDungToanBo dkadToanBo = new DieuKienApDungToanBo
                         {
-                            Id = _quanLyServices.GenerateNewId<DieuKienApDungToanBo>("DKADTB", 10),
+                            Id = _quanLyServices.GenerateNewId<DieuKienApDungToanBo>("DKTB", 7),
                             DieuKienId = dieuKien.Id,
                             GhiChu = "Áp dụng toàn bộ cửa hàng",
                             IsDelete = false
@@ -635,7 +635,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     MaKhuyenMai maKhuyenMai = new MaKhuyenMai
                     {
-                        Id = _quanLyServices.GenerateNewId<MaKhuyenMai>("MKM", 8),
+                        Id = _quanLyServices.GenerateNewId<MaKhuyenMai>("MKM", 6),
                         ChuongTrinhId = chuongTrinh.Id,
                         Code = request.MaKhuyenMai.Code,
                         GiaTri = request.MaKhuyenMai.GiaTri,
@@ -895,7 +895,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 Console.WriteLine("Creating KhachHang entity...");
                 KhachHang khachHang = new KhachHang
                 {
-                    Id = _quanLyServices.GenerateNewId<KhachHang>("KH", 8),
+                    Id = _quanLyServices.GenerateNewId<KhachHang>("KH", 5),
                     HoTen = request.HoTen,
                     SoDienThoai = request.SoDienThoai,
                     Email = request.Email,
@@ -935,7 +935,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                     TheThanhVien theThanhVien = new TheThanhVien
                     {
-                        Id = _quanLyServices.GenerateNewId<TheThanhVien>("TTV", 8),
+                        Id = _quanLyServices.GenerateNewId<TheThanhVien>("TTV", 6),
                         KhachHangId = khachHang.Id,
                         Hang = hangVietnamese,
                         DiemTichLuy = request.TheThanhVien.DiemTichLuy,
