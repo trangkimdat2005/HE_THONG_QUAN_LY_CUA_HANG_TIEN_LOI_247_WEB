@@ -1,177 +1,174 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Sửa Mã Khuyến Mãi";
+    var danhMucs = ViewData["DanhMucs"] as List<DanhMuc> ?? new List<DanhMuc>();
+    var sanPhams = ViewData["SanPhams"] as List<SanPham> ?? new List<SanPham>();
+    var chuongTrinhId = ViewData["ChuongTrinhId"] as string;
 }
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/SuaMaKhuyenMai.css">
+<!-- Css riêng ở đây nha -->
+<link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="~/assets/css/SuaMaKhuyenMai.css">
 
-
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
-
-  <main class="app-content">
+<main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-pencil-square"></i> Chỉnh Sửa Mã Khuyến Mãi</h1>
-        <p>Chỉnh sửa thông tin cho mã SALEHE2025</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyKhuyenMai" asp-action="KhuyenMai">Quản lý khuyến mãi</a></li>
-        <li class="breadcrumb-item"><a asp-controller="Sua" asp-action="SuaMaKhuyenMai">Chỉnh sửa</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-pencil-square"></i> Chỉnh Sửa Chương Trình Khuyến Mãi</h1>
+            <p>Chỉnh sửa thông tin chương trình khuyến mãi</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="QuanLyKhuyenMai" asp-action="KhuyenMai">Quản lý khuyến mãi</a></li>
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="Sua" asp-action="SuaMaKhuyenMai">Chỉnh sửa</a></li>
+        </ul>
     </div>
     <div class="row">
 
-      <div class="col-md-8">
-        <div class="tile">
-          <h3 class="tile-title">Thông tin Chương trình & Điều kiện</h3>
-          <div class="tile-body">
-            <form id="form-khuyen-mai">
-              <div class="mb-3">
-                <label class="form-label">Tên chương trình </label>
-                <input class="form-control" type="text" value="Sale Hè 2025">
-              </div>
+        <div class="col-md-8">
+            <div class="tile">
+                <h3 class="tile-title">Thông tin Chương trình & Điều kiện</h3>
+                <div class="tile-body">
+                    <form id="form-khuyen-mai">
+                        <input type="hidden" id="chuong-trinh-id" value="@chuongTrinhId" />
 
-              <div class="mb-3">
-                <label class="form-label">Mô tả </label>
-                <textarea class="form-control" rows="3">Giảm giá đặc biệt cho các mặt hàng đồ uống và giải khát.</textarea>
-              </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tên chương trình <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="ten-chuong-trinh" placeholder="Nhập tên chương trình">
+                        </div>
 
-              <div class="mb-3">
-                <label class="form-label">Mã Khuyến Mãi (Code) </label>
-                <div class="input-group">
-                  <input class="form-control" type="text" value="SALEHE2025" id="ma-code-input" readonly>
-                  <button class="btn btn-primary" type="button" id="generate-code-btn" style="display: none;">Tạo mã ngẫu nhiên</button>
+                        <div class="mb-3">
+                            <label class="form-label">Mô tả </label>
+                            <textarea class="form-control" rows="3" id="mo-ta" placeholder="Mô tả chi tiết chương trình"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Mã Khuyến Mãi (Code) </label>
+                            <div class="input-group">
+                                <input class="form-control" type="text" id="ma-code-input" readonly>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h5 class="mb-3">Giá trị & Điều kiện</h5>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Hình thức giảm</label>
+                                    <select class="form-select" id="select-hinh-thuc-giam">
+                                        <option value="PhanTram">Phần trăm (%)</option>
+                                        <option value="SoTien">Số tiền (VND)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label" id="label-gia-tri">Giá trị giảm (%)</label>
+                                    <input class="form-control" type="number" id="gia-tri-giam" placeholder="V.d: 15">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="field-giam-toi-da">
+                            <label class="form-label">Giảm tối đa (VND)</label>
+                            <input class="form-control" type="number" id="giam-toi-da" placeholder="V.d: 50000">
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Đơn hàng tối thiểu (VND)</label>
+                                    <input class="form-control" type="number" id="don-hang-toi-thieu" placeholder="V.d: 100000">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Tổng số lần sử dụng</label>
+                                    <input class="form-control" type="number" id="so-lan-su-dung" placeholder="V.d: 100">
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
-              </div>
-
-              <hr>
-              <h5 class="mb-3">Giá trị & Điều kiện</h5>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Hình thức giảm (giamTheo)</label>
-                    <select class="form-select" id="select-hinh-thuc-giam">
-                      <option value="PhanTram" selected>Phần trăm (%)</option>
-                      <option value="SoTien">Số tiền (VND)</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label" id="label-gia-tri">Giá trị giảm (%) (giaTri)</label>
-                    <input class="form-control" type="number" value="15">
-                  </div>
-                </div>
-              </div>
-
-              <div class="mb-3" id="field-giam-toi-da">
-                <label class="form-label">Giảm tối đa (VND) (giaTriToiDa)</label>
-                <input class="form-control" type="number" value="50000">
-              </div>
-              
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Đơn hàng tối thiểu (VND) (giaTriToiThieu)</label>
-                    <input class="form-control" type="number" value="100000">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Tổng số lần sử dụng (soLanSuDung)</label>
-                    <input class="form-control" type="number" value="100">
-                  </div>
-                </div>
-              </div>
-
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="tile">
-          <h3 class="tile-title">Cài đặt</h3>
-          <div class="tile-body">
-            <div class="mb-3">
-              <label class="form-label">Trạng thái (trangThai)</label>
-              <select class="form-select">
-                <option value="HoatDong" selected>Hoạt động</option>
-                <option value="TamDung">Tạm dừng</option>
-                <option value="HetHan">Hết hạn</option>
-              </select>
             </div>
-            <div class="mb-3">
-              <label class="form-label">Ngày bắt đầu (ngayBatDau)</label>
-              <input class="form-control" type="date" value="2025-11-01">
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Ngày kết thúc (ngayKetThuc)</label>
-              <input class="form-control" type="date" value="2025-11-30">
-            </div>
-          </div>
-          <div class="tile-footer">
-            <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi</button>
-            <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
-          </div>
         </div>
 
-        <div class="tile">
-          <h3 class="tile-title">Phạm vi áp dụng</h3>
-          <div class="tile-body">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="phamViApDung" id="radio-toan-bo" value="toan-bo">
-              <label class="form-check-label" for="radio-toan-bo">
-                Toàn bộ cửa hàng (DieuKienApDungToanBo)
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="phamViApDung" id="radio-danh-muc" value="danh-muc" checked>
-              <label class="form-check-label" for="radio-danh-muc">
-                Danh mục cụ thể (DieuKienApDungDanhMuc)
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="phamViApDung" id="radio-san-pham" value="san-pham">
-              <label class="form-check-label" for="radio-san-pham">
-                Sản phẩm cụ thể (DieuKienApDungSanPham)
-              </label>
-            </div>
-
-            <div class="mb-3 mt-3 form-field-hidden" id="field-chon-danh-muc">
-              <label class="form-label">Chọn danh mục </label>
-              <select class="form-control" id="select-danh-muc" multiple="multiple">
-                <option value="dm_01" selected>Đồ uống</option>
-                <option value="dm_02">Đồ ăn nhanh</option>
-                <option value="dm_03">Hàng gia dụng</option>
-              </select>
-            </div>
-            
-            <div class="mb-3 mt-3 form-field-hidden" id="field-chon-san-pham">
-              <label class="form-label">Chọn sản phẩm </label>
-              <select class="form-control" id="select-san-pham" multiple="multiple">
-                <option value="sp_01">Sting Dâu</option>
-                <option value="sp_02">Bánh mì Sandwich</option>
-                <option value="sp_03">Coca Cola</option>
-                <option value="sp_04">Dao cạo râu</option>
-              </select>
+        <div class="col-md-4">
+            <div class="tile">
+                <h3 class="tile-title">Cài đặt</h3>
+                <div class="tile-body">
+                    <div class="mb-3">
+                        <label class="form-label">Trạng thái</label>
+                        <select class="form-select" id="trang-thai">
+                            <option value="HoatDong">Hoạt động</option>
+                            <option value="TamDung">Tạm dừng</option>
+                            <option value="HetHan">Hết hạn</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày bắt đầu <span class="text-danger">*</span></label>
+                        <input class="form-control" type="date" id="ngay-bat-dau">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Ngày kết thúc <span class="text-danger">*</span></label>
+                        <input class="form-control" type="date" id="ngay-ket-thuc">
+                    </div>
+                </div>
+                <div class="tile-footer">
+                    <button class="btn btn-primary" type="button" id="btn-luu-thay-doi"><i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi</button>
+                    <a class="btn btn-secondary" asp-area="Admin" asp-controller="QuanLyKhuyenMai" asp-action="KhuyenMai"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+                </div>
             </div>
 
-          </div>
+            <div class="tile">
+                <h3 class="tile-title">Phạm vi áp dụng</h3>
+                <div class="tile-body">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phamViApDung" id="radio-toan-bo" value="ToanBo" checked>
+                        <label class="form-check-label" for="radio-toan-bo">
+                            Toàn bộ cửa hàng
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phamViApDung" id="radio-danh-muc" value="DanhMuc">
+                        <label class="form-check-label" for="radio-danh-muc">
+                            Danh mục cụ thể
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="phamViApDung" id="radio-san-pham" value="SanPham">
+                        <label class="form-check-label" for="radio-san-pham">
+                            Sản phẩm cụ thể
+                        </label>
+                    </div>
+
+                    <div class="mb-3 mt-3 form-field-hidden" id="field-chon-danh-muc">
+                        <label class="form-label">Chọn danh mục </label>
+                        <select class="form-control" id="select-danh-muc" multiple="multiple">
+                            @foreach (var item in danhMucs)
+                            {
+                                <option value="@item.Id">@item.Ten</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3 mt-3 form-field-hidden" id="field-chon-san-pham">
+                        <label class="form-label">Chọn sản phẩm </label>
+                        <select class="form-control" id="select-san-pham" multiple="multiple">
+                            @foreach (var item in sanPhams)
+                            {
+                                <option value="@item.Id">@item.Ten</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </main>
+</main>
 
 
-  <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/SuaMaKhuyenMai.js" asp-append-version="true" defer></script>
+<!-- js riêng ở đây nha! -->
+<script src="~/assets/js/SuaMaKhuyenMai.js" asp-append-version="true" defer></script>

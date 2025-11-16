@@ -81,20 +81,20 @@
                                         List<TheThanhVien> ttvs = ViewBag.lstTheThanhVien;
                                         foreach(TheThanhVien ttv in ttvs)
                                         {
-                                            <tr data--id="@ttv.Id"
+                                            <tr data-id="@ttv.Id"
                                                 data-khach-hang-id="@ttv.KhachHangId"
                                                 data-ten-khach-hang="@ttv.KhachHang.HoTen"
                                                 data-sdt="@ttv.KhachHang.SoDienThoai"
                                                 data-hang="@ttv.Hang"
                                                 data-diem="@ttv.DiemTichLuy"
-                                                data-ngay-cap="@ttv.NgayCap.ToString("dd/MM/yyy")">
+                                                data-ngay-cap="@ttv.NgayCap.ToString("dd-MM-yyyy")">
                                                 <td>@ttv.Id</td>
                                                 <td>@ttv.KhachHang.HoTen</td>
                                                 <td>
                                                     <span class="badge bg-warning">@ttv.Hang</span>
                                                 </td>
-                                                <td>@ttv.DiemTichLuy</td>
-                                                <td>@ttv.NgayCap.ToString("dd/MM/yyyy")</td>
+                                                <td>@ttv.DiemTichLuy.ToString("N0")</td>
+                                                <td>@ttv.NgayCap.ToString("dd-MM-yyyy")</td>
                                                 <td class="text-center">
                                                     <a class="btn btn-info btn-sm me-1 btn-edit-khoi " href="#" title="Sửa">
                                                         <i class="fas fa-edit"></i>
@@ -122,10 +122,10 @@
           <div class="tile-body">
             <form id="card-form">
               
-              <h5 class="mb-3">Thông tin Khách hàng (Từ Bảng KhachHang )</h5>
+              <h5 class="mb-3">Thông tin Khách hàng</h5>
               
               <div class="mb-3" id="field-chon-khach-hang">
-                <label class="form-label">Chọn Khách Hàng (chưa có thẻ)</label>
+                <label class="form-label">Chọn Khách Hàng</label>
                 <select class="form-control" id="form-select-customer" style="width: 100%;">
                   <option value="">-- Chọn khách hàng --</option>
                   <option value="KH004" data-ten="Lê Văn D" data-sdt="090xxxx111">Lê Văn D (090xxxx111)</option>
@@ -141,10 +141,10 @@
               </div>
               
               <hr>
-              <h5 class="mb-3">Thông tin Thẻ Thành Viên (Từ Bảng TheThanhVien )</h5>
+              <h5 class="mb-3">Thông tin Thẻ Thành Viên </h5>
 
               <div class="mb-3">
-                <label class="form-label">Mã Thẻ (id)</label>
+                <label class="form-label">Mã Thẻ</label>
                 <input class="form-control" type="text" id="form-id" placeholder="Mã sẽ được tạo tự động" readonly>
               </div>
 
