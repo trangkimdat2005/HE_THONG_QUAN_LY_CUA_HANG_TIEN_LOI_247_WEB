@@ -52,7 +52,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public IActionResult ViTriSanPham()
         {
             var lstSanPhamViTri = _quanLySevices.GetList<SanPhamViTri>();
+            var lstViTri = _quanLySevices.GetList<ViTri>(); // ← Thêm dòng này
+            
             ViewData["lstSanPhamViTri"] = lstSanPhamViTri;
+            ViewData["lstViTri"] = lstViTri; // ← Thêm dòng này
+            
             return View();
         }
 

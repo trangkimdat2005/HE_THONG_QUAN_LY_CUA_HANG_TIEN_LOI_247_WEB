@@ -1,4 +1,4 @@
- @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
 
@@ -93,15 +93,11 @@
 							</thead>
 							<tbody>
 								@{
-									if (ViewData["lstSanPhamViTri"] != null)
+									if (ViewData["lstViTri"] != null)
 									{
-										List<SanPhamViTri> sanPhamViTris = ViewBag.lstSanPhamViTri;
-										var uniqueViTris = sanPhamViTris
-											.Select(spvt => spvt.ViTri)
-											.Distinct()
-											.ToList();
+										List<ViTri> viTris = ViewBag.lstViTri;
 	
-										foreach (var viTri in uniqueViTris)
+										foreach (var viTri in viTris)
 										{
 											<tr data-vitri-id="@viTri.Id">
 												<td>@viTri.MaViTri</td>
@@ -143,11 +139,8 @@
 								<label class="form-label fw-bold">Chuyển đến vị trí mới</label>
 								<select class="form-select" id="sp-vt-ma-moi" required>
 									@{
-										var allViTris = ViewBag.lstSanPhamViTri != null 
-											? ((List<SanPhamViTri>)ViewBag.lstSanPhamViTri)
-												.Select(spvt => spvt.ViTri)
-												.Distinct()
-												.ToList()
+										var allViTris = ViewBag.lstViTri != null 
+											? (List<ViTri>)ViewBag.lstViTri
 											: new List<ViTri>();
 	
 										foreach (var vt in allViTris)

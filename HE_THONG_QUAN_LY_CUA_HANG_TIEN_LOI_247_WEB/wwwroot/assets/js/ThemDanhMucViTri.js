@@ -1,94 +1,110 @@
 document.addEventListener('DOMContentLoaded', function () {
     
-    // --- T? ??NG T?O MÃ V? TRÍ ---
+    console.log('ThemDanhMucViTri.js loaded');
+    
+    // ===========================
+    // ELEMENTS
+    // ===========================
     const btnGenMa = document.getElementById('btnGenMa');
     const maViTriInput = document.getElementById('maViTri');
+    const loaiViTriInput = document.getElementById('loaiViTri');
+    const moTaTextarea = document.getElementById('moTa');
+    const btnLuuLai = document.getElementById('btnLuuLai');
     
+    console.log('Elements found:', {
+        btnGenMa: !!btnGenMa,
+        maViTriInput: !!maViTriInput,
+        loaiViTriInput: !!loaiViTriInput,
+        moTaTextarea: !!moTaTextarea,
+        btnLuuLai: !!btnLuuLai
+    });
+    
+    // ===========================
+    // AUTO-GENERATE CODE
+    // ===========================
     if (btnGenMa) {
         btnGenMa.addEventListener('click', function() {
-            const loaiViTri = document.getElementById('loaiViTri').value;
+            const loaiViTri = loaiViTriInput.value.trim().toLowerCase();
             let prefix = 'VT';
             
-            // T?o prefix d?a trên lo?i v? trí
+            console.log('Generating code for loaiViTri:', loaiViTri);
+            
             if (loaiViTri) {
-                switch(loaiViTri) {
-                    case 'Kho':
-                        prefix = 'KHO';
-                        break;
-                    case 'Kho l?nh':
-                        prefix = 'KL';
-                        break;
-                    case 'Kho mát':
-                        prefix = 'KM';
-                        break;
-                    case 'Tr?ng bày':
-                        prefix = 'KE';
-                        break;
-                    case 'Kho t?m':
-                        prefix = 'KT';
-                        break;
-                    default:
-                        prefix = 'VT';
+                if (loaiViTri.includes('kho lanh') || loaiViTri.includes('lanh')) {
+                    prefix = 'KL';
+                } else if (loaiViTri.includes('kho mat') || loaiViTri.includes('mat')) {
+                    prefix = 'KM';
+                } else if (loaiViTri.includes('trung bay') || loaiViTri.includes('ke')) {
+                    prefix = 'KE';
+                } else if (loaiViTri.includes('kho tam') || loaiViTri.includes('tam')) {
+                    prefix = 'KT';
+                } else if (loaiViTri.includes('kho')) {
+                    prefix = 'KHO';
                 }
             }
             
-            // T?o s? ng?u nhiên
-            const randomNum = Math.floor(Math.random() * 900) + 100; // 100-999
+            const randomNum = Math.floor(Math.random() * 900) + 100;
             const maViTri = `${prefix}-${randomNum}`;
             
             maViTriInput.value = maViTri;
+            console.log('Generated code:', maViTri);
         });
     }
     
-    // --- NÚT L?U L?I ---
-    const btnLuuLai = document.getElementById('btnLuuLai');
+    if (loaiViTriInput) {
+        loaiViTriInput.addEventListener('change', function() {
+            const currentMa = maViTriInput.value.trim();
+            if (!currentMa) {
+                btnGenMa.click();
+            }
+        });
+    }
     
+    // ===========================
+    // SAVE
+    // ===========================
     if (btnLuuLai) {
         btnLuuLai.addEventListener('click', async function(e) {
             e.preventDefault();
             
-            // L?y d? li?u t? form
-            const maViTri = document.getElementById('maViTri').value.trim();
-            const tenViTri = document.getElementById('tenViTri').value.trim();
-            const loaiViTri = document.getElementById('loaiViTri').value;
-            const sucChua = document.getElementById('sucChua').value;
-            const moTa = document.getElementById('moTa').value.trim();
+            console.log('=== BAT DAU LUU VI TRI ===');
             
-            // Validate
-            if (!maViTri) {
-                alert('Vui lòng nh?p mã v? trí!');
-                document.getElementById('maViTri').focus();
-                return;
-            }
+            const maViTri = maViTriInput.value.trim();
+            const loaiViTri = loaiViTriInput.value.trim();
+            const moTa = moTaTextarea.value.trim();
             
-            if (!tenViTri) {
-                alert('Vui lòng nh?p tên v? trí!');
-                document.getElementById('tenViTri').focus();
-                return;
-            }
+            console.log('Form data:', { maViTri, loaiViTri, moTa });
             
+            // Validation: Chi check empty, KHONG check format
             if (!loaiViTri) {
-                alert('Vui lòng ch?n lo?i v? trí!');
-                document.getElementById('loaiViTri').focus();
+                console.error('Validation failed: Loai vi tri empty');
+                alert('Vui long nhap loai vi tri!');
+                loaiViTriInput.focus();
                 return;
             }
             
-            // T?o object request
+            if (!maViTri) {
+                console.error('Validation failed: Ma vi tri empty');
+                alert('Vui long nhap ma vi tri!');
+                maViTriInput.focus();
+                return;
+            }
+            
             const requestData = {
-                maViTri: maViTri,
-                loaiViTri: loaiViTri,
-                moTa: moTa || null
+                MaViTri: maViTri.toUpperCase(),
+                LoaiViTri: loaiViTri,
+                MoTa: moTa || null
             };
             
-            console.log('Request data:', requestData);
+            console.log('Request data to send:', JSON.stringify(requestData, null, 2));
             
             try {
-                // Hi?n th? loading
                 btnLuuLai.disabled = true;
                 const originalHTML = btnLuuLai.innerHTML;
-                btnLuuLai.innerHTML = '<i class="fas fa-hourglass-half me-1"></i> ?ang l?u...';
+                btnLuuLai.innerHTML = '<i class="fas fa-hourglass-half me-1"></i> Dang luu...';
                 
-                // G?i API
+                console.log('Sending POST request to /add-ViTri');
+                
                 const response = await fetch('/add-ViTri', {
                     method: 'POST',
                     headers: {
@@ -97,49 +113,44 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify(requestData)
                 });
                 
-                console.log('Response status:', response.status);
+                console.log('Response received:', {
+                    status: response.status,
+                    statusText: response.statusText,
+                    ok: response.ok
+                });
                 
-                // Ki?m tra content type
                 const contentType = response.headers.get("content-type");
                 console.log('Content-Type:', contentType);
                 
                 let result;
                 if (contentType && contentType.indexOf("application/json") !== -1) {
                     result = await response.json();
+                    console.log('Response JSON:', result);
                 } else {
                     const text = await response.text();
-                    console.log('Response text:', text);
-                    throw new Error('Server không tr? v? JSON. Response: ' + text.substring(0, 200));
+                    console.error('Response is not JSON:', text);
+                    throw new Error('Server khong tra ve JSON');
                 }
                 
-                console.log('Response:', result);
-                
                 if (response.ok) {
-                    alert(result.message || 'Thêm v? trí m?i thành công!');
+                    console.log('SUCCESS:', result.message);
+                    alert(result.message || 'Them vi tri moi thanh cong!');
+                    console.log('Redirecting to /QuanLyKhoHang/ViTriSanPham');
                     window.location.href = '/QuanLyKhoHang/ViTriSanPham';
                 } else {
-                    alert('L?i: ' + (result.message || 'Không th? thêm v? trí'));
+                    console.error('ERROR:', result.message);
+                    alert('Loi: ' + (result.message || 'Khong the them vi tri'));
                     btnLuuLai.disabled = false;
                     btnLuuLai.innerHTML = originalHTML;
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('Có l?i x?y ra khi l?u v? trí: ' + error.message);
+                console.error('EXCEPTION:', error);
+                alert('Co loi xay ra: ' + error.message);
                 btnLuuLai.disabled = false;
-                btnLuuLai.innerHTML = '<i class="fas fa-save me-1"></i> L?u l?i';
+                btnLuuLai.innerHTML = '<i class="fas fa-save me-1"></i> Luu lai';
             }
         });
-    }
-    
-    // --- T? ??NG C?P NH?T MÃ V? TRÍ KHI CH?N LO?I ---
-    const loaiViTriSelect = document.getElementById('loaiViTri');
-    if (loaiViTriSelect) {
-        loaiViTriSelect.addEventListener('change', function() {
-            // N?u mã v? trí ?ang tr?ng ho?c là mã t? ??ng, t? ??ng c?p nh?t
-            const currentMa = maViTriInput.value.trim();
-            if (!currentMa || /^(KHO|KL|KM|KE|KT|VT)-\d{3}$/.test(currentMa)) {
-                btnGenMa.click();
-            }
-        });
+    } else {
+        console.error('Button Luu lai not found!');
     }
 });

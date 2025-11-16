@@ -26,6 +26,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemDanhMucViTRi")]
         public IActionResult ThemDanhMucViTRi()
         {
+            // Load danh sách vị trí hiện có để gợi ý loại vị trí
+            ViewData["DanhSachViTri"] = _quanLyServices.GetList<ViTri>();
             return View();
         }
         
@@ -430,49 +432,75 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         //thêm vị trí
+        [HttpPost]
         [Route("/add-ViTri")]
         public async Task<IActionResult> AddViTri([FromBody] ViTri viTri)
         {
             try
             {
+                Console.WriteLine("=== ADD VITRI API CALLED ===");
+                Console.WriteLine($"Received data: MaViTri={viTri?.MaViTri}, LoaiViTri={viTri?.LoaiViTri}, MoTa={viTri?.MoTa}");
+                
                 if (viTri == null)
                 {
+                    Console.WriteLine("ERROR: viTri is null");
                     return BadRequest(new { message = "Dữ liệu không hợp lệ." });
                 }
 
                 // Validate dữ liệu
                 if (string.IsNullOrWhiteSpace(viTri.MaViTri))
                 {
+                    Console.WriteLine("ERROR: MaViTri is empty");
                     return BadRequest(new { message = "Mã vị trí không được để trống." });
                 }
 
                 if (string.IsNullOrWhiteSpace(viTri.LoaiViTri))
                 {
+                    Console.WriteLine("ERROR: LoaiViTri is empty");
                     return BadRequest(new { message = "Loại vị trí không được để trống." });
                 }
 
                 // Kiểm tra mã vị trí đã tồn tại chưa
+                Console.WriteLine("Checking if MaViTri exists...");
                 var existingViTri = _quanLyServices.GetList<ViTri>()
                     .FirstOrDefault(vt => vt.MaViTri == viTri.MaViTri && !vt.IsDelete);
 
                 if (existingViTri != null)
                 {
-                    return BadRequest(new { message = "Mã vị trí đã tồn tại trong hệ thống." });
+                    Console.WriteLine($"ERROR: MaViTri '{viTri.MaViTri}' already exists (ID: {existingViTri.Id})");
+                    return BadRequest(new { message = $"Mã vị trí '{viTri.MaViTri}' đã tồn tại trong hệ thống." });
                 }
 
                 // Tạo ID mới cho vị trí
+                Console.WriteLine("Generating new ID...");
                 viTri.Id = _quanLyServices.GenerateNewId<ViTri>("VT", 6);
+                Console.WriteLine($"Generated ID: {viTri.Id}");
+                
                 viTri.IsDelete = false;
 
-                if (!_quanLyServices.Add<ViTri>(viTri))
+                Console.WriteLine("Calling Add service...");
+                var addResult = _quanLyServices.Add<ViTri>(viTri);
+                Console.WriteLine($"Add result: {addResult}");
+
+                if (!addResult)
                 {
-                    return BadRequest(new { message = "Không thể thêm vị trí mới." });
+                    Console.WriteLine("ERROR: Add service returned false");
+                    return BadRequest(new { message = "Không thể thêm vị trí mới. Vui lòng kiểm tra kết nối database." });
                 }
 
+                Console.WriteLine($"✅ SUCCESS: Added ViTri with ID={viTri.Id}, MaViTri={viTri.MaViTri}");
                 return Ok(new { message = "Thêm vị trí mới thành công!", viTriId = viTri.Id });
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"❌ EXCEPTION in AddViTri: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                
                 return StatusCode(500, new { message = $"Lỗi khi thêm vị trí: {ex.Message}" });
             }
         }
