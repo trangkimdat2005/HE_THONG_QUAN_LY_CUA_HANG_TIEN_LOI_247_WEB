@@ -46,6 +46,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemKiemKe")]
         public IActionResult ThemKiemKe()
         {
+            // Load danh sách nhân viên và sản phẩm cho phiếu kiểm kê
+            ViewData["DanhSachNhanVien"] = _quanLyServices.GetList<NhanVien>();
+            ViewData["DanhSachSanPhamDonVi"] = _quanLyServices.GetList<SanPhamDonVi>();
+            
             return View();
         }
 
@@ -658,8 +662,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
         }
 
-        //=========================================API Get Next ID=======================================================================
-        [HttpPost]
+       
         [Route("/API/get-next-id-CTKM")]
         public Task<IActionResult> GetNextIdCTKM([FromBody] Dictionary<string, object> request)
         {
@@ -801,7 +804,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
         }
 
-        //=========================================API Get Next ID=======================================================================
+        
         [HttpPost]
         [Route("/API/get-next-id-NV")]
         public Task<IActionResult> GetNextIdNV([FromBody] Dictionary<string, object> request)
@@ -970,6 +973,115 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
         }
 
+        //=========================================API Thêm Phiếu Kiểm Kê=======================================================================
+        [HttpPost]
+        [Route("/API/add-KiemKe")]
+        public async Task<IActionResult> AddKiemKe([FromBody] KiemKeRequest request)
+        {
+            try
+            {
+                Console.WriteLine("=== API ADD KIEM KE CALLED ===");
+                Console.WriteLine($"Request: {System.Text.Json.JsonSerializer.Serialize(request)}");
+
+                if (request == null)
+                {
+                    Console.WriteLine("ERROR: Request is null");
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.NhanVienId))
+                {
+                    Console.WriteLine("ERROR: NhanVienId is empty");
+                    return BadRequest(new { message = "Vui lòng chọn nhân viên thực hiện." });
+                }
+
+                if (request.NgayKiemKe == default(DateTime))
+                {
+                    Console.WriteLine("ERROR: NgayKiemKe is empty");
+                    return BadRequest(new { message = "Vui lòng chọn ngày kiểm kê." });
+                }
+
+                if (request.ChiTietKiemKe == null || !request.ChiTietKiemKe.Any())
+                {
+                    Console.WriteLine("ERROR: ChiTietKiemKe is empty");
+                    return BadRequest(new { message = "Vui lòng thêm ít nhất một sản phẩm để kiểm kê." });
+                }
+
+                Console.WriteLine($"Creating {request.ChiTietKiemKe.Count} KiemKe records...");
+
+                int successCount = 0;
+                int failCount = 0;
+
+                // Tạo từng bản ghi kiểm kê cho mỗi sản phẩm
+                foreach (var chiTiet in request.ChiTietKiemKe)
+                {
+                    if (string.IsNullOrEmpty(chiTiet.SanPhamDonViId))
+                    {
+                        Console.WriteLine($"WARNING: Skipping record with empty SanPhamDonViId");
+                        failCount++;
+                        continue;
+                    }
+
+                    // Tạo bản ghi KiemKe
+                    KiemKe kiemKe = new KiemKe
+                    {
+                        Id = _quanLyServices.GenerateNewId<KiemKe>("KK", 5),
+                        NgayKiemKe = request.NgayKiemKe,
+                        NhanVienId = request.NhanVienId,
+                        SanPhamDonViId = chiTiet.SanPhamDonViId,
+                        KetQua = chiTiet.KetQua ?? "",
+                        IsDelete = false
+                    };
+
+                    Console.WriteLine($"Adding KiemKe: ID={kiemKe.Id}, SanPham={chiTiet.SanPhamDonViId}");
+
+                    if (!_quanLyServices.Add<KiemKe>(kiemKe))
+                    {
+                        Console.WriteLine($"❌ ERROR: Cannot add KiemKe for {chiTiet.SanPhamDonViId}");
+                        failCount++;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"✅ KiemKe added successfully");
+                        successCount++;
+                    }
+                }
+
+                Console.WriteLine($"=== RESULT: {successCount} success, {failCount} failed ===");
+
+                if (successCount > 0)
+                {
+                    string message = failCount > 0
+                        ? $"Tạo phiếu kiểm kê thành công {successCount} sản phẩm, {failCount} thất bại."
+                        : $"Tạo phiếu kiểm kê thành công cho {successCount} sản phẩm!";
+
+                    return Ok(new { message = message, successCount = successCount, failCount = failCount });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Không thể tạo phiếu kiểm kê." });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, new { message = $"Lỗi khi tạo phiếu kiểm kê: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        [Route("/API/get-next-id-KK")]
+        public Task<IActionResult> GetNextIdKK([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<KiemKe>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
         public class PhieuNhapFormData
         {
             public string NhaCungCapId { get; set; }
@@ -1000,7 +1112,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public int SoLuong { get; set; }
         }
 
-        // Request classes cho Chương trình khuyến mãi
         public class ChuongTrinhKhuyenMaiRequest
         {
             public string Ten { get; set; }
@@ -1031,7 +1142,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string TrangThai { get; set; }
         }
 
-        // Request classes cho Hóa đơn
         public class HoaDonRequest
         {
             public string KhachHangId { get; set; }
@@ -1051,8 +1161,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public decimal DonGia { get; set; }
             public decimal? GiamGia { get; set; }
         }
-
-        // Request classes cho Nhân viên
         public class NhanVienRequest
         {
             public string HoTen { get; set; }
@@ -1066,8 +1174,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public bool GioiTinh { get; set; }
             public string AnhId { get; set; }
         }
-
-        // Request classes cho Phân công ca làm việc
         public class PhanCongCaLamViecRequest
         {
             public string NhanVienId { get; set; }
@@ -1094,6 +1200,19 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string Hang { get; set; }
             public int DiemTichLuy { get; set; }
             public DateTime? NgayCap { get; set; }
+        }
+
+        public class KiemKeRequest
+        {
+            public string NhanVienId { get; set; }
+            public DateTime NgayKiemKe { get; set; }
+            public List<ChiTietKiemKeRequest> ChiTietKiemKe { get; set; }
+        }
+
+        public class ChiTietKiemKeRequest
+        {
+            public string SanPhamDonViId { get; set; }
+            public string KetQua { get; set; }
         }
     }
 }
