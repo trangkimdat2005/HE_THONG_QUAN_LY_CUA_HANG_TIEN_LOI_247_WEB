@@ -1,8 +1,11 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Thêm Kiểm Kê";
+    
+    // Lấy dữ liệu từ ViewData
+    var danhSachNhanVien = ViewData["DanhSachNhanVien"] as List<NhanVien> ?? new List<NhanVien>();
+    var danhSachSanPhamDonVi = ViewData["DanhSachSanPhamDonVi"] as List<SanPhamDonVi> ?? new List<SanPhamDonVi>();
 }
   <!-- Css riêng ở đây nha -->
      <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
@@ -37,17 +40,18 @@
           <div class="tile-body">
             <div class="row">
               <div class="col-md-6">
-                <label class="form-label">Nhân viên thực hiện</label>
+                <label class="form-label">Nhân viên thực hiện <span class="text-danger">*</span></label>
                 <select class="form-control" id="select-nhan-vien">
                   <option value="">-- Chọn nhân viên --</option>
-                  <option value="NV001">Nguyễn Văn A (Quản lý)</option>
-                  <option value="NV002" selected>Trần Thị B (Nhân viên kho)</option>
-                  <option value="NV003">John Doe (Nhân viên kho)</option>
+                  @foreach (var nv in danhSachNhanVien)
+                  {
+                      <option value="@nv.Id">@nv.HoTen (@nv.ChucVu)</option>
+                  }
                 </select>
               </div>
 
               <div class="col-md-6">
-                <label class="form-label">Ngày Kiểm Kê</label>
+                <label class="form-label">Ngày Kiểm Kê <span class="text-danger">*</span></label>
                 <input class="form-control" type="date" id="input-ngay-kiem-ke">
               </div>
             </div>
@@ -62,21 +66,22 @@
                 <label class="form-label">Sản phẩm</label>
                 <select class="form-control" id="select-san-pham">
                   <option value="">-- Tìm theo tên hoặc mã --</option>
-                  <option value="SPDV_001" data-name="Sting Dâu (Chai 330ml)">Sting Dâu (Chai 330ml)</option>
-                  <option value="SPDV_002" data-name="Bánh Chocopie (Hộp 12 cái)">Bánh Chocopie (Hộp 12 cái)</option>
-                  <option value="SPDV_003" data-name="Pepsi Lon (Lon 330ml)">Pepsi Lon (Lon 330ml)</option>
-                  <option value="SPDV_005" data-name="Sữa TH True Milk (Hộp 1L)">Sữa TH True Milk (Hộp 1L)</option>
-                  <option value="SPDV_006" data-name="Thịt gà C.P (Khay 500g)">Thịt gà C.P (Khay 500g)</option>
+                  @foreach (var spdv in danhSachSanPhamDonVi)
+                  {
+                      <option value="@spdv.Id" data-name="@spdv.SanPham.Ten (@spdv.DonVi.Ten)">
+                          @spdv.SanPham.Ten (@spdv.DonVi.Ten)
+                      </option>
+                  }
                 </select>
               </div>
 
               <div class="col-md-2">
                 <label class="form-label">Số lượng thực tế</label>
-                <input class="form-control" type="number" id="input-thuc-te" min="0">
+                <input class="form-control" type="number" id="input-thuc-te" min="0" placeholder="0">
               </div>
 
               <div class="col-md-4">
-                <label class="form-label">Ghi chú (ketQua)</label>
+                <label class="form-label">Ghi chú</label>
                 <input class="form-control" type="text" id="input-ghi-chu" placeholder="Ghi chú nếu có~">
               </div>
 
@@ -95,7 +100,7 @@
                     <th class="text-end">Tồn Hệ Thống</th>
                     <th class="text-end">Tồn Thực Tế</th>
                     <th class="text-end">Chênh Lệch</th>
-                    <th>Ghi chú (Kết quả)</th>
+                    <th>Ghi chú</th>
                     <th style="width: 50px;">Xoá</th>
                   </tr>
                 </thead>
@@ -108,7 +113,7 @@
           <div class="tile-footer">
             <div class="d-flex justify-content-end">
               <div>
-                <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+                            <a class="btn btn-secondary" asp-controller="QuanLyKhoHang" asp-action="KiemKeSanPham"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
                 <button class="btn btn-primary" type="button" id="btn-save-phieu">
                   <i class="bi bi-check-circle-fill me-2"></i>Lưu Phiếu Kiểm Kê
                 </button>

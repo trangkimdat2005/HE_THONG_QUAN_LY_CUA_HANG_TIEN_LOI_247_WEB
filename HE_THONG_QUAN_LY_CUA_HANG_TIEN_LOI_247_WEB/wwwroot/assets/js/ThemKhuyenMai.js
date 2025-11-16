@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // === TẠO OBJECT REQUEST (ĐÃ SỬA LỖI) ===
 
             // Lấy các giá trị 1 lần cho dễ đọc
-            const hinhThucGiam = selectHinhThucGiam.value; // Sẽ là "PhanTram" hoặc "SoTien"
+            const hinhThucGiam = selectHinhThucGiam.value; // Sẽ là "PhanTram" hoặc"SoTien"
             const giaTriGiam = parseFloat(giaTriGiamInput.value) || 0;
 
             const requestData = {
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (response.ok) {
-                    console.log('✅ SUCCESS:', result.message);
+                    console.log('SUCCESS:', result.message);
                     alert(result.message || 'Thêm chương trình khuyến mãi thành công!');
 
                     // Chuyển về trang danh sách
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     btnLuu.innerHTML = originalHTML;
                 }
             } catch (error) {
-                console.error('❌ EXCEPTION:', error);
+                console.error('EXCEPTION:', error);
                 alert('Có lỗi nghiêm trọng xảy ra khi lưu:\n\n' + error.message);
 
                 btnLuu.disabled = false;
