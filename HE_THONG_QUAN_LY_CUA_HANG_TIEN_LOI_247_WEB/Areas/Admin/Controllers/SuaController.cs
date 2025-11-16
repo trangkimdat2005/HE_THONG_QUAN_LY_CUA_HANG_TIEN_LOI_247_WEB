@@ -32,35 +32,40 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Sua/SuaKhachHang")]
         public IActionResult SuaKhachHang(string id)
         {
-            var lstTTV = _quanLySevices.GetList<TheThanhVien>();
-            ViewData["lstTTV"] = lstTTV;
-            // Lấy thông tin khách hàng từ cơ sở dữ liệu bằng Id
-            var khachHang = _quanLySevices.GetList<KhachHang>().FirstOrDefault(kh => kh.Id == $"{id}");
+            var khachHang = _quanLySevices.GetById<KhachHang>(id);
 
-
-            // Nếu không tìm thấy khách hàng, trả về lỗi
             if (khachHang == null)
             {
                 return NotFound();
             }
+
+            var existingCard = _quanLySevices.GetList<TheThanhVien>()
+                                             .FirstOrDefault(t => t.KhachHangId == id);
+
+            ViewData["existingCard"] = existingCard;
+
+
             var anh = _quanLySevices.GetList<HinhAnh>().FirstOrDefault(a => a.Id == khachHang.AnhId);
             if (anh != null)
             {
-                // Chuyển ảnh thành Base64
                 string base64String = Convert.ToBase64String(anh.Anh);
                 ViewBag.AvatarImage = "data:image/jpeg;base64," + base64String;
             }
             else
             {
-                // Nếu không có ảnh, dùng ảnh mặc định
                 ViewBag.AvatarImage = "https://placehold.co/600x400/EEE/31343C";
             }
-            // Trả về view sửa thông tin khách hàng với dữ liệu
+
             return View(khachHang);
         }
         [Route("/Sua/SuaMaKhuyenMai")]
-        public IActionResult SuaMaKhuyenMai()
+        public IActionResult SuaMaKhuyenMai(string id)
         {
+            // Load danh sách danh mục và sản phẩm
+            ViewData["DanhMucs"] = _quanLySevices.GetList<DanhMuc>();
+            ViewData["SanPhams"] = _quanLySevices.GetList<SanPham>();
+            ViewData["ChuongTrinhId"] = id;
+            
             return View();
         }
         [Route("/Sua/SuaNCC")]
@@ -256,5 +261,150 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //        pc=x
         //    });
         //}
+        
+        //=========================================API Sửa Chương Trình Khuyến Mãi=======================================================================
+        [HttpPost]
+        [Route("/API/edit-CTKM")]
+        public async Task<IActionResult> EditChuongTrinhKhuyenMai([FromBody] ChuongTrinhKhuyenMai chuongTrinh)
+        {
+            try
+            {
+                if (chuongTrinh == null || string.IsNullOrEmpty(chuongTrinh.Id))
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                if (string.IsNullOrWhiteSpace(chuongTrinh.Ten))
+                {
+                    return BadRequest(new { message = "Tên chương trình không được để trống." });
+                }
+
+                if (_quanLySevices.Update<ChuongTrinhKhuyenMai>(chuongTrinh))
+                {
+                    return Ok(new { message = "Sửa chương trình khuyến mãi thành công!" });
+                }
+
+                return BadRequest(new { message = "Sửa chương trình khuyến mãi thất bại." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi sửa chương trình khuyến mãi: {ex.Message}" });
+            }
+        }
+
+        //=========================================API Sửa Khách Hàng=======================================================================
+        [HttpPost]
+        [Route("/API/edit-KhachHang")]
+        public async Task<IActionResult> EditKhachHang([FromBody] KhachHangEditRequest request)
+        {
+            try
+            {
+                if (request == null || string.IsNullOrEmpty(request.Id))
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.HoTen))
+                {
+                    return BadRequest(new { message = "Họ tên không được để trống." });
+                }
+
+                if (string.IsNullOrWhiteSpace(request.SoDienThoai))
+                {
+                    return BadRequest(new { message = "Số điện thoại không được để trống." });
+                }
+
+                // Lấy khách hàng hiện tại
+                var khachHang = _quanLySevices.GetList<KhachHang>()
+                    .FirstOrDefault(kh => kh.Id == request.Id && !kh.IsDelete);
+
+                if (khachHang == null)
+                {
+                    return BadRequest(new { message = "Không tìm thấy khách hàng." });
+                }
+
+                // Cập nhật thông tin
+                khachHang.HoTen = request.HoTen;
+                khachHang.SoDienThoai = request.SoDienThoai;
+                khachHang.Email = request.Email;
+                khachHang.DiaChi = request.DiaChi ?? "";
+                khachHang.NgayDangKy = request.NgayDangKy ?? khachHang.NgayDangKy;
+                khachHang.TrangThai = request.TrangThai ?? khachHang.TrangThai;
+                khachHang.GioiTinh = request.GioiTinh;
+                // AnhId giữ nguyên hoặc cập nhật sau khi upload ảnh
+
+                if (!_quanLySevices.Update<KhachHang>(khachHang))
+                {
+                    return BadRequest(new { message = "Không thể cập nhật khách hàng." });
+                }
+
+                // Cập nhật hoặc tạo thẻ thành viên nếu có
+                if (request.UpdateMemberCard && request.TheThanhVien != null)
+                {
+                    var existingCard = _quanLySevices.GetList<TheThanhVien>()
+                        .FirstOrDefault(ttv => ttv.KhachHangId == khachHang.Id && !ttv.IsDelete);
+
+                    if (existingCard != null)
+                    {
+                        // Cập nhật thẻ hiện có
+                        existingCard.Hang = request.TheThanhVien.Hang ?? existingCard.Hang;
+                        existingCard.DiemTichLuy = request.TheThanhVien.DiemTichLuy;
+                        existingCard.NgayCap = request.TheThanhVien.NgayCap ?? existingCard.NgayCap;
+
+                        if (!_quanLySevices.Update<TheThanhVien>(existingCard))
+                        {
+                            return BadRequest(new { message = "Cập nhật khách hàng thành công nhưng không thể cập nhật thẻ thành viên." });
+                        }
+                    }
+                    else
+                    {
+                        // Tạo thẻ mới
+                        TheThanhVien newCard = new TheThanhVien
+                        {
+                            Id = _quanLySevices.GenerateNewId<TheThanhVien>("TTV", 8),
+                            KhachHangId = khachHang.Id,
+                            Hang = request.TheThanhVien.Hang ?? "Bronze",
+                            DiemTichLuy = request.TheThanhVien.DiemTichLuy,
+                            NgayCap = request.TheThanhVien.NgayCap ?? DateTime.Now,
+                            IsDelete = false
+                        };
+
+                        if (!_quanLySevices.Add<TheThanhVien>(newCard))
+                        {
+                            return BadRequest(new { message = "Cập nhật khách hàng thành công nhưng không thể tạo thẻ thành viên." });
+                        }
+                    }
+                }
+
+                return Ok(new { message = "Cập nhật khách hàng thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi cập nhật khách hàng: {ex.Message}" });
+            }
+        }
+    }
+
+    // Request class cho Edit Khách Hàng
+    public class KhachHangEditRequest
+    {
+        public string Id { get; set; }
+        public string HoTen { get; set; }
+        public string SoDienThoai { get; set; }
+        public string Email { get; set; }
+        public string DiaChi { get; set; }
+        public DateTime? NgayDangKy { get; set; }
+        public string TrangThai { get; set; }
+        public bool GioiTinh { get; set; }
+        public bool UpdateMemberCard { get; set; }
+        public TheThanhVienEditRequest TheThanhVien { get; set; }
+    }
+
+    public class TheThanhVienEditRequest
+    {
+        public string Hang { get; set; }
+        public int DiemTichLuy { get; set; }
+        public DateTime? NgayCap { get; set; }
     }
 }

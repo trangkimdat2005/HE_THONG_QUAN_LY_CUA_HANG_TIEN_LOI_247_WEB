@@ -1,364 +1,170 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 @model HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.KhachHang
-@{
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@removeTagHelper Microsoft.AspNetCore.Mvc.TagHelpers.OptionTagHelper, Microsoft.AspNetCore.Mvc.TagHelpers
 
+@{
     ViewData["title"] = "Sửa Thông Tin Khách Hàng";
+    var theThanhViens = ViewData["lstTTV"] as List<TheThanhVien> ?? new List<TheThanhVien>();
+    var theThanhVien = theThanhViens.FirstOrDefault(t => t.KhachHangId == Model.Id);
+
+    var hangBronze = theThanhVien?.Hang == "Đồng" ? "selected" : "";
+    var hangSilver = theThanhVien?.Hang == "Bạc" ? "selected" : "";
+    var hangGold = theThanhVien?.Hang == "Vàng" ? "selected" : "";
+    var hangPlatinum = theThanhVien?.Hang == "Bạch Kim" ? "selected" : "";
+
+    var trangThaiActive = Model.TrangThai == "Active" ? "selected" : "";
+    var trangThaiInactive = Model.TrangThai == "Inactive" ? "selected" : "";
 }
 
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/SuaKhachHang.css">
-
-
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
-
+<link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="~/assets/css/SuaKhachHang.css">
 
 <main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-person-plus-fill"></i> Sửa Khách Hàng Mới</h1>
-        <p>Sửa thông tin khách hàng và sửa thẻ thành viên</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item"><a>Quản lý khách hàng</a></li>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyKhachHang" asp-action="DanhSachKhachHang">Danh sách khách hàng</a></li>
-        <li class="breadcrumb-item"><a a asp-controller="Sua" asp-action="SuaKhachHang">Sửa khách hàng</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-person-plus-fill"></i> Sửa Thông Tin Khách Hàng</h1>
+            <p>Cập nhật thông tin khách hàng và thẻ thành viên</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="QuanLyKhachHang" asp-action="DanhSachKhachHang">Quản lý khách hàng</a></li>
+            <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Sua" asp-action="SuaKhachHang">Sửa khách hàng</a></li>
+        </ul>
     </div>
 
     <div class="row" id="main-form-row">
+        <div class="col-md-8 col-lg-6 mx-auto">
 
-      <div class="col-md-6" id="membership-form-container">
-        <div class="tile">
-          <h3 class="tile-title">Thông tin Thẻ Thành Viên</h3>
-          <p>Thông tin thẻ thành viên</p>
-                @{
-                    TheThanhVien ttv = null;
-                    if (ViewData["lstTTV"] != null)
-                    {
-                        List<TheThanhVien> ttvs = ViewBag.lstTTV;
-                        ttv = ttvs.FirstOrDefault(t => t.KhachHangId == Model.Id);
-                    }
-                    if (ttv == null)
-                    {
-                        <div class="tile-body">
+            <div class="tile">
+                <h3 class="tile-title">Thông tin Khách Hàng</h3>
+                <p>Cập nhật thông tin trong bảng <strong>KhachHang</strong>.</p>
+                <div class="tile-body">
+                    <form id="form-khach-hang">
+                        <input type="hidden" id="khach-hang-id" value="@Model.Id" />
 
-                            <div class="mb-3">
-                                <label class="form-label">Hạng thẻ</label>
-                                <select class="form-select" id="select-hang-the">
-                                    <option value="Bronze">Bronze (Mặc định)</option>
-                                    <option value="Silver">Silver </option>
-                                    <option value="Gold">Gold</option>
-                                    <option value="Platinum">Platinum</option> 
-
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Điểm tích luỹ ban đầu</label>
-                                <input class="form-control" type="number" value="0">
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Ngày cấp thẻ</label>
-                                <input class="form-control" type="date" id="input-ngay-cap">
-                            </div>
-
+                        <div class="avatar-upload-container text-center mb-4">
+                            <img class="avatar-preview rounded-circle" id="avatarPreview"
+                                 src="@ViewBag.AvatarImage" alt="Avatar"
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                            <input class="avatar-edit-input d-none" type="file" id="avatarUpload" accept=".png, .jpg, .jpeg">
+                            <label class="btn btn-sm btn-primary mt-2" for="avatarUpload">
+                                <i class="bi bi-camera-fill me-2"></i>Thay đổi ảnh
+                            </label>
                         </div>
-                    }
-                    else
-                    {
-                        // <div class="tile-body">
 
-                        //     <div class="mb-3">
-                        //         <label class="form-label">Hạng thẻ</label>
-                        //         <select class="form-select" id="select-hang-the">
-                        //             <option value="Bronze" selected>Bronze (Mặc định)</option>
-                        //             <option value="Silver">Silver </option>
-                        //             <option value="Gold">Gold</option>
-                        //             <option value="Platinum">Platinum</option>
-                        //         </select>
-                        //     </div>
+                        <div class="mb-3">
+                            <label class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="ho-ten" value="@Model.HoTen" required>
+                        </div>
 
-                        //     <div class="mb-3">
-                        //         <label class="form-label">Điểm tích luỹ ban đầu</label>
-                        //         <input class="form-control" type="number" value="0">
-                        //     </div>
-
-                        //     <div class="mb-3">
-                        //         <label class="form-label">Ngày cấp thẻ</label>
-                        //         <input class="form-control" type="date" id="input-ngay-cap">
-                        //     </div>
-
-                        // </div>
-                        int hang = 0;
-                        switch (ttv.Hang)
-                        {
-                            case "Đồng":
-                                hang = 1;
-                                break;
-                            case "Bạc":
-                                hang = 2;
-                                break;
-                            case "Vàng":
-                                hang = 3;
-                                break;
-                            case "Bạch Kim":
-                                hang = 4;
-                                break;
-                            default:
-                                hang = 0; 
-                                break;
-                        }
-                        if (hang == 1)
-                        {
-                            <div class="tile-body">
-
-                                <div class="mb-3">
-                                    <label class="form-label">Hạng thẻ</label>
-                                    <select class="form-select" id="select-hang-the" name="hang">
-                                        <option value="Bronze" selected>Bronze (Mặc định)</option>
-                                        <option value="Silver">Silver </option>
-                                        <option value="Gold">Gold</option>
-                                        <option value="Platinum">Platinum</option>
-                                    </select>
+                        <div class="mb-3">
+                            <label class="form-label">Giới tính <span class="text-danger">*</span></label>
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam"
+                                           value="true" @(Model.GioiTinh ? "checked" : "")>
+                                    <label class="form-check-label" for="radioNam">Nam</label>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
-                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu"
+                                           value="false" @(!Model.GioiTinh ? "checked" : "")>
+                                    <label class="form-check-label" for="radioNu">Nữ</label>
                                 </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Ngày cấp thẻ</label>
-                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
-                                </div>
-
                             </div>
-                        } else if(hang == 2)
-                        {
-                            <div class="tile-body">
+                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Hạng thẻ</label>
-                                    <select class="form-select" id="select-hang-the" name="hang">
-                                        <option value="Bronze" >Bronze (Mặc định)</option>
-                                        <option value="Silver" selected>Silver </option>
-                                        <option value="Gold">Gold</option>
-                                        <option value="Platinum">Platinum</option>
-                                    </select>
-                                </div>
+                        <div class="mb-3">
+                            <label class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                            <input class="form-control" type="tel" id="so-dien-thoai" value="@Model.SoDienThoai" required>
+                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
-                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
-                                </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" type="email" id="email" value="@Model.Email">
+                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Ngày cấp thẻ</label>
-                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
-                                </div>
+                        <div class="mb-3">
+                            <label class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                            <input class="form-control" type="text" id="dia-chi" value="@Model.DiaChi" required>
+                        </div>
 
-                            </div>
-                        }
-                        else if (hang == 3)
-                        {
-                            <div class="tile-body">
+                        <div class="mb-3">
+                            <label class="form-label">Ngày đăng ký <span class="text-danger">*</span></label>
+                            <input class="form-control" type="date" id="ngay-dang-ky" value="@Model.NgayDangKy.ToString("yyyy-MM-dd")" required>
+                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Hạng thẻ</label>
-                                    <select class="form-select" id="select-hang-the" name="hang">
-                                        <option value="Bronze">Bronze (Mặc định)</option>
-                                        <option value="Silver" >Silver </option>
-                                        <option value="Gold" selected>Gold</option>
-                                        <option value="Platinum">Platinum</option>
-                                    </select>
-                                </div>
+                        <div class="mb-3">
+                            <label class="form-label">Trạng thái</label>
+                            <select class="form-select" id="trang-thai">
+                                <option value="Active" @trangThaiActive>Active (Hoạt động)</option>
+                                <option value="Inactive" @trangThaiInactive>Inactive (Không hoạt động)</option>
+                            </select>
+                        </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
-                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
-                                </div>
+                        <hr>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Ngày cấp thẻ</label>
-                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
-                                </div>
-
-                            </div>
-                        }
-                        else if (hang == 3)
-                        {
-                            <div class="tile-body">
-
-                                <div class="mb-3">
-                                    <label class="form-label">Hạng thẻ</label>
-                                    <select class="form-select" id="select-hang-the" name="hang">
-                                        <option value="Bronze">Bronze (Mặc định)</option>
-                                        <option value="Silver">Silver </option>
-                                        <option value="Gold" >Gold</option>
-                                        <option value="Platinum" selected>Platinum</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Điểm tích luỹ ban đầu</label>
-                                    <input class="form-control" name="diemTichLuy" type="number" value="0">
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Ngày cấp thẻ</label>
-                                    <input class="form-control" type="date" name="ngayCap" id="input-ngay-cap">
-                                </div>
-
-                            </div>
-                        }
-                    }
-
-                }
-        </div>
-      </div>
-
-      <div class="col-md-6 mx-auto" id="customer-form-container">
-        <form class="tile" id="editCustomerForm" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="Id" value="@Model.Id" />
-          <h3 class="tile-title">Thông tin Khách Hàng</h3>
-          <p>Sửa thông tin khách hàng</strong>.</p>
-          <div class="tile-body">
-                    <div class="avatar-upload-container">
-                        <!-- Hiển thị ảnh hiện tại hoặc ảnh mặc định nếu không có ảnh -->
-                        <img class="avatar-preview" id="avatarPreview" src="@ViewBag.AvatarImage" alt="Avatar">
-                        <input class="avatar-edit-input" type="file" id="avatarUpload" accept=".png, .jpg, .jpeg" name="Anh">
-                        <label class="avatar-edit-label" for="avatarUpload">
-                            <i class="bi bi-camera-fill"></i>
-                        </label>
-                    </div>
-
-            <div class="mb-3">
-              <label class="form-label">Họ và tên</label>
-              <input class="form-control" type="text" placeholder="V.d: Nguyễn Văn B" value="@Model.HoTen" name="hoTen">
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Giới tính</label>
-                @* <div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" checked>
-                                <label class="form-check-label" for="radioNam">
-                                    Nam
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="toggle-membership-form"
+                                       @(theThanhVien != null ? "checked" : "")>
+                                <label class="form-check-label" for="toggle-membership-form">
+                                    <strong>@(theThanhVien != null ? "Cập nhật Thẻ Thành Viên" : "Tạo Thẻ Thành Viên Mới")</strong>
                                 </label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu">
-                    <label class="form-check-label" for="radioNu">Nữ</label>
-                  </div>
-                </div> *@
-                        @{
-                            if (Model.GioiTinh)
-                            {
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="true" checked>
-                                        <label class="form-check-label" for="radioNam">
-                                            Nam
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="false">
-                                        <label class="form-check-label" for="radioNu">Nữ</label>
-                                    </div>
-                                </div>
-                            }
-                            else
-                            {
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="true" >
-                                        <label class="form-check-label" for="radioNam">
-                                            Nam
-                                        </label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="false" checked>
-                                        <label class="form-check-label" for="radioNu">Nữ</label>
-                                    </div>
-                                </div>
-                            }
+                            </div>
+                        </div>
+                    </form>
+                </div>
 
-                }
+                <div class="tile-footer text-end">
+                    <a class="btn btn-secondary" asp-area="Admin" asp-controller="QuanLyKhachHang" asp-action="DanhSachKhachHang">
+                        <i class="bi bi-x-circle-fill me-2"></i>Huỷ
+                    </a>
+                    <button class="btn btn-primary" type="button" id="btn-luu">
+                        <i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi
+                    </button>
+                </div>
             </div>
 
-            <div class="mb-3">
-              <label class="form-label">Số điện thoại</label>
-              <input class="form-control" type="tel" placeholder="V.d: 091xxxx789" value="@Model.SoDienThoai" name="soDienThoai">
+            <div class="tile mt-3" id="membership-form-container" style="display: @(theThanhVien != null ? "block" : "none");">
+                <h3 class="tile-title">Thông tin Thẻ Thành Viên</h3>
+                <p>@(theThanhVien != null ? "Cập nhật thông tin thẻ" : "Tạo thẻ mới") trong bảng <strong>TheThanhVien</strong>.</p>
+                <div class="tile-body">
+                    <form id="form-the-thanh-vien">
+
+                        @if (theThanhVien != null)
+                        {
+                            <input type="hidden" id="the-thanh-vien-id" value="@theThanhVien.Id" />
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Hạng thẻ</label>
+                            <select class="form-select" id="hang-the">
+                                <option value="Bronze" @hangBronze>Bronze (Đồng)</option>
+                                <option value="Silver" @hangSilver>Silver (Bạc)</option>
+                                <option value="Gold" @hangGold>Gold (Vàng)</option>
+                                <option value="Platinum" @hangPlatinum>Platinum (Bạch Kim)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Điểm tích luỹ</label>
+                            <input class="form-control" type="number" id="diem-tich-luy"
+                                   value="@(theThanhVien?.DiemTichLuy ?? 0)" min="0">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ngày cấp thẻ</label>
+                            <input class="form-control" type="date" id="ngay-cap-the"
+                                   value="@(theThanhVien?.NgayCap.ToString("dd-MM-yyyy") ?? DateTime.Now.ToString("dd-MM-yyyy"))">
+                        </div>
+
+                    </form>
+                </div>
             </div>
 
-            <div class="mb-3">
-              <label class="form-label">Email</label>
-              <input class="form-control" type="email" placeholder="V.d: v.b@email.com" value="@Model.Email" name="email">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Địa chỉ</label>
-              <input class="form-control" type="text" placeholder="V.d: 456 Lê Lợi, Q.3" value="@Model.DiaChi" name="DiaChi">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Ngày đăng ký</label>
-              <input class="form-control" type="date" id="input-ngay-dang-ky" value="@Model.NgayDangKy.ToString("yyyy/MM/dd)") name="ngayDangKy">
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Trạng thái</label>
-              <select class="form-select" id="select-trang-thai" name="trangThai">
-                @* <option value="Active">Active (Mặc định)</option>
-                <option value="Inactive">Inactive</option> *@
-                            @{
-                                bool isActive = string.Equals(Model.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
-                                if (isActive)
-                                {
-                                    <option value="Active">Active (Mặc định)</option>
-                                    <option value="Inactive">Inactive</option>
-                                }
-                                else
-                                {
-                                    <option value="Inactive">Inactive</option>
-                                    <option value="Active">Active</option>
-
-                                }
-                            }
-              </select>
-            </div>
-
-            <hr>
-
-            <div class="mb-3">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="toggle-membership-form">
-                <label class="form-check-label" for="toggle-membership-form">
-                  Mở Thẻ Thành Viên
-                </label>
-              </div>
-            </div>
-
-          </div>
-          <div class="tile-footer">
-            <button class="btn btn-primary" type="button" id="saveButton">><i class="bi bi-check-circle-fill me-2"></i>Lưu thông
-              tin</button>
-            <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
-          </div>
-        </form>
-      </div>
-
+        </div>
     </div>
-  </main>
+</main>
 
-
-
-  <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/SuaKhachHang.js" asp-append-version="true" defer> </script>
+<script src="~/assets/js/SuaKhachHang.js" asp-append-version="true" defer></script>

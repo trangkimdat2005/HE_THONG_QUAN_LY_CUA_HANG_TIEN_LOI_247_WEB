@@ -1,6 +1,7 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -370,6 +371,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             });
         }
 
+        [HttpGet("GetDataById")]
+        public async Task<IActionResult> GetSanPhamById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest("Id không hợp lệ");
+
+            var sp = _quanLySevices.GetById<SanPham>(id);
+
+            if (sp == null)
+                return NotFound("Không tìm thấy danh mục");
+
+            return Ok(sp);
+        }
+
         //=========================================GetAllData=======================================================================
 
         [HttpGet("get-all-DM")]
@@ -383,6 +398,33 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }).ToList();
 
             return Ok(lstDanhMuc);
+        }
+
+
+        [HttpGet("get-all-SP")]
+        public async Task<IActionResult> GetAllSanPham()
+        {
+            var lstSanPham = _quanLySevices.GetList<SanPham>().Select(sp => new
+            {
+                Id = sp.Id,
+                Ten = sp.Ten,
+                danhMucs = sp.SanPhamDanhMucs
+                .Where(spdm => spdm.SanPhamId == sp.Id)  // Giả sử bạn muốn lọc danh mục theo Id sản phẩm
+                .Select(spdm => new
+                {
+                    DanhMucTen = spdm.DanhMuc.Ten  // Chọn tên danh mục từ SanPhamDanhMuc
+                }).ToArray(),
+                nhanHieu = sp.NhanHieu.Ten,
+                sanPhamDonVi = sp.SanPhamDonVis.Where(spdv => spdv.SanPhamId == sp.Id).Select(spdv => new
+                {
+                    donVi = spdv.DonVi.Ten,
+                    giaBan = spdv.GiaBan,
+                    trangThai = spdv.TrangThai
+                })
+            }).ToList();
+
+
+            return Ok(lstSanPham);
         }
     }
 
@@ -405,3 +447,5 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
     }
 
 }
+
+

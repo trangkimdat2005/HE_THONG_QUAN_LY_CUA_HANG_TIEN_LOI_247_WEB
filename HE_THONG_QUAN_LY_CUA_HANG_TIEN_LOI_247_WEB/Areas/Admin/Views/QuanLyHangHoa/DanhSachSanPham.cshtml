@@ -50,18 +50,17 @@
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
-                            @{
-                                if (ViewData["lstSanPham"] != null)
-                                {
-                                    List<SanPham> sanPhams = ViewBag.lstSanPham;
-                                    foreach (SanPham sanPham in sanPhams)
+                            <tbody id="tbody-san-pham">
+                                @* @{
+                                    if (ViewData["lstSanPham"] != null)
                                     {
-                                        foreach (SanPhamDonVi sanPhamDonVi in sanPham.SanPhamDonVis)
+                                        List<SanPham> sanPhams = ViewBag.lstSanPham;
+                                        foreach (SanPham sanPham in sanPhams)
                                         {
-                                            <tbody>
-                                                <tr data-id="CK001" data-name="Thịt gà công nghiệp" data-danh-muc-ids='["DM_TP"]'
-                                                    data-nhan-hieu-id="NH_CP" data-don-vi-id="DV_KG" data-price="85000"
-                                                    data-mo-ta="Thịt gà tươi, đã làm sạch." data-trang-thai="ConHang">
+                                            foreach (SanPhamDonVi sanPhamDonVi in sanPham.SanPhamDonVis)
+                                            {
+
+                                                <tr>
                                                     <td>@sanPham.Id</td>
                                                     <td>@sanPham.Ten</td>
                                                     <td>
@@ -72,7 +71,7 @@
                                                     <td>@sanPhamDonVi.GiaBan</td>
                                                     <td><span class="badge bg-success">@sanPhamDonVi.TrangThai</span></td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" title="Sửa">
+                                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" data-id ="@sanPham.Id" title="Sửa">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
                                                         <button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa">
@@ -81,12 +80,12 @@
                                                     </td>
                                                 </tr>
 
-                                            </tbody>
+
+                                            }
                                         }
                                     }
-                                }
-                            }
-
+                                } *@
+                            </tbody>
                         </table>
                     </div>
                 </div>

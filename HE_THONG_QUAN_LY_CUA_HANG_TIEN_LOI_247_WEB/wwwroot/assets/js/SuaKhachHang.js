@@ -1,146 +1,142 @@
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('=== SỬA KHÁCH HÀNG PAGE LOADED ===');
 
-    // --- KHỞI TẠO SELECT2 ---
-    $('#select-hang-the').select2({ width: '100%' });
-    $('#select-trang-thai').select2({ width: '100%' });
-
-    // --- TỰ ĐỘNG ĐIỀN NGÀY HÔM NAY ---
-    const today = new Date().toISOString().split('T')[0];
-    const ngayDangKyInput = document.getElementById('input-ngay-dang-ky');
-    const ngayCapTheInput = document.getElementById('input-ngay-cap');
-
-    if (ngayDangKyInput) ngayDangKyInput.value = today;
-    if (ngayCapTheInput) ngayCapTheInput.value = today;
-
-    // --- TRUY XUẤT CÁC PHẦN TỬ FORM ---
-    const toggleSwitch = document.getElementById('toggle-membership-form'); // ID giữ nguyên
-    const customerContainer = document.getElementById('customer-form-container');
-    const membershipContainer = document.getElementById('membership-form-container');
-
-    // --- XỬ LÝ LOGIC CHÍNH KHI BẬT/TẮT CHECKBOX ---
-    toggleSwitch.addEventListener('change', function () {
-        if (this.checked) {
-            // --- KÍCH HOẠT CHẾ ĐỘ 2 CỘT ---
-            membershipContainer.style.display = 'block';
-            setTimeout(() => {
-                membershipContainer.style.opacity = 1;
-            }, 10);
-            customerContainer.classList.remove('mx-auto');
-        } else {
-            // --- TẮT, QUAY VỀ TRẠNG THÁI BAN ĐẦU ---
-            membershipContainer.style.opacity = 0;
-            setTimeout(() => {
-                membershipContainer.style.display = 'none';
-            }, 500);
-            customerContainer.classList.add('mx-auto');
-        }
-    });
-
-    // --- THÊM MỚI: XỬ LÝ PREVIEW ẢNH ĐẠI DIỆN ---
+    // --- TRUY XUẤT PHẦN TỬ DOM ---
+    const khachHangIdInput = document.getElementById('khach-hang-id');
+    const hoTenInput = document.getElementById('ho-ten');
+    const gioiTinhRadios = document.querySelectorAll('input[name="gioiTinh"]');
+    const soDienThoaiInput = document.getElementById('so-dien-thoai');
+    const emailInput = document.getElementById('email');
+    const diaChiInput = document.getElementById('dia-chi');
+    const ngayDangKyInput = document.getElementById('ngay-dang-ky');
+    const trangThaiSelect = document.getElementById('trang-thai');
+    const btnLuu = document.getElementById('btn-luu');
     const avatarUpload = document.getElementById('avatarUpload');
     const avatarPreview = document.getElementById('avatarPreview');
 
-    avatarUpload.addEventListener('change', function () {
-        const file = this.files[0]; // Lấy file đầu tiên
-        if (file) {
-            // Tạo một URL tạm thời cho file ảnh
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                // Gán URL này cho ảnh preview
-                avatarPreview.src = e.target.result;
+    // Thẻ thành viên
+    const toggleMembershipCheckbox = document.getElementById('toggle-membership-form');
+    const membershipContainer = document.getElementById('membership-form-container');
+    const hangTheSelect = document.getElementById('hang-the');
+    const diemTichLuyInput = document.getElementById('diem-tich-luy');
+    const ngayCapTheInput = document.getElementById('ngay-cap-the');
+
+    // --- XỬ LÝ UPLOAD ẢNH ---
+    if (avatarUpload && avatarPreview) {
+        avatarUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarPreview.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
             }
-            reader.readAsDataURL(file);
-        }
-    });
+        });
+    }
 
+    // --- TOGGLE THẺ THÀNH VIÊN ---
+    if (toggleMembershipCheckbox && membershipContainer) {
+        toggleMembershipCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                membershipContainer.style.display = 'block';
+            } else {
+                membershipContainer.style.display = 'none';
+            }
+        });
+    }
+
+    // --- NÚT LƯU ---
+    if (btnLuu) {
+        btnLuu.addEventListener('click', async function() {
+
+            // Lấy dữ liệu từ form
+            const khachHangId = khachHangIdInput?.value;
+            const hoTen = hoTenInput?.value.trim();
+            const soDienThoai = soDienThoaiInput?.value.trim();
+            const email = emailInput?.value.trim();
+            const diaChi = diaChiInput?.value.trim();
+            const ngayDangKy = ngayDangKyInput?.value;
+            const trangThai = trangThaiSelect?.value;
+
+            // Lấy giới tính
+            let gioiTinh = true;
+            gioiTinhRadios.forEach(radio => {
+                if (radio.checked) {
+                    gioiTinh = radio.value === 'true';
+                }
+            });
+
+            // Validate
+
+            if (!diaChi) {
+                alert('Vui lòng nhập địa chỉ!');
+                diaChiInput?.focus();
+                return;
+            }
+
+            // Tạo object request
+            const requestData = {
+                Id: khachHangId,
+                HoTen: hoTen,
+                SoDienThoai: soDienThoai,
+                Email: email || null,
+                DiaChi: diaChi,
+                NgayDangKy: ngayDangKy,
+                TrangThai: trangThai,
+                GioiTinh: gioiTinh,
+                UpdateMemberCard: toggleMembershipCheckbox?.checked || false
+            };
+
+            // Nếu cập nhật thẻ thành viên
+            if (requestData.UpdateMemberCard) {
+                requestData.TheThanhVien = {
+                    Hang: hangTheSelect?.value || 'Bronze',
+                    DiemTichLuy: parseInt(diemTichLuyInput?.value) || 0,
+                    NgayCap: ngayCapTheInput?.value || null
+                };
+            }
+
+            console.log('Request data:', JSON.stringify(requestData, null, 2));
+
+            try {
+                // Hiển thị loading
+                btnLuu.disabled = true;
+                const originalHTML = btnLuu.innerHTML;
+                btnLuu.innerHTML = '<i class="fas fa-hourglass-half me-2"></i>Đang lưu...';
+
+                // Gọi API
+                const response = await fetch('/API/edit-KhachHang', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                const result = await response.json();
+                console.log('Response:', result);
+
+                if (response.ok) {
+                    console.log('✅ SUCCESS');
+                    alert(result.message || 'Cập nhật khách hàng thành công!');
+                    
+                    // Chuyển về trang danh sách
+                    window.location.href = '/QuanLyKhachHang/DanhSachKhachHang';
+                } else {
+                    console.error('❌ ERROR:', result.message);
+                    alert('Lỗi: ' + (result.message || 'Không thể cập nhật khách hàng'));
+                    
+                    btnLuu.disabled = false;
+                    btnLuu.innerHTML = originalHTML;
+                }
+            } catch (error) {
+                console.error('❌ EXCEPTION:', error);
+                alert('Có lỗi xảy ra khi cập nhật khách hàng:\n\n' + error.message);
+                
+                btnLuu.disabled = false;
+                btnLuu.innerHTML = '<i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi';
+            }
+        });
+    }
 });
-
-
-
-
-
-
-
-//document.addEventListener('DOMContentLoaded', function () {
-
-//    // Xử lý nút lưu
-//    const saveButton = document.getElementById('saveButton');
-//    if (saveButton) {
-//        saveButton.addEventListener('click', function (e) {
-//            e.preventDefault(); // Ngăn hành vi mặc định của nút
-
-//            // 1. Lấy form khách hàng
-//            const customerForm = document.getElementById('editCustomerForm');
-//            if (!customerForm) {
-//                console.error('Không tìm thấy form #editCustomerForm!');
-//                return;
-//            }
-
-//            // 2. Tạo FormData từ form
-//            // FormData sẽ tự động lấy tất cả input có thuộc tính 'name' bên trong form
-//            const formData = new FormData(customerForm);
-
-//            // 3. Lấy dữ liệu Thẻ Thành Viên (vì nó nằm ngoài form)
-//            // và thêm thủ công vào formData
-//            const hangTheSelect = document.getElementById('select-hang-the');
-//            const diemTichLuyInput = document.getElementById('input-diem-tich-luy');
-//            const ngayCapInput = document.getElementById('input-ngay-cap');
-
-//            // Chỉ thêm nếu các trường này tồn tại (ví dụ: khi checkbox "Mở Thẻ" được check)
-//            if (hangTheSelect) {
-//                formData.append('hangThe', hangTheSelect.value);
-//            }
-//            if (diemTichLuyInput) {
-//                formData.append('diemTichLuy', diemTichLuyInput.value);
-//            }
-//            if (ngayCapInput) {
-//                formData.append('ngayCapThe', ngayCapInput.value);
-//            }
-
-//            // 4. Gửi dữ liệu bằng fetch (AJAX)
-//            // URL phải trỏ đến Action của bạn: /Area/Controller/Action
-//            fetch('/Sua/SuaKhachHang', {
-//                method: 'POST',
-//                body: formData
-//                // Khi dùng FormData, không cần set 'Content-Type'
-//                // Trình duyệt sẽ tự động set 'multipart/form-data'
-//            })
-//                .then(response => response.json())
-//                .then(data => {
-//                    if (data.success) {
-//                        alert('Lưu thông tin thành công!');
-//                        // Chuyển hướng về trang danh sách (thay đổi URL nếu cần)
-//                        window.location.href = '/Admin/QuanLyKhachHang/DanhSachKhachHang';
-//                    } else {
-//                        let errorMessage = 'Lưu thất bại: ' + (data.message || 'Lỗi không xác định.');
-//                        if (data.errors) {
-//                            errorMessage += '\n' + data.errors.join('\n');
-//                        }
-//                        alert(errorMessage);
-//                    }
-//                })
-//                .catch(error => {
-//                    console.error('Error:', error);
-//                    alert('Đã xảy ra lỗi khi gửi dữ liệu.');
-//                });
-//        });
-//    }
-
-//    // Xử lý hiển thị ảnh preview khi chọn
-//    const avatarUpload = document.getElementById('avatarUpload');
-//    const avatarPreview = document.getElementById('avatarPreview');
-//    if (avatarUpload && avatarPreview) {
-//        avatarUpload.addEventListener('change', function () {
-//            const file = this.files[0];
-//            if (file) {
-//                const reader = new FileReader();
-//                reader.onload = function (e) {
-//                    avatarPreview.src = e.target.result;
-//                }
-//                reader.readAsDataURL(file);
-//            }
-//        });
-//    }
-
-//    // (Bạn có thể thêm mã JS cho checkbox 'toggle-membership-form' ở đây)
-//});
