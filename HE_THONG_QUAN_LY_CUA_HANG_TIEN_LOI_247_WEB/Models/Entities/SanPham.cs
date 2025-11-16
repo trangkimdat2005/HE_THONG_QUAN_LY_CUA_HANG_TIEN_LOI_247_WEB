@@ -5,13 +5,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class SanPham
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
-    public string Ten { get; set; } = null!;
+    public string Ten { get; set; }
 
-    public string NhanHieuId { get; set; } = null!;
+    public string NhanHieuId { get; set; }
 
-    public string? MoTa { get; set; }
+    public string MoTa { get; set; }
 
     public bool IsDelete { get; set; }
 
@@ -21,7 +21,7 @@ public partial class SanPham
 
     public virtual ICollection<LichSuGiaBan> LichSuGiaBans { get; set; } = new List<LichSuGiaBan>();
 
-    public virtual NhanHieu NhanHieu { get; set; } = null!;
+    public virtual NhanHieu NhanHieu { get; set; }
 
     public virtual ICollection<SanPhamDanhMuc> SanPhamDanhMucs { get; set; } = new List<SanPhamDanhMuc>();
 

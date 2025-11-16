@@ -5,9 +5,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class LichSuGiaoDich
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
-    public string NhaCungCapId { get; set; } = null!;
+    public string NhaCungCapId { get; set; }
 
     public DateTime NgayGd { get; set; }
 
@@ -17,5 +17,5 @@ public partial class LichSuGiaoDich
 
     public virtual ICollection<ChiTietGiaoDichNcc> ChiTietGiaoDichNccs { get; set; } = new List<ChiTietGiaoDichNcc>();
 
-    public virtual NhaCungCap NhaCungCap { get; set; } = null!;
+    public virtual NhaCungCap NhaCungCap { get; set; }
 }

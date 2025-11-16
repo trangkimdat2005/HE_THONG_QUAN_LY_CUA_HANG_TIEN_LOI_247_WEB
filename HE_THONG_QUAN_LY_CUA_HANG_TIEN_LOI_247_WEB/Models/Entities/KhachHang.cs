@@ -5,27 +5,27 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class KhachHang
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
-    public string HoTen { get; set; } = null!;
+    public string HoTen { get; set; }
 
-    public string SoDienThoai { get; set; } = null!;
+    public string SoDienThoai { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; }
 
-    public string DiaChi { get; set; } = null!;
+    public string DiaChi { get; set; }
 
     public DateTime NgayDangKy { get; set; }
 
-    public string TrangThai { get; set; } = null!;
+    public string TrangThai { get; set; }
 
     public bool IsDelete { get; set; }
 
     public bool GioiTinh { get; set; }
 
-    public string? AnhId { get; set; }
+    public string AnhId { get; set; }
 
-    public virtual HinhAnh? Anh { get; set; }
+    public virtual HinhAnh Anh { get; set; }
 
     public virtual ICollection<DonHangOnline> DonHangOnlines { get; set; } = new List<DonHangOnline>();
 

@@ -5,9 +5,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class BaoCao
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
-    public string LoaiBaoCao { get; set; } = null!;
+    public string LoaiBaoCao { get; set; }
 
     public DateTime NgayLap { get; set; }
 

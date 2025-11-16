@@ -5,11 +5,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class SanPhamDonVi
 {
-    public string SanPhamId { get; set; } = null!;
+    public string SanPhamId { get; set; }
 
-    public string DonViId { get; set; } = null!;
+    public string DonViId { get; set; }
 
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
     public decimal HeSoQuyDoi { get; set; }
 
@@ -17,7 +17,7 @@ public partial class SanPhamDonVi
 
     public bool IsDelete { get; set; }
 
-    public string TrangThai { get; set; } = null!;
+    public string TrangThai { get; set; }
 
     public virtual ICollection<AnhSanPhamDonVi> AnhSanPhamDonVis { get; set; } = new List<AnhSanPhamDonVi>();
 
@@ -35,7 +35,7 @@ public partial class SanPhamDonVi
 
     public virtual ICollection<ChiTietPhieuXuat> ChiTietPhieuXuats { get; set; } = new List<ChiTietPhieuXuat>();
 
-    public virtual DonViDoLuong DonVi { get; set; } = null!;
+    public virtual DonViDoLuong DonVi { get; set; }
 
     public virtual ICollection<GioHang> GioHangs { get; set; } = new List<GioHang>();
 
@@ -45,7 +45,7 @@ public partial class SanPhamDonVi
 
     public virtual ICollection<PhieuDoiTra> PhieuDoiTras { get; set; } = new List<PhieuDoiTra>();
 
-    public virtual SanPham SanPham { get; set; } = null!;
+    public virtual SanPham SanPham { get; set; }
 
     public virtual ICollection<SanPhamViTri> SanPhamViTris { get; set; } = new List<SanPhamViTri>();
 

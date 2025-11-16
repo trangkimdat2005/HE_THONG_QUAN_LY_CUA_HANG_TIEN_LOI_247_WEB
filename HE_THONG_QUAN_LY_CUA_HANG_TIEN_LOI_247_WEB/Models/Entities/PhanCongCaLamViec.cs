@@ -5,17 +5,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class PhanCongCaLamViec
 {
-    public string NhanVienId { get; set; } = null!;
+    public string NhanVienId { get; set; }
 
-    public string CaLamViecId { get; set; } = null!;
+    public string CaLamViecId { get; set; }
 
     public DateTime Ngay { get; set; }
 
-    public string? Id { get; set; }
+    public string Id { get; set; }
 
     public bool IsDelete { get; set; }
 
-    public virtual CaLamViec CaLamViec { get; set; } = null!;
+    public virtual CaLamViec CaLamViec { get; set; }
 
-    public virtual NhanVien NhanVien { get; set; } = null!;
+    public virtual NhanVien NhanVien { get; set; }
 }

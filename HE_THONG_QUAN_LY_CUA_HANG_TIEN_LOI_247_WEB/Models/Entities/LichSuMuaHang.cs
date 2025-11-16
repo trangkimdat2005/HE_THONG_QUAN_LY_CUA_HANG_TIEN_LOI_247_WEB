@@ -5,9 +5,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class LichSuMuaHang
 {
-    public string KhachHangId { get; set; } = null!;
+    public string KhachHangId { get; set; }
 
-    public string HoaDonId { get; set; } = null!;
+    public string HoaDonId { get; set; }
 
     public decimal TongTien { get; set; }
 
@@ -15,7 +15,7 @@ public partial class LichSuMuaHang
 
     public bool IsDelete { get; set; }
 
-    public virtual HoaDon HoaDon { get; set; } = null!;
+    public virtual HoaDon HoaDon { get; set; }
 
-    public virtual KhachHang KhachHang { get; set; } = null!;
+    public virtual KhachHang KhachHang { get; set; }
 }
