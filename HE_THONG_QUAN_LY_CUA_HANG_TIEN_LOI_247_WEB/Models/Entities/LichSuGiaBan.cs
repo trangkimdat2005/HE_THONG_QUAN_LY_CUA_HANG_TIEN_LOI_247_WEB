@@ -5,11 +5,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class LichSuGiaBan
 {
-    public string Id { get; set; } = null!;
+    public string Id { get; set; }
 
-    public string SanPhamId { get; set; } = null!;
+    public string SanPhamId { get; set; }
 
-    public string DonViId { get; set; } = null!;
+    public string DonViId { get; set; }
 
     public decimal GiaBan { get; set; }
 
@@ -19,7 +19,7 @@ public partial class LichSuGiaBan
 
     public bool IsDelete { get; set; }
 
-    public virtual DonViDoLuong DonVi { get; set; } = null!;
+    public virtual DonViDoLuong DonVi { get; set; }
 
-    public virtual SanPham SanPham { get; set; } = null!;
+    public virtual SanPham SanPham { get; set; }
 }

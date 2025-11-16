@@ -5,9 +5,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 public partial class ChiTietPhieuXuat
 {
-    public string PhieuXuatId { get; set; } = null!;
+    public string PhieuXuatId { get; set; }
 
-    public string SanPhamDonViId { get; set; } = null!;
+    public string SanPhamDonViId { get; set; }
 
     public int SoLuong { get; set; }
 
@@ -17,7 +17,7 @@ public partial class ChiTietPhieuXuat
 
     public decimal? TongTien { get; set; }
 
-    public virtual PhieuXuat PhieuXuat { get; set; } = null!;
+    public virtual PhieuXuat PhieuXuat { get; set; }
 
-    public virtual SanPhamDonVi SanPhamDonVi { get; set; } = null!;
+    public virtual SanPhamDonVi SanPhamDonVi { get; set; }
 }
