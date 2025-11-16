@@ -1,5 +1,5 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
-
+@model HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanNhanVien
 @{
 
     ViewData["title"] = "Sửa Thông Tin Tài Khoản";
@@ -10,7 +10,6 @@
 
 
   <!-- Main sidebar ở đây nha -->
-
 
 
 
@@ -36,36 +35,26 @@
           <div class="tile-body">
             <form>
 
-              <div class="mb-3">
-                <label class="form-label">Loại tài khoản</label>
-                <div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="accountType" id="radio-nhan-vien" value="NhanVien" checked>
-                    <label class="form-check-label" for="radio-nhan-vien">Tài khoản Nhân viên</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="accountType" id="radio-khach-hang" value="KhachHang">
-                    <label class="form-check-label" for="radio-khach-hang">Tài khoản Khách hàng</label>
-                  </div>
-                </div>
-              </div>
-
               <div class="mb-3" id="field-chon-nhan-vien">
                 <label class="form-label">Chọn Nhân Viên</label>
                 <select class="form-control" id="select-nhan-vien" style="width: 100%;">
-                  <option value="">-- Chọn nhân viên chưa có tài khoản --</option>
-                  <option value="NV001" data-email="vana@store.com">Nguyễn Văn A (Quản lý)</option>
-                  <option value="NV002" data-email="thib@store.com">Trần Thị B (Thu ngân)</option>
-                  <option value="NV003" data-email="vanc@store.com">Lê Văn C (Nhân viên kho)</option>
-                </select>
-              </div>
+                                @if (ViewData["lstNhanVien"] != null)
+                                {
+                                    List<NhanVien> nvs = ViewBag.lstNhanVien;
+                                    foreach (var nv in nvs)
+                                    {
+                                        // Kiểm tra nếu NhanVienId trong Model trùng với Id của nhân viên
+                                        if (Model.NhanVienId == nv.Id)
+                                        {
+                                            <option value="@nv.Id" selected>@nv.HoTen (@nv.ChucVu)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@nv.Id">@nv.HoTen (@nv.ChucVu)</option>
+                                        }
+                                    }
+                                }
 
-              <div class="mb-3 form-field-hidden" id="field-chon-khach-hang">
-                <label class="form-label">Chọn Khách Hàng</label>
-                <select class="form-control" id="select-khach-hang" style="width: 100%;">
-                  <option value="">-- Chọn khách hàng chưa có tài khoản --</option>
-                  <option value="KH001" data-email="khach1@email.com">Nguyễn Văn B (090xxxx123)</option>
-                  <option value="KH002" data-email="khach2@email.com">Trần Thị D (091xxxx456)</option>
                 </select>
               </div>
 
@@ -74,12 +63,12 @@
 
               <div class="mb-3">
                 <label class="form-label">Tên đăng nhập</label>
-                <input class="form-control" type="text" placeholder="V.d: vana, thib~">
+                <input class="form-control" type="text" placeholder="V.d: vana, thib~" value="@Model.TaiKhoan.TenDangNhap">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" id="input-email" placeholder="Email sẽ tự động điền khi chọn người dùng">
+                <input class="form-control" type="email" id="input-email" placeholder="Email sẽ tự động điền khi chọn người dùng" value="@Model.TaiKhoan.Email">
               </div>
 
               <div class="row">
@@ -100,19 +89,35 @@
               <div class="mb-3">
                 <label class="form-label">Trạng thái</label>
                 <select class="form-select" id="select-trang-thai">
-                  <option value="Active">Active (Hoạt động)</option>
-                  <option value="Inactive">Inactive (Không hoạt động)</option>
-                  <option value="Locked">Locked (Đã khoá)</option>
+                                @{
+                                    bool isActive = Model.TaiKhoan.TrangThai == "Active" ? true : false;
+                                    if (isActive)
+                                    {
+                                        <option value="Active" selected>Active</option>
+                                        <option value="Inactive" >Inactive</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="Active" >Active</option>
+                                        <option value="Inactive" selected >Inactive</option>
+                                    }
+                                }
                 </select>
               </div>
 
               <div class="mb-3" id="field-chon-quyen">
                 <label class="form-label">Gán Quyền (Roles)</label>
                 <select class="form-control" id="select-quyen" multiple="multiple" style="width: 100%;">
-                  <option value="ADMIN">Admin (Quản trị viên)</option>
-                  <option value="MANAGER">Manager (Quản lý)</option>
-                  <option value="STAFF">Staff (Nhân viên)</option>
-                  <option value="CASHIER">Cashier (Thu ngân)</option>
+                                @{
+                                    if (ViewData["lstRole"] != null)
+                                    {
+                                        List<Role> roles = ViewBag.lstRole;
+                                        foreach (var role in roles)
+                                        {
+                                            <option value="@role.Code">@role.Ten</option>
+                                        }
+                                    }
+                                }
                 </select>
               </div>
 

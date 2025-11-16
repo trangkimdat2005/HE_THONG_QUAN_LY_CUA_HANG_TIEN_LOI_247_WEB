@@ -86,14 +86,42 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View(nv);
         }
         [Route("/Sua/SuaPhanCongCaLamViec")]
-        public IActionResult SuaPhanCongCaLamViec()
+        public IActionResult SuaPhanCongCaLamViec(string id)
         {
-            return View();
+            var lstNhanVien = _quanLySevices.GetList<NhanVien>();
+            ViewData["lstNhanVien"] = lstNhanVien;
+            var lstCLV = _quanLySevices.GetList<CaLamViec>();
+            ViewData["lstCLV"] = lstCLV;
+
+            var pc = _quanLySevices.GetList<PhanCongCaLamViec>().FirstOrDefault(nv => nv.Id == $"{id}");
+
+            if (pc == null)
+            {
+                return NotFound();
+            }
+            return View(pc);
         }
         [Route("/Sua/SuaTaiKhoan")]
-        public IActionResult SuaTaiKhoan()
+        public IActionResult SuaTaiKhoan(string TaiKhoanid, string NhanVienId)
         {
-            return View();
+            var lstNhanVien = _quanLySevices.GetList<NhanVien>();
+            ViewData["lstNhanVien"] = lstNhanVien;
+
+            var tknv = _quanLySevices.GetList<TaiKhoanNhanVien>()
+                .Where(x => x.NhanVienId == NhanVienId && x.TaiKhoanId == TaiKhoanid)
+                .FirstOrDefault();
+
+            var lstRole = _quanLySevices.GetList<Role>();
+            ViewData["lstRole"] = lstRole;
+
+            var lstUR = _quanLySevices.GetList<UserRole>();
+            ViewData["lstUR"] = lstUR;
+
+            if (tknv == null)
+            {
+                return NotFound();
+            }
+            return View(tknv);
         }
 
         // ==================== CHÍNH SÁCH HOÀN TRẢ ====================
@@ -208,5 +236,25 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return View(chinhSachException);
             }
         }
+        //[HttpGet("get-PC-by-id")]
+        //public async Task<IActionResult> GetPhanCongById([FromBody] PhanCongCaLamViec pc)
+        //{
+        //    if (pc==null)
+        //        return BadRequest("Phân công không hợp lệ");
+
+        //    var x = _quanLySevices.GetById<PhanCongCaLamViec>(pc.NhanVienId,pc.CaLamViecId);
+
+        //    if (x == null)
+        //        return NotFound("Không tìm thấy phân công ca này");
+
+        //    var nvs = _quanLySevices.GetList<NhanVien>();
+        //    var clv = _quanLySevices.GetList<CaLamViec>();
+        //    return Ok(new
+        //    {
+        //        nhanViens = nvs,
+        //        caLamViecs =clv,
+        //        pc=x
+        //    });
+        //}
     }
 }

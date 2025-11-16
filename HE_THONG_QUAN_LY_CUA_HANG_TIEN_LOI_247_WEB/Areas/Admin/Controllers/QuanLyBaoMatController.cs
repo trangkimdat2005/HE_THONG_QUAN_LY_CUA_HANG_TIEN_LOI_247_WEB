@@ -38,11 +38,29 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
         [Route("/QuanLyBaoMat/LichSuMuaHang")]
-        public IActionResult LichSuMuaHang()
+        public IActionResult LichSuMuaHang(string KhachHangId,string TaiKhoanid)
         {
-            var lstLSMH = _quanLySevices.GetList<LichSuMuaHang>();
+            var lstLSMH = _quanLySevices.GetList<LichSuMuaHang>().Where(x=>x.KhachHangId==KhachHangId);
             ViewData["lstLSMH"] = lstLSMH;
-            return View();
+
+            var lstHD = _quanLySevices.GetList<HoaDon>();
+            ViewData["lstHD"] = lstHD;
+
+            var lstCTHD = _quanLySevices.GetList<ChiTietHoaDon>();
+            ViewData["lstCTHD"] = lstCTHD;
+
+            var lstTTV = _quanLySevices.GetList<TheThanhVien>().Where(x => x.KhachHangId == KhachHangId);
+            ViewData["lstTTV"] = lstTTV;
+
+            var tkkh = _quanLySevices.GetList<TaiKhoanKhachHang>()
+                        .Where(x => x.KhachHangId == KhachHangId && x.TaiKhoanid == TaiKhoanid)
+                        .FirstOrDefault();
+
+            if (tkkh == null)
+            {
+                return NotFound();
+            }
+            return View(tkkh);
         }
     }
 }
