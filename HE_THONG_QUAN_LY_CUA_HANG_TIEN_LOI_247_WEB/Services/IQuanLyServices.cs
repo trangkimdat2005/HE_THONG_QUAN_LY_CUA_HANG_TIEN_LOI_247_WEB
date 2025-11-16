@@ -17,5 +17,7 @@
         string GenerateNewId<T>(string prefix, int totalLength) where T : class;
 
         Task<byte[]> ConvertImageToByteArray(IFormFile file);
+
+        IFormFile ConvertByteArrayToFile(byte[] fileBytes, string fileName);
     }
 }

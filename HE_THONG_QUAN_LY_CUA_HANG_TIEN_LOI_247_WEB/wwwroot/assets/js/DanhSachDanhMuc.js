@@ -157,8 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    //hàm chèn dữ liệu vào form mới(vd: khi xem chi tiết....)
-
+    //hàm chèn dữ liệu vào form mới(vd: khi xem chi tiết....)   
     document.addEventListener('click', function (e) {
         const btn = e.target.closest('.btn-edit-khoi');
         if (!btn) return;
