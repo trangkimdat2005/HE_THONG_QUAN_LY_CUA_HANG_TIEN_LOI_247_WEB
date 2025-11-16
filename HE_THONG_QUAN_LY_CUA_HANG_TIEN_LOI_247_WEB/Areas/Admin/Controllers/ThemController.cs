@@ -30,53 +30,56 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["DanhSachViTri"] = _quanLyServices.GetList<ViTri>();
             return View();
         }
-        
+
         [Route("/Them/ThemHoaDon")]
         public IActionResult ThemHoaDon()
         {
             return View();
         }
-        
+
         [Route("/Them/ThemHoanTra")]
         public IActionResult ThemHoanTra()
         {
             return View();
         }
-        
+
         [Route("/Them/ThemKiemKe")]
         public IActionResult ThemKiemKe()
         {
             return View();
         }
-        
+
         [Route("/Them/ThemKhachHang")]
         public IActionResult ThemKhachHang()
         {
+            // Load danh sách hình ảnh (nếu cần)
+            ViewData["DanhSachHinhAnh"] = _quanLyServices.GetList<HinhAnh>();
+
             return View();
         }
-        
+
         [Route("/Them/ThemMaKhuyenMai")]
         public IActionResult ThemMaKhuyenMai()
         {
             // Load danh sách danh mục và sản phẩm
             ViewData["DanhMucs"] = _quanLyServices.GetList<DanhMuc>();
             ViewData["SanPhams"] = _quanLyServices.GetList<SanPham>();
-            
+
             return View();
         }
-        
+
         [Route("/Them/ThemNCC")]
         public IActionResult ThemNCC()
         {
             return View();
         }
-        
+
         [Route("/Them/ThemNhanSu")]
         public IActionResult ThemNhanSu()
         {
             return View();
         }
-        
+
         [Route("/Them/ThemNhapKho")]
         public IActionResult ThemNhapKho()
         {
@@ -84,16 +87,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["DanhSachNhaCungCap"] = _quanLyServices.GetList<NhaCungCap>();
             ViewData["DanhSachNhanVien"] = _quanLyServices.GetList<NhanVien>();
             ViewData["DanhSachSanPhamDonVi"] = _quanLyServices.GetList<SanPhamDonVi>();
-            
+
             return View();
         }
-        
+
         [Route("/Them/ThemPhanCongCaLamViec")]
         public IActionResult ThemPhanCongCaLamViec()
         {
             return View();
         }
-        
+
         [HttpGet]
         [Route("/Them/ThemPhieuDoiTra")]
         public IActionResult ThemPhieuDoiTra()
@@ -101,7 +104,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             // Load danh sách hóa đơn và chính sách
             ViewData["DanhSachHoaDon"] = _phieuDoiTraServices.GetAllHoaDons();
             ViewData["DanhSachChinhSach"] = _phieuDoiTraServices.GetAllChinhSachs();
-            
+
             return View();
         }
 
@@ -114,7 +117,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     var result = _phieuDoiTraServices.CreatePhieuDoiTra(phieuDoiTra);
-                    
+
                     if (result)
                     {
                         TempData["SuccessMessage"] = "Tạo phiếu đổi trả thành công!";
@@ -129,7 +132,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Nếu validation fail, load lại data
                 ViewData["DanhSachHoaDon"] = _phieuDoiTraServices.GetAllHoaDons();
                 ViewData["DanhSachChinhSach"] = _phieuDoiTraServices.GetAllChinhSachs();
-                
+
                 return View(phieuDoiTra);
             }
             catch (Exception ex)
@@ -164,7 +167,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         // ==================== CHÍNH SÁCH HOÀN TRẢ ====================
-        
+
         [HttpGet]
         [Route("/Them/ThemChinhSachHoanTra")]
         public IActionResult ThemChinhSachHoanTra()
@@ -176,11 +179,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [HttpPost]
         [Route("/Them/ThemChinhSachHoanTra")]
         public IActionResult ThemChinhSachHoanTra(
-            string TenChinhSach, 
-            int? ThoiHan, 
-            string DieuKien, 
-            bool ApDungToanBo, 
-            DateTime ApDungTuNgay, 
+            string TenChinhSach,
+            int? ThoiHan,
+            string DieuKien,
+            bool ApDungToanBo,
+            DateTime ApDungTuNgay,
             DateTime ApDungDenNgay,
             List<string> DanhMucIds)
         {
@@ -227,7 +230,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 };
 
                 var result = _chinhSachHoanTraServices.CreateChinhSach(chinhSach);
-                
+
                 if (result)
                 {
                     // Nếu không áp dụng toàn bộ, tạo các bản ghi ChinhSachHoanTraDanhMuc
@@ -260,7 +263,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             return View();
         }
-        
+
         [Route("/Them/ThemViTriSanPham")]
         public IActionResult ThemViTriSanPham()
         {
@@ -268,7 +271,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["DanhSachNhanVien"] = _quanLyServices.GetList<NhanVien>();
             ViewData["DanhSachSanPhamDonVi"] = _quanLyServices.GetList<SanPhamDonVi>();
             ViewData["DanhSachViTri"] = _quanLyServices.GetList<ViTri>();
-            
+
             return View();
         }
 
@@ -285,8 +288,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 }
 
                 // Validate dữ liệu đầu vào
-                if (string.IsNullOrEmpty(request.NhaCungCapId) || 
-                    string.IsNullOrEmpty(request.NhanVienId) || 
+                if (string.IsNullOrEmpty(request.NhaCungCapId) ||
+                    string.IsNullOrEmpty(request.NhanVienId) ||
                     request.NgayNhap == default(DateTime))
                 {
                     return BadRequest(new { message = "Thiếu thông tin nhà cung cấp, nhân viên hoặc ngày nhập." });
@@ -318,8 +321,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Thêm chi tiết phiếu nhập
                 foreach (var chiTiet in request.ChiTietPhieuNhap)
                 {
-                    if (string.IsNullOrEmpty(chiTiet.SanPhamDonViId) || 
-                        chiTiet.SoLuong <= 0 || 
+                    if (string.IsNullOrEmpty(chiTiet.SanPhamDonViId) ||
+                        chiTiet.SoLuong <= 0 ||
                         chiTiet.DonGia <= 0)
                     {
                         continue; // Bỏ qua dòng không hợp lệ
@@ -372,7 +375,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 }
 
                 // Validate dữ liệu đầu vào
-                if (string.IsNullOrEmpty(request.NhanVienId) || 
+                if (string.IsNullOrEmpty(request.NhanVienId) ||
                     request.NgayThucHien == default(DateTime))
                 {
                     return BadRequest(new { message = "Thiếu thông tin nhân viên hoặc ngày thực hiện." });
@@ -386,7 +389,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Thêm từng chi tiết gán vị trí
                 foreach (var chiTiet in request.ChiTietGanViTri)
                 {
-                    if (string.IsNullOrEmpty(chiTiet.SanPhamDonViId) || 
+                    if (string.IsNullOrEmpty(chiTiet.SanPhamDonViId) ||
                         string.IsNullOrEmpty(chiTiet.ViTriId) ||
                         chiTiet.SoLuong <= 0)
                     {
@@ -395,7 +398,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                     // Kiểm tra xem sản phẩm đã có ở vị trí này chưa
                     var existingSPVT = _quanLyServices.GetList<SanPhamViTri>()
-                        .FirstOrDefault(spvt => spvt.SanPhamDonViId == chiTiet.SanPhamDonViId && 
+                        .FirstOrDefault(spvt => spvt.SanPhamDonViId == chiTiet.SanPhamDonViId &&
                                                spvt.ViTriId == chiTiet.ViTriId &&
                                                !spvt.IsDelete);
 
@@ -444,7 +447,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             {
                 Console.WriteLine("=== ADD VITRI API CALLED ===");
                 Console.WriteLine($"Received data: MaViTri={viTri?.MaViTri}, LoaiViTri={viTri?.LoaiViTri}, MoTa={viTri?.MoTa}");
-                
+
                 if (viTri == null)
                 {
                     Console.WriteLine("ERROR: viTri is null");
@@ -479,7 +482,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 Console.WriteLine("Generating new ID...");
                 viTri.Id = _quanLyServices.GenerateNewId<ViTri>("VT", 6);
                 Console.WriteLine($"Generated ID: {viTri.Id}");
-                
+
                 viTri.IsDelete = false;
 
                 Console.WriteLine("Calling Add service...");
@@ -492,19 +495,19 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Không thể thêm vị trí mới. Vui lòng kiểm tra kết nối database." });
                 }
 
-                Console.WriteLine($"✅ SUCCESS: Added ViTri with ID={viTri.Id}, MaViTri={viTri.MaViTri}");
+                Console.WriteLine($"SUCCESS: Added ViTri with ID={viTri.Id}, MaViTri={viTri.MaViTri}");
                 return Ok(new { message = "Thêm vị trí mới thành công!", viTriId = viTri.Id });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ EXCEPTION in AddViTri: {ex.Message}");
+                Console.WriteLine($" EXCEPTION in AddViTri: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                
+
                 if (ex.InnerException != null)
                 {
                     Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
                 }
-                
+
                 return StatusCode(500, new { message = $"Lỗi khi thêm vị trí: {ex.Message}" });
             }
         }
@@ -676,66 +679,421 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<DieuKienApDung>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
         }
-    }
 
-    public class PhieuNhapFormData
-    {
-        public string NhaCungCapId { get; set; }
-        public string NhanVienId { get; set; }
-        public DateTime NgayNhap { get; set; }
-        public List<ChiTietPhieuNhapFormData> ChiTietPhieuNhap { get; set; }
-    }
+        //=========================================API Thêm Nhân Viên=======================================================================
+        [HttpPost]
+        [Route("/API/add-NhanVien")]
+        public async Task<IActionResult> AddNhanVien([FromBody] NhanVienRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
 
-    public class ChiTietPhieuNhapFormData
-    {
-        public string SanPhamDonViId { get; set; }
-        public int SoLuong { get; set; }
-        public decimal DonGia { get; set; }
-        public DateTime HanSuDung { get; set; }
-    }
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.HoTen))
+                {
+                    return BadRequest(new { message = "Họ tên không được để trống." });
+                }
 
-    public class GanViTriFormData
-    {
-        public string NhanVienId { get; set; }
-        public DateTime NgayThucHien { get; set; }
-        public List<ChiTietGanViTriFormData> ChiTietGanViTri { get; set; }
-    }
+                if (string.IsNullOrWhiteSpace(request.SoDienThoai))
+                {
+                    return BadRequest(new { message = "Số điện thoại không được để trống." });
+                }
 
-    public class ChiTietGanViTriFormData
-    {
-        public string SanPhamDonViId { get; set; }
-        public string ViTriId { get; set; }
-        public int SoLuong { get; set; }
-    }
+                if (string.IsNullOrWhiteSpace(request.ChucVu))
+                {
+                    return BadRequest(new { message = "Chức vụ không được để trống." });
+                }
 
-    // Request classes cho Chương trình khuyến mãi
-    public class ChuongTrinhKhuyenMaiRequest
-    {
-        public string Ten { get; set; }
-        public string Loai { get; set; }
-        public DateTime NgayBatDau { get; set; }
-        public DateTime NgayKetThuc { get; set; }
-        public string MoTa { get; set; }
-        public DieuKienApDungRequest DieuKienApDung { get; set; }
-        public MaKhuyenMaiRequest MaKhuyenMai { get; set; }
-        public string PhamViApDung { get; set; } // "ToanBo", "DanhMuc", "SanPham"
-        public List<string> DanhMucIds { get; set; }
-        public List<string> SanPhamIds { get; set; }
-    }
+                // Tạo Nhân viên
+                NhanVien nhanVien = new NhanVien
+                {
+                    Id = _quanLyServices.GenerateNewId<NhanVien>("NV", 8),
+                    HoTen = request.HoTen,
+                    ChucVu = request.ChucVu,
+                    LuongCoBan = request.LuongCoBan,
+                    SoDienThoai = request.SoDienThoai,
+                    Email = request.Email,
+                    DiaChi = request.DiaChi ?? "",
+                    NgayVaoLam = request.NgayVaoLam ?? DateTime.Now,
+                    TrangThai = request.TrangThai ?? "HoatDong",
+                    GioiTinh = request.GioiTinh,
+                    AnhId = request.AnhId ?? "ANH_DEFAULT", // Cần tạo ảnh mặc định
+                    IsDelete = false
+                };
 
-    public class DieuKienApDungRequest
-    {
-        public string DieuKien { get; set; }
-        public decimal GiaTriToiThieu { get; set; }
-        public string GiamTheo { get; set; }
-        public decimal GiaTriToiDa { get; set; }
-    }
+                if (!_quanLyServices.Add<NhanVien>(nhanVien))
+                {
+                    return BadRequest(new { message = "Không thể thêm nhân viên." });
+                }
 
-    public class MaKhuyenMaiRequest
-    {
-        public string Code { get; set; }
-        public decimal GiaTri { get; set; }
-        public int SoLanSuDung { get; set; }
-        public string TrangThai { get; set; }
+                return Ok(new { message = "Thêm nhân viên thành công!", nhanVienId = nhanVien.Id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm nhân viên: {ex.Message}" });
+            }
+        }
+
+        //=========================================API Thêm Phân Công Ca Làm Việc=======================================================================
+        [HttpPost]
+        [Route("/API/add-PhanCongCaLamViec")]
+        public async Task<IActionResult> AddPhanCongCaLamViec([FromBody] PhanCongCaLamViecRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.NhanVienId))
+                {
+                    return BadRequest(new { message = "Vui lòng chọn nhân viên." });
+                }
+
+                if (string.IsNullOrWhiteSpace(request.CaLamViecId))
+                {
+                    return BadRequest(new { message = "Vui lòng chọn ca làm việc." });
+                }
+
+                if (request.Ngay == default(DateTime))
+                {
+                    return BadRequest(new { message = "Vui lòng chọn ngày phân công." });
+                }
+
+                // Kiểm tra xem nhân viên đã được phân công ca này trong ngày chưa
+                var existingPhanCong = _quanLyServices.GetList<PhanCongCaLamViec>()
+                    .FirstOrDefault(pc => pc.NhanVienId == request.NhanVienId &&
+                                         pc.CaLamViecId == request.CaLamViecId &&
+                                         pc.Ngay.Date == request.Ngay.Date &&
+                                         !pc.IsDelete);
+
+                if (existingPhanCong != null)
+                {
+                    return BadRequest(new { message = "Nhân viên đã được phân công ca này trong ngày đã chọn." });
+                }
+
+                // Tạo Phân công ca làm việc
+                PhanCongCaLamViec phanCong = new PhanCongCaLamViec
+                {
+                    Id = _quanLyServices.GenerateNewId<PhanCongCaLamViec>("PCCLV", 10),
+                    NhanVienId = request.NhanVienId,
+                    CaLamViecId = request.CaLamViecId,
+                    Ngay = request.Ngay,
+                    IsDelete = false
+                };
+
+                if (!_quanLyServices.Add<PhanCongCaLamViec>(phanCong))
+                {
+                    return BadRequest(new { message = "Không thể thêm phân công ca làm việc." });
+                }
+
+                return Ok(new { message = "Phân công ca làm việc thành công!", phanCongId = phanCong.Id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi phân công ca làm việc: {ex.Message}" });
+            }
+        }
+
+        //=========================================API Get Next ID=======================================================================
+        [HttpPost]
+        [Route("/API/get-next-id-NV")]
+        public Task<IActionResult> GetNextIdNV([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<NhanVien>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
+        [HttpPost]
+        [Route("/API/get-next-id-PCCLV")]
+        public Task<IActionResult> GetNextIdPCCLV([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<PhanCongCaLamViec>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
+        //=========================================API Thêm Khách Hàng=======================================================================
+        [HttpPost]
+        [Route("/API/add-KhachHang")]
+        public async Task<IActionResult> AddKhachHang([FromBody] KhachHangRequest request)
+        {
+            try
+            {
+                Console.WriteLine("=== API ADD KHACH HANG CALLED ===");
+                Console.WriteLine($"Request: {System.Text.Json.JsonSerializer.Serialize(request)}");
+
+                if (request == null)
+                {
+                    Console.WriteLine("ERROR: Request is null");
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.HoTen))
+                {
+                    Console.WriteLine("ERROR: HoTen is empty");
+                    return BadRequest(new { message = "Họ tên không được để trống." });
+                }
+
+                if (string.IsNullOrWhiteSpace(request.SoDienThoai))
+                {
+                    Console.WriteLine("ERROR: SoDienThoai is empty");
+                    return BadRequest(new { message = "Số điện thoại không được để trống." });
+                }
+
+                // Kiểm tra số điện thoại đã tồn tại chưa
+                Console.WriteLine("Checking if phone number exists...");
+                var existingKH = _quanLyServices.GetList<KhachHang>()
+                    .FirstOrDefault(kh => kh.SoDienThoai == request.SoDienThoai && !kh.IsDelete);
+
+                if (existingKH != null)
+                {
+                    Console.WriteLine($"ERROR: Phone number '{request.SoDienThoai}' already exists");
+                    return BadRequest(new { message = $"Số điện thoại '{request.SoDienThoai}' đã được sử dụng." });
+                }
+
+                // Lấy hoặc tạo ảnh mặc định
+                Console.WriteLine("Getting or creating default image...");
+                string anhId = request.AnhId;
+
+                if (string.IsNullOrEmpty(anhId))
+                {
+                    // Kiểm tra ảnh mặc định có tồn tại không
+                    var defaultImage = _quanLyServices.GetList<HinhAnh>()
+                        .FirstOrDefault(ha => ha.Id == "ANH_DEFAULT");
+
+                    if (defaultImage == null)
+                    {
+                        // Tạo ảnh mặc định (1x1 pixel transparent PNG)
+                        byte[] defaultImageBytes = Convert.FromBase64String(
+                            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                        );
+
+                        defaultImage = new HinhAnh
+                        {
+                            Id = "ANH_DEFAULT",
+                            TenAnh = "Default Avatar",
+                            Anh = defaultImageBytes
+                        };
+
+                        Console.WriteLine("Creating default image...");
+                        if (!_quanLyServices.Add<HinhAnh>(defaultImage))
+                        {
+                            Console.WriteLine("ERROR: Cannot create default image");
+                            return BadRequest(new { message = "Không thể tạo ảnh mặc định." });
+                        }
+                    }
+
+                    anhId = "ANH_DEFAULT";
+                }
+
+                // Tạo Khách hàng
+                Console.WriteLine("Creating KhachHang entity...");
+                KhachHang khachHang = new KhachHang
+                {
+                    Id = _quanLyServices.GenerateNewId<KhachHang>("KH", 8),
+                    HoTen = request.HoTen,
+                    SoDienThoai = request.SoDienThoai,
+                    Email = request.Email,
+                    DiaChi = request.DiaChi ?? "",
+                    NgayDangKy = request.NgayDangKy ?? DateTime.Now,
+                    TrangThai = request.TrangThai ?? "Active",
+                    GioiTinh = request.GioiTinh,
+                    AnhId = anhId,
+                    IsDelete = false
+                };
+
+                Console.WriteLine($"Generated KhachHang ID: {khachHang.Id}");
+                Console.WriteLine("Adding KhachHang to database...");
+
+                if (!_quanLyServices.Add<KhachHang>(khachHang))
+                {
+                    Console.WriteLine("ERROR: Cannot add KhachHang");
+                    return BadRequest(new { message = "Không thể thêm khách hàng." });
+                }
+
+                Console.WriteLine("KhachHang added successfully");
+
+                // Nếu có thông tin thẻ thành viên, tạo thẻ
+                if (request.CreateMemberCard && request.TheThanhVien != null)
+                {
+                    Console.WriteLine("Creating TheThanhVien...");
+
+                    // Map từ tiếng Anh sang tiếng Việt
+                    string hangVietnamese = request.TheThanhVien.Hang switch
+                    {
+                        "Bronze" => "Đồng",
+                        "Silver" => "Bạc",
+                        "Gold" => "Vàng",
+                        "Platinum" => "Bạch Kim",
+                        _ => "Đồng" // Default
+                    };
+
+                    TheThanhVien theThanhVien = new TheThanhVien
+                    {
+                        Id = _quanLyServices.GenerateNewId<TheThanhVien>("TTV", 8),
+                        KhachHangId = khachHang.Id,
+                        Hang = hangVietnamese,
+                        DiemTichLuy = request.TheThanhVien.DiemTichLuy,
+                        NgayCap = request.TheThanhVien.NgayCap ?? DateTime.Now,
+                        IsDelete = false
+                    };
+
+                    Console.WriteLine($"Generated TheThanhVien ID: {theThanhVien.Id}");
+                    Console.WriteLine("Adding TheThanhVien to database...");
+
+                    if (!_quanLyServices.Add<TheThanhVien>(theThanhVien))
+                    {
+                        Console.WriteLine("ERROR: Cannot add TheThanhVien");
+                        return BadRequest(new { message = "Thêm khách hàng thành công nhưng không thể tạo thẻ thành viên." });
+                    }
+
+                    Console.WriteLine("TheThanhVien added successfully");
+                }
+
+                Console.WriteLine("=== SUCCESS: All operations completed ===");
+                return Ok(new { message = "Thêm khách hàng thành công!", khachHangId = khachHang.Id });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"EXCEPTION: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                return StatusCode(500, new { message = $"Lỗi khi thêm khách hàng: {ex.Message}" });
+            }
+        }
+
+        public class PhieuNhapFormData
+        {
+            public string NhaCungCapId { get; set; }
+            public string NhanVienId { get; set; }
+            public DateTime NgayNhap { get; set; }
+            public List<ChiTietPhieuNhapFormData> ChiTietPhieuNhap { get; set; }
+        }
+
+        public class ChiTietPhieuNhapFormData
+        {
+            public string SanPhamDonViId { get; set; }
+            public int SoLuong { get; set; }
+            public decimal DonGia { get; set; }
+            public DateTime HanSuDung { get; set; }
+        }
+
+        public class GanViTriFormData
+        {
+            public string NhanVienId { get; set; }
+            public DateTime NgayThucHien { get; set; }
+            public List<ChiTietGanViTriFormData> ChiTietGanViTri { get; set; }
+        }
+
+        public class ChiTietGanViTriFormData
+        {
+            public string SanPhamDonViId { get; set; }
+            public string ViTriId { get; set; }
+            public int SoLuong { get; set; }
+        }
+
+        // Request classes cho Chương trình khuyến mãi
+        public class ChuongTrinhKhuyenMaiRequest
+        {
+            public string Ten { get; set; }
+            public string Loai { get; set; }
+            public DateTime NgayBatDau { get; set; }
+            public DateTime NgayKetThuc { get; set; }
+            public string MoTa { get; set; }
+            public DieuKienApDungRequest DieuKienApDung { get; set; }
+            public MaKhuyenMaiRequest MaKhuyenMai { get; set; }
+            public string PhamViApDung { get; set; } 
+            public List<string> DanhMucIds { get; set; }
+            public List<string> SanPhamIds { get; set; }
+        }
+
+        public class DieuKienApDungRequest
+        {
+            public string DieuKien { get; set; }
+            public decimal GiaTriToiThieu { get; set; }
+            public string GiamTheo { get; set; }
+            public decimal GiaTriToiDa { get; set; }
+        }
+
+        public class MaKhuyenMaiRequest
+        {
+            public string Code { get; set; }
+            public decimal GiaTri { get; set; }
+            public int SoLanSuDung { get; set; }
+            public string TrangThai { get; set; }
+        }
+
+        // Request classes cho Hóa đơn
+        public class HoaDonRequest
+        {
+            public string KhachHangId { get; set; }
+            public string NhanVienId { get; set; }
+            public DateTime? NgayLap { get; set; }
+            public string TrangThai { get; set; } 
+            public string MaKhuyenMaiId { get; set; }
+            public string KenhThanhToanId { get; set; }
+            public string MoTaThanhToan { get; set; }
+            public List<ChiTietHoaDonRequest> ChiTietHoaDon { get; set; }
+        }
+
+        public class ChiTietHoaDonRequest
+        {
+            public string SanPhamDonViId { get; set; }
+            public int SoLuong { get; set; }
+            public decimal DonGia { get; set; }
+            public decimal? GiamGia { get; set; }
+        }
+
+        // Request classes cho Nhân viên
+        public class NhanVienRequest
+        {
+            public string HoTen { get; set; }
+            public string ChucVu { get; set; }
+            public decimal LuongCoBan { get; set; }
+            public string SoDienThoai { get; set; }
+            public string Email { get; set; }
+            public string DiaChi { get; set; }
+            public DateTime? NgayVaoLam { get; set; }
+            public string TrangThai { get; set; }
+            public bool GioiTinh { get; set; }
+            public string AnhId { get; set; }
+        }
+
+        // Request classes cho Phân công ca làm việc
+        public class PhanCongCaLamViecRequest
+        {
+            public string NhanVienId { get; set; }
+            public string CaLamViecId { get; set; }
+            public DateTime Ngay { get; set; }
+        }
+
+        public class KhachHangRequest
+        {
+            public string HoTen { get; set; }
+            public string SoDienThoai { get; set; }
+            public string Email { get; set; }
+            public string DiaChi { get; set; }
+            public DateTime? NgayDangKy { get; set; }
+            public string TrangThai { get; set; }
+            public bool GioiTinh { get; set; }
+            public string AnhId { get; set; }
+            public bool CreateMemberCard { get; set; } 
+            public TheThanhVienRequest TheThanhVien { get; set; }
+        }
+
+        public class TheThanhVienRequest
+        {
+            public string Hang { get; set; }
+            public int DiemTichLuy { get; set; }
+            public DateTime? NgayCap { get; set; }
+        }
     }
 }

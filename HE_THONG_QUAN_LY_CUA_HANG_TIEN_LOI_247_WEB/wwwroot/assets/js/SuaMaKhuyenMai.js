@@ -76,12 +76,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const response = await fetch(`/API/get-CTKM-by-id?id=${encodeURIComponent(id)}`);
 
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+
             if (!response.ok) {
-                throw new Error('Không thể tải dữ liệu chương trình khuyến mãi');
+                const errorText = await response.text();
+                console.error('Error response:', errorText);
+                throw new Error(`HTTP ${response.status}: Không thể tải dữ liệu chương trình khuyến mãi`);
             }
 
             const data = await response.json();
             console.log('Loaded data:', data);
+
+            // Kiểm tra data có hợp lệ không
+            if (!data || !data.id) {
+                throw new Error('Dữ liệu trả về không hợp lệ');
+            }
 
             // Đổ dữ liệu vào form
             if (tenChuongTrinhInput) tenChuongTrinhInput.value = data.ten || '';
@@ -89,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Loại khuyến mãi
             if (data.loai && selectHinhThucGiam) {
-                if (data.loai.toLowerCase().includes('phan tram')) {
+                if (data.loai.toLowerCase().includes('phan tram') || data.loai.toLowerCase().includes('phần trăm')) {
                     selectHinhThucGiam.value = 'PhanTram';
                 } else {
                     selectHinhThucGiam.value = 'SoTien';
@@ -97,20 +107,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 selectHinhThucGiam.dispatchEvent(new Event('change'));
             }
 
-            // Ngày tháng - convert DateOnly to YYYY-MM-DD format
+            // Ngày tháng - handle both DateTime and DateOnly formats
             if (data.ngayBatDau && ngayBatDauInput) {
-                // Nếu là DateOnly từ C#, format: "2025-01-15"
-                const ngayBatDau = data.ngayBatDau.split('T')[0]; // Lấy phần ngày
+                let ngayBatDau = data.ngayBatDau;
+                // Nếu là DateTime ISO string: "2025-01-15T00:00:00"
+                // Hoặc DateOnly: "2025-01-15"
+                if (ngayBatDau.includes('T')) {
+                    ngayBatDau = ngayBatDau.split('T')[0];
+                }
                 ngayBatDauInput.value = ngayBatDau;
+                console.log('Set ngayBatDau:', ngayBatDau);
             }
+            
             if (data.ngayKetThuc && ngayKetThucInput) {
-                const ngayKetThuc = data.ngayKetThuc.split('T')[0];
+                let ngayKetThuc = data.ngayKetThuc;
+                if (ngayKetThuc.includes('T')) {
+                    ngayKetThuc = ngayKetThuc.split('T')[0];
+                }
                 ngayKetThucInput.value = ngayKetThuc;
+                console.log('Set ngayKetThuc:', ngayKetThuc);
             }
 
+            console.log('✅ Data loaded successfully');
+
         } catch (error) {
-            console.error('Error loading data:', error);
-            alert('Có lỗi khi tải dữ liệu chương trình khuyến mãi: ' + error.message);
+            console.error('❌ Error loading data:', error);
+            console.error('Error stack:', error.stack);
+            alert('Có lỗi khi tải dữ liệu chương trình khuyến mãi:\n\n' + error.message);
+            
+            // Redirect back to list page after error
+            setTimeout(() => {
+                window.location.href = '/QuanLyKhuyenMai/KhuyenMai';
+            }, 2000);
         }
     }
 

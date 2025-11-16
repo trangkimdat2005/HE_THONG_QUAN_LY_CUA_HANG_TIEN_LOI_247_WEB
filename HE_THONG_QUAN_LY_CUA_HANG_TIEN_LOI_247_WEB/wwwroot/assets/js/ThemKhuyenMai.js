@@ -82,9 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- LOGIC 4: NÚT LƯU - GỌI API THÊM CHƯƠNG TRÌNH KHUYẾN MÃI ---
     if (btnLuu) {
         btnLuu.addEventListener('click', async function () {
-            console.log('=== BẮT ĐẦU LƯU CHƯƠNG TRÌNH KHUYẾN MÃI ===');
-
-            // === PHẦN VALIDATE CỦA BẠN (RẤT TỐT, GIỮ NGUYÊN) ===
             if (!tenChuongTrinhInput.value.trim()) {
                 alert('Vui lòng nhập tên chương trình!');
                 tenChuongTrinhInput.focus();

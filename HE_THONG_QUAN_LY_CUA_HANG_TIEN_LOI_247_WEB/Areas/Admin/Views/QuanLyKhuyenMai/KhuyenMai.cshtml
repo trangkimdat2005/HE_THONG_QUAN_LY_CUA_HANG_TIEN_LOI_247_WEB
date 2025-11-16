@@ -48,28 +48,28 @@
                                 @{
                                     if (ViewData["lstKhuyenMai"] != null)
                                     {
-                                        List<MaKhuyenMai> maKhuyenMais = ViewBag.lstKhuyenMai;
-                                        foreach (MaKhuyenMai maKhuyenMai in maKhuyenMais)
+                                        List<ChuongTrinhKhuyenMai> chuongTrinhs = ViewBag.lstKhuyenMai;
+                                        foreach (ChuongTrinhKhuyenMai ct in chuongTrinhs)
                                         {
                                             <tr>
-                                                <td>@maKhuyenMai.ChuongTrinh.Id</td>
-                                                <td>@maKhuyenMai.ChuongTrinh.Ten</td>
-                                                <td>@maKhuyenMai.ChuongTrinh.Loai</td>
-                                                <td>@maKhuyenMai.ChuongTrinh.NgayBatDau.ToString("dd/MM/yyyy")</td>
-                                                <td>@maKhuyenMai.ChuongTrinh.NgayKetThuc.ToString("dd/MM/yyyy")</td>
-                                                <td>@(maKhuyenMai.ChuongTrinh.MoTa ?? "")</td>
+                                                <td>@ct.Id</td>
+                                                <td>@ct.Ten</td>
+                                                <td>@ct.Loai</td>
+                                                <td>@ct.NgayBatDau.ToString("dd/MM/yyyy")</td>
+                                                <td>@ct.NgayKetThuc.ToString("dd/MM/yyyy")</td>
+                                                <td>@(ct.MoTa ?? "")</td>
                                                 <td class="text-center">
                                                     <a class="btn btn-info btn-sm me-1 btn-edit-khoi"
                                                        asp-controller="Sua"
                                                        asp-action="SuaMaKhuyenMai"
-                                                       asp-route-id="@maKhuyenMai.ChuongTrinh.Id"
+                                                       asp-route-id="@ct.Id"
                                                        title="Sửa">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <a class="btn btn-danger btn-sm btn-delete-khoi"
                                                        href="#"
-                                                       data-id="@maKhuyenMai.ChuongTrinh.Id"
-                                                       data-name="@maKhuyenMai.ChuongTrinh.Ten"
+                                                       data-id="@ct.Id"
+                                                       data-name="@ct.Ten"
                                                        title="Xóa">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </a>

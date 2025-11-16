@@ -22,8 +22,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyKhuyenMai/KhuyenMai")]
         public IActionResult KhuyenMai()
         {
-            var lstMaKhuyenMai = _quanLyServices.GetList<MaKhuyenMai>();
-            ViewData["lstKhuyenMai"] = lstMaKhuyenMai;
+            var lstChuongTrinhKhuyenMai = _quanLyServices.GetList<ChuongTrinhKhuyenMai>();
+            ViewData["lstKhuyenMai"] = lstChuongTrinhKhuyenMai;
             return View();
         }
 
@@ -80,7 +80,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [HttpGet("get-all-CTKM")]
         public async Task<IActionResult> GetAllChuongTrinhKhuyenMai()
         {
-            var lstChuongTrinh = _quanLyServices.GetList<ChuongTrinhKhuyenMai>().Select(ct => new
+            var lstChuongTrinh = _quanLyServices.GetList<ChuongTrinhKhuyenMai>().Where(ct => ct.IsDelete == false).Select(ct => new
             {
                 id = ct.Id,
                 ten = ct.Ten,
@@ -88,7 +88,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 ngayBatDau = ct.NgayBatDau,
                 ngayKetThuc = ct.NgayKetThuc,
                 moTa = ct.MoTa,
-                soMaKhuyenMai = ct.MaKhuyenMais.Count
+                soMaKhuyenMai = ct.MaKhuyenMais.Count(m => m.IsDelete == false)
             }).ToList();
 
             return Ok(lstChuongTrinh);

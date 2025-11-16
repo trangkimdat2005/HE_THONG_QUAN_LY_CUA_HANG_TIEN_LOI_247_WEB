@@ -1,27 +1,36 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const tableBody = document.getElementById('tbody-khuyen-mai');
+﻿document.addEventListener('DOMContentLoaded', function () {
+    console.log('=== KHUYẾN MÃI PAGE LOADED ===');
 
-    // --- X? L� N�T XO� ---
+    // --- TRUY XUẤT PHẦN TỬ DOM ---
+    const tableBody = document.querySelector('#sampleTable tbody');
+
+    // --- GÁN SỰ KIỆN CHO BẢNG (XOÁ) ---
     if (tableBody) {
         tableBody.addEventListener('click', function (e) {
-            const btn = e.target.closest('.btn-delete-khoi');
-            if (!btn) return;
+            // Tìm nút delete được click
+            const deleteBtn = e.target.closest('.btn-delete-khoi');
+            if (!deleteBtn) return;
 
             e.preventDefault();
+            
+            // Lấy thông tin từ data attributes
+            const chuongTrinhId = deleteBtn.getAttribute('data-id');
+            const tenChuongTrinh = deleteBtn.getAttribute('data-name');
+            const row = deleteBtn.closest('tr');
 
-            const id = btn.getAttribute('data-id');
-            const name = btn.getAttribute('data-name');
+            console.log('Delete button clicked:', { chuongTrinhId, tenChuongTrinh });
 
-            if (confirm(`B?n c� mu?n x�a "${name}" kh�ng`)) {
-                callApiDeleteCTKM(id);
+            // Hỏi xác nhận
+            if (confirm(`Bạn có chắc muốn xóa chương trình "${tenChuongTrinh}" (${chuongTrinhId}) không?`)) {
+                deleteChuongTrinh(chuongTrinhId, row);
             }
         });
     }
 
-    // --- API X�A CH??NG TR�NH KHUY?N M�I ---
-    async function callApiDeleteCTKM(id) {
+    // --- HÀM XÓA CHƯƠNG TRÌNH KHUYẾN MÃI ---
+    async function deleteChuongTrinh(id, row) {
         try {
-            console.log('Deleting CTKM with ID:', id);
+            console.log(`Deleting chương trình: ${id}`);
 
             const response = await fetch(`/API/delete-CTKM/${encodeURIComponent(id)}`, {
                 method: 'DELETE',
@@ -30,63 +39,70 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            let data = null;
+            let result = null;
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
+                result = await response.json();
             }
 
-            if (!response.ok) {
-                const errorMessage = (data && data.message) || 'X�a ch??ng tr�nh khuy?n m�i th?t b?i!';
-                throw new Error(errorMessage);
+            console.log('Delete response:', result);
+
+            if (response.ok) {
+                console.log('✅ SUCCESS');
+                alert(result?.message || 'Xóa chương trình khuyến mãi thành công!');
+                
+                // Xóa row khỏi table
+                if (row) {
+                    row.remove();
+                }
+            } else {
+                console.error('❌ ERROR:', result?.message);
+                alert('Lỗi: ' + (result?.message || 'Không thể xóa chương trình khuyến mãi'));
             }
-
-            console.log('Deleted successfully:', data);
-            alert(data.message || 'X�a ch??ng tr�nh khuy?n m�i th�nh c�ng!');
-
-            // SignalR s? t? ??ng reload b?ng
         } catch (error) {
-            console.error('Error deleting CTKM:', error);
-            alert('L?i: ' + error.message);
+            console.error('❌ EXCEPTION:', error);
+            alert('Có lỗi xảy ra khi xóa chương trình khuyến mãi:\n\n' + error.message);
         }
     }
 });
 
-// --- REALTIME UPDATE V?I SIGNALR ---
+// SignalR realtime update (nếu có)
 $(async function () {
-    await appRealtimeList.initEntityTable({
-        key: 'ChuongTrinhKhuyenMai',
-        apiUrl: '/API/get-all-CTKM',
-        tableId: 'sampleTable',
-        tbodyId: 'tbody-khuyen-mai',
-        buildRow: ct => {
-            const ngayBatDau = new Date(ct.ngayBatDau).toLocaleDateString('vi-VN');
-            const ngayKetThuc = new Date(ct.ngayKetThuc).toLocaleDateString('vi-VN');
-            const moTa = ct.moTa || '';
+    if (typeof appRealtimeList !== 'undefined') {
+        await appRealtimeList.initEntityTable({
+            key: 'ChuongTrinhKhuyenMai',
+            apiUrl: '/API/get-all-CTKM',
+            tableId: 'sampleTable',
+            tbodyId: 'tbody-khuyen-mai',
+            buildRow: ct => {
+                const ngayBatDau = new Date(ct.ngayBatDau).toLocaleDateString('vi-VN');
+                const ngayKetThuc = new Date(ct.ngayKetThuc).toLocaleDateString('vi-VN');
+                const moTa = ct.moTa || '';
 
-            return `
-                <tr>
-                    <td>${ct.id}</td>
-                    <td>${ct.ten}</td>
-                    <td>${ct.loai}</td>
-                    <td>${ngayBatDau}</td>
-                    <td>${ngayKetThuc}</td>
-                    <td>${moTa}</td>
-                    <td class="text-center">
-                        <a class="btn btn-info btn-sm me-1 btn-edit-khoi"
-                           href="/Sua/SuaMaKhuyenMai?id=${encodeURIComponent(ct.id)}"
-                           title="S?a">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="btn btn-danger btn-sm btn-delete-khoi"
-                           href="#"
-                           data-id="${ct.id}"
-                           data-name="${ct.ten}"
-                           title="X�a">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </td>
-                </tr>`;
-        }
-    });
+                return `
+                    <tr>
+                        <td>${ct.id}</td>
+                        <td>${ct.ten}</td>
+                        <td>${ct.loai}</td>
+                        <td>${ngayBatDau}</td>
+                        <td>${ngayKetThuc}</td>
+                        <td>${moTa}</td>
+                        <td class="text-center">
+                            <a class="btn btn-info btn-sm me-1 btn-edit-khoi"
+                               href="/Sua/SuaMaKhuyenMai?id=${encodeURIComponent(ct.id)}"
+                               title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a class="btn btn-danger btn-sm btn-delete-khoi"
+                               href="#"
+                               data-id="${ct.id}"
+                               data-name="${ct.ten}"
+                               title="Xóa">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>`;
+            }
+        });
+    }
 });
