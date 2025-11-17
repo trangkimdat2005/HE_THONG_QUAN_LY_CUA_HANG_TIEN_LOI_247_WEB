@@ -1,19 +1,16 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
     ViewData["title"] = "Thêm Hóa Đơn";
+    
+    var lstKhachHang = ViewData["DanhSachKhachHang"] as List<KhachHang>;
+    var lstSanPhamDonVi = ViewData["DanhSachSanPhamDonVi"] as List<SanPhamDonVi>;
+    var lstDanhMuc = ViewData["DanhSachDanhMuc"] as List<DanhMuc>;
+    var lstMaKhuyenMai = ViewData["DanhSachMaKhuyenMai"] as List<MaKhuyenMai>;
 }
   <!-- Css riêng ở đây nha -->
   <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
   <link rel="stylesheet" type="text/css" href="~/assets/css/ThemHoaDon.css">
-
-
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
 
 
   <main class="app-content">
@@ -24,8 +21,8 @@
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyHoaDon" asp-action="DanhSachHoaDon">Danh sách hóa đơn</a></li>
-        <li class="breadcrumb-item"><a asp-controller="Them" asp-action="ThemHoaDon">Tạo hoá đơn</a></li>
+        <li class="breadcrumb-item"><a asp-area="Admin" asp-controller="QuanLyHoaDon" asp-action="DanhSachHoaDon">Danh sách hóa đơn</a></li>
+        <li class="breadcrumb-item active"><a asp-area="Admin" asp-controller="Them" asp-action="ThemHoaDon">Tạo hoá đơn</a></li>
       </ul>
     </div>
     <div class="row">
@@ -39,13 +36,20 @@
               <div class="col-md-9">
                 <label class="form-label">Khách hàng</label>
                 <select class="form-control" id="selectKhachHang" style="width: 100%;">
-                  <option value="khach_le">Khách lẻ</option>
-                  <option value="kh_01">Nguyễn Văn A (090xxxx123)</option>
-                  <option value="kh_02">Trần Thị B (091xxxx456)</option>
+                  <option value="">Khách lẻ</option>
+                  @if (lstKhachHang != null)
+                  {
+                      foreach (var kh in lstKhachHang)
+                      {
+                          <option value="@kh.Id">@kh.HoTen</option>
+                      }
+                  }
                 </select>
               </div>
               <div class="col-md-3 d-flex align-items-end">
-                <button class="btn btn-primary" type="button"><i class="bi bi-plus-lg"></i> Thêm mới</button>
+                <a class="btn btn-primary" href="/Them/ThemKhachHang" target="_blank">
+                  <i class="bi bi-plus-lg"></i> Thêm mới
+                </a>
               </div>
             </div>
 
@@ -61,6 +65,9 @@
                   </tr>
                 </thead>
                 <tbody id="invoice-items-body">
+                  <tr class="text-center text-muted">
+                    <td colspan="5">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -73,6 +80,7 @@
                     <input class="form-control" id="discount-code-input" type="text" placeholder="Nhập mã~">
                     <button class="btn btn-outline-primary" type="button" id="apply-discount-btn">Áp dụng</button>
                   </div>
+                  <small class="text-muted" id="discount-message"></small>
                 </div>
               </div>
               <div class="col-md-6">
@@ -85,15 +93,17 @@
           </div>
 
           <div class="tile-footer text-end">
-            <button class="btn btn-secondary" type="button" id="cancel-invoice-btn"><i
-                class="bi bi-x-circle me-2"></i>Huỷ</button>
+            <button class="btn btn-secondary" type="button" id="cancel-invoice-btn">
+              <i class="bi bi-x-circle me-2"></i>Huỷ
+            </button>
 
             <button class="btn btn-primary" type="button" id="save-draft-btn">
               <i class="bi bi-save me-2"></i>Lưu tạm
             </button>
 
-            <button class="btn btn-success" type="button" id="checkout-btn"><i
-                class="bi bi-currency-dollar me-2"></i>Thanh toán</button>
+            <button class="btn btn-success" type="button" id="complete-invoice-btn">
+              <i class="bi bi-wallet me-2"></i>Thanh toán ngay
+            </button>
           </div>
         </div>
       </div>
@@ -109,59 +119,61 @@
           </div>
           <div class="mb-3">
             <select class="form-control" id="selectDanhMuc">
-              <option value="all">Tất cả danh mục</option>
-              <option value="dm_01">Đồ uống</option>
-              <option value="dm_02">Đồ ăn nhanh</option>
-              <option value="dm_03">Hàng gia dụng</option>
+              <option value="">Tất cả danh mục</option>
+              @if (lstDanhMuc != null)
+              {
+                  foreach (var dm in lstDanhMuc)
+                  {
+                      <option value="@dm.Id">@dm.Ten</option>
+                  }
+              }
             </select>
           </div>
 
           <div class="product-list-container">
             <ul class="list-group" id="product-list">
-              <li class="list-group-item d-flex justify-content-between align-items-center product-item"
-                data-category="dm_01">
-                <div>
-                  <h6 class="mb-0">Sting Dâu</h6>
-                  <small class="text-muted">10,000 đ</small>
-                </div>
-                <button class="btn btn-primary btn-sm add-product-btn" data-id="spdv_01" data-name="Sting Dâu"
-                  data-price="10000">
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center product-item"
-                data-category="dm_02">
-                <div>
-                  <h6 class="mb-0">Bánh mì Sandwich</h6>
-                  <small class="text-muted">22,000 đ</small>
-                </div>
-                <button class="btn btn-primary btn-sm add-product-btn" data-id="spdv_02" data-name="Bánh mì Sandwich"
-                  data-price="22000">
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center product-item"
-                data-category="dm_01">
-                <div>
-                  <h6 class="mb-0">Coca Cola</h6>
-                  <small class="text-muted">12,000 đ</small>
-                </div>
-                <button class="btn btn-primary btn-sm add-product-btn" data-id="spdv_03" data-name="Coca Cola"
-                  data-price="12000">
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center product-item"
-                data-category="dm_03">
-                <div>
-                  <h6 class="mb-0">Dao cạo râu</h6>
-                  <small class="text-muted">45,000 đ</small>
-                </div>
-                <button class="btn btn-primary btn-sm add-product-btn" data-id="spdv_04" data-name="Dao cạo râu"
-                  data-price="45000">
-                  <i class="bi bi-plus-lg"></i>
-                </button>
-              </li>
+              @if (lstSanPhamDonVi != null && lstSanPhamDonVi.Any())
+              {
+                  foreach (var sp in lstSanPhamDonVi)
+                  {
+                      var tenSanPham = sp.SanPham?.Ten ?? sp.Id;
+                      var tenDonVi = sp.DonVi?.Ten ?? "";
+                      var tenHienThi = string.IsNullOrEmpty(tenDonVi) ? tenSanPham : $"{tenSanPham} ({tenDonVi})";
+                      var giaBan = sp.GiaBan;
+                      
+                      // Lấy danh mục đầu tiên của sản phẩm (để filter)
+                      var danhMucId = sp.SanPham?.SanPhamDanhMucs?.FirstOrDefault()?.DanhMucId ?? "";
+                      
+                      <li class="list-group-item d-flex justify-content-between align-items-center product-item"
+                          data-category="@danhMucId"
+                          data-product-id="@sp.Id"
+                          data-product-name="@tenHienThi"
+                          data-product-price="@giaBan">
+                        <div>
+                          <h6 class="mb-0">@tenSanPham</h6>
+                          <small class="text-muted">
+                              @giaBan.ToString("N0") đ
+                              @if (!string.IsNullOrEmpty(tenDonVi))
+                              {
+                                  <text> / @tenDonVi</text>
+                              }
+                          </small>
+                        </div>
+                        <button class="btn btn-primary btn-sm add-product-btn" 
+                                data-id="@sp.Id"
+                                data-name="@tenHienThi"
+                                data-price="@giaBan">
+                          <i class="bi bi-plus-lg"></i>
+                        </button>
+                      </li>
+                  }
+              }
+              else
+              {
+                  <li class="list-group-item text-center text-muted">
+                      Không có sản phẩm nào
+                  </li>
+              }
             </ul>
           </div>
         </div>
@@ -170,14 +182,21 @@
           <h3 class="tile-title">Hoá Đơn Tạm Lưu</h3>
           <div class="draft-list-container">
             <ul class="list-group" id="draft-list">
+              <li class="list-group-item text-center text-muted">
+                Chưa có hóa đơn tạm lưu nào
+              </li>
             </ul>
           </div>
         </div>
 
       </div>
     </div>
+
+    <!-- Hidden data for JavaScript -->
+    <input type="hidden" id="current-user-id" value="NV001" />
   </main>
 
-
   <!-- js riêng ở đây nha! -->
+  <script src="~/assets/lib/jquery/jquery-3.7.0.min.js"></script>
+  <script src="~/assets/lib/select2/dist/js/select2.min.js"></script>
   <script src="~/assets/js/ThemHoaDon.js" asp-append-version="true" defer></script>

@@ -58,11 +58,14 @@
                           <td>@tem.NoiDungTem</td>
                           <td>@tem.NgayIn.ToString("dd/MM/yyyy")</td>
                           <td class="text-center">
-                            <a class="btn btn-info btn-sm me-1 btn-edit-khoi" title="Sửa">
+                            <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="#" data-id="@tem.Id" title="Sửa">
                               <i class="fas fa-edit"></i>
                             </a>
                             <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" data-id="@tem.Id" title="Xóa">
                               <i class="fas fa-trash-alt"></i>
+                            </a>
+                            <a class="btn btn-secondary btn-sm" href="#" title="In tem">
+                              <i class="fas fa-print"></i>
                             </a>
                           </td>
                         </tr>

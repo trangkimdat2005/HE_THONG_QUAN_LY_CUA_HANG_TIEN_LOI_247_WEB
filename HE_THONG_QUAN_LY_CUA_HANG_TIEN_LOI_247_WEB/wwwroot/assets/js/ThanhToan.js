@@ -1,149 +1,327 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    // === CÁC BIẾN DOM ===
-    const mainRow = document.getElementById("main-content-row");
-    const listCol = document.getElementById("list-column");
-    const formCol = document.getElementById("form-column");
-    const formTitle = document.getElementById("form-title");
-    const form = document.getElementById("payment-channel-form");
-    const inputId = document.getElementById("form-id");
+﻿// Vô hiệu hóa DataTables warning
+if (typeof $.fn.dataTable !== 'undefined') {
+    $.fn.dataTable.ext.errMode = 'none';
+}
 
-    // Nút
-    const btnShowAddForm = document.getElementById("btn-show-add-form");
-    const btnCloseForm = document.getElementById("btn-close-form");
-    const btnCancelForm = document.getElementById("btn-cancel-form");
-    const btnSaveForm = document.getElementById("btn-save-form");
-    const allEditButtons = document.querySelectorAll(".btn-edit");
+document.addEventListener('DOMContentLoaded', function () {
+    console.log('=== THANH TOAN PAGE LOADED ===');
 
-    let currentEditRow = null; // Biến để lưu hàng đang sửa
+    // Destroy DataTable nếu đã được init
+    if (typeof $.fn.DataTable !== 'undefined' && $.fn.DataTable.isDataTable('#sampleTable')) {
+        $('#sampleTable').DataTable().destroy();
+    }
 
-    // === HÀM MỞ FORM ===
-    const openForm = (mode, data = null) => {
-        // 1. Co Bảng, Mở Form (giống DinhDanhSanPham.js)
-        listCol.classList.remove("col-lg-12");
-        listCol.classList.add("col-lg-8");
-        formCol.classList.add("active");
-        mainRow.classList.add("form-active");
-        btnShowAddForm.style.display = "none"; // Ẩn nút "Thêm"
+    // === TRUY XUẤT PHẦN TỬ DOM (KHỚP VỚI VIEW HIỆN TẠI) ===
+    const mainRow = document.getElementById('main-content-row');
+    const listCol = document.getElementById('list-column');
+    const formCol = document.getElementById('form-column');
 
-        // 2. Xử lý dữ liệu
-        form.reset(); // Xoá trắng form
-        inputId.readOnly = false; // Mặc định là cho phép sửa ID
+    const btnShowAddForm = document.getElementById('btn-show-add-form');
+    const btnCloseForm = document.getElementById('btn-close-form');
+    const btnCancelForm = document.getElementById('btn-cancel-form');
+    const btnSaveForm = document.getElementById('btn-save-form');
 
-        if (mode === "add") {
-            formTitle.textContent = "Thêm Kênh Mới";
-            btnSaveForm.textContent = "Lưu";
-            currentEditRow = null;
-        } else if (mode === "edit" && data) {
-            formTitle.textContent = `Sửa Kênh: ${data.id}`;
-            btnSaveForm.textContent = "Lưu thay đổi";
-            currentEditRow = data.row; // Lưu lại hàng đang sửa
+    // Form
+    const form = document.getElementById('payment-channel-form');
+    const formTitle = document.getElementById('form-title');
+    const formId = document.getElementById('form-id');
+    const formTenKenh = document.getElementById('form-tenKenh');
+    const formLoaiKenh = document.getElementById('form-loaiKenh');
+    const formPhiGiaoDich = document.getElementById('form-phiGiaoDich');
+    const formTrangThai = document.getElementById('form-trangThai');
+    const formCauHinh = document.getElementById('form-cauHinh');
 
-            // Điền dữ liệu vào form
-            document.getElementById("form-id").value = data.id;
-            document.getElementById("form-id").readOnly = true; // Không cho sửa ID (PK)
-            document.getElementById("form-tenKenh").value = data.tenKenh;
-            document.getElementById("form-loaiKenh").value = data.loaiKenh;
-            document.getElementById("form-phiGiaoDich").value = data.phiGiaoDich;
-            document.getElementById("form-trangThai").value = data.trangThai;
-            // (Bạn có thể thêm data-cauHinh nếu cần)
-            // document.getElementById('form-cauHinh').value = data.cauHinh;
+    // Bảng
+    const tableBody = document.getElementById('tbody-kenh-thanh-toan');
+
+    let isEditMode = false;
+
+    // === HÀM MỞ/ĐÓNG FORM ===
+    const openForm = (mode = 'add') => {
+        mainRow.classList.add('form-active');
+        listCol.classList.remove('col-lg-12');
+        listCol.classList.add('col-lg-8');
+        formCol.classList.add('active');
+
+        if (mode === 'add') {
+            isEditMode = false;
+            formTitle.textContent = 'Thêm Kênh Mới';
+            formId.readOnly = false;
+            form.reset();
+            formPhiGiaoDich.value = '0.00';
+            formTrangThai.value = 'Active';
+            callApiGetNextIdKenh();
+        } else if (mode === 'edit') {
+            isEditMode = true;
+            formTitle.textContent = 'Sửa Kênh Thanh Toán';
+            formId.readOnly = true;
         }
     };
 
-    // === HÀM ĐÓNG FORM ===
     const closeForm = () => {
-        // 1. Phình Bảng, Đóng Form (giống DinhDanhSanPham.js)
-        listCol.classList.remove("col-lg-8");
-        listCol.classList.add("col-lg-12");
-        formCol.classList.remove("active");
-        mainRow.classList.remove("form-active");
-        btnShowAddForm.style.display = ""; // Hiện lại nút "Thêm"
-
-        // 2. Reset form
+        mainRow.classList.remove('form-active');
+        listCol.classList.remove('col-lg-8');
+        listCol.classList.add('col-lg-12');
+        formCol.classList.remove('active');
         form.reset();
-        currentEditRow = null;
+        isEditMode = false;
     };
 
     // === GÁN SỰ KIỆN ===
 
     // 1. Nút "Thêm kênh mới"
-    btnShowAddForm.addEventListener("click", () => {
-        openForm("add");
+    btnShowAddForm.addEventListener('click', () => {
+        openForm('add');
     });
 
     // 2. Nút "Huỷ" và "X"
-    btnCloseForm.addEventListener("click", closeForm);
-    btnCancelForm.addEventListener("click", closeForm);
+    btnCloseForm.addEventListener('click', closeForm);
+    btnCancelForm.addEventListener('click', closeForm);
 
-    // 3. Các nút "Sửa" trong bảng
-    allEditButtons.forEach((button) => {
-        button.addEventListener("click", (e) => {
-            const row = e.currentTarget.closest("tr");
-
-            // Lấy dữ liệu từ các ô <td> trong hàng
-            const data = {
-                id: row.querySelector('[data-field="id"]').textContent.trim(),
-                tenKenh: row.querySelector('[data-field="tenKenh"]').textContent.trim(),
-                loaiKenh: row
-                    .querySelector('[data-field="loaiKenh"]')
-                    .textContent.trim(),
-                phiGiaoDich: row
-                    .querySelector('[data-field="phiGiaoDich"]')
-                    .textContent.trim(),
-                trangThai: row.querySelector('[data-field="trangThai"]').dataset.value, // Lấy từ data-value
-                row: row, // Lưu lại chính hàng đó
-            };
-
-            openForm("edit", data);
-        });
-    });
-
-    // 4. Nút "Lưu" (Giả lập lưu)
-    btnSaveForm.addEventListener("click", () => {
-        // Đây là nơi bạn sẽ thu thập dữ liệu và gửi đi
-        const formData = {
-            id: document.getElementById("form-id").value,
-            tenKenh: document.getElementById("form-tenKenh").value,
-            loaiKenh: document.getElementById("form-loaiKenh").value,
-            phiGiaoDich: document.getElementById("form-phiGiaoDich").value,
-            trangThai: document.getElementById("form-trangThai").value,
-            //...
-        };
-
-        if (!formData.id || !formData.tenKenh) {
-            alert("Vui lòng nhập Mã Kênh và Tên Kênh!");
+    // 3. Nút "Lưu"
+    btnSaveForm.addEventListener('click', () => {
+        if (form.checkValidity() === false) {
+            alert('Vui lòng nhập đầy đủ thông tin bắt buộc.');
             return;
         }
 
-        if (currentEditRow) {
-            // --- Chế độ SỬA ---
-            // (Giả lập cập nhật lại hàng trong bảng)
-            currentEditRow.querySelector('[data-field="tenKenh"]').textContent =
-                formData.tenKenh;
-            currentEditRow.querySelector('[data-field="loaiKenh"]').textContent =
-                formData.loaiKenh;
-            currentEditRow.querySelector('[data-field="phiGiaoDich"]').textContent =
-                formData.phiGiaoDich + " %";
+        const duLieu = {
+            Id: formId.value,
+            TenKenh: formTenKenh.value,
+            LoaiKenh: formLoaiKenh.value,
+            PhiGiaoDich: parseFloat(formPhiGiaoDich.value) || 0,
+            TrangThai: formTrangThai.value,
+            CauHinh: formCauHinh.value.trim() || null
+        };
 
-            // Cập nhật trạng thái
-            const trangThaiCell = currentEditRow.querySelector(
-                '[data-field="trangThai"]'
-            );
-            trangThaiCell.dataset.value = formData.trangThai;
-            trangThaiCell.innerHTML =
-                formData.trangThai === "Active"
-                    ? '<span class="badge bg-success">Hoạt động</span>'
-                    : '<span class="badge bg-secondary">Không hoạt động</span>';
-
-            alert(`Đã cập nhật kênh: ${formData.id}`);
+        if (isEditMode) {
+            callApiEditKenh(duLieu);
         } else {
-            // --- Chế độ THÊM ---
-            // (Giả lập thêm hàng mới vào bảng)
-            // Bạn sẽ cần logic phức tạp hơn để thêm hàng mới vào <tbody>
-            alert(`Đã thêm kênh mới: ${formData.id}`);
+            callApiAddKenh(duLieu);
+        }
+    });
+
+    // 4. Gán sự kiện Sửa/Xóa cho tableBody
+    tableBody.addEventListener('click', (e) => {
+        const target = e.target;
+
+        // Xử lý nút SỬA
+        const editButton = target.closest('.btn-edit');
+        if (editButton) {
+            e.preventDefault();
+            const id = editButton.dataset.id;
+            callApiGetKenhById(id);
+            return;
         }
 
-        // Đóng form sau khi lưu
-        closeForm();
+        // Xử lý nút XOÁ
+        const deleteButton = target.closest('.btn-delete-khoi');
+        if (deleteButton) {
+            e.preventDefault();
+            const id = deleteButton.dataset.id;
+            const row = deleteButton.closest('tr');
+            const tenKenh = row.cells[1].textContent;
+
+            if (confirm(`Bạn có chắc muốn xoá kênh "${tenKenh}" (Mã: ${id}) không?`)) {
+                callApiDeleteKenh(id);
+            }
+            return;
+        }
     });
+
+    // === CÁC HÀM GỌI API ===
+
+    // Lấy chi tiết kênh để Sửa
+    async function callApiGetKenhById(id) {
+        try {
+            const response = await fetch(`/API/get-Kenh-by-id?id=${encodeURIComponent(id)}`);
+            if (!response.ok) throw new Error('Không tìm thấy kênh.');
+
+            const data = await response.json();
+
+            formId.value = data.id;
+            formTenKenh.value = data.tenKenh;
+            formLoaiKenh.value = data.loaiKenh;
+            formPhiGiaoDich.value = data.phiGiaoDich;
+            formTrangThai.value = data.trangThai;
+            formCauHinh.value = data.cauHinh || '';
+
+            openForm('edit');
+
+        } catch (error) {
+            console.error('Lỗi khi lấy chi tiết kênh:', error);
+            alert(error.message);
+        }
+    }
+
+    // Thêm kênh mới
+    async function callApiAddKenh(duLieu) {
+        try {
+            const response = await fetch('/API/add-Kenh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(duLieu)
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Thêm thất bại!');
+
+            alert(result.message || 'Thêm kênh thanh toán thành công!');
+            closeForm();
+            
+            // Fallback: Reload table manually
+            await reloadTable();
+        } catch (error) {
+            console.error('Lỗi khi thêm kênh:', error);
+            alert(error.message);
+        }
+    }
+
+    // Sửa kênh
+    async function callApiEditKenh(duLieu) {
+        try {
+            const response = await fetch('/API/edit-Kenh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(duLieu)
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Sửa thất bại!');
+
+            alert(result.message || 'Cập nhật kênh thanh toán thành công!');
+            closeForm();
+            
+            // Fallback: Reload table manually
+            await reloadTable();
+        } catch (error) {
+            console.error('Lỗi khi sửa kênh:', error);
+            alert(error.message);
+        }
+    }
+
+    // Xoá kênh
+    async function callApiDeleteKenh(id) {
+        try {
+            const response = await fetch(`/API/delete-Kenh/${encodeURIComponent(id)}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.message || 'Xóa thất bại!');
+
+            alert(result.message || 'Xóa kênh thanh toán thành công!');
+            
+            // Fallback: Reload table manually
+            await reloadTable();
+        } catch (error) {
+            console.error('Lỗi khi xoá kênh:', error);
+            alert(error.message);
+        }
+    }
+
+    // Lấy ID tiếp theo
+    async function callApiGetNextIdKenh() {
+        const dataToSend = { prefix: "KTT", totalLength: 6 };
+        try {
+            const response = await fetch('/API/get-next-id-Kenh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend)
+            });
+            const data = await response.json();
+            if (data && data.nextId) {
+                formId.value = data.nextId;
+            } else {
+                alert('Không thể lấy mã kênh mới.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi lấy mã kênh mới:', error);
+        }
+    }
+
+    // Hàm reload bảng thủ công
+    async function reloadTable() {
+        try {
+            console.log('Reloading table...');
+            const response = await fetch('/API/get-all-Kenh');
+            if (!response.ok) throw new Error('Không thể tải dữ liệu');
+            
+            const data = await response.json();
+            
+            const tbody = document.getElementById('tbody-kenh-thanh-toan');
+            tbody.innerHTML = ''; // Xóa toàn bộ dữ liệu cũ
+            
+            data.forEach(kenh => {
+                const trangThaiBadge = kenh.trangThai === 'Active'
+                    ? '<span class="badge bg-success">Hoạt động</span>'
+                    : '<span class="badge bg-danger">Không hoạt động</span>';
+
+                const row = `
+                    <tr>
+                        <td>${kenh.id}</td>
+                        <td>${kenh.tenKenh}</td>
+                        <td>${kenh.loaiKenh}</td>
+                        <td>${kenh.phiGiaoDich.toFixed(2)} %</td>
+                        <td>${trangThaiBadge}</td>
+                        <td class="text-center">
+                            <button class="btn btn-info btn-sm me-1 btn-edit"
+                               data-id="${kenh.id}"
+                               title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-delete-khoi"
+                               data-id="${kenh.id}"
+                               title="Xóa">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+            
+            console.log('Table reloaded successfully');
+        } catch (error) {
+            console.error(' Error reloading table:', error);
+        }
+    }
+});
+
+// === SIGNALR ===
+$(async function () {
+    
+    if (typeof appRealtimeList !== 'undefined') {
+        await appRealtimeList.initEntityTable({
+            key: 'KenhThanhToan',
+            apiUrl: '/API/get-all-Kenh',
+            tableId: 'sampleTable',
+            tbodyId: 'tbody-kenh-thanh-toan',
+            buildRow: kenh => {
+                const trangThaiBadge = kenh.trangThai === 'Active'
+                    ? '<span class="badge bg-success">Hoạt động</span>'
+                    : '<span class="badge bg-danger">Không hoạt động</span>';
+
+                return `
+                    <tr>
+                        <td>${kenh.id}</td>
+                        <td>${kenh.tenKenh}</td>
+                        <td>${kenh.loaiKenh}</td>
+                        <td>${kenh.phiGiaoDich.toFixed(2)} %</td>
+                        <td>${trangThaiBadge}</td>
+                        <td class="text-center">
+                            <button class="btn btn-info btn-sm me-1 btn-edit"
+                               data-id="${kenh.id}"
+                               title="Sửa">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-delete-khoi"
+                               data-id="${kenh.id}"
+                               title="Xóa">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+            }
+        });
+        console.log('SignalR initialized successfully for KenhThanhToan');
+    } else {
+        console.error('appRealtimeList is not defined!');
+    }
 });

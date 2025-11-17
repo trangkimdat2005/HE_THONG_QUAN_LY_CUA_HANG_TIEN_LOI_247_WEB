@@ -1,18 +1,10 @@
-@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 
 @{
-
-	ViewData["title"] = "Sửa Thông Tin Thanh Toán";
+	ViewData["title"] = "Quản Lý Thanh Toán";
 }
-<!-- Css riêng ở đây nha -->
+
 <link rel="stylesheet" href="~/assets/css/ThanhToan.css">
-
-<!-- Main sidebar ở đây nha -->
-
-
-
-
-
 
 <main class="app-content">
 	<div class="app-title">
@@ -26,14 +18,12 @@
 		</ul>
 	</div>
 
-	<div class="row main-row" id="main-content-row">
+	<div class="row" id="main-content-row">
 
-		<div class="col-lg-12 list-column" id="list-column">
+		<div class="col-lg-12" id="list-column">
 			<div class="tile">
 				<div class="tile-title-w-btn d-flex justify-content-between align-items-center">
-					<h3 class="title" style="margin-bottom: 0">
-						Danh Sách Kênh Thanh Toán
-					</h3>
+					<h3 class="title" style="margin-bottom: 0">Danh Sách Kênh Thanh Toán</h3>
 					<button class="btn btn-primary btn-add-khoi" type="button" id="btn-show-add-form">
 						<i class="fas fa-plus"></i> Thêm kênh mới
 					</button>
@@ -41,8 +31,7 @@
 
 				<div class="tile-body">
 					<div class="table-responsive">
-						<table class="table table-hover table-bordered"
-							   id="sampleTable">
+						<table class="table table-hover table-bordered" id="sampleTable">
 							<thead>
 								<tr>
 									<th>Mã Kênh</th>
@@ -53,29 +42,7 @@
 									<th>Thao tác</th>
 								</tr>
 							</thead>
-							<tbody>
-								@{
-									if (ViewData["lstKenhThanhToan"] != null)
-									{
-										List<KenhThanhToan> kenhThanhToans = ViewBag.lstKenhThanhToan;
-										foreach (KenhThanhToan kenhThanhToan in kenhThanhToans)
-										{
-											<tr>
-												<td>@kenhThanhToan.Id</td>
-												<td>@kenhThanhToan.TenKenh </td>
-												<td>@kenhThanhToan.LoaiKenh </td>
-												<td>@kenhThanhToan.PhiGiaoDich </td>
-												<td>@kenhThanhToan.TrangThai </td>
-												<td class="text-center">
-													<button class="btn btn-info btn-sm me-1 btn-edit" title="Sửa"><i class="fas fa-edit"></i></button>
-													<button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-												</td>
-											</tr>
-										}
-
-									}
-								}
-
+							<tbody id="tbody-kenh-thanh-toan">
 							</tbody>
 						</table>
 					</div>
@@ -94,29 +61,29 @@
 					<form id="payment-channel-form">
 
 						<div class="mb-3">
-							<label class="form-label">Mã Kênh (id)</label>
+							<label class="form-label">Mã Kênh</label>
 							<input class="form-control" type="text" id="form-id" name="id" placeholder="V.d: VI_ZALOPAY, QR_VIETQR">
 							<small class="form-text text-muted">Mã này là duy nhất, không dấu, viết hoa.</small>
 						</div>
 
 						<div class="mb-3">
-							<label class="form-label">Tên Kênh (tenKenh)</label>
+							<label class="form-label">Tên Kênh</label>
 							<input class="form-control" type="text" id="form-tenKenh" name="tenKenh" placeholder="V.d: Ví ZaloPay" required>
 						</div>
 
 						<div class="mb-3">
-							<label class="form-label">Loại Kênh (loaiKenh)</label>
+							<label class="form-label">Loại Kênh</label>
 							<select class="form-select" id="form-loaiKenh" name="loaiKenh">
-								<option value="TIEN_MAT">Tiền Mặt (TIEN_MAT)</option>
-								<option value="VI_DIEN_TU">Ví Điện Tử (VI_DIEN_TU)</option>
-								<option value="QR_PAY">Quét Mã QR (QR_PAY)</option>
-								<option value="THE">Quẹt Thẻ (THE)</option>
-								<option value="CHUYEN_KHOAN">Chuyển Khoản (CHUYEN_KHOAN)</option>
+								<option value="TIEN_MAT">Tiền Mặt</option>
+								<option value="VI_DIEN_TU">Ví Điện Tử</option>
+								<option value="QR_PAY">Quét Mã QR</option>
+								<option value="THE">Quẹt Thẻ</option>
+								<option value="CHUYEN_KHOAN">Chuyển Khoản</option>
 							</select>
 						</div>
 
 						<div class="mb-3">
-							<label class="form-label">Phí Giao Dịch (phiGiaoDich)</label>
+							<label class="form-label">Phí Giao Dịch</label>
 							<div class="input-group">
 								<input class="form-control" type="number" id="form-phiGiaoDich" name="phiGiaoDich" value="0.00" step="0.01">
 								<span class="input-group-text">%</span>
@@ -124,15 +91,15 @@
 						</div>
 
 						<div class="mb-3">
-							<label class="form-label">Trạng Thái (trangThai)</label>
+							<label class="form-label">Trạng Thái</label>
 							<select class="form-select" id="form-trangThai" name="trangThai">
-								<option value="Active">Hoạt động (Active)</option>
-								<option value="Inactive">Không hoạt động (Inactive)</option>
+								<option value="Active"> Active (Hoạt động)</option>
+								<option value="Inactive">Inactive (Không hoạt động)</option>
 							</select>
 						</div>
 
 						<div class="mb-3">
-							<label class="form-label">Cấu Hình (cauHinh)</label>
+							<label class="form-label">Cấu Hình</label>
 							<textarea class="form-control" id="form-cauHinh" name="cauHinh" rows="3" placeholder="Nhập cấu hình JSON (nếu có)"></textarea>
 							<small class="form-text text-muted">V.d: {"merchant_id": "ABC12345"}</small>
 						</div>
@@ -151,14 +118,7 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </main>
 
-
-
-
-
-<!-- js riêng ở đây nha! -->
 <script src="~/assets/js/ThanhToan.js" asp-append-version="true" defer></script>
-
