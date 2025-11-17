@@ -1,4 +1,5 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -51,21 +52,34 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyHangHoa/DanhSachSanPham")]
         public IActionResult DanhSachSanPham()
         {
-            var lstDanhMuc = _quanLySevices.GetList<DanhMuc>();
-
-            ViewData["lstDanhMuc"] = lstDanhMuc;
-
             var lstSanPham = _quanLySevices.GetList<SanPham>();
 
             ViewData["lstSanPham"] = lstSanPham;
 
-            var lstNhanHieu = _quanLySevices.GetList<NhanHieu>();
-
-            ViewData["lstNhanHieu"] = lstNhanHieu;
-
             var lstDonVi = _quanLySevices.GetList<DonViDoLuong>();
 
             ViewData["lstDonVi"] = lstDonVi;
+
+            var lstSanPhamDonVi = _quanLySevices.GetList<SanPhamDonVi>();
+
+            ViewData["lstSanPhamDonVi"] = lstSanPhamDonVi;
+
+            return View();
+        }
+        [Route("/QuanLyHangHoa/DanhSachHangHoa")]
+        public IActionResult DanhSachHangHoa()
+        {
+            var lstSanPham = _quanLySevices.GetList<SanPham>();
+
+            ViewData["lstSanPham"] = lstSanPham;
+
+            var lstDanhMuc = _quanLySevices.GetList<DanhMuc>();
+
+            ViewData["lstDanhMuc"] = lstDanhMuc;
+
+            var lstNhanHieu = _quanLySevices.GetList<NhanHieu>();
+
+            ViewData["lstNhanHieu"] = lstNhanHieu;
 
             return View();
         }
@@ -109,7 +123,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //=========================================AddData=======================================================================
 
         [HttpPost("add-SP")]
-        public async Task<IActionResult> AddSanPham([FromForm] ProductFormData request)
+        public async Task<IActionResult> AddSanPham([FromForm] SanPhamDTO request)
         {
             try
             {
@@ -118,24 +132,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest("Dữ liệu không hợp lệ.");
                 }
 
-                var images = request.ImagesUpload; // Các ảnh tải lên
-                var productId = request.ProductId; // Mã sản phẩm
-                var productName = request.ProductName; // Tên sản phẩm
-                var brand = request.Brand; // Nhãn hiệu
-                var categories = request.Categories; // Các danh mục
-                var unit = request.Unit; // Đơn vị cơ sở
-                var conversionFactor = request.ConversionFactor; // Hệ số quy đổi
-                var price = request.Price; // Giá bán
-                var description = request.Description; // Mô tả sản phẩm
-                var status = request.Status; // Trạng thái sản phẩm
-
 
                 SanPham sanPham = new SanPham
                 {
-                    Id = productId,
-                    Ten = productName,
-                    NhanHieuId = brand,
-                    MoTa = description,
+                    Id = request.Id,
+                    Ten = request.Ten,
+                    NhanHieuId = request.NhanHieu,
                 };
 
                 if (!_quanLySevices.Add<SanPham>(sanPham))
@@ -143,11 +145,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest("không thể thêm sản phẩm");
                 }
 
-                foreach (string danhMucId in categories)
+                foreach (string danhMucId in request.DanhMucs)
                 {
                     SanPhamDanhMuc sanPhamDanhMuc = new SanPhamDanhMuc
                     {
-                        SanPhamId = productId,
+                        SanPhamId = request.Id,
                         DanhMucId = danhMucId,
                         Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 8)
                     };
@@ -157,54 +159,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     }
                 }
 
-                SanPhamDonVi sanPhamDonVi = new SanPhamDonVi
-                {
-                    SanPhamId = sanPham.Id,
-                    DonViId = unit,
-                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 8),
-                    HeSoQuyDoi = conversionFactor,
-                    GiaBan = price,
-                    TrangThai = status
-                };
-
-                if (!_quanLySevices.Add<SanPhamDonVi>(sanPhamDonVi))
-                {
-                    return BadRequest("không thể thêm sản phẩm đơn vị");
-                }
-
-                List<HinhAnh> hinhAnhs = new List<HinhAnh>();
-
-                foreach (IFormFile image in images)
-                {
-                    HinhAnh hinhAnh = new HinhAnh
-                    {
-                        Id = _quanLySevices.GenerateNewId<HinhAnh>("HA", 6),
-                        TenAnh = image.FileName,
-                        Anh = await _quanLySevices.ConvertImageToByteArray(image)
-                    };
-
-                    hinhAnhs.Add(hinhAnh);
-                }
-
-                foreach (HinhAnh hinhAnh in hinhAnhs)
-                {
-                    if (!_quanLySevices.Add<HinhAnh>(hinhAnh))
-                    {
-                        return BadRequest("không thể thêm ảnh");
-                    }
-                    AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
-                    {
-                        SanPhamDonViId = sanPhamDonVi.Id,
-                        AnhId = hinhAnh.Id,
-                    };
-                    if (!_quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi))
-                    {
-                        return BadRequest("không thể thêm ảnh sản phẩm đơn vị");
-                    }
-                }
-
-
-                await _notifier.NotifyReloadAsync("SanPham");
+                await _notifier.NotifyReloadAsync("HangHoa");
 
                 return Ok(new { message = "Thêm sản phẩm thành công!" });
             }
@@ -214,6 +169,76 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
 
         }
+
+        [HttpPost("addSPDV")]
+        public async Task<IActionResult> AddSanPhamDonVi([FromForm] SanPhamDonViDTO request)
+        {
+            try
+            {
+                if (request == null)
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+
+                // Tạo SanPhamDonVi
+                var spdv = new SanPhamDonVi
+                {
+                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 8),
+                    SanPhamId = request.SanPhamId,
+                    DonViId = request.DonViId,
+                    GiaBan = request.GiaBan,
+                    HeSoQuyDoi = request.HeSoQuyDoi,
+                    TrangThai = request.TrangThai,
+                };
+
+                if (!_quanLySevices.Add(spdv))
+                {
+                    return BadRequest(new { message = "Không thể thêm sản phẩm - đơn vị!" });
+                }
+
+                if (request.ImagesUpload != null && request.ImagesUpload.Any())
+                {
+                    foreach (var file in request.ImagesUpload)
+                    {
+
+                        HinhAnh anh = new HinhAnh
+                        {
+                            Id = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7),
+                            TenAnh = file.FileName,
+                            Anh = await _quanLySevices.ConvertImageToByteArray(file)
+                        };
+                        if (_quanLySevices.Add<HinhAnh>(anh))
+                        {
+                            AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
+                            {
+                                SanPhamDonViId = spdv.Id,
+                                AnhId = anh.Id
+                            };
+
+                            if (!_quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi))
+                            {
+                                return BadRequest(new { message = "không thể thêm ảnh!" });
+                            }
+                        }
+                    }
+                }
+
+                
+
+                // Trigger realtime reload
+                await _notifier.NotifyReloadAsync("SanPham");
+
+                return Ok(new { message = "Thêm sản phẩm thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Lỗi hệ thống!",
+                    detail = ex.Message
+                });
+            }
+        }
+
+
 
         [HttpPost("add-NH")]
         public async Task<IActionResult> AddNhanHieu([FromBody] NhanHieu nhanHieu)
@@ -326,6 +351,80 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         }
 
+        [HttpPost("editSP")]
+        public async Task<IActionResult> EditSanPham([FromForm] SanPhamDTO request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest("Dữ liệu không hợp lệ.");
+                }
+
+
+
+                SanPham sanPham = _quanLySevices.GetById<SanPham>(request.Id);
+
+                sanPham.Ten = request.Ten;
+                sanPham.NhanHieuId = request.NhanHieu;
+                if (!_quanLySevices.Update<SanPham>(sanPham))
+                {
+                    return BadRequest("không thể sửa sản phẩm");
+                }
+                List<string> newDanhMucs = request.DanhMucs;
+
+                List<string> oldDMs = new List<string>();
+
+                foreach (SanPhamDanhMuc sanPhamDanhMuc in sanPham.SanPhamDanhMucs)
+                {
+                    oldDMs.Add(sanPhamDanhMuc.DanhMucId);
+                }
+
+                var toAdd = newDanhMucs.Except(oldDMs);
+
+                foreach (string danhMuc in toAdd)
+                {
+                    SanPhamDanhMuc sanPhamDanhMuc = new SanPhamDanhMuc
+                    {
+                        SanPhamId = sanPham.Id,
+                        DanhMucId = danhMuc,
+                        Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 8)
+                    };
+                    if (!_quanLySevices.Add<SanPhamDanhMuc>(sanPhamDanhMuc))
+                    {
+                        return BadRequest("không thể thêm sản phẩm danh mục");
+                    }
+                }
+
+                var toRemove = oldDMs.Except(newDanhMucs);
+
+                foreach (string danhMucs in toRemove)
+                {
+                    SanPhamDanhMuc sanPhamDanhMuc = _quanLySevices.GetById<SanPhamDanhMuc>(sanPham.Id, danhMucs);
+                    if (sanPhamDanhMuc != null)
+                    {
+                        if (_quanLySevices.HardDelete<SanPhamDanhMuc>(sanPhamDanhMuc))
+                        {
+
+                        }
+                        else if (!_quanLySevices.SoftDelete<SanPhamDanhMuc>(sanPhamDanhMuc))
+                        {
+                            return BadRequest("không thể xóa sản phẩm danh mục");
+                        }
+                    }
+                }
+
+                await _notifier.NotifyReloadAsync("HangHoa");
+
+                return Ok(new { message = "Sửa sản phẩm thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi khi thêm sửa phẩm: {ex.Message}" });
+            }
+
+        }
+
         //=========================================DeleteData=======================================================================
 
         [HttpDelete("{id}")]
@@ -338,7 +437,37 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
 
 
-            if (_quanLySevices.SoftDelete<DanhMuc>(danhMuc))
+            if (_quanLySevices.HardDelete<DanhMuc>(danhMuc))
+            {
+
+            }
+            else if (_quanLySevices.SoftDelete<DanhMuc>(danhMuc))
+            {
+                //tên NotifyReloadAsync("DanhMuc") = key: 'DanhMuc'(bên js)
+                await _notifier.NotifyReloadAsync("DanhMuc");
+
+                return Ok(new { message = "Xóa thành công!" });
+
+            }
+
+            return BadRequest("lỗi khi xoá dữ liệu");
+
+        }
+
+        [HttpDelete("deleteSP{id}")]
+        public async Task<IActionResult> DeleteSP(string id)
+        {
+            var sanPham = _quanLySevices.GetById<SanPham>(id);
+            if (sanPham == null)
+            {
+                return NotFound(new { message = "Không tìm thấy sản phẩm." });
+            }
+
+            if (_quanLySevices.HardDelete<SanPham>(sanPham))
+            {
+
+            }
+            else if (_quanLySevices.SoftDelete<SanPham>(sanPham))
             {
                 //tên NotifyReloadAsync("DanhMuc") = key: 'DanhMuc'(bên js)
                 await _notifier.NotifyReloadAsync("DanhMuc");
@@ -371,25 +500,49 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             });
         }
 
-        [HttpGet("GetDataById")]
-        public async Task<IActionResult> GetSanPhamById(string sanPhamId,string donViId)
+        [HttpPost("getSanPhamDataById")]
+        public async Task<IActionResult> GetSanPhamById([FromBody] string id)
         {
-            if (string.IsNullOrEmpty(sanPhamId) && string.IsNullOrEmpty(donViId))
+            if (string.IsNullOrEmpty(id))
                 return BadRequest("Id không hợp lệ");
 
-            var sanPhamDonVi = _quanLySevices.GetById<SanPhamDonVi>(sanPhamId,donViId);
+            var sanPham = _quanLySevices.GetById<SanPham>(id);
 
-            if (sanPhamDonVi == null)
-                return NotFound("Không tìm thấy danh mục");
+            if (sanPham == null)
+                return NotFound("Không tìm thấy san phẩm");
 
             return Ok(new
             {
-                sanPhamDonVi = sanPhamDonVi,
-                anhs = sanPhamDonVi.AnhSanPhamDonVis.Select(a => new
-                {
-                    anh = _quanLySevices.ConvertByteArrayToFile(a.Anh.Anh,a.Anh.TenAnh),
-                }).ToList()
+                sanPham.Id,
+                sanPham.Ten,
+                sanPham.NhanHieuId,
+                danhMucs = sanPham.SanPhamDanhMucs.Select(spdm => spdm.DanhMucId).ToArray()
             });
+        }
+
+        [HttpPost("getSanPhamDonViDataById")]
+        public async Task<IActionResult> GetSanPhamDonViById(string sanPhamId, string donViId)
+        {
+            if (string.IsNullOrEmpty(sanPhamId) || string.IsNullOrEmpty(donViId))
+                return BadRequest("Id không hợp lệ");
+
+            var sanPhamDonVi = _quanLySevices.GetById<SanPhamDonVi>(sanPhamId, donViId);
+
+            if (sanPhamDonVi == null)
+                return NotFound("Không tìm thấy san phẩm");
+
+            var newSP = new
+            {
+                sanPhamDonVi.SanPhamId,
+                sanPhamDonVi.DonViId,
+                sanPhamDonVi.HeSoQuyDoi,
+                sanPhamDonVi.GiaBan,
+                sanPhamDonVi.TrangThai,
+                anhs = sanPhamDonVi.AnhSanPhamDonVis
+        .Select(a => _quanLySevices.ConvertToBase64Image(a.Anh.Anh, a.Anh.TenAnh))
+        .ToArray()
+            };
+            return Ok(newSP);
         }
 
         //=========================================GetAllData=======================================================================
@@ -413,47 +566,42 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             var lstSanPham = _quanLySevices.GetList<SanPham>().Select(sp => new
             {
-                Id = sp.Id,
-                Ten = sp.Ten,
-                danhMucs = sp.SanPhamDanhMucs
-                .Where(spdm => spdm.SanPhamId == sp.Id)  // Giả sử bạn muốn lọc danh mục theo Id sản phẩm
-                .Select(spdm => new
-                {
-                    danhMucId = spdm.DanhMucId,
-                    DanhMucTen = spdm.DanhMuc.Ten  // Chọn tên danh mục từ SanPhamDanhMuc
-                }).ToArray(),
-                nhanHieu = sp.NhanHieu.Ten,
-                sanPhamDonVi = sp.SanPhamDonVis.Where(spdv => spdv.SanPhamId == sp.Id).Select(spdv => new
-                {
-                    donViId = spdv.DonViId,
-                    donVi = spdv.DonVi.Ten,
-                    giaBan = spdv.GiaBan,
-                    trangThai = spdv.TrangThai
-                })
+                sp.Id,
+                sp.Ten,
+                NhanHieu = sp.NhanHieu.Ten,
+                DanhMucs = sp.SanPhamDanhMucs.Select(spdm => spdm.DanhMuc.Ten).ToArray()
             }).ToList();
 
 
             return Ok(lstSanPham);
         }
+
+        [HttpGet("getAllSPDV")]
+        public async Task<IActionResult> GetAllSanPhamDonVi()
+        {
+            var lstSanPhamDonVi = _quanLySevices.GetList<SanPhamDonVi>().Select(spdv => new
+            {
+                spdv.SanPhamId,
+                spdv.DonViId,
+                spdv.SanPham.Ten,
+                danhMucs = spdv.SanPham.SanPhamDanhMucs.Select(spdm => spdm.DanhMuc.Ten).ToArray(),
+                nhanHieu = spdv.SanPham.NhanHieu.Ten,
+                donVi = spdv.DonVi.Ten,
+                spdv.GiaBan,
+                spdv.TrangThai
+            }).ToList();
+
+            return Ok(lstSanPhamDonVi);
+        }
+
+
+
+
+
     }
 
 
-    public class ProductFormData
-    {
-        // Các ảnh tải lên
-        public List<IFormFile> ImagesUpload { get; set; }
 
-        // Các trường thông tin khác
-        public string ProductId { get; set; } // Mã sản phẩm
-        public string ProductName { get; set; } // Tên sản phẩm
-        public string Brand { get; set; } // Nhãn hiệu
-        public List<string> Categories { get; set; } // Danh mục (có thể chọn nhiều)
-        public string Unit { get; set; } // Đơn vị cơ sở
-        public decimal ConversionFactor { get; set; } // Hệ số quy đổi
-        public decimal Price { get; set; } // Giá bán
-        public string Description { get; set; } // Mô tả sản phẩm
-        public string Status { get; set; } // Trạng thái sản phẩm (Còn hàng, Hết hàng, Ngừng kinh doanh)
-    }
 
 }
 

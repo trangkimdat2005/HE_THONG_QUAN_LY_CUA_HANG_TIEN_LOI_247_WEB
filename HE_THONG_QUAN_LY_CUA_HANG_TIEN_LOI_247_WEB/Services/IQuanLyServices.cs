@@ -18,6 +18,6 @@
 
         Task<byte[]> ConvertImageToByteArray(IFormFile file);
 
-        IFormFile ConvertByteArrayToFile(byte[] fileBytes, string fileName);
+        public string ConvertToBase64Image(byte[] bytes, string fileName);
     }
 }
