@@ -422,7 +422,7 @@ $(async function () {
         tbodyId: 'tbody-san-pham',
         buildRow: sp => {
             return `
-                <tr data-id ="${sp.Id}">
+                <tr data-id="${sp.id}" data-don-vi-id="${sp.sanPhamDonVi[0].donViId}">
                     <td>${sp.id}</td>
                     <td>${sp.ten}</td>
                     <td>
@@ -449,9 +449,12 @@ $(async function () {
 });
 
 
-async function callApiGetDataById(id) {
+async function callApiGetDataById(sanPhamId, donViId) {
     try {
-        const response = await fetch(`/API/GetDataById?id=${encodeURIComponent(id)}`, {
+        // Sửa lỗi: truyền tham số sanPhamId và donViId vào URL một cách đúng đắn
+        const url = `/API/GetDataById?sanPhamId=${encodeURIComponent(sanPhamId)}&donViId=${encodeURIComponent(donViId)}`;
+
+        const response = await fetch(url, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -467,6 +470,7 @@ async function callApiGetDataById(id) {
         alert('Không thể lấy dữ liệu, vui lòng thử lại.');
     }
 }
+
 
 
 function nhapDuLieu(data) {
@@ -517,8 +521,8 @@ function nhapDuLieu(data) {
     // Hiển thị hình ảnh
     const previewContainer = document.getElementById('images-preview-container');
     previewContainer.innerHTML = ''; // Xóa các hình ảnh cũ trước khi thêm mới
-    data.Images.forEach(image => {
-        const imgPreview = `<div class="preview-image"><img src="${image}" class="img-thumbnail" width="100"></div>`;
+    data.anhs.forEach(image => {
+        const imgPreview = `<div class="preview-image"><img src="${image.anh}" class="img-thumbnail" width="100"></div>`;
         previewContainer.innerHTML += imgPreview;
     });
     previewContainer.style.display = 'flex'; // Hiển thị hình ảnh đã tải lên

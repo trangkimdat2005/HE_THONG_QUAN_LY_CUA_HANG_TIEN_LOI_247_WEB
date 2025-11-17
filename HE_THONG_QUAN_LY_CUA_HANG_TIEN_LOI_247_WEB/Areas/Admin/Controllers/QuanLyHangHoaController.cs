@@ -372,17 +372,24 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         [HttpGet("GetDataById")]
-        public async Task<IActionResult> GetSanPhamById(string id)
+        public async Task<IActionResult> GetSanPhamById(string sanPhamId,string donViId)
         {
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(sanPhamId) && string.IsNullOrEmpty(donViId))
                 return BadRequest("Id không hợp lệ");
 
-            var sp = _quanLySevices.GetById<SanPham>(id);
+            var sanPhamDonVi = _quanLySevices.GetById<SanPhamDonVi>(sanPhamId,donViId);
 
-            if (sp == null)
+            if (sanPhamDonVi == null)
                 return NotFound("Không tìm thấy danh mục");
 
-            return Ok(sp);
+            return Ok(new
+            {
+                sanPhamDonVi = sanPhamDonVi,
+                anhs = sanPhamDonVi.AnhSanPhamDonVis.Select(a => new
+                {
+                    anh = _quanLySevices.ConvertByteArrayToFile(a.Anh.Anh,a.Anh.TenAnh),
+                }).ToList()
+            });
         }
 
         //=========================================GetAllData=======================================================================
@@ -412,11 +419,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 .Where(spdm => spdm.SanPhamId == sp.Id)  // Giả sử bạn muốn lọc danh mục theo Id sản phẩm
                 .Select(spdm => new
                 {
+                    danhMucId = spdm.DanhMucId,
                     DanhMucTen = spdm.DanhMuc.Ten  // Chọn tên danh mục từ SanPhamDanhMuc
                 }).ToArray(),
                 nhanHieu = sp.NhanHieu.Ten,
                 sanPhamDonVi = sp.SanPhamDonVis.Where(spdv => spdv.SanPhamId == sp.Id).Select(spdv => new
                 {
+                    donViId = spdv.DonViId,
                     donVi = spdv.DonVi.Ten,
                     giaBan = spdv.GiaBan,
                     trangThai = spdv.TrangThai
