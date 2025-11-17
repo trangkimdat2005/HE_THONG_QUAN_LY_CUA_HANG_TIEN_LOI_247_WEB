@@ -36,45 +36,47 @@
           <div class="tile-body">
             <form>
             <div class="mb-3">
-                <label class="form-label">Mã nhà cung cấp (id)</label>
-                <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
+                <label class="form-label">Mã nhà cung cấp</label>
+                            <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly id="add-id-input">
             </div>
 
               <div class="mb-3">
                 <label class="form-label">Tên nhà cung cấp</label>
-                <input class="form-control" type="text" placeholder="V.d: Công ty Cổ phần Sữa Việt Nam" required>
+                            <input class="form-control" type="text" placeholder="V.d: Công ty Cổ phần Sữa Việt Nam" required id="Ten">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Số điện thoại</label>
-                <input class="form-control" type="tel" placeholder="V.d: 028xxxxxxx" required>
+                            <input class="form-control" type="tel" placeholder="V.d: 028xxxxxxx" required id="SoDienThoai">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" placeholder="V.d: info@vinamilk.com.vn" required>
+                            <input class="form-control" type="email" placeholder="V.d: info@vinamilk.com.vn" required id="Email">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Địa chỉ</label>
-                <textarea class="form-control" rows="3" placeholder="V.d: Số 10, Tân Trào, P. Tân Phú, Q.7, TP. HCM" required></textarea>
+                            <textarea class="form-control" rows="3" placeholder="V.d: Số 10, Tân Trào, P. Tân Phú, Q.7, TP. HCM" required id="DiaChi"></textarea>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Mã số thuế</label>
-                <input class="form-control" type="text" placeholder="V.d: 0300588569" required>
+                            <input class="form-control" type="text" placeholder="V.d: 0300588569" required id="MaSoThue">
               </div>
 
             </form>
           </div>
           <div class="tile-footer">
-            <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu thông
+                    <button class="btn btn-primary" id="submitBtn" type="button">
+                        <i class="bi bi-check-circle-fill me-2"></i>Lưu thông
               tin</button>
-            <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+                    <a class="btn btn-secondary" asp-controller="QuanLyNhaCungCap" asp-action="DanhSachNhaCungCap"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
           </div>
         </div>
       </div>
     </div>
   </main>
+  <script src="~/assets/js/ThemNCC.js" asp-append-version="true" defer></script>
 
 

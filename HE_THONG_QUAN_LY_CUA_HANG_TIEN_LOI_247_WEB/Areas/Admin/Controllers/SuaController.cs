@@ -1,4 +1,5 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -79,6 +80,141 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             return View(ncc);
         }
+        [HttpPut] // Dùng động từ PUT
+        [Route("/API/NhaCungCap/Update")] // Route mới cho việc cập nhật
+        public IActionResult UpdateNhaCungCap([FromBody] NhaCungCapDto data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var nhaCungCapEntity = _quanLySevices.GetById<NhaCungCap>(data.Id);
+
+                if (nhaCungCapEntity == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy nhà cung cấp này để cập nhật." });
+                }
+
+                nhaCungCapEntity.Ten = data.Ten;
+                nhaCungCapEntity.SoDienThoai = data.SoDienThoai;
+                nhaCungCapEntity.Email = data.Email;
+                nhaCungCapEntity.DiaChi = data.DiaChi;
+                nhaCungCapEntity.MaSoThue = data.MaSoThue;
+
+                bool success = _quanLySevices.Update<NhaCungCap>(nhaCungCapEntity);
+
+                // 5. Trả về kết quả
+                if (success)
+                {
+                    return Ok(new { message = $"Cập nhật nhà cung cấp '{data.Ten}' thành công!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi: Không thể cập nhật nhà cung cấp xuống cơ sở dữ liệu." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Bắt các lỗi khác (ví dụ DB sập)
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [HttpPut]
+        [Route("/API/PhanCong/Update")]
+        public IActionResult UpdatePhanCongCaLamViec([FromBody] PhanCongCaLamViecUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                // Dùng GetList().FirstOrDefault() như mày yêu cầu (vì Id không phải PK)
+                var phanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
+                                    .FirstOrDefault(x => x.Id == dto.Id); // Không cần check IsDelete ở đây vì GetList đã lọc rồi
+
+                if (phanCong == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy ca phân công để cập nhật." });
+                }
+
+                // Kiểm tra duplicate
+                var existingPhanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
+                    .FirstOrDefault(p =>
+                        p.NhanVienId == dto.NhanVienId &&
+                        p.CaLamViecId == dto.CaLamViecId &&
+                        p.Ngay.Date == dto.Ngay.Value.Date &&
+                        p.Id != dto.Id && // Quan trọng: Loại trừ chính nó
+                        !p.IsDelete); // GetList của mày đã lọc IsDelete=false, nhưng thêm vào cho chắc
+
+                if (existingPhanCong != null)
+                {
+                    return BadRequest(new { message = "Nhân viên này đã được phân công ca này trong ngày đã chọn." });
+                }
+
+                // Map dữ liệu
+                phanCong.NhanVienId = dto.NhanVienId;
+                phanCong.CaLamViecId = dto.CaLamViecId;
+                phanCong.Ngay = dto.Ngay.Value;
+
+                // Cập nhật
+                if (_quanLySevices.Update<PhanCongCaLamViec>(phanCong))
+                {
+                    return Ok(new { message = "Cập nhật phân công thành công!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi cập nhật phân công." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [HttpGet]
+        [Route("/API/HinhAnh/{id}")]
+        public IActionResult GetHinhAnh(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var hinhAnh = _quanLySevices.GetById<HinhAnh>(id);
+
+                if (hinhAnh == null || hinhAnh.Anh == null || hinhAnh.Anh.Length == 0)
+                {
+                    return NotFound();
+                }
+
+                string contentType = "image/jpeg"; // Mặc định
+                if (hinhAnh.TenAnh != null)
+                {
+                    if (hinhAnh.TenAnh.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
+                    {
+                        contentType = "image/png";
+                    }
+                    else if (hinhAnh.TenAnh.EndsWith(".gif", StringComparison.OrdinalIgnoreCase))
+                    {
+                        contentType = "image/gif";
+                    }
+                }
+
+                return File(hinhAnh.Anh, contentType);
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+        }
+
         [Route("/Sua/SuaNhanSu")]
         public IActionResult SuaNhanSu(string id)
         {
@@ -89,6 +225,74 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return NotFound();
             }
             return View(nv);
+        }
+        [HttpPut] // Dùng PUT cho Update
+        [Route("/API/NhanVien/Update")]
+        public async Task<IActionResult> UpdateNhanVien([FromForm] NhanVienUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var nhanVien = _quanLySevices.GetById<NhanVien>(dto.Id);
+                if (nhanVien == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy nhân viên để cập nhật." });
+                }
+
+                string oldAnhId = nhanVien.AnhId;
+                string newAnhId = oldAnhId; // Mặc định là giữ ảnh cũ
+
+                // 3. Xử lý NẾU CÓ ảnh mới tải lên
+                if (dto.AnhDaiDien != null && dto.AnhDaiDien.Length > 0)
+                {
+                    byte[] anhBytes = await _quanLySevices.ConvertImageToByteArray(dto.AnhDaiDien);
+                    var newHinhAnh = new HinhAnh
+                    {
+                        Id = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7),
+                        TenAnh = dto.AnhDaiDien.FileName,
+                        Anh = anhBytes
+                    };
+
+                    if (_quanLySevices.Add<HinhAnh>(newHinhAnh))
+                    {
+                        newAnhId = newHinhAnh.Id; // Cập nhật ID ảnh mới
+
+                        // (Tùy chọn: Xóa ảnh cũ)
+                        var oldAnh = _quanLySevices.GetById<HinhAnh>(oldAnhId);
+                        if (oldAnh != null) _quanLySevices.HardDelete(oldAnh);
+                    }
+                }
+
+                // 4. Map dữ liệu từ DTO sang Entity
+                nhanVien.HoTen = dto.HoTen;
+                nhanVien.ChucVu = dto.ChucVu;
+                nhanVien.LuongCoBan = (decimal)dto.LuongCoBan; // Ép kiểu vì DTO là decimal?
+                nhanVien.SoDienThoai = dto.SoDienThoai;
+                nhanVien.Email = dto.Email;
+                nhanVien.DiaChi = dto.DiaChi;
+                nhanVien.NgayVaoLam = dto.NgayVaoLam;
+                nhanVien.TrangThai = dto.TrangThai;
+                nhanVien.GioiTinh = dto.GioiTinh;
+                nhanVien.AnhId = newAnhId; // Gán ID ảnh (mới hoặc cũ)
+
+                // 5. Lưu thay đổi
+                if (_quanLySevices.Update<NhanVien>(nhanVien))
+                {
+                    return Ok(new { message = $"Cập nhật nhân viên {nhanVien.HoTen} thành công!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi cập nhật nhân viên." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
         }
         [Route("/Sua/SuaPhanCongCaLamViec")]
         public IActionResult SuaPhanCongCaLamViec(string id)

@@ -4,67 +4,62 @@
 
     ViewData["title"] = "Sửa Phân Công Ca Làm Việc";
 }
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/SuaPhanCong.css">
+<!-- Css riêng ở đây nha -->
+<link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+<link rel="stylesheet" href="~/assets/css/SuaPhanCong.css">
 
-  <!-- Main sidebar ở đây nha -->
-
-
-
-
-
+<!-- Main sidebar ở đây nha -->
 
 <main class="app-content">
     <div class="app-title">
-      <div>
-        <h1><i class="bi bi-calendar-plus"></i> Sửa Phân Công Ca Làm Việc</h1>
-        <p>Lập lịch làm việc cho nhân viên</p>
-      </div>
-      <ul class="app-breadcrumb breadcrumb">
-        <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-        <li class="breadcrumb-item"><a>Quản lý nhân sự</a></li>
-        <li class="breadcrumb-item"><a asp-controller="QuanLyNhanSu" asp-action="PhanCongCaLamViec">Phân công ca làm việc</a></li>
-        <li class="breadcrumb-item"><a a asp-controller="Sua" asp-action="SuaPhanCongCaLamViec">Sửa</a></li>
-      </ul>
+        <div>
+            <h1><i class="bi bi-calendar-plus"></i> Sửa Phân Công Ca Làm Việc</h1>
+            <p>Lập lịch làm việc cho nhân viên</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item"><a>Quản lý nhân sự</a></li>
+            <li class="breadcrumb-item"><a asp-controller="QuanLyNhanSu" asp-action="PhanCongCaLamViec">Phân công ca làm việc</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Sua" asp-action="SuaPhanCongCaLamViec">Sửa</a></li>
+        </ul>
     </div>
 
     <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="tile">
-          <h3 class="tile-title">Thông Tin Phân Công</h3>
-          <p>Dữ liệu sẽ được lưu vào phân công ca làm việc</p>
-          <div class="tile-body">
-            <form>
-              
-              <div class="mb-3">
-                <label class="form-label">Chọn Nhân Viên</label>
-                <select class="form-control" id="select-nhan-vien" required>
+        <div class="col-md-8 mx-auto">
+            <div class="tile">
+                <h3 class="tile-title">Thông Tin Phân Công</h3>
+                <p>Dữ liệu sẽ được lưu vào phân công ca làm việc</p>
+                <div class="tile-body">
+                    <form>
+
+                        <div class="mb-3">
+                            <label class="form-label">Chọn Nhân Viên</label>
+                            <select class="form-control" id="select-nhan-vien" required>
                                 @{
                                     if (ViewData["lstNhanVien"] != null)
                                     {
-                                        <option value="@Model.NhanVienId">@Model.NhanVien.HoTen</option>
+                                        <option value="@Model.NhanVienId" selected>@Model.NhanVien.HoTen</option>
                                         List<NhanVien> nvs = ViewBag.lstNhanVien;
-                                        foreach(var nv in nvs)
+                                        foreach (var nv in nvs)
                                         {
-                                            if (Model.NhanVienId!=nv.Id)
+                                            if (Model.NhanVienId != nv.Id)
                                             {
                                                 <option value="@nv.Id">@nv.HoTen</option>
                                             }
                                         }
                                     }
                                 }
-                  </select>
-              </div>
+                            </select>
+                        </div>
 
-              <div class="mb-3">
-                <label class="form-label">Chọn Ca Làm Việc</label>
-                <select class="form-control" id="select-ca-lam-viec" required>
+                        <div class="mb-3">
+                            <label class="form-label">Chọn Ca Làm Việc</label>
+                            <select class="form-control" id="select-ca-lam-viec" required>
                                 @{
                                     if (ViewData["lstCLV"] != null)
                                     {
                                         List<CaLamViec> clvs = ViewBag.lstCLV;
-                                        <option value="@Model.CaLamViecId">@Model.CaLamViec.TenCa</option>
+                                        <option value="@Model.CaLamViecId" selected>@Model.CaLamViec.TenCa</option>
                                         foreach (var clv in clvs)
                                         {
                                             if (Model.CaLamViecId != clv.Id)
@@ -74,34 +69,32 @@
                                         }
                                     }
                                 }
-                  </select>
-              </div>
-
-              <div class="mb-3">
-                <label class="form-label">Ngày Phân Công</label>
-                            <input class="form-control" type="date" id="input-ngay" required value="@Model.Ngay.ToString("dd-MM-yyyy")">
+                            </select>
                         </div>
 
-              <div class="mb-3">
-                <label class="form-label">Mã Phân Công</label>
-                <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly value="@Model.Id">
-              </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ngày Phân Công</label>
+                            <input class="form-control" type="date" id="input-ngay" required value="@Model.Ngay.ToString("yyyy-MM-dd")">
+                        </div>
 
-            </form>
-          </div>
-          <div class="tile-footer">
-            <div class="d-flex justify-content-end">
-              <a class="btn btn-secondary me-2" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
-              <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+                        <div class="mb-3">
+                            <label class="form-label">Mã Phân Công</label>
+                            <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly id="Id" value="@Model.Id">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="tile-footer">
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-secondary me-2" asp-controller="QuanLyNhanSu" asp-action="PhanCongCaLamViec"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+                        <button class="btn btn-primary" type="button" id="btn-luu-cap-nhat-phan-cong"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
-  </main>
+</main>
 
 
 
-  
-  <script src="~/assets/js/SuaPhanCong.js" asp-append-version="true" defer></script>
-
+<script src="~/assets/js/SuaPhanCong.js" asp-append-version="true" defer></script>

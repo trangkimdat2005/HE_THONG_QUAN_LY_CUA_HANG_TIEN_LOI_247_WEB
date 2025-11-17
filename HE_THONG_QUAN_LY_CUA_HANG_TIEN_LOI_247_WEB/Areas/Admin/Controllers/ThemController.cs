@@ -1,4 +1,5 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -78,12 +79,137 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Route("/API/ThemNCC/Add")]
+        public IActionResult AddNhaCungCap([FromBody] NhaCungCapDto data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var newId = _quanLyServices.GenerateNewId<NhaCungCap>("NCC", 7);
+
+                if (string.IsNullOrEmpty(newId))
+                {
+                    return BadRequest(new { message = "Không thể tạo ID mới cho nhà cung cấp." });
+                }
+
+                var nhaCungCapEntity = new NhaCungCap
+                {
+                    Id = newId,
+                    Ten = data.Ten,
+                    SoDienThoai = data.SoDienThoai,
+                    Email = data.Email,
+                    DiaChi = data.DiaChi,
+                    MaSoThue = data.MaSoThue,
+                    IsDelete = false
+                };
+
+                bool success = _quanLyServices.Add<NhaCungCap>(nhaCungCapEntity);
+
+                if (success)
+                {
+                    return Ok(new { message = $"Thêm nhà cung cấp '{data.Ten}' thành công!", newId = newId });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi: Không thể lưu nhà cung cấp vào cơ sở dữ liệu." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        
+        [HttpPost("get-next-id-NCC")]
+        public Task<IActionResult> GetNextIdNCC([FromBody] Dictionary<string, object> request)
+        {
+            return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<NhaCungCap>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+
         [Route("/Them/ThemNhanSu")]
         public IActionResult ThemNhanSu()
         {
             return View();
         }
+        [HttpPost]
+        [Route("/API/NhanVien/Them")]
+        // Dùng [FromForm] để nhận DTO từ multipart/form-data
+        public async Task<IActionResult> ThemNhanVien([FromForm] NhanVienDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
+            if (dto.AnhDaiDien == null || dto.AnhDaiDien.Length == 0)
+            {
+                ModelState.AddModelError("AnhDaiDien", "File ảnh không hợp lệ.");
+                return BadRequest(ModelState);
+            }
+
+            HinhAnh newHinhAnh = null;
+            try
+            {
+                // 2. Xử lý lưu HinhAnh trước
+                byte[] anhBytes = await _quanLyServices.ConvertImageToByteArray(dto.AnhDaiDien);
+
+                newHinhAnh = new HinhAnh
+                {
+                    Id = _quanLyServices.GenerateNewId<HinhAnh>("ANH", 7),
+                    TenAnh = dto.AnhDaiDien.FileName,
+                    Anh = anhBytes
+                };
+
+                // Thêm ảnh vào DB
+                if (!_quanLyServices.Add<HinhAnh>(newHinhAnh))
+                {
+                    return BadRequest(new { message = "Lỗi: Không thể lưu hình ảnh vào cơ sở dữ liệu." });
+                }
+
+                // 3. Tạo NhanVien entity
+                var nhanVien = new NhanVien
+                {
+                    Id = _quanLyServices.GenerateNewId<NhanVien>("NV", 6),
+                    HoTen = dto.HoTen,
+                    ChucVu = dto.ChucVu,
+                    LuongCoBan = (decimal)dto.LuongCoBan,
+                    SoDienThoai = dto.SoDienThoai,
+                    Email = dto.Email,
+                    DiaChi = dto.DiaChi,
+                    NgayVaoLam = dto.NgayVaoLam,
+                    TrangThai = dto.TrangThai,
+                    GioiTinh = dto.GioiTinh,
+                    AnhId = newHinhAnh.Id, // Gán ID của ảnh vừa lưu
+                    IsDelete = false
+                };
+
+                // 4. Lưu NhanVien vào DB
+                if (_quanLyServices.Add<NhanVien>(nhanVien))
+                {
+                    return Ok(new { message = $"Thêm nhân viên {nhanVien.HoTen} thành công!", newId = nhanVien.Id });
+                }
+                else
+                {
+                    // Lỗi: Đã lỡ lưu ảnh. Phải xóa (rollback)
+                    _quanLyServices.HardDelete<HinhAnh>(newHinhAnh); // Cố gắng dọn dẹp
+                    return BadRequest(new { message = "Lỗi khi lưu thông tin nhân viên." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Nếu có lỗi, mà newHinhAnh đã được tạo và lưu, hãy xóa nó
+                if (newHinhAnh != null && !string.IsNullOrEmpty(newHinhAnh.Id))
+                {
+                    _quanLyServices.HardDelete<HinhAnh>(newHinhAnh);
+                }
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
         [Route("/Them/ThemNhapKho")]
         public IActionResult ThemNhapKho()
         {
@@ -98,6 +224,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemPhanCongCaLamViec")]
         public IActionResult ThemPhanCongCaLamViec()
         {
+            var lstNhanVien = _quanLyServices.GetList<NhanVien>();
+            ViewData["lstNhanVien"] = lstNhanVien;
+
+            var lstCaLamViec = _quanLyServices.GetList<CaLamViec>();
+            ViewData["lstCaLamViec"]= lstCaLamViec;
             return View();
         }
 
@@ -587,7 +718,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         {
                             DieuKienApDungDanhMuc dkadDanhMuc = new DieuKienApDungDanhMuc
                             {
-                                Id = _quanLyServices.GenerateNewId<DieuKienApDungDanhMuc>("DKDM", 7),
+                                Id = _quanLyServices.GenerateNewId<DieuKienApDungDanhMuc>("DKNV", 7),
                                 DieuKienId = dieuKien.Id,
                                 DanhMucId = danhMucId,
                                 IsDelete = false
@@ -817,6 +948,55 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public Task<IActionResult> GetNextIdPCCLV([FromBody] Dictionary<string, object> request)
         {
             return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<PhanCongCaLamViec>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
+        }
+        [HttpPost]
+        [Route("/API/PhanCong/Them")]
+        public IActionResult AddPhanCongCaLamViec([FromBody] PhanCongCaLamViecCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                // Kiểm tra xem nhân viên này đã bị phân công ca này trong ngày này chưa
+                var existingPhanCong = _quanLyServices.GetList<PhanCongCaLamViec>()
+                    .FirstOrDefault(p =>
+                        p.NhanVienId == dto.NhanVienId &&
+                        p.CaLamViecId == dto.CaLamViecId &&
+                        p.Ngay.Date == dto.Ngay.Value.Date && // So sánh ngày
+                        !p.IsDelete);
+
+                if (existingPhanCong != null)
+                {
+                    return BadRequest(new { message = "Nhân viên này đã được phân công ca này trong ngày đã chọn." });
+                }
+
+                // Tạo Entity
+                var phanCong = new PhanCongCaLamViec
+                {
+                    Id = _quanLyServices.GenerateNewId<PhanCongCaLamViec>("PCCLV", 9),
+                    NhanVienId = dto.NhanVienId,
+                    CaLamViecId = dto.CaLamViecId,
+                    Ngay = dto.Ngay.Value,
+                    IsDelete = false
+                };
+
+                // Lưu
+                if (_quanLyServices.Add<PhanCongCaLamViec>(phanCong))
+                {
+                    return Ok(new { message = "Thêm phân công thành công!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi lưu phân công vào cơ sở dữ liệu." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
         }
 
         //=========================================API Thêm Khách Hàng=======================================================================
