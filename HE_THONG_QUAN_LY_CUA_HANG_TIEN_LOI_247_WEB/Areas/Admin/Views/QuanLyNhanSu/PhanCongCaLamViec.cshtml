@@ -129,7 +129,7 @@
                                                        title="Sửa">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                                    <a class="btn btn-danger btn-sm btn-delete-khoi btn-xoa-phan-cong" data-id="@pc.Id" href="#" title="Xóa">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </a>
                                                 </td>
@@ -148,6 +148,6 @@
       </div>
     </main>
 
-    <script src="~/assets/js/SuaPhanCong.js"></script>
-
+    <script src="~/assets/js/SuaPhanCong.js" asp-append-version="true" defer></script>
+    <script src="~/assets/js/DanhSachPC.js" asp-append-version="true" defer></script>
 

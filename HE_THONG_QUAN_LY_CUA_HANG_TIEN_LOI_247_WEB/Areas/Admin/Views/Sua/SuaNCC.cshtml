@@ -34,44 +34,45 @@
             <form>
             <div class="mb-3">
                 <label class="form-label">Mã nhà cung cấp</label>
-                <input class="form-control" type="text" value="@Model.Id" readonly>
+                            <input class="form-control" type="text" value="@Model.Id" readonly id="editNccId">
             </div>
 
               <div class="mb-3">
                 <label class="form-label">Tên nhà cung cấp</label>
-                <input class="form-control" type="text" value="@Model.Ten" required>
+                            <input class="form-control" type="text" value="@Model.Ten" required id="editNccTen">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Số điện thoại</label>
-                <input class="form-control" type="tel" value="@Model.SoDienThoai" required>
+                            <input class="form-control" type="tel" value="@Model.SoDienThoai" required id="editNccSoDienThoai">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" value="@Model.Email" required>
+                            <input class="form-control" type="email" value="@Model.Email" required id="editNccEmail">
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Địa chỉ</label>
-                <textarea class="form-control" rows="3" required>@Model.DiaChi</textarea>
+                            <textarea class="form-control" rows="3" required id="editNccDiaChi">@Model.DiaChi</textarea>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Mã số thuế</label>
-                <input class="form-control" type="text" value="@Model.MaSoThue" required>
+                            <input class="form-control" type="text" value="@Model.MaSoThue" required id="editNccMaSoThue">
               </div>
 
             </form>
           </div>
           <div class="tile-footer">
-            <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi</button>
+                    <button class="btn btn-primary" type="button" id="btn-luu-cap-nhat-ncc"><i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi</button>
             <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
           </div>
         </div>
       </div>
     </div>
   </main>
+  <script src="~/assets/js/SuaNCC.js" asp-append-version="true" defer></script>
 
 
 

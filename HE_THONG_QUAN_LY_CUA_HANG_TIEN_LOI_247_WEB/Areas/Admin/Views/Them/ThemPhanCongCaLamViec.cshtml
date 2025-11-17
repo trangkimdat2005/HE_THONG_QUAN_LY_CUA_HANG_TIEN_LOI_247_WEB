@@ -40,31 +40,43 @@
               <div class="mb-3">
                 <label class="form-label">Chọn Nhân Viên </label>
                 <select class="form-control" id="select-nhan-vien" required>
-                  <option value="">-- Tìm và chọn nhân viên --</option>
-                  <option value="NV001">Nguyễn Văn A </option>
-                  <option value="NV002">Trần Thị B (Thu ngân)</option>
-                  <option value="NV003">Lê Văn C (Nhân viên kho)</option>
+                                @{
+                                    if (ViewData["lstNhanVien"] != null)
+                                    {
+                                        List<NhanVien> nvs = ViewBag.lstNhanVien;
+                                        foreach(var nv in nvs)
+                                        {
+                                            <option value="@nv.Id">@nv.HoTen</option>
+                                        }
+                                    }
+                                }
                   </select>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Chọn Ca Làm Việc (caLamViecId)</label>
                 <select class="form-control" id="select-ca-lam-viec" required>
-                  <option value="">-- Chọn ca làm việc --</option>
-                  <option value="CA_SANG">Ca Sáng (06:00 - 14:00)</option>
-                  <option value="CA_CHIEU">Ca Chiều (14:00 - 22:00)</option>
-                  <option value="CA_TOI">Ca Tối (22:00 - 06:00)</option>
+                                @{
+                                    if (ViewData["lstCaLamViec"] != null)
+                                    {
+                                        List<CaLamViec> clvs = ViewBag.lstCaLamViec;
+                                        foreach(var clv in clvs)
+                                        {
+                                            <option value="@clv.Id">@clv.TenCa (@clv.ThoiGianBatDau.ToString(@"hh\:mm") - @clv.ThoiGianKetThuc.ToString(@"hh\:mm"))</option>
+                                        }
+                                    }
+                                }
                   </select>
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Ngày Phân Công (ngay)</label>
+                <label class="form-label">Ngày Phân Công</label>
                 <input class="form-control" type="date" id="input-ngay" required>
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Mã Phân Công (id)</label>
-                <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
+                <label class="form-label">Mã Phân Công</label>
+                <input class="form-control" type="text" placeholder="Mã sẽ được tạo tự động" readonly id="Id">
                 <small class="form-text text-muted">Mã này sẽ tự động tạo khi lưu.</small>
               </div>
 
@@ -73,7 +85,7 @@
           <div class="tile-footer">
             <div class="d-flex justify-content-end">
               <a class="btn btn-secondary me-2" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
-              <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
+                        <button class="btn btn-primary" type="button" id="btn-luu-phan-cong"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
             </div>
           </div>
         </div>

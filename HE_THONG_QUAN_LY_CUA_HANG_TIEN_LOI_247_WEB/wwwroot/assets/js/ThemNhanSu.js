@@ -1,29 +1,128 @@
-document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function () {
 
-    // Khởi tạo Select2 cho các ô chọn
+    // Khởi tạo Select2
     $('#select-chuc-vu').select2({
         width: '100%'
     });
-
     $('#select-trang-thai').select2({
         width: '100%'
     });
 
-    // XỬ LÝ PREVIEW ẢNH ĐẠI DIỆN
-    const avatarUpload = document.getElementById('avatarUpload');
-    const avatarPreview = document.getElementById('avatarPreview');
-
-    avatarUpload.addEventListener('change', function () {
-        const file = this.files[0]; // Lấy file đầu tiên
-        if (file) {
-            // Tạo một URL tạm thời cho file ảnh
-            const reader = new FileReader();
+    // Xử lý preview ảnh
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
             reader.onload = function (e) {
-                // Gán URL này cho ảnh preview
-                avatarPreview.src = e.target.result;
+                $('#avatarPreview').attr('src', e.target.result);
             }
-            reader.readAsDataURL(file);
+            reader.readAsDataURL(input.files[0]);
         }
+    }
+    $("#avatarUpload").change(function () {
+        readURL(this);
     });
 
+    // Xử lý click nút LƯU (THÊM)
+    $(document).on('click', '#btn-luu-nhan-vien', function (e) {
+        e.preventDefault();
+
+        // Xóa cái alert này đi, nó dừng code
+        // alert("hi btn"); 
+
+        var formData = new FormData();
+
+        // 1. XÓA DÒNG NÀY ĐI, KHÔNG GỬI ID KHI THÊM MỚI
+        // formData.append("Id", $("#Id").val()) 
+
+        formData.append("HoTen", $('#HoTen').val());
+        formData.append("ChucVu", $('#select-chuc-vu').val());
+        formData.append("LuongCoBan", $('#LuongCoBan').val());
+        formData.append("SoDienThoai", $('#SoDienThoai').val());
+        formData.append("Email", $('#Email').val());
+        formData.append("DiaChi", $('#DiaChi').val());
+        formData.append("NgayVaoLam", $('#NgayVaoLam').val());
+        formData.append("TrangThai", $('#select-trang-thai').val());
+        formData.append("GioiTinh", $('input[name="gioiTinh"]:checked').val() === 'Nam');
+
+        var fileInput = $('#avatarUpload')[0];
+        if (fileInput.files.length > 0) {
+            formData.append("AnhDaiDien", fileInput.files[0]);
+        }
+
+        // Gửi AJAX
+        $.ajax({
+            url: '/API/NhanVien/Them',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+
+            success: function (response) {
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = '/QuanLyNhanSu/DanhSachNhanVien';
+                    }
+                });
+            },
+            error: function (jqXHR) {
+                var title = 'Đã xảy ra lỗi!';
+                var message = 'Lỗi máy chủ hoặc không thể kết nối.';
+                var response = jqXHR.responseJSON;
+
+                // Code này sẽ bắt lỗi validation (ví dụ "Họ tên không được để trống")
+                if (jqXHR.status === 400 && response && typeof response === 'object' && !response.message) {
+                    title = 'Dữ liệu không hợp lệ!';
+                    message = "";
+                    for (var key in response) {
+                        if (response.hasOwnProperty(key)) {
+                            message += response[key].join("<br>") + "<br>";
+                        }
+                    }
+                } else if (response && response.message) {
+                    message = response.message;
+                } else if (jqXHR.responseText) {
+                    message = "Lỗi máy chủ. Vui lòng kiểm tra console.";
+                }
+
+                Swal.fire({
+                    title: title,
+                    html: message,
+                    icon: 'error',
+                    confirmButtonText: 'Đóng'
+                });
+            }
+        });
+    });
+
+});
+
+
+$(async function callApiGetNextIdNV() {
+    const dataToSend = {
+        prefix: "NV",
+        totalLength: 6
+    };
+    try {
+        const response = await fetch('/API/get-next-id-NV',
+            {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dataToSend)
+            });
+        const data = await response.json();
+        if (data) {
+            document.getElementById('Id').value = data.nextId;
+        }
+        else {
+            alert('Không thể lấy mã nhân viên, vui lòng thử lại.');
+        }
+    } catch (error) {
+        console.error('Lỗi khi lấy mã nhân viên:', error);
+        alert('Không thể lấy mã nhân viên, vui lòng thử lại.');
+    }
 });

@@ -65,7 +65,7 @@
                                         List<NhanVien> nvs = ViewBag.lstNhanVien;
                                         foreach(var nv in nvs)
                                         {
-                                            bool isWorking = string.Equals(nv.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
+                                            bool isWorking = string.Equals(nv.TrangThai, "Đang làm", StringComparison.OrdinalIgnoreCase);
                                             <tr>
                                                 <td>@nv.Id</td>
                                                 <td>@nv.HoTen</td>
@@ -77,11 +77,11 @@
                                                     @{
                                                         if (isWorking)
                                                         {
-                                                            <span class="badge bg-success"> @(nv.TrangThai == "Active" ? "Đang làm" : "Nghỉ")</span>
+                                                            <span class="badge bg-success"> @nv.TrangThai</span>
                                                         }
                                                         else
                                                         {
-                                                            <span class="badge bg-danger"> @(nv.TrangThai == "Active" ? "Đang làm" : "Nghỉ")</span>
+                                                            <span class="badge bg-danger"> @nv.TrangThai</span>
                                                         }
                                                     }
                                                 </td>
@@ -91,7 +91,7 @@
                                                        title="Sửa">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <a class="btn btn-danger btn-sm btn-delete-khoi" href="#" title="Xóa">
+                                                    <a class="btn btn-danger btn-sm btn-delete-khoi btn-xoa-nhan-vien" href="#" title="Xóa" data-id="@nv.Id">
                                                         <i class="fas fa-trash-alt"></i>
                                                     </a>
                                                 </td>
@@ -107,6 +107,6 @@
         </div>
       </div>
     </main>
-
+   <script src="~/assets/js/DanhSachNhanVien.js" asp-append-version="true" defer></script>
 
 
