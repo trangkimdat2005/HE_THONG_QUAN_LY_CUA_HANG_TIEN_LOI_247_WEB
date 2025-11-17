@@ -40,17 +40,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyBaoMat/LichSuMuaHang")]
         public IActionResult LichSuMuaHang(string KhachHangId,string TaiKhoanid)
         {
-            var lstLSMH = _quanLySevices.GetList<LichSuMuaHang>().Where(x=>x.KhachHangId==KhachHangId);
+            var lstLSMH = _quanLySevices.GetList<LichSuMuaHang>().Where(x => x.KhachHangId == KhachHangId).ToList();
             ViewData["lstLSMH"] = lstLSMH;
 
-            var lstHD = _quanLySevices.GetList<HoaDon>();
+            var lstHD = _quanLySevices.GetList<HoaDon>().Where(x => x.KhachHangId == KhachHangId).ToList();
             ViewData["lstHD"] = lstHD;
 
-            var lstCTHD = _quanLySevices.GetList<ChiTietHoaDon>();
+            var lstCTHD = _quanLySevices.GetList<ChiTietHoaDon>().ToList();
             ViewData["lstCTHD"] = lstCTHD;
 
-            var lstTTV = _quanLySevices.GetList<TheThanhVien>().Where(x => x.KhachHangId == KhachHangId);
+            var lstTTV = _quanLySevices.GetList<TheThanhVien>().Where(x => x.KhachHangId == KhachHangId).ToList();
             ViewData["lstTTV"] = lstTTV;
+
+            var lstSPDV = _quanLySevices.GetList<SanPhamDonVi>().ToList();
+            ViewData["lstSPDV"] = lstSPDV;
 
             var tkkh = _quanLySevices.GetList<TaiKhoanKhachHang>()
                         .Where(x => x.KhachHangId == KhachHangId && x.TaiKhoanid == TaiKhoanid)

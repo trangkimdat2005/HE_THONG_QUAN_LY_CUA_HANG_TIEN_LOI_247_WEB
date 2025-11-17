@@ -168,10 +168,11 @@
                 <input class="form-control" type="text" placeholder="V.d: 123 Nguyễn Huệ, Q.1" value="@Model.DiaChi">
               </div>
 
-              <div class="mb-3">
+            <div class="mb-3">
                 <label class="form-label">Ngày vào làm</label>
-                <input class="form-control" type="date" value="@Model.NgayVaoLam.ToString("dd/MM/yyyy")">
-              </div>
+                <input class="form-control" type="date" value="@Model.NgayVaoLam.ToString("yyyy-MM-dd")">
+            </div>
+
 
               <div class="mb-3">
                 <label class="form-label">Trạng thái</label>
@@ -208,3 +209,27 @@
 
   <!-- js riêng ở đây nha! -->
   <script src="~/assets/js/SuaNhanSu.js" asp-append-version="true" defer></Script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Thêm jQuery -->
+
+<script>
+    $(document).ready(function () {
+        // Khi người dùng nhấn nút "Gửi"
+        $('#submitBtn').click(function () {
+            var ngayVaoLam = $('#NgayVaoLam').val();  // Lấy giá trị từ ô input
+
+            // Gửi dữ liệu bằng AJAX
+            $.ajax({
+                url: '@Url.Action("AddOrUpdate", "YourController")', // URL đến action của Controller
+                type: 'POST',  // Phương thức gửi dữ liệu
+                data: { NgayVaoLam: ngayVaoLam },  // Dữ liệu sẽ được gửi
+                success: function (response) {
+                    $('#responseMessage').html(response);  // Hiển thị kết quả trả về từ Controller
+                },
+                error: function () {
+                    alert('Đã xảy ra lỗi khi gửi dữ liệu!');
+                }
+            });
+        });
+    });
+</script>
+
