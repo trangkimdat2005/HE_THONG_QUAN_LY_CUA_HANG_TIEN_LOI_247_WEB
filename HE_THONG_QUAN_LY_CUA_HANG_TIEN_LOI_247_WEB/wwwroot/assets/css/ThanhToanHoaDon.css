@@ -1,0 +1,85 @@
+﻿/* Hộp tổng tiền (Giống ảnh) */
+.pos-total-card {
+    background-color: #e6f7f2; /* Màu xanh lá cây nhạt */
+    border: 1px solid #b7e8d7;
+    margin-bottom: 1.5rem;
+}
+
+    .pos-total-card .pos-total-amount {
+        font-size: 2.5rem; /* 200.690 đ */
+        font-weight: 700;
+        color: #0f5132; /* Màu xanh lá cây đậm */
+        text-align: center;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .pos-total-card .pos-total-note {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+/* Thẻ thông tin (Khách hàng, NV) */
+.pos-invoice-info {
+    margin-bottom: 1.5rem;
+}
+
+    .pos-invoice-info .card-title-sm {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #333;
+    }
+
+    .pos-invoice-info .list-group-flush .list-group-item {
+        padding: 0.75rem 0;
+        background-color: transparent;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pos-invoice-info .list-group-item strong {
+        color: #555;
+    }
+
+    .pos-invoice-info .list-group-item span {
+        color: #000;
+        font-weight: 500;
+    }
+
+/* Nút chọn phương thức (Giống ảnh) */
+.payment-method-buttons .btn {
+    text-align: left;
+    padding: 1rem;
+    font-size: 1.1rem;
+}
+    /* Màu nút khi được chọn (active) */
+    .payment-method-buttons .btn.active {
+        background-color: #009688; /* Màu xanh teal */
+        color: white;
+        border-color: #009688;
+    }
+
+/* Hộp tiền thối (Giống ảnh) */
+.pos-change-box {
+    background-color: #f8f9fa; /* Màu xám nhạt */
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+}
+    /* Màu vàng/đỏ khi thiếu tiền */
+    .pos-change-box.error {
+        background-color: #fff9e0; /* Màu vàng nhạt */
+        border-color: #ffe680;
+        color: #e64a19; /* Màu đỏ cam */
+    }
+    /* Màu xanh khi thối tiền */
+    .pos-change-box.success {
+        background-color: #e6f7f2; /* Màu xanh nhạt */
+        border-color: #b7e8d7;
+        color: #0f5132; /* Màu xanh đậm */
+    }

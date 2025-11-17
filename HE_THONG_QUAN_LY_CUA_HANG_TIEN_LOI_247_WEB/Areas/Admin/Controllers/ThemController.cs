@@ -34,6 +34,68 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemHoaDon")]
         public IActionResult ThemHoaDon()
         {
+            // Load danh sách khách hàng
+            var lstKhachHang = _quanLyServices.GetList<KhachHang>()
+                .Where(kh => !kh.IsDelete && kh.TrangThai == "Active")
+                .OrderBy(kh => kh.HoTen)
+                .ToList();
+
+            // Load danh sách sản phẩm đơn vị
+            var lstSanPhamDonVi = _quanLyServices.GetList<SanPhamDonVi>()
+                .Where(sp => !sp.IsDelete)
+                .ToList();
+
+            // Load thông tin cho từng sản phẩm đơn vị
+            foreach (var spDonVi in lstSanPhamDonVi)
+            {
+                // Load thông tin sản phẩm
+                if (!string.IsNullOrEmpty(spDonVi.SanPhamId))
+                {
+                    spDonVi.SanPham = _quanLyServices.GetById<SanPham>(spDonVi.SanPhamId);
+                    
+                    // Load danh mục của sản phẩm
+                    if (spDonVi.SanPham != null)
+                    {
+                        var sanPhamDanhMuc = _quanLyServices.GetList<SanPhamDanhMuc>()
+                            .Where(spdm => spdm.SanPhamId == spDonVi.SanPhamId && !spdm.IsDelete)
+                            .ToList();
+                        
+                        spDonVi.SanPham.SanPhamDanhMucs = sanPhamDanhMuc;
+                        
+                        // Load thông tin danh mục
+                        foreach (var spdm in sanPhamDanhMuc)
+                        {
+                            if (!string.IsNullOrEmpty(spdm.DanhMucId))
+                            {
+                                spdm.DanhMuc = _quanLyServices.GetById<DanhMuc>(spdm.DanhMucId);
+                            }
+                        }
+                    }
+                }
+                
+                // Load thông tin đơn vị đo lường
+                if (!string.IsNullOrEmpty(spDonVi.DonViId))
+                {
+                    spDonVi.DonVi = _quanLyServices.GetById<DonViDoLuong>(spDonVi.DonViId);
+                }
+            }
+
+            // Load danh sách danh mục
+            var lstDanhMuc = _quanLyServices.GetList<DanhMuc>()
+                .Where(dm => !dm.IsDelete)
+                .OrderBy(dm => dm.Ten)
+                .ToList();
+
+            // Load danh sách mã khuyến mãi đang active
+            var lstMaKhuyenMai = _quanLyServices.GetList<MaKhuyenMai>()
+                .Where(mkm => !mkm.IsDelete && mkm.TrangThai == "Active")
+                .ToList();
+
+            ViewData["DanhSachKhachHang"] = lstKhachHang;
+            ViewData["DanhSachSanPhamDonVi"] = lstSanPhamDonVi;
+            ViewData["DanhSachDanhMuc"] = lstDanhMuc;
+            ViewData["DanhSachMaKhuyenMai"] = lstMaKhuyenMai;
+
             return View();
         }
 
@@ -662,7 +724,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
         }
 
-       
         [Route("/API/get-next-id-CTKM")]
         public Task<IActionResult> GetNextIdCTKM([FromBody] Dictionary<string, object> request)
         {
@@ -1082,6 +1143,245 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<KiemKe>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
         }
 
+        //=========================================API Áp Dụng Mã Khuyến Mãi=======================================================================
+        [HttpPost]
+        [Route("/API/apply-discount")]
+        public async Task<IActionResult> ApplyDiscount([FromBody] ApplyDiscountRequest request)
+        {
+            try
+            {
+                Console.WriteLine("=== API APPLY DISCOUNT CALLED ===");
+                Console.WriteLine($"Code: {request.MaGiamGia}, TongTien: {request.TongTien}");
+
+                if (string.IsNullOrWhiteSpace(request.MaGiamGia))
+                {
+                    return BadRequest(new { message = "Mã giảm giá không được để trống." });
+                }
+
+                // Tìm mã khuyến mãi
+                var maKhuyenMai = _quanLyServices.GetList<MaKhuyenMai>()
+                    .FirstOrDefault(mkm => mkm.Code == request.MaGiamGia && 
+                                          !mkm.IsDelete && 
+                                          mkm.TrangThai == "Active");
+
+                if (maKhuyenMai == null)
+                {
+                    return BadRequest(new { message = "Mã giảm giá không tồn tại hoặc đã hết hạn." });
+                }
+
+                // Kiểm tra số lần sử dụng
+                if (maKhuyenMai.SoLanSuDung <= 0)
+                {
+                    return BadRequest(new { message = "Mã giảm giá đã hết lượt sử dụng." });
+                }
+
+                // Load thông tin chương trình khuyến mãi
+                if (!string.IsNullOrEmpty(maKhuyenMai.ChuongTrinhId))
+                {
+                    maKhuyenMai.ChuongTrinh = _quanLyServices.GetById<ChuongTrinhKhuyenMai>(maKhuyenMai.ChuongTrinhId);
+                    
+                    // Kiểm tra thời hạn chương trình
+                    if (maKhuyenMai.ChuongTrinh != null)
+                    {
+                        var now = DateTime.Now.Date;
+                        if (now < maKhuyenMai.ChuongTrinh.NgayBatDau || now > maKhuyenMai.ChuongTrinh.NgayKetThuc)
+                        {
+                            return BadRequest(new { message = "Chương trình khuyến mãi chưa bắt đầu hoặc đã kết thúc." });
+                        }
+                    }
+                }
+
+                decimal giaTri = maKhuyenMai.GiaTri;
+
+                Console.WriteLine($"✅ Mã hợp lệ. Giá trị giảm: {giaTri}");
+
+                return Ok(new
+                {
+                    id = maKhuyenMai.Id,
+                    code = maKhuyenMai.Code,
+                    ten = maKhuyenMai.ChuongTrinh?.Ten ?? "Mã giảm giá",
+                    giaTri = giaTri,
+                    message = "Áp dụng mã giảm giá thành công!"
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+                return StatusCode(500, new { message = $"Lỗi khi áp dụng mã giảm giá: {ex.Message}" });
+            }
+        }
+
+        public class ApplyDiscountRequest
+        {
+            public string MaGiamGia { get; set; }
+            public decimal TongTien { get; set; }
+        }
+
+        //=========================================API Thêm Hóa Đơn=======================================================================
+        [HttpPost]
+        [Route("/API/add-HoaDon")]
+        public async Task<IActionResult> AddHoaDon([FromBody] HoaDonRequest request)
+        {
+            try
+            {
+                Console.WriteLine("=== API ADD HÓA ĐƠN CALLED ===");
+                Console.WriteLine($"Request: {System.Text.Json.JsonSerializer.Serialize(request)}");
+
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                }
+
+                // Validate
+                if (request.ChiTietHoaDon == null || !request.ChiTietHoaDon.Any())
+                {
+                    return BadRequest(new { message = "Hóa đơn phải có ít nhất một sản phẩm." });
+                }
+
+                // Xử lý KhachHangId - nếu null thì tạo hoặc dùng khách lẻ mặc định
+                string khachHangId = request.KhachHangId;
+                
+                if (string.IsNullOrEmpty(khachHangId))
+                {
+                    Console.WriteLine("KhachHangId is null - creating/using default customer...");
+                    
+                    // Kiểm tra khách hàng mặc định có tồn tại không
+                    var khachLe = _quanLyServices.GetList<KhachHang>()
+                        .FirstOrDefault(kh => kh.Id == "KH_LE" && !kh.IsDelete);
+                    
+                    if (khachLe == null)
+                    {
+                        Console.WriteLine("Creating default customer KH_LE...");
+                        
+                        // Tạo ảnh mặc định nếu chưa có
+                        var defaultImage = _quanLyServices.GetList<HinhAnh>()
+                            .FirstOrDefault(ha => ha.Id == "ANH_DEFAULT");
+                        
+                        if (defaultImage == null)
+                        {
+                            byte[] defaultImageBytes = Convert.FromBase64String(
+                                "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+                            );
+                            
+                            defaultImage = new HinhAnh
+                            {
+                                Id = "ANH_DEFAULT",
+                                TenAnh = "Default Avatar",
+                                Anh = defaultImageBytes
+                            };
+                            
+                            _quanLyServices.Add<HinhAnh>(defaultImage);
+                        }
+                        
+                        // Tạo khách hàng lẻ mặc định
+                        khachLe = new KhachHang
+                        {
+                            Id = "KH_LE",
+                            HoTen = "Khách lẻ",
+                            SoDienThoai = "0000000000",
+                            Email = null,
+                            DiaChi = "",
+                            NgayDangKy = DateTime.Now,
+                            TrangThai = "Active",
+                            GioiTinh = false,
+                            AnhId = "ANH_DEFAULT",
+                            IsDelete = false
+                        };
+                        
+                        if (!_quanLyServices.Add<KhachHang>(khachLe))
+                        {
+                            return BadRequest(new { message = "Không thể tạo khách hàng mặc định." });
+                        }
+                        
+                        Console.WriteLine("✅ Created default customer KH_LE");
+                    }
+                    
+                    khachHangId = "KH_LE";
+                    Console.WriteLine($"Using KhachHangId: {khachHangId}");
+                }
+
+                // Tạo hóa đơn
+                HoaDon hoaDon = new HoaDon
+                {
+                    Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 5),
+                    KhachHangId = khachHangId,
+                    NhanVienId = request.NhanVienId,
+                    NgayLap = request.NgayLap ?? DateTime.Now,
+                    TrangThai = request.TrangThai ?? "Chưa thanh toán",
+                    TongTien = 0, // Sẽ tính sau
+                    IsDelete = false
+                };
+
+                Console.WriteLine($"Generated HoaDon ID: {hoaDon.Id}, TrangThai: {hoaDon.TrangThai}, KhachHangId: {hoaDon.KhachHangId}");
+
+                if (!_quanLyServices.Add<HoaDon>(hoaDon))
+                {
+                    return BadRequest(new { message = "Không thể tạo hóa đơn." });
+                }
+
+                decimal tongTien = 0;
+
+                // Thêm chi tiết hóa đơn
+                foreach (var chiTiet in request.ChiTietHoaDon)
+                {
+                    decimal thanhTien = chiTiet.SoLuong * chiTiet.DonGia;
+                    tongTien += thanhTien;
+
+                    ChiTietHoaDon ctHoaDon = new ChiTietHoaDon
+                    {
+                        HoaDonId = hoaDon.Id,
+                        SanPhamDonViId = chiTiet.SanPhamDonViId,
+                        SoLuong = chiTiet.SoLuong,
+                        DonGia = chiTiet.DonGia,
+                        GiamGia = chiTiet.GiamGia ?? 0,
+                        TongTien = thanhTien,
+                        IsDelete = false
+                    };
+
+                    Console.WriteLine($"Adding ChiTietHoaDon: SanPham={chiTiet.SanPhamDonViId}, SL={chiTiet.SoLuong}, DonGia={chiTiet.DonGia}");
+
+                    if (!_quanLyServices.Add<ChiTietHoaDon>(ctHoaDon))
+                    {
+                        return BadRequest(new { message = $"Không thể thêm sản phẩm {chiTiet.SanPhamDonViId}" });
+                    }
+                }
+
+                
+
+                // Cập nhật tổng tiền
+                // Cập nhật tổng tiền
+                decimal tongGiamGia = request.TongGiamGia ?? 0;
+                hoaDon.TongTien = tongTien - tongGiamGia; 
+                if (!_quanLyServices.Update<HoaDon>(hoaDon))
+                {
+                    return BadRequest(new { message = "Không thể cập nhật tổng tiền hóa đơn." });
+                }
+                Console.WriteLine($"✅ SUCCESS: Created invoice {hoaDon.Id} with total {tongTien}");
+
+                return Ok(new
+                {
+                    message = "Tạo hóa đơn thành công!",
+                    hoaDonId = hoaDon.Id,
+                    tongTien = tongTien
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return StatusCode(500, new { message = $"Lỗi khi tạo hóa đơn: {ex.Message}" });
+            }
+        }
+
+
+
+
+
+
+
+
+
+
         public class PhieuNhapFormData
         {
             public string NhaCungCapId { get; set; }
@@ -1151,6 +1451,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string MaKhuyenMaiId { get; set; }
             public string KenhThanhToanId { get; set; }
             public string MoTaThanhToan { get; set; }
+            public decimal? TongGiamGia { get; set; }
             public List<ChiTietHoaDonRequest> ChiTietHoaDon { get; set; }
         }
 
@@ -1214,5 +1515,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string SanPhamDonViId { get; set; }
             public string KetQua { get; set; }
         }
+
     }
 }

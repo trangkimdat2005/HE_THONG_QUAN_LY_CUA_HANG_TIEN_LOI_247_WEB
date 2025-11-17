@@ -4,14 +4,6 @@
 
 	ViewData["title"] = "Danh Sách Hóa Đơn";
 }
-<!-- Main sidebar ở đây nha -->
-
-
-
-
-
-
-
 <main class="app-content">
 	<div class="app-title">
 		<div>
@@ -28,33 +20,14 @@
 		<div class="col-md-12">
 			<div class="tile">
 				<div class="tile-body">
-					<div class="row mb-3">
-						<div class="col-md-3">
-							<label class="form-label">Từ ngày</label>
-							<input class="form-control" type="date" />
-						</div>
-						<div class="col-md-3">
-							<label class="form-label">Đến ngày</label>
-							<input class="form-control" type="date" />
-						</div>
-						<div class="col-md-3">
-							<label class="form-label">Trạng thái</label>
-							<select class="form-select">
-								<option value="">Tất cả trạng thái</option>
-								<option value="DaThanhToan">Đã Thanh Toán</option>
-								<option value="ChuaThanhToan">Chưa Thanh Toán</option>
-								<option value="Huy">Đã Hủy</option>
-							</select>
-						</div>
-						<div class="col-md-3 d-flex align-items-end">
-							<button class="btn btn-primary btn-add-khoi" type="button">
-								<i class="fas fa-filter"></i> Lọc
-							</button>
+					<div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+						<h3 class="title" style="margin-bottom: 0">
+							Danh Sách Hóa Đơn
+						</h3>
+						<a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemHoaDon">
+							<i class="fas fa-plus"></i> Thêm hoá đơn mới
+						</a>
 
-							<button class="btn btn-primary btn-add-khoi ms-2" asp-controller="Them" asp-action="ThemHoaDon">
-								<i class="fas fa-plus"></i> Thêm hoá đơn mới
-							</button>
-						</div>
 					</div>
 
 					<div class="table-responsive">
@@ -117,12 +90,20 @@
 													<a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon" asp-route-id="@hoaDon.Id" title="Xem chi tiết">
 														<i class="fas fa-eye"></i>
 													</a>
+
+													@*
 													<a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoaDon" asp-route-id="@hoaDon.Id" title="Sửa">
 														<i class="fas fa-edit"></i>
 													</a>
-													<a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
-														<i class="bi bi-wallet"></i>
-													</a>
+													*@
+
+													@if (!trangThaiGoc.Contains("Đã thanh toán", StringComparison.OrdinalIgnoreCase) &&
+																							!trangThaiGoc.Contains("Đã hủy", StringComparison.OrdinalIgnoreCase))
+													{
+														<a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
+															<i class="bi bi-wallet"></i>
+														</a>
+													}
 												</td>
 											</tr>
 										</tbody>
@@ -138,12 +119,3 @@
 		</div>
 	</div>
 </main>
-
-
-
-
-
-
-
-
-
