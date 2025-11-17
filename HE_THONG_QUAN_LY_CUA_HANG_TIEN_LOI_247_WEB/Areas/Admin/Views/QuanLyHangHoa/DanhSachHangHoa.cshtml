@@ -1,0 +1,157 @@
+﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+    ViewData["title"] = "Danh Sách Hàng Hoá";
+}
+
+<link rel="stylesheet" href="~/assets/css/DanhSachHangHoa.css">
+
+
+<main class="app-content">
+    <div class="app-title">
+        <div>
+            <h1><i class="bi bi-bar-chart-steps"></i> Quản lý hàng hoá</h1>
+            <p>Quản lý tất cả hàng hoá có trong cửa hàng</p>
+        </div>
+        <ul class="app-breadcrumb breadcrumb side">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Quản lý hàng hoá</li>
+            <li class="breadcrumb-item active"><a href="#">Danh sách hàng hoá</a></li>
+        </ul>
+    </div>
+
+    <div class="row flex-nowrap" id="main-row-container" style="overflow: hidden;">
+
+        <div class="col-md-12" id="product-list-col">
+            <div class="tile">
+                <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+                    <h3 class="title" style="margin-bottom: 0">Danh Sách Hàng Hoá</h3>
+                    <a class="btn btn-primary btn-add-khoi" id="show-add-form-btn">
+                        <i class="fas fa-plus"></i> Thêm hàng hoá mới
+                    </a>
+                </div>
+                <div class="tile-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>Mã hàng hoá</th>
+                                    <th>Tên hàng hoá</th>
+                                    <th>Danh mục</th>
+                                    <th>Nhãn hiệu</th>
+                                    <th class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodySanPham">
+                                @* @{
+                                    if (ViewData["lstSanPham"] != null)
+                                    {
+                                        List<SanPham> sanPhams = ViewBag.lstSanPham;
+                                        if (sanPhams != null && sanPhams.Any())
+                                        {
+                                            foreach (SanPham sp in sanPhams)
+                                            {
+                                                <tr>
+                                                    <td>@sp.Id</td>
+                                                    <td>@sp.Ten</td>
+                                                    <td>@string.Join(", ", @sp.SanPhamDanhMucs.Select(dm => dm.DanhMuc.Ten).ToList())</td>
+                                                    <td>@sp.NhanHieu.Ten</td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" data-id="@sp.Id" title="Sửa">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-sm btn-delete-khoi" data-id="@sp.Id" title="Xóa">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                } *@
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="product-form-col">
+            <div class="tile">
+                <h3 class="tile-title" id="form-title">Thêm Hàng Hoá Mới</h3>
+                <div class="tile-body">
+                    <form id="product-form">
+                        <div class="mb-3">
+                            <label class="form-label">Mã hàng hoá (id)</label>
+                            <input class="form-control" type="text" id="form-product-id"
+                                   placeholder="Mã sẽ được tạo tự động" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tên hàng hoá (đơn vị)</label>
+                            <input class="form-control" type="text" id="form-product-name"
+                                   placeholder="V.d: Sữa tươi TH True Milk (Lốc 4)">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Danh mục</label>
+                            <select class="form-control" id="form-select-danh-muc" multiple="multiple"
+                                    style="width: 100%;">
+                                @{
+                                    if (ViewData["lstDanhMuc"] != null)
+                                    {
+                                        List<DanhMuc> danhMucs = ViewBag.lstDanhMuc;
+                                        if (danhMucs != null && danhMucs.Any())
+                                        {
+                                            foreach (DanhMuc dm in danhMucs)
+                                            {
+                                                <option value="@dm.Id">@dm.Ten</option>
+                                            }
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Nhãn hiệu</label>
+                            <select class="form-control" id="form-select-nhan-hieu" style="width: 100%;">
+                                @{
+                                    if (ViewData["lstNhanHieu"] != null)
+                                    {
+                                        List<NhanHieu> nhanHieus = ViewBag.lstNhanHieu;
+                                        if (nhanHieus != null && nhanHieus.Any())
+                                        {
+                                            foreach (NhanHieu nh in nhanHieus)
+                                            {
+                                                <option value="@nh.Id">@nh.Ten</option>
+                                            }
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="tile-footer">
+                    <button class="btn btn-primary" type="button" id="btn-submit">
+                        <i class="bi bi-check-circle-fill me-2"></i>Thêm
+                    </button>
+                    <button class="btn btn-info" type="button" id="btn-edit" style="display: none;">
+                        Lưu
+                    </button>
+                    <button class="btn btn-secondary" type="button" id="btn-cancel">
+                        <i class="bi bi-x-circle-fill me-2"></i>Huỷ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<script src="~/assets/js/DanhSachHangHoa.js" asp-append-version="true" defer></script>

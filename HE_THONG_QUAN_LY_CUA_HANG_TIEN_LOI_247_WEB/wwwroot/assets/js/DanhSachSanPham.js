@@ -119,13 +119,11 @@ $(function () {
             formTitle.text('Thêm Sản Phẩm Mới');
             productForm[0].reset();
             selectNhanHieu.val('').trigger('change');
-            selectDanhMuc.val(null).trigger('change');
-            selectDonVi.val('DV_CHAI').trigger('change');
+            selectDonVi.val('').trigger('change');
 
             dt = new DataTransfer();
             formImagesUpload[0].files = dt.files;
             renderPreview();
-            callApiGetNextId(); // Gọi API để lấy mã sản phẩm tiếp theo
 
             inputId.val('Tự động tạo').prop('readonly', true);
             btnSubmit.html('<i class="bi bi-check-circle-fill me-2"></i>Thêm').show();
@@ -211,9 +209,8 @@ $(function () {
         const clickedRow = $(this);
         const target = $(e.target);
         const data = clickedRow.data();
-        data.price = parseFloat(data.price); // Chuyển đổi giá trị số
 
-        callApiGetDataById(data.id);
+        callApiGetDataById(data.sanPhamId, data.donViId);
 
         if (target.closest('.btn-delete-khoi').length) {
             e.stopPropagation();
@@ -247,7 +244,6 @@ $(function () {
 
     btnSubmit.on('click', function (e) {
         e.preventDefault();
-        if (!$('#form-product-name').val().trim()) { alert('Nhập tên SP!'); return; }
         callApiAddSP();
         console.log(dt.files);
         closeForm();
@@ -260,39 +256,36 @@ $(function () {
         try {
             // Lấy dữ liệu từ form
             const imagesUpload = document.getElementById('form-images-upload').files;
-            const productId = document.getElementById('form-product-id').value;
-            const productName = document.getElementById('form-product-name').value;
-            const brand = document.getElementById('form-select-nhan-hieu').value;
-            const categories = Array.from(document.getElementById('form-select-danh-muc').selectedOptions).map(option => option.value);
+
+            // Đây KHÔNG PHẢI là nhãn hiệu, mà là SẢN PHẨM
+            const productId = document.getElementById('form-select-hang-hoa').value;
+
             const unit = document.getElementById('form-select-don-vi').value;
-            const conversionFactor = document.getElementById('form-select-he-so-quy-doi').value;
+            const conversionFactor = document.getElementById('form-conversion-factor')?.value || "1";
             const price = document.getElementById('form-product-price').value;
             const description = document.getElementById('form-product-description').value;
+
             const statusElement = document.querySelector('input[name="trangThaiSP"]:checked');
             const status = statusElement ? statusElement.value : '';
 
-            if (!productName || productName.trim() === '') {
-                alert('Vui lòng nhập tên sản phẩm!');
+            // Validate
+            if (!productId) {
+                alert("Vui lòng chọn sản phẩm!");
                 return;
             }
 
-            if (!price || price.trim() === '') {
-                alert('Vui lòng nhập giá bán!');
+            if (!unit) {
+                alert("Vui lòng chọn đơn vị!");
                 return;
             }
 
-            if (!brand || brand === '') {
-                alert('Vui lòng chọn nhãn hiệu!');
+            if (!price) {
+                alert("Vui lòng nhập giá bán!");
                 return;
             }
 
-            if (!unit || unit === '') {
-                alert('Vui lòng chọn đơn vị!');
-                return;
-            }
-
-            if (!status || status === '') {
-                alert('Vui lòng chọn trạng thái sản phẩm!');
+            if (!status) {
+                alert("Vui lòng chọn trạng thái!");
                 return;
             }
 
@@ -303,111 +296,90 @@ $(function () {
             // Tạo FormData
             const formData = new FormData();
 
-            // Thêm tất cả ảnh - QUAN TRỌNG: tên phải là "ImagesUpload"
+            // Thêm ảnh
             for (let i = 0; i < imagesUpload.length; i++) {
-                formData.append('ImagesUpload', imagesUpload[i]);
+                formData.append("ImagesUpload", imagesUpload[i]);
             }
 
-            // Thêm các field khác - TÊN PHẢI KHỚP VỚI C# (PascalCase)
-            formData.append('ProductId', productId.trim());
-            formData.append('ProductName', productName.trim());
-            formData.append('Brand', brand);
+            // Các trường FORM gửi lên API
+            formData.append("SanPhamId", productId);
+            formData.append("DonViId", unit);
+            formData.append("HeSoQuyDoi", conversionFactorNum.toString());
+            formData.append("GiaBan", priceNum.toString());
+            formData.append("MoTa", description || "");
+            formData.append("TrangThai", status);
 
-            // Thêm categories - mỗi category là 1 entry riêng
-            if (categories.length > 0) {
-                categories.forEach(category => {
-                    formData.append('Categories', category);
-                });
-            }
-
-            formData.append('Unit', unit);
-            formData.append('ConversionFactor', conversionFactorNum.toString());
-            formData.append('Price', priceNum.toString());
-            formData.append('Description', description || '');
-            formData.append('Status', status);
-
-
-            // Gửi request
-            const response = await fetch('/API/add-SP', {
+            // Fetch
+            const response = await fetch('/API/addSPDV', {
                 method: 'POST',
                 body: formData
-                // KHÔNG thêm Content-Type header
             });
 
-            // Kiểm tra response
             if (!response.ok) {
-                const contentType = response.headers.get("content-type");
-                let errorMessage = `HTTP error! Status: ${response.status}`;
-
-                console.log('Response content-type:', contentType);
-
-                if (contentType && contentType.includes("application/json")) {
-                    const errorData = await response.json();
-                    errorMessage = errorData.message || errorMessage;
-                    console.error('===== ERROR RESPONSE (JSON) =====');
-                    console.error(errorData);
-                    console.error('=================================');
-                } else {
-                    const errorText = await response.text();
-                    console.error('===== ERROR RESPONSE (TEXT) =====');
-                    console.error(errorText);
-                    console.error('=================================');
-                    errorMessage = errorText || errorMessage;
-                }
-
-                throw new Error(errorMessage);
+                const err = await response.text();
+                throw new Error(err);
             }
 
             const data = await response.json();
-            console.log('===== SUCCESS RESPONSE =====');
-            console.log(data);
-            console.log('============================');
 
-            // Hiển thị thông báo thành công
-            alert(data.message || 'Thêm sản phẩm thành công!');
-
-
-
+            alert(data.message || "Thêm thành công!");
             return data;
 
         } catch (error) {
-            showLoading(false);
-            console.error('===== EXCEPTION =====');
-            console.error('Message:', error.message);
-            console.error('Stack:', error.stack);
-            console.error('=====================');
-            alert('Lỗi: ' + error.message);
+            console.error(error);
+            alert("Lỗi: " + error.message);
         }
     }
 
 
 
-
-
-    async function callApiGetNextId() {
-        const dataToSend = {
-            prefix: "SP",
-            totalLength: 6
-        };
+    async function callApiGetDataById(sanPhamId, donViId) {
         try {
-            const response = await fetch('/API/get-next-id-SP',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dataToSend)
-                });
+            const response = await fetch(`/API/getSanPhamDonViDataById?sanPhamId=${sanPhamId}&donViId=${donViId}`, {
+                method: "POST"
+            });
+
+            if (!response.ok) {
+                const err = await response.text();
+                throw new Error(err);
+            }
+
             const data = await response.json();
-            if (data) {
-                document.getElementById('form-product-id').value = data.nextId;
-            }
-            else {
-                alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
-            }
+
+            // ---------------------------
+            // GÁN DỮ LIỆU VÀO FORM
+            // ---------------------------
+
+            // 1) Sản phẩm
+            document.getElementById("form-select-hang-hoa").value = data.sanPhamId;
+
+            // 2) Đơn vị
+            document.getElementById("form-select-don-vi").value = data.donViId;
+
+            // 3) Hệ số quy đổi
+            document.getElementById("form-conversion-factor").value = data.heSoQuyDoi;
+
+            // 4) Giá bán
+            document.getElementById("form-product-price").value = data.giaBan;
+
+            // 5) Trạng thái
+            document.querySelectorAll('input[name="trangThaiSP"]').forEach(r => {
+                r.checked = (r.value === data.trangThai);
+            });
+
+            // 6) Ảnh sản phẩm
+            await loadImagesFromApi(data.anhs);
+
+            console.log("Dữ liệu đã load vào form:", data);
+
         } catch (error) {
-            console.error('Lỗi khi lấy mã sản phẩm:', error);
-            alert('Không thể lấy mã sản phẩm, vui lòng thử lại.');
+            console.error("Lỗi load sản phẩm:", error);
+            alert("Lỗi: " + error.message);
         }
     }
+
+
+
 
 });
 
@@ -417,114 +389,178 @@ $(function () {
 $(async function () {
     await appRealtimeList.initEntityTable({
         key: 'SanPham',              
-        apiUrl: '/API/get-all-SP',       
+        apiUrl: '/API/getAllSPDV',       
         tableId: 'sampleTable',
         tbodyId: 'tbody-san-pham',
         buildRow: sp => {
             return `
-                <tr data-id="${sp.id}" data-don-vi-id="${sp.sanPhamDonVi[0].donViId}">
-                    <td>${sp.id}</td>
+               <tr data-san-pham-id="${sp.sanPhamId}" data-don-vi-id="${sp.donViId}">
+                    <td>${sp.sanPhamId}</td>
                     <td>${sp.ten}</td>
-                    <td>
-                        ${sp.danhMucs.map(dm => {
-                            return `<span class="badge bg-info">${dm.danhMucTen}</span>`;
-                        }).join(' ')} <!-- Nối các danh mục với khoảng trắng -->
-                    </td>
+                    <td>${sp.danhMucs.join(", ")}</td>
                     <td>${sp.nhanHieu}</td>
-                    <td>${sp.sanPhamDonVi[0].donVi}</td>
-                    <td>${sp.sanPhamDonVi[0].giaBan}</td>
-                    <td><span class="badge bg-success">${sp.sanPhamDonVi[0].trangThai}</span></td>
+                    <td>${sp.donVi}</td>
+                    <td>${sp.giaBan}</td>
+                    <td><span class="badge bg-success">${sp.trangThai}</span></td>
                     <td class="text-center">
-                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" data-id ="${sp.Id}" title="Sửa">
+                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" 
+                                data-san-pham-id="${sp.sanPhamId}" 
+                                data-don-vi-id="${sp.donViId || ''}" 
+                                title="Sửa">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa">
+
+                        <button class="btn btn-danger btn-sm btn-delete-khoi" 
+                                data-san-pham-id="${sp.sanPhamId}" 
+                                data-don-vi-id="${sp.donViId || ''}" 
+                                title="Xóa">
                             <i class="fas fa-trash-alt"></i>
                         </button>
                     </td>
                 </tr>
-            `
+            `;
         }
+
     });
 });
 
 
-async function callApiGetDataById(sanPhamId, donViId) {
-    try {
-        // Sửa lỗi: truyền tham số sanPhamId và donViId vào URL một cách đúng đắn
-        const url = `/API/GetDataById?sanPhamId=${encodeURIComponent(sanPhamId)}&donViId=${encodeURIComponent(donViId)}`;
 
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' }
+
+
+
+
+
+// =======================================================
+// MODULE QUẢN LÝ ẢNH UPLOAD + LOAD TỪ API
+// =======================================================
+
+const productForm = $("#product-form");
+const formImagesUpload = $("#form-images-upload")[0];
+const uploadPlaceholder = $("#upload-placeholder");
+const imagesPreviewContainer = $("#images-preview-container");
+
+// DataTransfer để quản lý file ảnh (cho phép thêm/xoá)
+let dt = new DataTransfer();
+
+// =========================
+// Convert base64 → File
+// =========================
+function base64ToFile(base64, fileName) {
+    return fetch(base64)
+        .then(res => res.arrayBuffer())
+        .then(buf => new File([buf], fileName, { type: getMimeType(base64) }));
+}
+
+function getMimeType(base64) {
+    const result = base64.match(/data:(.*);base64,/);
+    return result ? result[1] : "image/png";
+}
+
+// =========================
+// Render lại toàn bộ ảnh
+// =========================
+function renderPreview() {
+    imagesPreviewContainer.empty();
+
+    if (dt.files.length === 0) {
+        uploadPlaceholder.show();
+        imagesPreviewContainer.hide();
+        return;
+    }
+
+    uploadPlaceholder.hide();
+    imagesPreviewContainer.show().css("display", "flex");
+
+    // Duyệt từng file trong dt.files
+    Array.from(dt.files).forEach(file => {
+        const wrapper = $('<div>').addClass('preview-image-wrapper');
+
+        const img = $('<img>')
+            .addClass('preview-image-item');
+
+        // Hiển thị ảnh
+        const reader = new FileReader();
+        reader.onload = (e) => img.attr('src', e.target.result);
+        reader.readAsDataURL(file);
+
+        // Nút xoá
+        const removeBtn = $('<span>')
+            .addClass('btn-remove-image')
+            .html('<i class="fas fa-times"></i>')
+            .data('file-name', file.name);
+
+        removeBtn.on("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            removeFile($(this).data("file-name"));
         });
 
-        if (!response.ok) {
-            throw new Error('Lỗi khi gọi API');
-        }
+        wrapper.append(img).append(removeBtn);
+        imagesPreviewContainer.append(wrapper);
+    });
 
-        const data = await response.json();
-        nhapDuLieu(data); // Gọi hàm nhập dữ liệu từ API
-    } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu:', error);
-        alert('Không thể lấy dữ liệu, vui lòng thử lại.');
+    // Thêm nút dấu +
+    if (!productForm.hasClass("form-readonly")) {
+        const addBtn = $('<div>')
+            .addClass('mini-add-btn')
+            .html('<i class="fas fa-plus"></i><span>Thêm ảnh</span>')
+            .on('click', () => formImagesUpload.click());
+
+        imagesPreviewContainer.append(addBtn);
     }
 }
 
+// =========================
+// Xoá ảnh khỏi dt + UI
+// =========================
+function removeFile(fileName) {
+    const newDT = new DataTransfer();
 
-
-function nhapDuLieu(data) {
-    // Điền vào các trường trong form
-    document.getElementById('form-product-id').value = data.Id;
-    document.getElementById('form-product-name').value = data.Ten;
-
-    // Điền vào danh sách nhãn hiệu
-    const brandSelect = document.getElementById('form-select-nhan-hieu');
-    const brandOption = Array.from(brandSelect.options).find(option => option.value === data.NhanHieuId);
-    if (brandOption) brandOption.selected = true;
-
-    // Điền vào danh sách danh mục
-    const categorySelect = document.getElementById('form-select-danh-muc');
-    Array.from(categorySelect.options).forEach(option => {
-        // Kiểm tra xem danh mục có trong SanPhamDanhMucs không
-        if (data.SanPhamDanhMucs.some(sdm => sdm.DanhMucId === option.value)) {
-            option.selected = true;
+    for (let file of dt.files) {
+        if (file.name !== fileName) {
+            newDT.items.add(file);
         }
-    });
+    }
 
-    // Điền vào đơn vị cơ sở
-    const unitSelect = document.getElementById('form-select-don-vi');
-    Array.from(unitSelect.options).forEach(option => {
-        // Kiểm tra xem đơn vị có trong SanPhamDonVis không
-        if (data.SanPhamDonVis.some(sd => sd.DonViId === option.value)) {
-            option.selected = true;
-        }
-    });
+    dt = newDT;
 
-    // Điền vào hệ số quy đổi
-    document.getElementById('form-select-he-so-quy-doi').value = data.ConversionRate;
+    // Gán lại file cho input
+    formImagesUpload.files = dt.files;
 
-    // Điền vào giá bán
-    document.getElementById('form-product-price').value = data.Price;
-
-    // Điền vào mô tả sản phẩm
-    document.getElementById('form-product-description').value = data.MoTa;
-
-    // Điền vào trạng thái
-    const statusRadios = document.getElementsByName('trangThaiSP');
-    statusRadios.forEach(radio => {
-        if (radio.value === (data.IsDelete ? 'NgungKinhDoanh' : 'ConHang')) {
-            radio.checked = true;
-        }
-    });
-
-    // Hiển thị hình ảnh
-    const previewContainer = document.getElementById('images-preview-container');
-    previewContainer.innerHTML = ''; // Xóa các hình ảnh cũ trước khi thêm mới
-    data.anhs.forEach(image => {
-        const imgPreview = `<div class="preview-image"><img src="${image.anh}" class="img-thumbnail" width="100"></div>`;
-        previewContainer.innerHTML += imgPreview;
-    });
-    previewContainer.style.display = 'flex'; // Hiển thị hình ảnh đã tải lên
+    // Render lại giao diện
+    renderPreview();
 }
 
+// =========================
+// Khi user chọn ảnh mới từ máy
+// =========================
+$("#form-images-upload").on("change", function () {
+    for (let file of this.files) {
+        dt.items.add(file);
+    }
+
+    formImagesUpload.files = dt.files;
+
+    renderPreview();
+});
+
+// =========================
+// Hàm load ảnh từ API vào form
+// =========================
+async function loadImagesFromApi(base64List) {
+    dt = new DataTransfer(); // reset toàn bộ file cũ
+
+    if (base64List && base64List.length > 0) {
+        for (let i = 0; i < base64List.length; i++) {
+            const file = await base64ToFile(base64List[i], `api_img_${i}.png`);
+            dt.items.add(file);
+        }
+    }
+
+    // Gán lại vào input file
+    formImagesUpload.files = dt.files;
+
+    // Render preview cho đồng bộ UI
+    renderPreview();
+}

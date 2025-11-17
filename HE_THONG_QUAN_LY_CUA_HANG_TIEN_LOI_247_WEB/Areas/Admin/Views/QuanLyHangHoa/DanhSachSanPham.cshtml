@@ -21,7 +21,7 @@
         <ul class="app-breadcrumb breadcrumb side">
             <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
             <li class="breadcrumb-item">Quản lý hàng hoá</li>
-            <li class="breadcrumb-item active"><a asp-controller="QuanLyHangHoa" asp-action="DanhSachSanPham">Danh sách sản phẩm</a></li>
+            <li class="breadcrumb-item active"><a href="#">Danh sách sản phẩm</a></li>
         </ul>
     </div>
 
@@ -47,40 +47,36 @@
                                     <th>Đơn vị</th>
                                     <th>Giá bán</th>
                                     <th>Trạng thái</th>
-                                    <th>Thao tác</th>
+                                    <th class="text-center">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-san-pham">
-                                @* @{
-                                    if (ViewData["lstSanPham"] != null)
-                                    {
-                                        List<SanPham> sanPhams = ViewBag.lstSanPham;
-                                        foreach (SanPham sanPham in sanPhams)
-                                        {
-                                            foreach (SanPhamDonVi sanPhamDonVi in sanPham.SanPhamDonVis)
-                                            {
 
+                                @* @{
+                                    if (ViewData["lstSanPhamDonVi"] != null)
+                                    {
+                                        List<SanPhamDonVi> sanPhamDonVis = ViewBag.lstSanPhamDonVi;
+                                        if (sanPhamDonVis != null && sanPhamDonVis.Any())
+                                        {
+                                            foreach (SanPhamDonVi spdv in sanPhamDonVis)
+                                            {
                                                 <tr>
-                                                    <td>@sanPham.Id</td>
-                                                    <td>@sanPham.Ten</td>
-                                                    <td>
-                                                        @String.Join(", ", sanPham.SanPhamDanhMucs.Select(x => x.DanhMuc.Ten.ToString()))
-                                                    </td>
-                                                    <td>@sanPham.NhanHieu.Ten</td>
-                                                    <td>@sanPhamDonVi.DonVi.Ten</td>
-                                                    <td>@sanPhamDonVi.GiaBan</td>
-                                                    <td><span class="badge bg-success">@sanPhamDonVi.TrangThai</span></td>
+                                                    <td>@spdv.SanPhamId</td>
+                                                    <td>@spdv.SanPham.Ten</td>
+                                                    <td>@string.Join(", ", @spdv.SanPham.SanPhamDanhMucs.Select(dm => dm.DanhMuc.Ten).ToList())</td>
+                                                    <td>@spdv.SanPham.NhanHieu.Ten</td>
+                                                    <td>@spdv.DonVi.Ten</td>
+                                                    <td>@spdv.GiaBan</td>
+                                                    <td><span class="badge bg-success">@spdv.TrangThai</span></td>
                                                     <td class="text-center">
-                                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" data-id ="@sanPham.Id" title="Sửa">
+                                                        <button class="btn btn-info btn-sm me-1 btn-edit-khoi" data-SanPhamId="@spdv.SanPhamId" data-don-vi-id="@spdv.DonViId" title="Sửa">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-danger btn-sm btn-delete-khoi" title="Xóa">
+                                                        <button class="btn btn-danger btn-sm btn-delete-khoi" data-SanPhamId="@spdv.SanPhamId" data-don-vi-id="@spdv.DonViId" title="Xóa">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
-
-
                                             }
                                         }
                                     }
@@ -114,47 +110,20 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Mã sản phẩm (id)</label>
-                            <input class="form-control" type="text" id="form-product-id" placeholder="Mã sẽ được tạo tự động"
-                                   readonly>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="form-product-name"
-                                   placeholder="V.d: Nước tăng lực Sting Dâu" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Nhãn hiệu</label>
-                            <select class="form-control" id="form-select-nhan-hieu" style="width: 100%;">
+                            <label class="form-label">Hàng hoá</label>
+                            <select class="form-control" id="form-select-hang-hoa" style="width: 100%;">
                                 @{
-                                    if (ViewData["lstNhanHieu"] != null)
+                                    if (ViewData["lstSanPham"] != null)
                                     {
-                                        List<NhanHieu> nhanHieus = ViewBag.lstNhanHieu;
-                                        foreach (NhanHieu nhanHieu in nhanHieus)
+                                        List<SanPham> sanPhams = ViewBag.lstSanPham;
+                                        if (sanPhams != null && sanPhams.Any())
                                         {
-                                            <option value="@nhanHieu.Id">@nhanHieu.Ten</option>
+                                            foreach (SanPham sp in sanPhams)
+                                            {
+                                                <option value="@sp.Id">@sp.Ten</option>
+                                            }
                                         }
                                     }
-
-                                }
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Danh mục</label>
-                            <select class="form-control" id="form-select-danh-muc" multiple="multiple" style="width: 100%;">
-                                @{
-                                    if (ViewData["lstDanhMuc"] != null)
-                                    {
-                                        List<DanhMuc> danhMucs = ViewBag.lstDanhMuc;
-                                        foreach (DanhMuc danhMuc in danhMucs)
-                                        {
-                                            <option value="@danhMuc.Id">@danhMuc.Ten</option>
-                                        }
-                                    }
-
                                 }
                             </select>
                         </div>
@@ -168,9 +137,12 @@
                                             if (ViewData["lstDonVi"] != null)
                                             {
                                                 List<DonViDoLuong> donVis = ViewBag.lstDonVi;
-                                                foreach (DonViDoLuong donVi in donVis)
+                                                if (donVis != null && donVis.Any())
                                                 {
-                                                    <option value="@donVi.Id">@donVi.Ten</option>
+                                                    foreach (DonViDoLuong dv in donVis)
+                                                    {
+                                                        <option value="@dv.Id">@dv.Ten</option>
+                                                    }
                                                 }
                                             }
                                         }
@@ -180,7 +152,7 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label class="form-label">Hệ số quy đổi</label>
-                                    <input class="form-control" id="form-select-he-so-quy-doi" type="number" value="1"
+                                    <input class="form-control" id="form-conversion-factor" type="number" value="1"
                                            title="Đơn vị cơ sở luôn có hệ số là 1">
                                 </div>
                             </div>
@@ -201,15 +173,15 @@
                             <label class="form-label">Trạng thái</label>
                             <div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="trangThaiSP" id="tt1" value="ConHang" checked>
+                                    <input class="form-check-input" type="radio" name="trangThaiSP" id="tt1" value="Còn Hàng" checked>
                                     <label class="form-check-label" for="tt1">Còn hàng</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="trangThaiSP" id="tt2" value="HetHang">
+                                    <input class="form-check-input" type="radio" name="trangThaiSP" id="tt2" value="Hết hàng">
                                     <label class="form-check-label" for="tt2">Hết hàng</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="trangThaiSP" id="tt3" value="NgungKinhDoanh">
+                                    <input class="form-check-input" type="radio" name="trangThaiSP" id="tt3" value="Ngừng kinh doanh">
                                     <label class="form-check-label" for="tt3">Ngừng kinh doanh</label>
                                 </div>
                             </div>

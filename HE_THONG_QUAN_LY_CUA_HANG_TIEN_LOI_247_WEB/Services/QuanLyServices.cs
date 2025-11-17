@@ -213,18 +213,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         }
 
         // Hàm chuyển mảng byte thành IFormFile
-        public IFormFile ConvertByteArrayToFile(byte[] fileBytes, string fileName)
+        public string ConvertToBase64Image(byte[] bytes, string fileName)
         {
-            if (fileBytes == null || fileBytes.Length == 0)
+            if (bytes == null || bytes.Length == 0)
                 return null;
 
-            var contentType = GetContentType(fileName); // Xác định Content-Type từ tên file
-            var memoryStream = new MemoryStream(fileBytes);
+            string contentType = GetContentType(fileName);
+            string base64 = Convert.ToBase64String(bytes);
 
-            return new FormFile(memoryStream, 0, fileBytes.Length, "file", fileName)
-            {
-                ContentType = contentType
-            };
+            return $"data:{contentType};base64,{base64}";
         }
     }
 }
