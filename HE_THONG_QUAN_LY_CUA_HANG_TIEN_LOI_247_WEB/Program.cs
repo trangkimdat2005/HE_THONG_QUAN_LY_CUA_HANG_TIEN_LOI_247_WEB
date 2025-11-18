@@ -23,6 +23,7 @@ builder.Services.AddScoped<IGiaoDichThanhToanServices, GiaoDichThanhToanServices
 builder.Services.AddScoped<IPhieuDoiTraServices, PhieuDoiTraServices>();
 builder.Services.AddScoped<IChinhSachHoanTraServices, ChinhSachHoanTraServices>();
 builder.Services.AddScoped<IRealtimeNotifier, RealtimeNotifier>();
+builder.Services.AddScoped<IPermissionServices, PermissionServices>();
 
 var app = builder.Build();
 
