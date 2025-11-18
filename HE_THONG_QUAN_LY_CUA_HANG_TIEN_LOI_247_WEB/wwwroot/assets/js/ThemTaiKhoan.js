@@ -1,71 +1,123 @@
-document.addEventListener('DOMContentLoaded', function () {
+$(document).ready(function () {
 
-    // --- KHỞI TẠO SELECT2 ---
     $('#select-nhan-vien').select2({ width: '100%' });
     $('#select-khach-hang').select2({ width: '100%' });
-    $('#select-trang-thai').select2({ width: '100%', minimumResultsForSearch: Infinity }); // Ẩn thanh tìm kiếm
-    $('#select-quyen').select2({
+
+    $('#select-roles').select2({
         width: '100%',
-        placeholder: 'Chọn một hoặc nhiều quyền'
+        placeholder: 'Chọn một hoặc nhiều vai trò'
     });
+    $('#select-trang-thai').select2({ width: '100%', minimumResultsForSearch: Infinity });
 
-    // --- TRUY XUẤT PHẦN TỬ DOM ---
-    const accountTypeRadios = document.querySelectorAll('input[name="accountType"]');
-    const nhanVienField = document.getElementById('field-chon-nhan-vien');
-    const khachHangField = document.getElementById('field-chon-khach-hang');
-    const quyenField = document.getElementById('field-chon-quyen');
-    const emailInput = document.getElementById('input-email');
+    function toggleAccountFields() {
+        var selectedType = $('input[name="accountType"]:checked').val();
 
-    // --- HÀM CẬP NHẬT FORM DỰA TRÊN LOẠI TÀI KHOẢN ---
-    function updateFormFields(selectedValue) {
-        if (selectedValue === 'NhanVien') {
-            // HIỆN form nhân viên và quyền
-            nhanVienField.classList.remove('form-field-hidden');
-            quyenField.classList.remove('form-field-hidden');
-            // ẨN form khách hàng
-            khachHangField.classList.add('form-field-hidden');
+        if (selectedType === 'NhanVien') {
+            $('#field-chon-nhan-vien').show();
+            $('#field-chon-khach-hang').hide();
+            $('#field-chon-vai-tro').show();
 
-            // Xoá lựa chọn & email (nếu có)
-            $('#select-khach-hang').val('').trigger('change');
-            if ($('#select-nhan-vien').val() === '') {
-                emailInput.value = '';
-            }
+            $('#select-khach-hang').val(null).trigger('change');
+        } else {
+            $('#field-chon-nhan-vien').hide();
+            $('#field-chon-khach-hang').show();
+            $('#field-chon-vai-tro').hide();
 
-        } else if (selectedValue === 'KhachHang') {
-            // ẨN form nhân viên và quyền
-            nhanVienField.classList.add('form-field-hidden');
-            quyenField.classList.add('form-field-hidden');
-            // HIỆN form khách hàng
-            khachHangField.classList.remove('form-field-hidden');
-
-            // Xoá lựa chọn & email (nếu có)
-            $('#select-nhan-vien').val('').trigger('change');
-            $('#select-quyen').val(null).trigger('change');
-            if ($('#select-khach-hang').val() === '') {
-                emailInput.value = '';
-            }
+            $('#select-nhan-vien').val(null).trigger('change');
+            $('#select-roles').val(null).trigger('change');
         }
+        $('#input-email').val('');
     }
 
-    // --- GÁN SỰ KIỆN CHO RADIO BUTTON ---
-    accountTypeRadios.forEach(radio => {
-        radio.addEventListener('change', function () {
-            updateFormFields(this.value);
+    function updateEmail() {
+        var selectedType = $('input[name="accountType"]:checked').val();
+        var email = '';
+
+        if (selectedType === 'NhanVien') {
+            email = $('#select-nhan-vien').find('option:selected').data('email');
+        } else {
+            email = $('#select-khach-hang').find('option:selected').data('email');
+        }
+
+        $('#input-email').val(email || '');
+    }
+
+    toggleAccountFields();
+
+    $('input[name="accountType"]').on('change', toggleAccountFields);
+
+    $('#select-nhan-vien').on('change', updateEmail);
+    $('#select-khach-hang').on('change', updateEmail);
+
+    $('#btn-luu-tai-khoan').on('click', function (e) {
+        e.preventDefault();
+
+        var selectedType = $('input[name="accountType"]:checked').val();
+        var selectedUserId = (selectedType === 'NhanVien')
+            ? $('#select-nhan-vien').val()
+            : $('#select-khach-hang').val();
+
+        var data = {
+            AccountType: selectedType,
+            SelectedUserId: selectedUserId,
+            TenDangNhap: $('#TenDangNhap').val(),
+            Email: $('#input-email').val(),
+            MatKhau: $('#MatKhau').val(),
+            XacNhanMatKhau: $('#XacNhanMatKhau').val(),
+            TrangThai: $('#select-trang-thai').val(),
+            RoleIds: $('#select-roles').val() || []
+        };
+
+        if (selectedType === 'KhachHang') {
+            data.RoleIds = [];
+        }
+
+        $.ajax({
+            url: '/API/TaiKhoan/Them',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+
+            success: function (response) {
+                Swal.fire({
+                    title: 'Thành công!',
+                    text: response.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (selectedType === 'NhanVien') {
+                            location.href = '/QuanLyBaoMat/DanhSachTaiKhoanNhanVien';
+                        } else {
+                            location.href = '/QuanLyBaoMat/DanhSachTaiKhoanKhachHang';
+                        }
+                    }
+                });
+            },
+            error: function (jqXHR) {
+                var title = 'Đã xảy ra lỗi!';
+                var message = 'Lỗi máy chủ.';
+                var response = jqXHR.responseJSON;
+
+                if (jqXHR.status === 400 && response && typeof response === 'object' && !response.message) {
+                    title = 'Dữ liệu không hợp lệ!';
+                    message = "";
+                    for (var key in response) {
+                        if (response.hasOwnProperty(key)) {
+                            message += response[key].join("<br>") + "<br>";
+                        }
+                    }
+                } else if (response && response.message) {
+                    message = response.message;
+                }
+
+                Swal.fire({
+                    title: title,
+                    html: message,
+                    icon: 'error',
+                    confirmButtonText: 'Đóng'
+                });
+            }
         });
     });
-
-    // --- HÀM TỰ ĐỘNG ĐIỀN EMAIL ---
-    $('#select-nhan-vien, #select-khach-hang').on('change', function () {
-        const selectedOption = $(this).find('option:selected');
-        const email = selectedOption.data('email');
-        if (email) {
-            emailInput.value = email;
-        } else {
-            emailInput.value = '';
-        }
-    });
-
-    // Kích hoạt 1 lần khi tải trang
-    updateFormFields(document.querySelector('input[name="accountType"]:checked').value);
-
 });
