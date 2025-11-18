@@ -1,0 +1,217 @@
+﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+@{
+
+    ViewData["title"] = "Hồ Sơ Cá Nhân";
+}
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Nhân Viên</title>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="~/assets/lib/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="~/assets/lib/bootstrap/css/main.css">
+    <link rel="stylesheet" href="~/assets/css/ThongTinNhanVien.css">
+    <style>
+        
+    </style>
+</head>
+<body>
+
+    <div class="container py-5">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Hồ sơ cá nhân</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center pt-4 pb-4">
+                        <div class="avatar-box mb-3 mx-auto">
+                            <img src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle" id="img-avatar">
+                        </div>
+
+                        <h5 class="my-3 view-data-name" id="lbl-hoten-card">Đang tải...</h5>
+
+                        <p class="text-muted mb-1" id="lbl-chucvu">...</p>
+                        <p class="text-muted mb-4" id="lbl-diachi-short">...</p>
+                        <div class="d-flex justify-content-center mb-2">
+                            <input type="file" id="file-upload" accept="image/*" class="d-none">
+                            <button type="button" class="btn btn-primary me-2" onclick="document.getElementById('file-upload').click()">
+                                <i class="fas fa-camera me-1"></i> Đổi ảnh
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                                <i class="fas fa-key me-1"></i> Đổi mật khẩu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4 mb-lg-0">
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush rounded-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-user-shield text-warning fa-lg me-3"></i>
+                                    <span class="mb-0">Tài khoản</span>
+                                </div>
+                                <span class="text-muted" id="lbl-username">...</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-toggle-on text-success fa-lg me-3"></i>
+                                    <span class="mb-0">Trạng thái</span>
+                                </div>
+                                <span id="lbl-trangthai">...</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-calendar-check text-primary fa-lg me-3"></i>
+                                    <span class="mb-0">Ngày vào làm</span>
+                                </div>
+                                <span class="text-muted" id="lbl-ngayvaolam">...</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0 text-primary"><i class="fas fa-info-circle me-2"></i>Thông tin chi tiết</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <p class="mb-0 info-label">Họ và tên</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0 info-value view-data" id="lbl-hoten-detail">...</p>
+                                <input type="text" class="form-control edit-data d-none" id="inp-hoten">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <p class="mb-0 info-label">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0 info-value view-data" id="lbl-email">...</p>
+                                <input type="email" class="form-control edit-data d-none" id="inp-email">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <p class="mb-0 info-label">Số điện thoại</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0 info-value view-data" id="lbl-sdt">...</p>
+                                <input type="tel" class="form-control edit-data d-none" id="inp-sdt">
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <p class="mb-0 info-label">Giới tính</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="view-data text-muted mb-0 info-value" id="lbl-gioitinh">...</div>
+                                <select class="form-select edit-data d-none" id="inp-gioitinh">
+                                    <option value="true">Nam</option>
+                                    <option value="false">Nữ</option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <p class="mb-0 info-label">Địa chỉ</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0 info-value view-data" id="lbl-diachi-full">...</p>
+                                <textarea class="form-control edit-data d-none" id="inp-diachi" rows="2"></textarea>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-sm-3">
+                                <p class="mb-0 info-label">Mức lương cơ bản</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0 info-value fw-bold text-success" id="lbl-luong">***</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary px-4" id="btn-edit" onclick="toggleEditMode(true)">
+                        <i class="fas fa-edit me-2"></i>Cập nhật thông tin
+                    </button>
+                    <div id="action-buttons" class="d-none">
+                        <button class="btn btn-secondary me-2" onclick="cancelEdit()">
+                            <i class="fas fa-times me-2"></i>Hủy
+                        </button>
+                        <button class="btn btn-success" onclick="saveData()">
+                            <i class="fas fa-save me-2"></i>Lưu thay đổi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="passwordModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Đổi mật khẩu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu hiện tại</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Mật khẩu mới</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Xác nhận mật khẩu mới</label>
+                            <input type="password" class="form-control">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary">Lưu mật khẩu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/lib/bootstrap/js/bootstrap.min.js"></script>
+    <!-- <script src="../assets/lib/bootstrap/js/main.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="~/assets/js/ThongTinNhanVien.js" asp-append-version="true" defer></script>
+
+</body>
+</html>
