@@ -1,6 +1,7 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -122,6 +123,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         //=========================================AddData=======================================================================
 
+        
         [HttpPost("add-SP")]
         public async Task<IActionResult> AddSanPham([FromForm] SanPhamDTO request)
         {
@@ -268,6 +270,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
 
+        [Authorize(Policy = "Create")]
         [HttpPost("add-DM")]
         public async Task<IActionResult> AddDanhMuc([FromBody] DanhMuc danhMuc)
         {
@@ -323,10 +326,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         //=========================================EditData=======================================================================
-
+        [Authorize(Policy = "Edit")]
         [HttpPost("edit-DM")]
         public async Task<IActionResult> EditDanhMuc([FromBody] DanhMuc danhMuc)
         {
+            if (!User.HasClaim("Permission", "SanPham.Create"))
+            {
+                return Forbid();  // Trả về HTTP 403 Forbidden nếu không có quyền
+            }
+
             try
             {
                 if (danhMuc.Id == null || danhMuc.Ten == null)

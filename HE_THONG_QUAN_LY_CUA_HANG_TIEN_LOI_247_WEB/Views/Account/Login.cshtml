@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="~/assets/lib/bootstrap/css/main.css">
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css">
     <title>Đăng nhập - Shop của cô 2 bún đậu</title>
 </head>
 <body>
@@ -22,15 +23,16 @@
             <h1>Vali</h1>
         </div>
         <div class="login-box">
-            <form class="login-form" action="index.html">
+            <form id="login_form" class="login-form" method="post">
+                @Html.AntiForgeryToken()
                 <h3 class="login-head"><i class="bi bi-person me-2"></i>SIGN IN</h3>
                 <div class="mb-3">
                     <label class="form-label">USERNAME</label>
-                    <input class="form-control" type="text" placeholder="Email" autofocus>
+                    <input class="form-control" type="text" id="username" placeholder="Email" autofocus>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">PASSWORD</label>
-                    <input class="form-control" type="password" placeholder="Password">
+                    <input class="form-control" type="password" id="password" placeholder="Password">
                 </div>
                 <div class="mb-3">
                     <div class="utility">
@@ -43,10 +45,10 @@
                     </div>
                 </div>
                 <div class="mb-3 btn-container d-grid">
-                    <button class="btn btn-primary btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>SIGN IN</button>
+                    <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>SIGN IN</button>
                 </div>
             </form>
-            <form class="forget-form" action="index.html">
+            <form class="forget-form">
                 <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>Forgot Password ?</h3>
                 <div class="mb-3">
                     <label class="form-label">EMAIL</label>
@@ -65,6 +67,9 @@
     <script src="~/assets/lib/jquery/jquery-3.7.0.min.js"></script>
     <script src="~/assets/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/assets/lib/bootstrap/js/main.js"></script>
+    <script src="~/assets/js/Login.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js"></script>
     <script type="text/javascript">
         // Login Page Flipbox control
         $('.login-content [data-toggle="flip"]').click(function() {

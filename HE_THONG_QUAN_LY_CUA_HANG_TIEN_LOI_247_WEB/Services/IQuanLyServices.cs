@@ -1,4 +1,6 @@
-﻿namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
+﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+
+namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 {
     public interface IQuanLyServices
     {
@@ -21,5 +23,11 @@
         public string ConvertToBase64Image(byte[] bytes, string fileName);
 
         public string HashPassword(string password);
+
+        public string GeneratePassword(string password);
+
+        public TaiKhoan Login(string username, string password);
+
+        public string GetContentType(string fileName);
     }
 }

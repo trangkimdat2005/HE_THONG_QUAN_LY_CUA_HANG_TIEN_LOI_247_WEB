@@ -1,7 +1,8 @@
-using System.Diagnostics;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -16,7 +17,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _logger = logger;
             _dashboardServices = dashboardServices;
         }
-        
+        [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
             var statistics = _dashboardServices.GetDashboardStatistics();

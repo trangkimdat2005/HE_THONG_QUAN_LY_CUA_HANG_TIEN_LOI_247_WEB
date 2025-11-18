@@ -1034,8 +1034,6 @@ public partial class ApplicationDbContext : DbContext
         {
             entity.ToTable("HinhAnh", "core");
 
-            entity.HasIndex(e => e.TenAnh, "Index_HinhAnh_1").IsUnique();
-
             entity.Property(e => e.Id).HasMaxLength(50);
             entity.Property(e => e.Anh).IsRequired();
             entity.Property(e => e.TenAnh)
@@ -2002,8 +2000,6 @@ public partial class ApplicationDbContext : DbContext
             entity.HasIndex(e => e.Email, "Index_TaiKhoan_1").IsUnique();
 
             entity.HasIndex(e => e.TenDangNhap, "Index_TaiKhoan_2").IsUnique();
-
-            entity.HasIndex(e => e.MatKhauHash, "Index_TaiKhoan_3").IsUnique();
 
             entity.Property(e => e.Id)
                 .HasMaxLength(50)

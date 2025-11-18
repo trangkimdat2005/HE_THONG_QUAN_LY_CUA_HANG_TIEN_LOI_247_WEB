@@ -1,4 +1,5 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.EF;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 
@@ -226,12 +227,47 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 
         public string HashPassword(string password)
         {
-            using (var sha256 = System.Security.Cryptography.SHA256.Create())
+            try
             {
-                byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password);
-                byte[] hash = sha256.ComputeHash(bytes);
-                return Convert.ToBase64String(hash);
+                if (string.IsNullOrEmpty(password))
+                {
+                    throw new ArgumentException("Password cannot be null or empty.");
+                }
+                using (var sha256 = System.Security.Cryptography.SHA256.Create())
+                {
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(password);
+                    byte[] hash = sha256.ComputeHash(bytes);
+                    return Convert.ToBase64String(hash);
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while hashing password: {ex.Message}");
+                return null;
+            }
+            
+        }
+
+        public TaiKhoan Login(string username, string password)
+        {
+            try
+            {
+                string hashedPassword = /*password;*/ HashPassword(password);
+                var user = _context.TaiKhoans.SingleOrDefault(t => t.TenDangNhap == username.ToLower().Trim() && t.MatKhauHash == hashedPassword && t.IsDelete == false);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred during login: {ex.Message}");
+                return null;
+            }
+               
+        }
+
+        public string GeneratePassword(string password)
+        {
+            throw new NotImplementedException();
         }
     }
+                
 }

@@ -8,63 +8,72 @@ using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
 {
-    //public class AccountController : Controller
-    //{
-    //    private readonly ApplicationDbContext _context;
-    //    private readonly IPermissionServices _permissionService;
+    public class AccountController : Controller
+    {
+        private readonly IPermissionServices _permissionService;
+        private readonly IQuanLyServices _quanLyServices;
 
-    //    public AccountController(ApplicationDbContext context, IPermissionServices permissionService)
-    //    {
-    //        _context = context;
-    //        _permissionService = permissionService;
-    //    }
+        public AccountController(IPermissionServices permissionService, IQuanLyServices quanLyServices)
+        {
+            _permissionService = permissionService;
+            _quanLyServices = quanLyServices;
+        }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
 
-    //    [Route("/login")]
-    //    public IActionResult Login()
-    //    {
-    //        return View();
-    //    }
+        [HttpPost]
+        [Route("Account/LoginToSystem")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LoginToSystem(string username, string password)
+        {
+            try
+            {
+                var user = _quanLyServices.Login(username, password);
 
-        
-    //    [HttpPost]
-    //    public async Task<IActionResult> Login(string username, string password)
-    //    {
-    //        // 1. Kiểm tra thông tin đăng nhập (từ bảng TaiKhoan)
-    //        var user = await _dbContext.TaiKhoan
-    //            .FirstOrDefaultAsync(x => x.tenDangNhap == username && x.matKhauHash == HashPassword(password));
+                if (user == null)
+                {
+                    return Unauthorized(); // Đăng nhập thất bại
+                }
 
-    //        if (user == null)
-    //        {
-    //            return Unauthorized(); // Đăng nhập thất bại
-    //        }
+                var permissions = _permissionService.GetPermissionsForUser(user.Id);
 
-    //        // 2. Lấy quyền của người dùng từ PermissionService
-    //        var permissions = _permissionService.GetPermissionsForUser(user.id);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, user.TenDangNhap), 
+                    new Claim(ClaimTypes.NameIdentifier, user.Id), 
+                    new Claim(ClaimTypes.Email, user.Email)
+                };
 
-    //        // 3. Tạo Claims từ các quyền của người dùng
-    //        var claims = new List<Claim>
-    //    {
-    //        new Claim(ClaimTypes.Name, user.tenDangNhap),  // Tên đăng nhập của người dùng
-    //        new Claim(ClaimTypes.NameIdentifier, user.id)  // ID của người dùng
-    //    };
+                foreach (var role in user.UserRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role.Role.Code)); 
+                }
 
-    //        // Thêm quyền vào Claims
-    //        foreach (var permission in permissions)
-    //        {
-    //            claims.Add(new Claim("Permission", permission.code));  // Code quyền
-    //        }
+                foreach (var permission in permissions)
+                {
+                    claims.Add(new Claim("Permission", permission.Code));  // Code quyền
+                }
 
-    //        // 4. Tạo ClaimsIdentity và ClaimsPrincipal
-    //        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-    //        var principal = new ClaimsPrincipal(identity);
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-    //        // 5. Lưu Claims vào Cookie (Authentication Ticket)
-    //        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                var redirectUrl = Url.Action("Index", "HomeAdmin", new { area = "Admin" });
 
-    //        // 6. Redirect người dùng đến trang chủ (hoặc trang cần thiết)
-    //        return RedirectToAction("Index", "Home");
-    //    }
+                return Json(new { status = "SUCCESS", redirectUrl });
+            }
+            catch (Exception ex)
+            {
+                // Xử lý lỗi nếu cần
+                return Json(new { status = "error", message = "Lỗi đăng nhập", error = ex.ToString() });
+            }
 
-    //}
+        }
+
+    }
 }
