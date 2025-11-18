@@ -1,4 +1,5 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +21,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             var lstRole= _quanLySevices.GetList<Role>();
             ViewData["lstRole"] = lstRole;
             var lstPer = _quanLySevices.GetList<Permission>();
-            ViewData["lstPer"] = lstPer;
+            ViewData["lstPermission"] = lstPer;
             return View();
         }
         [Route("/QuanLyBaoMat/DanhSachTaiKhoanKhachHang")]
@@ -64,6 +65,233 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return NotFound();
             }
             return View(tkkh);
+        }
+        [HttpPost]
+        [Route("/API/TaiKhoan/ToggleLock/{id}")]
+        public IActionResult ToggleLockState(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new { message = "ID tài khoản không hợp lệ." });
+            }
+
+            try
+            {
+                var taiKhoan = _quanLySevices.GetList<TaiKhoan>()
+                                .FirstOrDefault(tk => tk.Id == id && !tk.IsDelete);
+
+                if (taiKhoan == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy tài khoản này." });
+                }
+
+                string newStatus;
+                if (taiKhoan.TrangThai == "Hoạt động" || taiKhoan.TrangThai == "Active")
+                {
+                    newStatus = "Đã khoá";
+                }
+                else
+                {
+                    newStatus = "Hoạt động";
+                }
+
+                taiKhoan.TrangThai = newStatus;
+
+                if (_quanLySevices.Update<TaiKhoan>(taiKhoan))
+                {
+                    return Ok(new { message = $"Đã cập nhật trạng thái tài khoản '{taiKhoan.TenDangNhap}' thành '{newStatus}'." });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi cập nhật trạng thái." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        [Route("/API/PhanQuyen/ThemRole")]
+        public IActionResult AddRole([FromBody] RoleCreateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var existingRole = _quanLySevices.GetList<Role>()
+                                    .FirstOrDefault(r => r.Code == dto.Code && !r.IsDelete);
+
+                if (existingRole != null)
+                {
+                    return BadRequest(new { message = $"Mã vai trò '{dto.Code}' đã tồn tại." });
+                }
+
+                var newRole = new Role
+                {
+                    Id = _quanLySevices.GenerateNewId<Role>("ROLE", 5),
+                    Code = dto.Code,
+                    Ten = dto.Ten,
+                    MoTa = dto.MoTa,
+                    TrangThai = dto.TrangThai,
+                    IsDelete = false
+                };
+
+                if (!_quanLySevices.Add<Role>(newRole))
+                {
+                    return BadRequest(new { message = "Lỗi: Không thể lưu vai trò." });
+                }
+
+                if (dto.PermissionIds != null && dto.PermissionIds.Any())
+                {
+                    foreach (var permId in dto.PermissionIds)
+                    {
+                        var newRolePerm = new RolePermission
+                        {
+                            Id = _quanLySevices.GenerateNewId<RolePermission>("RP", 7),
+                            RoleId = newRole.Id,
+                            PermissionId = permId,
+                            IsDelete = false
+                        };
+                        _quanLySevices.Add<RolePermission>(newRolePerm);
+                    }
+                }
+
+                return Ok(new { message = $"Thêm vai trò '{newRole.Ten}' thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [HttpGet]
+        [Route("/API/PhanQuyen/GetPermissionsForRole/{id}")]
+        public IActionResult GetPermissionsForRole(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            var permissionIds = _quanLySevices.GetList<RolePermission>()
+                .Where(rp => rp.RoleId == id && !rp.IsDelete)
+                .Select(rp => rp.PermissionId)
+                .ToList();
+
+            return Ok(permissionIds);
+        }
+
+        [HttpPut]
+        [Route("/API/PhanQuyen/UpdateRole")]
+        public IActionResult UpdateRole([FromBody] RoleUpdateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var role = _quanLySevices.GetList<Role>()
+                                .FirstOrDefault(r => r.Id == dto.Id && !r.IsDelete);
+
+                if (role == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy vai trò để cập nhật." });
+                }
+
+                role.Ten = dto.Ten;
+                role.MoTa = dto.MoTa;
+                role.TrangThai = dto.TrangThai;
+
+                var oldPerms = _quanLySevices.GetList<RolePermission>()
+                                    .Where(p => p.RoleId == dto.Id && !p.IsDelete).ToList();
+
+                var newPermIds = dto.PermissionIds ?? new List<string>();
+
+                var permsToRemove = oldPerms.Where(old => !newPermIds.Contains(old.PermissionId)).ToList();
+                var permIdsToAdd = newPermIds.Where(newId => !oldPerms.Any(old => old.PermissionId == newId)).ToList();
+
+                foreach (var perm in permsToRemove)
+                {
+                    _quanLySevices.SoftDelete<RolePermission>(perm);
+                }
+
+                foreach (var permId in permIdsToAdd)
+                {
+                    var newRolePerm = new RolePermission
+                    {
+                        Id = _quanLySevices.GenerateNewId<RolePermission>("RP", 7),
+                        RoleId = role.Id,
+                        PermissionId = permId,
+                        IsDelete = false
+                    };
+                    _quanLySevices.Add<RolePermission>(newRolePerm);
+                }
+
+                if (_quanLySevices.Update<Role>(role))
+                {
+                    return Ok(new { message = $"Cập nhật vai trò '{role.Ten}' thành công!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi cập nhật vai trò." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [HttpDelete]
+        [Route("/API/PhanQuyen/DeleteRole/{id}")]
+        public IActionResult DeleteRole(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new { message = "ID vai trò không hợp lệ." });
+            }
+
+            try
+            {
+                var role = _quanLySevices.GetList<Role>()
+                                .FirstOrDefault(r => r.Id == id && !r.IsDelete);
+
+                if (role == null)
+                {
+                    return NotFound(new { message = $"Không tìm thấy vai trò (ID: {id}) hoặc đã bị xóa." });
+                }
+
+                var userRoles = _quanLySevices.GetList<UserRole>()
+                                .Where(ur => ur.RoleId == id && !ur.IsDelete).ToList();
+                foreach (var ur in userRoles)
+                {
+                    _quanLySevices.SoftDelete<UserRole>(ur);
+                }
+
+                var rolePerms = _quanLySevices.GetList<RolePermission>()
+                                .Where(rp => rp.RoleId == id && !rp.IsDelete).ToList();
+                foreach (var rp in rolePerms)
+                {
+                    _quanLySevices.SoftDelete<RolePermission>(rp);
+                }
+
+                if (_quanLySevices.SoftDelete<Role>(role))
+                {
+                    return Ok(new { message = $"Đã xóa vai trò '{role.Ten}' và các liên kết." });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi xóa vai trò." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
         }
     }
 }

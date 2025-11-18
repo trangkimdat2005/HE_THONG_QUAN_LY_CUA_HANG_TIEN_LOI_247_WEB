@@ -27,7 +27,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemDanhMucViTRi")]
         public IActionResult ThemDanhMucViTRi()
         {
-            // Load danh sách vị trí hiện có để gợi ý loại vị trí
             ViewData["DanhSachViTri"] = _quanLyServices.GetList<ViTri>();
             return View();
         }
@@ -35,18 +34,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemHoaDon")]
         public IActionResult ThemHoaDon()
         {
-            // Load danh sách khách hàng
             var lstKhachHang = _quanLyServices.GetList<KhachHang>()
                 .Where(kh => !kh.IsDelete && kh.TrangThai == "Active")
                 .OrderBy(kh => kh.HoTen)
                 .ToList();
 
-            // Load danh sách sản phẩm đơn vị
             var lstSanPhamDonVi = _quanLyServices.GetList<SanPhamDonVi>()
                 .Where(sp => !sp.IsDelete)
                 .ToList();
 
-            // Load thông tin cho từng sản phẩm đơn vị
             foreach (var spDonVi in lstSanPhamDonVi)
             {
                 // Load thông tin sản phẩm
@@ -217,7 +213,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             HinhAnh newHinhAnh = null;
             try
             {
-                // 2. Xử lý lưu HinhAnh trước
                 byte[] anhBytes = await _quanLyServices.ConvertImageToByteArray(dto.AnhDaiDien);
 
                 newHinhAnh = new HinhAnh
@@ -227,13 +222,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Anh = anhBytes
                 };
 
-                // Thêm ảnh vào DB
                 if (!_quanLyServices.Add<HinhAnh>(newHinhAnh))
                 {
                     return BadRequest(new { message = "Lỗi: Không thể lưu hình ảnh vào cơ sở dữ liệu." });
                 }
 
-                // 3. Tạo NhanVien entity
                 var nhanVien = new NhanVien
                 {
                     Id = _quanLyServices.GenerateNewId<NhanVien>("NV", 6),
@@ -250,21 +243,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                // 4. Lưu NhanVien vào DB
                 if (_quanLyServices.Add<NhanVien>(nhanVien))
                 {
                     return Ok(new { message = $"Thêm nhân viên {nhanVien.HoTen} thành công!", newId = nhanVien.Id });
                 }
                 else
                 {
-                    // Lỗi: Đã lỡ lưu ảnh. Phải xóa (rollback)
-                    _quanLyServices.HardDelete<HinhAnh>(newHinhAnh); // Cố gắng dọn dẹp
+                    _quanLyServices.HardDelete<HinhAnh>(newHinhAnh);
                     return BadRequest(new { message = "Lỗi khi lưu thông tin nhân viên." });
                 }
             }
             catch (Exception ex)
             {
-                // Nếu có lỗi, mà newHinhAnh đã được tạo và lưu, hãy xóa nó
                 if (newHinhAnh != null && !string.IsNullOrEmpty(newHinhAnh.Id))
                 {
                     _quanLyServices.HardDelete<HinhAnh>(newHinhAnh);
@@ -275,7 +265,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemNhapKho")]
         public IActionResult ThemNhapKho()
         {
-            // Load danh sách nhà cung cấp, nhân viên, sản phẩm
             ViewData["DanhSachNhaCungCap"] = _quanLyServices.GetList<NhaCungCap>();
             ViewData["DanhSachNhanVien"] = _quanLyServices.GetList<NhanVien>();
             ViewData["DanhSachSanPhamDonVi"] = _quanLyServices.GetList<SanPhamDonVi>();
@@ -298,7 +287,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemPhieuDoiTra")]
         public IActionResult ThemPhieuDoiTra()
         {
-            // Load danh sách hóa đơn và chính sách
             ViewData["DanhSachHoaDon"] = _phieuDoiTraServices.GetAllHoaDons();
             ViewData["DanhSachChinhSach"] = _phieuDoiTraServices.GetAllChinhSachs();
 
@@ -341,7 +329,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
         }
 
-        // API để lấy danh sách sản phẩm theo hóa đơn
         [HttpGet]
         [Route("/Them/GetSanPhamByHoaDon/{hoaDonId}")]
         public IActionResult GetSanPhamByHoaDon(string hoaDonId)
@@ -454,10 +441,140 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return View();
             }
         }
-
-        [Route("/Them/ThemTaiKhoan")]
-        public IActionResult ThemTaiKhoan()
+        [HttpPost]
+        [Route("/API/TaiKhoan/Them")]
+        public IActionResult CreateTaiKhoan([FromBody] TaiKhoanCreateDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                var existingUser = _quanLyServices.GetList<TaiKhoan>()
+                                    .FirstOrDefault(t => t.TenDangNhap == dto.TenDangNhap && !t.IsDelete);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("TenDangNhap", "Tên đăng nhập đã tồn tại.");
+                    return BadRequest(ModelState);
+                }
+
+                var newTaiKhoan = new TaiKhoan
+                {
+                    Id = _quanLyServices.GenerateNewId<TaiKhoan>("TK", 6),
+                    TenDangNhap = dto.TenDangNhap,
+                    Email = dto.Email,
+                    MatKhauHash = _quanLyServices.HashPassword(dto.MatKhau),
+                    TrangThai = dto.TrangThai,
+                    IsDelete = false
+                };
+
+                if (!_quanLyServices.Add<TaiKhoan>(newTaiKhoan))
+                {
+                    return BadRequest(new { message = "Lỗi khi tạo tài khoản chính." });
+                }
+
+                if (dto.AccountType == "NhanVien")
+                {
+                    var tkNv = new TaiKhoanNhanVien
+                    {
+                        TaiKhoanId = newTaiKhoan.Id,
+                        NhanVienId = dto.SelectedUserId,
+                        IsDelete = false
+                    };
+                    _quanLyServices.Add<TaiKhoanNhanVien>(tkNv);
+                }
+                else
+                {
+                    var tkKh = new TaiKhoanKhachHang
+                    {
+                        TaiKhoanid = newTaiKhoan.Id,
+                        KhachHangId = dto.SelectedUserId,
+                        IsDelete = false
+                    };
+                    _quanLyServices.Add<TaiKhoanKhachHang>(tkKh);
+                }
+
+                if (dto.RoleIds != null)
+                {
+                    foreach (var roleId in dto.RoleIds)
+                    {
+                        var newUserRole = new UserRole
+                        {
+                            Id = _quanLyServices.GenerateNewId<UserRole>("UR", 7),
+                            TaiKhoanId = newTaiKhoan.Id,
+                            RoleId = roleId,
+                            HieuLucTu = DateTime.Now,
+                            IsDelete = false
+                        };
+                        _quanLyServices.Add<UserRole>(newUserRole);
+                    }
+                }
+
+                return Ok(new { message = "Tạo tài khoản thành công!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        [Route("/API/TaiKhoan/ResetPassword/{id}")]
+        public IActionResult ResetPassword(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new { message = "ID tài khoản không hợp lệ." });
+            }
+
+            try
+            {
+                var taiKhoan = _quanLyServices.GetList<TaiKhoan>()
+                                .FirstOrDefault(tk => tk.Id == id && !tk.IsDelete);
+
+                if (taiKhoan == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy tài khoản này." });
+                }
+
+                string newPasswordHash = _quanLyServices.HashPassword("123456");
+
+                taiKhoan.MatKhauHash = newPasswordHash;
+
+                if (_quanLyServices.Update<TaiKhoan>(taiKhoan))
+                {
+                    return Ok(new { message = $"Đã đặt lại mật khẩu cho '{taiKhoan.TenDangNhap}' thành '123456'." });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi cập nhật mật khẩu." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+        }
+        [Route("/Them/ThemTaiKhoan")]
+        public IActionResult ThemTaiKhoan(string loai = "nhanvien")
+        {
+            var nvIdsDaCoTK = _quanLyServices.GetList<TaiKhoanNhanVien>()
+                                .Where(tk => !tk.IsDelete)
+                                .Select(tk => tk.NhanVienId);
+            ViewData["lstNhanVien"] = _quanLyServices.GetList<NhanVien>()
+                                        .Where(nv => !nvIdsDaCoTK.Contains(nv.Id)).ToList();
+
+            var khIdsDaCoTK = _quanLyServices.GetList<TaiKhoanKhachHang>()
+                                .Where(tk => !tk.IsDelete)
+                                .Select(tk => tk.KhachHangId);
+            ViewData["lstKhachHang"] = _quanLyServices.GetList<KhachHang>()
+                                        .Where(kh => !khIdsDaCoTK.Contains(kh.Id)).ToList();
+
+            ViewData["lstRole"] = _quanLyServices.GetList<Role>();
+
+            ViewBag.LoaiTaiKhoan = loai.ToLower();
+
             return View();
         }
 

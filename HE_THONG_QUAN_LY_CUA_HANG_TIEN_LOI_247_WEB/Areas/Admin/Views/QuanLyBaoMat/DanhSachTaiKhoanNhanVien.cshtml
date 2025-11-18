@@ -34,7 +34,7 @@
               <h3 class="title" style="margin-bottom: 0">
                 Danh Sách Tài Khoản
               </h3>
-                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemTaiKhoan">
+                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemTaiKhoan" asp-route-loai="nhanvien">
                 <i class="fas fa-plus"></i> Tạo tài khoản mới
               </a>
             </div>
@@ -86,7 +86,7 @@
                                         List<TaiKhoanNhanVien> taiKhoanNhanViens = ViewBag.lstTKNV;
                                         foreach(var tknv in taiKhoanNhanViens)
                                         {
-                                            bool isActive = string.Equals(tknv.TaiKhoan.TrangThai, "Active", StringComparison.OrdinalIgnoreCase);
+                                            bool isActive = string.Equals(tknv.TaiKhoan.TrangThai, "Hoạt động", StringComparison.OrdinalIgnoreCase);
 
                                             <tr>
                                                 <td>@tknv.TaiKhoan.TenDangNhap</td>
@@ -110,9 +110,8 @@
                                                        title="Sửa" asp-route-TaiKhoanId="@tknv.TaiKhoanId" asp-route-NhanVienId="@tknv.NhanVienId">
                                                         <i class="fas fa-user-edit"></i>
                                                     </a>
-                                                    <a class="btn btn-secondary btn-sm me-1"
-                                                       href="#"
-                                                       title="Đặt lại mật khẩu">
+                                                    <a class="btn btn-secondary btn-sm me-1 btn-reset-password"
+                                                       href="#" title="Đặt lại mật khẩu" data-id="@tknv.TaiKhoanId">
                                                         <i class="fas fa-key"></i>
                                                     </a>
                                                 </td>
@@ -133,7 +132,7 @@
       </div>
     </main>
 
-
+    <script src="~/assets/js/DanhSachTaiKhoanNV.js" asp-append-version="true" defer></script>
 
 
 

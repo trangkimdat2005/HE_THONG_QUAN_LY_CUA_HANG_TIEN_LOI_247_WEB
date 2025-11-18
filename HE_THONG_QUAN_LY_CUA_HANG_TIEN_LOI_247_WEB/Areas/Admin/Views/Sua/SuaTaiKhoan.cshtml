@@ -1,24 +1,26 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 @model HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities.TaiKhoanNhanVien
 @{
-
     ViewData["title"] = "Sửa Thông Tin Tài Khoản";
+
+    // Lấy danh sách ID các role mà tài khoản này ĐÃ CÓ
+    var userRoleIds = Model.TaiKhoan.UserRoles
+        .Where(ur => !ur.IsDelete)
+        .Select(ur => ur.RoleId)
+        .ToList();
 }
-  <!-- Css riêng ở đây nha -->
-  <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
-  <link rel="stylesheet" href="~/assets/css/SuaTaiKhoan.css">
+ <!-- Css riêng ở đây nha -->
+ <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+ <link rel="stylesheet" href="~/assets/css/SuaTaiKhoan.css">
 
 
-  <!-- Main sidebar ở đây nha -->
+ <!-- Main sidebar ở đây nha -->
 
-
-
-
-  <main class="app-content">
+ <main class="app-content">
     <div class="app-title">
       <div>
         <h1><i class="bi bi-person-lock"></i> Sửa Tài Khoản</h1>
-        <p>Sửa tài khoản truy cập cho nhân viên hoặc khách hàng</p>
+        <p>Sửa tài khoản truy cập cho @Model.NhanVien.HoTen</p>
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
@@ -33,29 +35,14 @@
         <div class="tile">
           <h3 class="tile-title">Thông tin Tài Khoản</h3>
           <div class="tile-body">
-            <form>
+            <form id="form-sua-tai-khoan">
+
+              <!-- SỬA 1: Thêm input ẩn (hidden) để lưu TaiKhoanId -->
+              <input type="hidden" id="TaiKhoanId" value="@Model.TaiKhoanId" />
 
               <div class="mb-3" id="field-chon-nhan-vien">
-                <label class="form-label">Chọn Nhân Viên</label>
-                <select class="form-control" id="select-nhan-vien" style="width: 100%;">
-                                @if (ViewData["lstNhanVien"] != null)
-                                {
-                                    List<NhanVien> nvs = ViewBag.lstNhanVien;
-                                    foreach (var nv in nvs)
-                                    {
-                                        // Kiểm tra nếu NhanVienId trong Model trùng với Id của nhân viên
-                                        if (Model.NhanVienId == nv.Id)
-                                        {
-                                            <option value="@nv.Id" selected>@nv.HoTen (@nv.ChucVu)</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@nv.Id">@nv.HoTen (@nv.ChucVu)</option>
-                                        }
-                                    }
-                                }
-
-                </select>
+                <label class="form-label">Nhân Viên</label>
+                <input class="form-control" value="@Model.NhanVien.HoTen (@Model.NhanVien.ChucVu)" readonly />
               </div>
 
               <hr>
@@ -63,77 +50,81 @@
 
               <div class="mb-3">
                 <label class="form-label">Tên đăng nhập</label>
-                <input class="form-control" type="text" placeholder="V.d: vana, thib~" value="@Model.TaiKhoan.TenDangNhap">
+                <input class="form-control" type="text" value="@Model.TaiKhoan.TenDangNhap" readonly>
               </div>
 
               <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input class="form-control" type="email" id="input-email" placeholder="Email sẽ tự động điền khi chọn người dùng" value="@Model.TaiKhoan.Email">
+                <input class="form-control" type="email" id="input-email" value="@Model.TaiKhoan.Email" readonly>
               </div>
 
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Mật khẩu</label>
-                    <input class="form-control" type="password">
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="mb-3">
-                    <label class="form-label">Xác nhận Mật khẩu</label>
-                    <input class="form-control" type="password">
-                  </div>
-                </div>
+              <div class="alert alert-info">
+                Việc đổi mật khẩu được thực hiện ở chức năng "Đặt lại mật khẩu" riêng.
               </div>
               
+              <!-- SỬA 2: Thêm id="select-trang-thai" -->
               <div class="mb-3">
                 <label class="form-label">Trạng thái</label>
                 <select class="form-select" id="select-trang-thai">
-                                @{
-                                    bool isActive = Model.TaiKhoan.TrangThai == "Active" ? true : false;
-                                    if (isActive)
+                    @{
+                                    var trangThaiList = new List<string> { "Hoạt động", "Không hoạt động", "Đã khoá" };
+                                    foreach (var tt in trangThaiList)
                                     {
-                                        <option value="Active" selected>Active</option>
-                                        <option value="Inactive" >Inactive</option>
+                                        if (tt == Model.TaiKhoan.TrangThai)
+                                        {
+                                            <option value="@tt" selected>@tt</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@tt">@tt</option>
+                                        }
                                     }
-                                    else
-                                    {
-                                        <option value="Active" >Active</option>
-                                        <option value="Inactive" selected >Inactive</option>
-                                    }
-                                }
+                    }
                 </select>
               </div>
 
-              <div class="mb-3" id="field-chon-quyen">
-                <label class="form-label">Gán Quyền (Roles)</label>
-                <select class="form-control" id="select-quyen" multiple="multiple" style="width: 100%;">
-                                @{
+              <!-- SỬA 3: Đổi id="select-quyen" thành id="select-roles" -->
+              <div class="mb-3" id="field-chon-vai-tro">
+                <label class="form-label">Gán Vai Trò (Roles)</label>
+                <select class="form-control" id="select-roles" multiple="multiple" style="width: 100%;">
+                        @{
                                     if (ViewData["lstRole"] != null)
                                     {
-                                        List<Role> roles = ViewBag.lstRole;
-                                        foreach (var role in roles)
+                                        List<Role> allRoles = ViewBag.lstRole;
+                                        foreach (var role in allRoles)
                                         {
-                                            <option value="@role.Code">@role.Ten</option>
+                                            if (userRoleIds.Contains(role.Id))
+                                            {
+                                                <option value="@role.Id" selected>@role.Ten</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@role.Id">@role.Ten</option>
+                                            }
                                         }
                                     }
-                                }
+                                
+}
                 </select>
               </div>
 
             </form>
           </div>
           <div class="tile-footer">
-            <button class="btn btn-primary" type="button"><i class="bi bi-check-circle-fill me-2"></i>Tạo tài
-              khoản</button>
-            <a class="btn btn-secondary" href="#"><i class="bi bi-x-circle-fill me-2"></i>Huỷ</a>
+            <!-- SỬA 5: Thêm id="btn-luu-cap-nhat-tai-khoan" -->
+            <button class="btn btn-primary" type="button" id="btn-luu-cap-nhat-tai-khoan">
+                <i class="bi bi-check-circle-fill me-2"></i>Lưu thay đổi
+            </button>
+            <a class="btn btn-secondary" asp-controller="QuanLyBaoMat" asp-action="DanhSachTaiKhoanNhanVien">
+                <i class="bi bi-x-circle-fill me-2"></i>Huỷ
+            </a>
           </div>
         </div>
       </div>
     </div>
   </main>
 
-
-
-  <!-- js riêng ở đây nha! -->
-  <script src="~/assets/js/SuaTaiKhoan.js" asp-append-version="true" defer></script>
+ <!-- js riêng ở đây nha! -->
+ <script src="~/assets/lib/jquery/jquery.min.js"></script>
+ <script src="~/assets/lib/select2/dist/js/select2.full.min.js"></script>
+ <script src="~/assets/js/SuaTaiKhoan.js" asp-append-version="true" defer></script>
