@@ -3,7 +3,7 @@
 @{
     ViewData["title"] = "Danh Sách Đơn Vị";
 }
-<!-- Css riêng ở đây nha -->
+
 <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
 <link rel="stylesheet" href="~/assets/css/ThemDonVi.css">
 
@@ -45,20 +45,18 @@
                                 @{
                                     if (ViewData["lstDonViDoLuong"] != null)
                                     {
-                                        List<DonViDoLuong> donVis = ViewBag.lstDonViDoLuong;
+                                        List<DonViDoLuong> donVis = ViewData["lstDonViDoLuong"] as List<DonViDoLuong>;
                                         if (donVis != null && donVis.Any())
                                         {
                                             foreach (DonViDoLuong dv in donVis)
                                             {
-                                                <tr>
+                                                <tr data-id="@dv.Id" data-ten="@dv.Ten" data-kyhieu="@dv.KyHieu">
                                                     <td>@dv.Id</td>
                                                     <td>@dv.Ten</td>
                                                     <td>@dv.KyHieu</td>
                                                     <td class="text-center">
                                                         <a class="btn btn-info btn-sm me-1 btn-edit-khoi" href="#" 
                                                            data-id="@dv.Id" 
-                                                           data-ten="@dv.Ten" 
-                                                           data-kyhieu="@dv.KyHieu" 
                                                            title="Sửa">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
@@ -80,68 +78,45 @@
             </div>
         </div>
 
+        <!-- FORM DÙNG CHUNG CHO THÊM/SỬA/XEM -->
         <div class="col-md-0" id="form-col">
-            <div id="add-form-wrapper">
-                <div class="tile">
-                    <h3 class="tile-title">Thêm Đơn Vị Mới</h3>
-                    <p>Thêm một đơn vị vào hệ thống</p>
-                    <div class="tile-body">
-                        <form id="add-unit-form">
-                            <div class="mb-3">
-                                <label class="form-label">Mã đơn vị</label>
-                                <input class="form-control" id="add-id-input" type="text" placeholder="Mã sẽ được tạo tự động" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tên đơn vị</label>
-                                <input class="form-control" id="add-ten-input" type="text" placeholder="V.d: Hộp" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Ký hiệu</label>
-                                <input class="form-control" id="add-kyhieu-input" type="text" placeholder="V.d: hộp" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tile-footer">
-                        <button class="btn btn-primary" id="btn-add-submit" type="button"><i class="bi bi-check-circle-fill me-2"></i>Thêm</button>
-                        <a class="btn btn-secondary" href="#" id="cancel-add-form-btn">
-                            <i class="bi bi-x-circle-fill me-2"></i>Huỷ
-                        </a>
-                    </div>
+            <div class="tile">
+                <div class="tile-title-w-btn d-flex justify-content-between align-items-center">
+                    <h3 class="title" id="form-title" style="margin-bottom: 0">Chi Tiết Đơn Vị</h3>
+                    <button class="btn btn-sm btn-secondary" id="btn-edit-mode" style="display: none;">
+                        <i class="fas fa-edit"></i> Chỉnh sửa
+                    </button>
                 </div>
-            </div>
-
-            <div id="edit-form-wrapper" style="display: none;">
-                <div class="tile">
-                    <h3 class="tile-title">Sửa Đơn Vị</h3>
-                    <p>Sửa một đơn vị trong hệ thống</p>
-                    <div class="tile-body">
-                        <form id="edit-unit-form">
-                            <div class="mb-3">
-                                <label class="form-label">Mã đơn vị</label>
-                                <input class="form-control" id="edit-id-input" type="text" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Tên đơn vị</label>
-                                <input class="form-control" id="edit-ten-input" type="text" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Ký hiệu</label>
-                                <input class="form-control" id="edit-kyhieu-input" type="text" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="tile-footer">
-                        <button class="btn btn-primary" id="btn-edit-submit" type="button"><i class="bi bi-check-circle-fill me-2"></i>Lưu</button>
-                        <a class="btn btn-secondary" href="#" id="cancel-edit-form-btn">
-                            <i class="bi bi-x-circle-fill me-2"></i>Huỷ
-                        </a>
-                    </div>
+                
+                <div class="tile-body">
+                    <form id="don-vi-form">
+                        <div class="mb-3">
+                            <label class="form-label">Mã đơn vị</label>
+                            <input class="form-control" id="form-don-vi-id" type="text" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tên đơn vị *</label>
+                            <input class="form-control" id="form-don-vi-ten" type="text" placeholder="V.d: Hộp" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ký hiệu *</label>
+                            <input class="form-control" id="form-don-vi-kyhieu" type="text" placeholder="V.d: hộp" required>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="tile-footer">
+                    <button class="btn btn-primary" id="btn-submit" type="button">
+                        <i class="bi bi-check-circle-fill me-2"></i>Lưu
+                    </button>
+                    <button class="btn btn-secondary" id="btn-cancel" type="button">
+                        <i class="bi bi-x-circle-fill me-2"></i>Hủy
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-<!-- js riêng ở đây nha! -->
 <script src="~/assets/lib/select2/dist/js/select2.min.js" asp-append-version="true" defer></script>
 <script src="~/assets/js/DanhSachDonVi.js" asp-append-version="true" defer></script>
