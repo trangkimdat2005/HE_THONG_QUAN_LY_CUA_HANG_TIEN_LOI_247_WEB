@@ -153,7 +153,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     {
                         SanPhamId = request.Id,
                         DanhMucId = danhMucId,
-                        Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 8)
+                        Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 7)
                     };
                     if (!_quanLySevices.Add<SanPhamDanhMuc>(sanPhamDanhMuc))
                     {
@@ -180,33 +180,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 if (request == null)
                     return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
 
-                // Validate
-                if (string.IsNullOrWhiteSpace(request.SanPhamId))
-                    return BadRequest(new { message = "Vui lòng chọn sản phẩm!" });
-
-                if (string.IsNullOrWhiteSpace(request.DonViId))
-                    return BadRequest(new { message = "Vui lòng chọn đơn vị!" });
-
-                if (request.GiaBan <= 0)
-                    return BadRequest(new { message = "Giá bán phải lớn hơn 0!" });
-
-                // Kiểm tra trùng lặp
-                var existing = _quanLySevices.GetById<SanPhamDonVi>(request.SanPhamId, request.DonViId);
-                if (existing != null && !existing.IsDelete)
-                {
-                    return BadRequest(new { message = "Sản phẩm - đơn vị này đã tồn tại!" });
-                }
-
-                // Tạo SanPhamDonVi với composite key
+                // Tạo SanPhamDonVi
                 var spdv = new SanPhamDonVi
                 {
+                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 7),
                     SanPhamId = request.SanPhamId,
                     DonViId = request.DonViId,
-                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 8),
                     GiaBan = request.GiaBan,
                     HeSoQuyDoi = request.HeSoQuyDoi,
                     TrangThai = request.TrangThai,
-                    IsDelete = false
                 };
 
                 if (!_quanLySevices.Add(spdv))
@@ -214,42 +196,34 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Không thể thêm sản phẩm - đơn vị!" });
                 }
 
-                // Xử lý ảnh nếu có
                 if (request.ImagesUpload != null && request.ImagesUpload.Any())
                 {
                     foreach (var file in request.ImagesUpload)
                     {
-                        try
+
+                        HinhAnh anh = new HinhAnh
                         {
-                            HinhAnh anh = new HinhAnh
+                            Id = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7),
+                            TenAnh = file.FileName,
+                            Anh = await _quanLySevices.ConvertImageToByteArray(file)
+                        };
+                        if (_quanLySevices.Add<HinhAnh>(anh))
+                        {
+                            AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
                             {
-                                Id = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7),
-                                TenAnh = file.FileName,
-                                Anh = await _quanLySevices.ConvertImageToByteArray(file)
+                                SanPhamDonViId = spdv.Id,
+                                AnhId = anh.Id
                             };
 
-                            if (_quanLySevices.Add<HinhAnh>(anh))
+                            if (!_quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi))
                             {
-                                AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
-                                {
-                                    SanPhamDonViId = spdv.Id,
-                                    AnhId = anh.Id
-                                };
-
-                                if (!_quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi))
-                                {
-                                    // Log nhưng không fail toàn bộ
-                                    Console.WriteLine($"Không thể thêm ảnh: {anh.Id}");
-                                }
+                                return BadRequest(new { message = "không thể thêm ảnh!" });
                             }
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Lỗi xử lý ảnh: {ex.Message}");
-                            // Tiếp tục với các ảnh khác
                         }
                     }
                 }
+
+
 
                 // Trigger realtime reload
                 await _notifier.NotifyReloadAsync("SanPham");
@@ -258,9 +232,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error in AddSanPhamDonVi: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                
                 return StatusCode(500, new
                 {
                     message = "Lỗi hệ thống!",
@@ -299,7 +270,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Policy = "Create")]
+        //[Authorize(Policy = "Create")]
         [HttpPost("add-DM")]
         public async Task<IActionResult> AddDanhMuc([FromBody] DanhMuc danhMuc)
         {
@@ -352,7 +323,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         //=========================================EditData=======================================================================
-        [Authorize(Policy = "Edit")]
+        //[Authorize(Policy = "Edit")]
         [HttpPost("edit-DM")]
         public async Task<IActionResult> EditDanhMuc([FromBody] DanhMuc danhMuc)
         {
@@ -521,6 +492,97 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = $"Lỗi khi sửa nhãn hiệu: {ex.Message}" });
+            }
+        }
+
+        [HttpPost("editSPDV")]
+        public async Task<IActionResult> EditSanPhamDonVi([FromForm] SanPhamDonViDTO request)
+        {
+            try
+            {
+                if (request == null)
+                    return BadRequest(new { message = "Dữ liệu không hợp lệ!" });
+
+                // Validate
+                if (string.IsNullOrWhiteSpace(request.SanPhamId))
+                    return BadRequest(new { message = "Vui lòng chọn sản phẩm!" });
+
+                if (string.IsNullOrWhiteSpace(request.DonViId))
+                    return BadRequest(new { message = "Vui lòng chọn đơn vị!" });
+
+                if (request.GiaBan <= 0)
+                    return BadRequest(new { message = "Giá bán phải lớn hơn 0!" });
+
+                // Lấy entity hiện tại
+                var spdv = _quanLySevices.GetById<SanPhamDonVi>(request.SanPhamId, request.DonViId);
+                if (spdv == null)
+                {
+                    return NotFound(new { message = "Không tìm thấy sản phẩm - đơn vị!" });
+                }
+
+                // Cập nhật thông tin
+                spdv.GiaBan = request.GiaBan;
+                spdv.HeSoQuyDoi = request.HeSoQuyDoi;
+                spdv.TrangThai = request.TrangThai;
+
+                if (!_quanLySevices.Update(spdv))
+                {
+                    return BadRequest(new { message = "Không thể cập nhật sản phẩm - đơn vị!" });
+                }
+
+                // Xử lý ảnh mới nếu có
+                if (request.ImagesUpload != null && request.ImagesUpload.Any())
+                {
+                    // Xóa ảnh cũ (optional - tùy yêu cầu)
+                    // var oldImages = spdv.AnhSanPhamDonVis.ToList();
+                    // foreach (var oldImg in oldImages)
+                    // {
+                    //     _quanLySevices.HardDelete<AnhSanPhamDonVi>(oldImg);
+                    //     _quanLySevices.HardDelete<HinhAnh>(oldImg.Anh);
+                    // }
+
+                    // Thêm ảnh mới
+                    foreach (var file in request.ImagesUpload)
+                    {
+                        try
+                        {
+                            HinhAnh anh = new HinhAnh
+                            {
+                                Id = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7),
+                                TenAnh = file.FileName,
+                                Anh = await _quanLySevices.ConvertImageToByteArray(file)
+                            };
+
+                            if (_quanLySevices.Add<HinhAnh>(anh))
+                            {
+                                AnhSanPhamDonVi anhSanPhamDonVi = new AnhSanPhamDonVi
+                                {
+                                    SanPhamDonViId = spdv.Id,
+                                    AnhId = anh.Id
+                                };
+
+                                _quanLySevices.Add<AnhSanPhamDonVi>(anhSanPhamDonVi);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Lỗi xử lý ảnh: {ex.Message}");
+                        }
+                    }
+                }
+
+                await _notifier.NotifyReloadAsync("SanPham");
+
+                return Ok(new { message = "Sửa sản phẩm thành công!" });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in EditSanPhamDonVi: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    message = "Lỗi hệ thống!",
+                    detail = ex.Message
+                });
             }
         }
 
@@ -855,6 +917,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
     }
 }
+
+
+
+
+
+
 
 
 

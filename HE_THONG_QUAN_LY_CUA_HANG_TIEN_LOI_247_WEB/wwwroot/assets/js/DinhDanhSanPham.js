@@ -210,7 +210,7 @@ $(document).ready(function () {
     async function callApiGetNextIdMDD() {
         const dataToSend = {
             prefix: "MDD",
-            totalLength: 6  // Thay đổi từ 8 thành 6 (MDD + 3 số = MDD001)
+            totalLength: 7  // Thay đổi từ 8 thành 6 (MDD + 3 số = MDD001)
         };
         try {
             const response = await fetch('/API/get-next-id-MDD', {
