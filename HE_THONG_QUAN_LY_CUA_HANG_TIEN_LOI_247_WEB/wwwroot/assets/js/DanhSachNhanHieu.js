@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function callApiGetNextIdNH() {
         const dataToSend = {
             prefix: "NH",
-            totalLength: 5
+            totalLength: 6
         };
         try {
             const response = await fetch('/API/get-next-id-NH', {

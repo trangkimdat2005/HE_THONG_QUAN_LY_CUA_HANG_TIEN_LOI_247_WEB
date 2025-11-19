@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Lấy ID tiếp theo
     async function callApiGetNextIdKenh() {
-        const dataToSend = { prefix: "KTT", totalLength: 6 };
+        const dataToSend = { prefix: "KTT", totalLength: 7};
         try {
             const response = await fetch('/API/get-next-id-Kenh', {
                 method: 'POST',

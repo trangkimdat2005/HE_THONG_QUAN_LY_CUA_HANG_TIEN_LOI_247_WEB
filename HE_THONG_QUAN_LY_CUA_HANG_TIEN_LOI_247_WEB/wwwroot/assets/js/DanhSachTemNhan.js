@@ -202,7 +202,7 @@ $(document).ready(function () {
     async function callApiGetNextIdTN() {
         const dataToSend = {
             prefix: "TN",
-            totalLength:  5 // TN + 4 số = TN0001
+            totalLength: 6
         };
         try {
             const response = await fetch('/API/get-next-id-TN', {
