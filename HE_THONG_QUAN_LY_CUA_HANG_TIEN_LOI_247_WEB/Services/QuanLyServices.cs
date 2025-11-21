@@ -268,6 +268,63 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         {
             throw new NotImplementedException();
         }
+
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(hashedPassword))
+                {
+                    return false;
+                }
+                
+                return password == hashedPassword;
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while verifying password: {ex.Message}");
+                return false;
+            }
+        }
+
+        public bool ChangePassword(string taiKhoanId, string oldPassword, string newPassword)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(taiKhoanId) || string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword))
+                {
+                    throw new ArgumentException("Các thông tin không được để trống.");
+                }
+
+                if (newPassword.Length < 6)
+                {
+                    throw new ArgumentException("Mật khẩu mới phải có ít nhất 6 ký tự.");
+                }
+
+                var taiKhoan = _context.TaiKhoans.FirstOrDefault(t => t.Id == taiKhoanId && t.IsDelete == false);
+                
+                if (taiKhoan == null)
+                {
+                    throw new Exception("Không tìm thấy tài khoản.");
+                }
+
+                if (!VerifyPassword(oldPassword, taiKhoan.MatKhauHash))
+                {
+                    throw new Exception("Mật khẩu hiện tại không đúng.");
+                }
+
+                taiKhoan.MatKhauHash = newPassword;
+                
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred while changing password: {ex.Message}");
+                throw; 
+            }
+        }
     }
                 
 }

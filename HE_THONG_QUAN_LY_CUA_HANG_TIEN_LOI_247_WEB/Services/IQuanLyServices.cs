@@ -29,5 +29,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         public TaiKhoan Login(string username, string password);
 
         public string GetContentType(string fileName);
+
+        public bool VerifyPassword(string password, string hashedPassword);
+
+        public bool ChangePassword(string taiKhoanId, string oldPassword, string newPassword);
     }
 }

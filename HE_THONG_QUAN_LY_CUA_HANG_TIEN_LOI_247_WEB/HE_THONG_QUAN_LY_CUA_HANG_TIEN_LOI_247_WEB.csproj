@@ -37,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Shared\Components\UserInfo\" />
     <Folder Include="wwwroot\lib\datatables\js\" />
     <Folder Include="wwwroot\lib\datatables\css\" />
   </ItemGroup>
