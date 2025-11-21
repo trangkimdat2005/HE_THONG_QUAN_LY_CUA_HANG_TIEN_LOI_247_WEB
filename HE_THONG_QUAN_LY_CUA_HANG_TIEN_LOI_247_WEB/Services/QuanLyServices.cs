@@ -166,7 +166,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 if (lastEntity != null)
                 {
                     var lastId = lastEntity.GetType().GetProperty("Id")?.GetValue(lastEntity) as string;
-                     if (lastId != null)
+                    if (lastId != null)
                     {
                         var numericPart = lastId.Substring(prefix.Length);
                         if (int.TryParse(numericPart, out int lastNumericPart))
@@ -174,7 +174,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                             newNumericPart = lastNumericPart + 1;
                         }
                     }
-                    
+
                 }
                 string newId = prefix + newNumericPart.ToString().PadLeft(totalLength - prefix.Length, '0');
                 return newId;
@@ -245,7 +245,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 Console.WriteLine($"An error occurred while hashing password: {ex.Message}");
                 return null;
             }
-            
+
         }
 
         public TaiKhoan Login(string username, string password)
@@ -254,14 +254,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
             {
                 string hashedPassword = password; /*HashPassword(password);*/
                 var user = _context.TaiKhoans.SingleOrDefault(t => t.TenDangNhap == username.ToLower().Trim() && t.MatKhauHash == hashedPassword && t.IsDelete == false);
-                return user;
+                if (user != null && user.TrangThai.Trim() == "Hoạt động")
+                {
+                    return user;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred during login: {ex.Message}");
                 return null;
             }
-               
+
         }
 
         public string GeneratePassword(string password)
@@ -277,9 +284,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 {
                     return false;
                 }
-                
+
                 return password == hashedPassword;
-                
+
             }
             catch (Exception ex)
             {
@@ -303,7 +310,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 }
 
                 var taiKhoan = _context.TaiKhoans.FirstOrDefault(t => t.Id == taiKhoanId && t.IsDelete == false);
-                
+
                 if (taiKhoan == null)
                 {
                     throw new Exception("Không tìm thấy tài khoản.");
@@ -315,16 +322,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 }
 
                 taiKhoan.MatKhauHash = newPassword;
-                
+
                 _context.SaveChanges();
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while changing password: {ex.Message}");
-                throw; 
+                throw;
             }
         }
     }
-                
+
 }

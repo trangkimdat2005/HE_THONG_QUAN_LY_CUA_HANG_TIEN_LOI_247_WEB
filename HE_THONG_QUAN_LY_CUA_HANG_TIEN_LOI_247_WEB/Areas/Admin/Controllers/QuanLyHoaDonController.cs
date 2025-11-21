@@ -1,9 +1,11 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class QuanLyHoaDonController : Controller
     {
@@ -14,6 +16,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _quanLySevices = quanLySevices;
         }
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHoaDon/DanhSachHoaDon")]
         public IActionResult DanhSachHoaDon()
         {
@@ -21,7 +24,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstHoaDon"] = lstHoaDon;
             return View();
         }
-
+        
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/Admin/QuanLyHoaDon/ThanhToanHoaDon/{hoaDonId}")]
         public IActionResult ThanhToanHoaDon(string hoaDonId)
         {

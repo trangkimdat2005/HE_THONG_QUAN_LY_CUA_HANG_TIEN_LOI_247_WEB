@@ -27,8 +27,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.SameSite = SameSiteMode.Lax;  // Có th? s? d?ng SameSiteMode.Strict n?u b?n mu?n ch? cho phép cookie trong cùng domain
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;  // Ð?m b?o cookie ch? ðý?c g?i qua HTTPS
         options.ExpireTimeSpan = TimeSpan.FromHours(3);  // Th?i gian h?t h?n c?a cookie
-        options.LoginPath = "/Account/Login";  // Ðý?ng d?n ðãng nh?p
-        options.AccessDeniedPath = "/Account/AccessDenied";  // Ðý?ng d?n khi b? t? ch?i quy?n
+        options.LoginPath = "/LoiDangNhap/LoiDangNhap";  // Ðý?ng d?n ðãng nh?p
+        options.AccessDeniedPath = "/LoiDangNhap/LoiDangNhap";  // Ðý?ng d?n khi b? t? ch?i quy?n
         options.SlidingExpiration = true;  // Gia h?n cookie khi ngý?i dùng týõng tác
     });
 

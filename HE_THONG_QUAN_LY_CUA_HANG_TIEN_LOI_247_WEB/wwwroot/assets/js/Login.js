@@ -34,19 +34,11 @@ function loginAccount(userInput) {
                 });
             } else {
                 // Nếu login thất bại
-                Swal.fire({
-                    icon: "error",
-                    title: "Lỗi đăng nhập",
-                    text: res.message
-                });
+                location.href = res.redirectUrl;
             }
         },
-        error: function () {
-            Swal.fire({
-                icon: "error",
-                title: "Không thể kết nối máy chủ!",
-                text: "Vui lòng thử lại sau."
-            });
+        error: function (res) {
+            location.href = res.redirectUrl;
         }
     });
 }

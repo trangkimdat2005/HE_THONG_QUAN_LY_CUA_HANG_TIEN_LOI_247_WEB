@@ -3,21 +3,25 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class HomeAdminController : Controller
     {
         private readonly ILogger<HomeAdminController> _logger;
         private readonly IDashboardServices _dashboardServices;
+        private readonly IQuanLyServices _quanLyServices;
 
-        public HomeAdminController(ILogger<HomeAdminController> logger, IDashboardServices dashboardServices)
+        public HomeAdminController(ILogger<HomeAdminController> logger, IDashboardServices dashboardServices, IQuanLyServices quanLyServices)
         {
             _logger = logger;
             _dashboardServices = dashboardServices;
+            _quanLyServices = quanLyServices;
         }
-        //[Authorize(Roles = "ADMIN")]
+        [Authorize(Roles = "ADMIN")]
         public IActionResult Index()
         {
             var statistics = _dashboardServices.GetDashboardStatistics();
@@ -27,7 +31,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             var doanhThu7Ngay = _dashboardServices.GetDailyRevenue(days: 7);
             
             var topSanPham = _dashboardServices.GetTopSellingProducts(days: 7, limit: 5);
+
+            string tk = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             
+            TaiKhoan taiKhoan = _quanLyServices.GetById<TaiKhoan>(tk);
+
+            var anh = _quanLyServices.ConvertToBase64Image(taiKhoan.TaiKhoanNhanVien.NhanVien.Anh.Anh, taiKhoan.TaiKhoanNhanVien.NhanVien.Anh.TenAnh);
+
+
             ViewData["TongKhachHang"] = statistics.TongKhachHang;
             ViewData["TongNhanVien"] = statistics.TongNhanVien;
             ViewData["TongSanPham"] = statistics.TongSanPham;
@@ -37,7 +48,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["SanPhamSapHet"] = sanPhamSapHet;
             ViewData["DoanhThu7Ngay"] = doanhThu7Ngay;
             ViewData["TopSanPham"] = topSanPham;
-            
+            ViewData["taiKhoan"] = taiKhoan;
+            ViewData["anh"] = anh;
+
+
             return View();
         }
         

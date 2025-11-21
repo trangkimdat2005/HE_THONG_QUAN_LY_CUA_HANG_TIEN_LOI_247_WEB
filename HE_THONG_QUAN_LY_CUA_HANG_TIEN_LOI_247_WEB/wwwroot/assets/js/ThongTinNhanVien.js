@@ -260,7 +260,7 @@ function initView() {
 
     updateGenderDisplay(dbData.NhanVien.gioiTinh);
 
-    const statusBadge = dbData.TaiKhoan.trangThai === "Active"
+    const statusBadge = dbData.TaiKhoan.trangThai === "Hoạt động"
         ? '<span class="status-active">Đang hoạt động</span>'
         : '<span class="badge bg-danger">Đã khóa</span>';
     document.getElementById('lbl-trangthai').innerHTML = statusBadge;

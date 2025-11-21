@@ -21,7 +21,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
 
         [HttpGet]
         public IActionResult Login()
-        {
+        {   
             return View();
         }
 
@@ -33,11 +33,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
         {
             try
             {
+                var redirectUrl = Url.Action("LoiDangNhap", "LoiDangNhap", new { area = "" });
+
                 var user = _quanLyServices.Login(username, password);
 
                 if (user == null)
                 {
-                    return Unauthorized(); // Đăng nhập thất bại
+
+                    return Json(new { status = "error", redirectUrl });
                 }
 
                 var permissions = _permissionService.GetPermissionsForUser(user.Id);
@@ -63,14 +66,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                var redirectUrl = Url.Action("Index", "HomeAdmin", new { area = "Admin" });
+                redirectUrl = Url.Action("Index", "HomeAdmin", new { area = "Admin" });
 
                 return Json(new { status = "SUCCESS", redirectUrl });
             }
             catch (Exception ex)
             {
                 // Xử lý lỗi nếu cần
-                return Json(new { status = "error", message = "Lỗi đăng nhập", error = ex.ToString() });
+                var redirectUrl = Url.Action("LoiDangNhap", "LoiDangNhap", new { area = "" });
+
+                return Json(new { status = "error", redirectUrl });
+
             }
 
         }

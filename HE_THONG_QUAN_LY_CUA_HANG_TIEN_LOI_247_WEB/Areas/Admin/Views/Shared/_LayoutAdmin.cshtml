@@ -1,4 +1,5 @@
 ﻿@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers;
+@using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +11,8 @@
     @* <meta property="twitter:site" content="@pratikborsadiya">
     <meta property="twitter:creator" content="@pratikborsadiya"> *@
     <!-- Open Graph Meta-->
+    <link rel="icon" type="image/png" href="~/assets/images/Tu_Kho.png">
+
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Vali Admin">
     <meta property="og:title" content="Vali - Free Bootstrap 5 admin theme">
@@ -33,6 +36,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
 " rel="stylesheet">
     @* <link href="~/lib/datatables/css/datatables.min.css" rel="stylesheet" type="text/css" /> *@
     <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
+
     <!-- Css riêng ở đây nha -->
 
 </head>
@@ -40,7 +44,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
 <body class="app sidebar-mini">
     <!-- Navbar-->
     <header class="app-header">
-        <a class="app-header__logo" href="index.html">TưKhờ</a>
+        <a class="app-header__logo" href="index.html">Tư Khờ</a>
         <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
                                         aria-label="Hide Sidebar"></a>
         <!-- Navbar Right Menu-->
@@ -51,7 +55,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
                     <i class="bi bi-person fs-4"></i>
                 </a>
                 <ul class="dropdown-menu settings-menu dropdown-menu-right">
-                    <li><a class="dropdown-item" ><i class="bi bi-gear me-2 fs-5"></i> Settings</a></li>
+                    <li><a class="dropdown-item"><i class="bi bi-gear me-2 fs-5"></i> Settings</a></li>
                     <li><a class="dropdown-item" asp-controller="ThongTinNhanVien" asp-action="ThongTinNhanVien"><i class="bi bi-person me-2 fs-5"></i> Profile</a></li>
                     <li>
                         @Html.AntiForgeryToken()
@@ -65,18 +69,32 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
     <!-- Sidebar menu-->
     <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
     <aside class="app-sidebar">
-        <div class="app-sidebar__user">
-            <img class="app-sidebar__user-avatar"
-                 src="https://randomuser.me/api/portraits/men/1.jpg" alt="User Image">
-            <div>
-                <p class="app-sidebar__user-name">John Doe</p>
-                <p class="app-sidebar__user-designation">Frontend Developer</p>
-            </div>
-        </div>
+        @{
+            if (ViewBag.taiKhoan != null)
+            {
+                TaiKhoan taiKhoan = ViewBag.taiKhoan;
+
+                <div class="app-sidebar__user">
+                    @{
+                        if (ViewBag.anh != null)
+                        {
+                            var anh = ViewBag.anh;
+                            <img class="app-sidebar__user-avatar"
+                                 src="@anh" alt="User Image">
+                        }
+                    }
+                    <div>
+                        <p class="app-sidebar__user-name">@taiKhoan.TenDangNhap</p>
+                        <p class="app-sidebar__user-designation">@taiKhoan.TaiKhoanNhanVien.NhanVien.ChucVu</p>
+                    </div>
+                </div>
+            }
+
+        }
         <ul class="app-menu">
             <li>
                 <a class="app-menu__item" asp-controller="HomeAdmin" asp-action="Index">
-                    <i class="app-menu__icon bi bi-speedometer" ></i><span class="app-menu__label">Bảng điều khiển</span>
+                    <i class="app-menu__icon bi bi-speedometer"></i><span class="app-menu__label">Bảng điều khiển</span>
                 </a>
             </li>
 
@@ -110,8 +128,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
                     <li>
                         <a class="treeview-item space-first-right-khoi" asp-controller="QuanLyHangHoa" asp-action="DanhSachDonVi">
 
-                            </i> Các đơn vị</a>
-                     </li>
+                            </i> Các đơn vị
+                        </a>
+                    </li>
                     <li>
                         <a class="treeview-item space-first-right-khoi" asp-controller="QuanLyHangHoa" asp-action="LichSuGiaBan">
                             </i> Lịch sử giá
@@ -320,8 +339,8 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
             </li>
         </ul>
     </aside>
-        
-            @RenderBody()
+
+    @RenderBody()
 
 
 
@@ -332,9 +351,9 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
 
     <!-- Thư viện nền -->
     <script src="~/assets/lib/jquery/jquery-3.7.0.min.js"></script>
-    <script src="~/assets/lib/bootstrap/js/bootstrap.min.js" ></script>
+    <script src="~/assets/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/assets/lib/bootstrap/js/main.js"></script>
-  
+
 
     <!-- Page specific javascripts-->
     <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/dt-1.13.4/datatables.min.css">

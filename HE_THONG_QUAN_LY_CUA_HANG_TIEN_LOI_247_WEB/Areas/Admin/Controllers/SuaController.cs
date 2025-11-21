@@ -1,11 +1,13 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class SuaController : Controller
     {
@@ -20,16 +22,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _chinhSachHoanTraServices = chinhSachHoanTraServices;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Sua/SuaHoaDon")] 
         public IActionResult SuaHoaDon()
         {
             return View();
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/Sua/SuaHoanTra")]
         public IActionResult SuaHoanTra()
         {
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/Sua/SuaKhachHang")]
         public IActionResult SuaKhachHang(string id)
         {
@@ -59,6 +66,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             return View(khachHang);
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/Sua/SuaMaKhuyenMai")]
         public IActionResult SuaMaKhuyenMai(string id)
         {

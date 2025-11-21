@@ -9,12 +9,16 @@
   <ItemGroup>
     <Compile Remove="Models\NewFolder\**" />
     <Compile Remove="Services\NewFolder\**" />
+    <Compile Remove="Views\Shared\Components\**" />
     <Content Remove="Models\NewFolder\**" />
     <Content Remove="Services\NewFolder\**" />
+    <Content Remove="Views\Shared\Components\**" />
     <EmbeddedResource Remove="Models\NewFolder\**" />
     <EmbeddedResource Remove="Services\NewFolder\**" />
+    <EmbeddedResource Remove="Views\Shared\Components\**" />
     <None Remove="Models\NewFolder\**" />
     <None Remove="Services\NewFolder\**" />
+    <None Remove="Views\Shared\Components\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,7 +41,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Shared\Components\UserInfo\" />
     <Folder Include="wwwroot\lib\datatables\js\" />
     <Folder Include="wwwroot\lib\datatables\css\" />
   </ItemGroup>
