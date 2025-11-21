@@ -34,7 +34,7 @@
     const cancelInvoiceBtn = document.getElementById('cancel-invoice-btn');
     const completeInvoiceBtn = document.getElementById('complete-invoice-btn');
     const draftList = document.getElementById('draft-list');
-    const currentUserId = document.getElementById('current-user-id')?.value || 'NV001';
+    const currentUserId = document.getElementById('current-user-id')?.value || 'NV0001';
 
     // === FORMAT TIỀN TỆ ===
     const formatter = new Intl.NumberFormat('vi-VN', {
