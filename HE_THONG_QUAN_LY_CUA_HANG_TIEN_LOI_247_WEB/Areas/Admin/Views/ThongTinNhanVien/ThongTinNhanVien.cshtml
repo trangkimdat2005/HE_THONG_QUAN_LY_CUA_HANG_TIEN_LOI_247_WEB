@@ -30,7 +30,7 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a asp-controller ="HomeAdmin" asp-action="Index" class="text-decoration-none">Trang chủ</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Hồ sơ cá nhân</li>
                     </ol>
                 </nav>
@@ -41,22 +41,41 @@
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center pt-4 pb-4">
-                        <div class="avatar-box mb-3 mx-auto">
+                        <div class="avatar-box mb-3 mx-auto position-relative">
                             <img src="https://via.placeholder.com/150" alt="avatar" class="rounded-circle" id="img-avatar">
+                            <!-- Overlay khi hover -->
+                            <div class="avatar-overlay" id="avatar-overlay">
+                                <button type="button" class="btn btn-sm btn-light" id="btn-edit-avatar" onclick="startEditAvatar()">
+                                    <i class="fas fa-pen"></i> Sửa
+                                </button>
+                            </div>
                         </div>
 
                         <h5 class="my-3 view-data-name" id="lbl-hoten-card">Đang tải...</h5>
 
                         <p class="text-muted mb-1" id="lbl-chucvu">...</p>
                         <p class="text-muted mb-4" id="lbl-diachi-short">...</p>
-                        <div class="d-flex justify-content-center mb-2">
+                        
+                        <!-- Buttons area -->
+                        <div class="d-flex justify-content-center mb-2" id="avatar-action-buttons">
                             <input type="file" id="file-upload" accept="image/*" class="d-none">
-                            <button type="button" class="btn btn-primary me-2" onclick="document.getElementById('file-upload').click()">
-                                <i class="fas fa-camera me-1"></i> Đổi ảnh
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#passwordModal">
-                                <i class="fas fa-key me-1"></i> Đổi mật khẩu
-                            </button>
+                            
+                            <!-- Nút mặc định -->
+                            <div id="default-buttons">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#passwordModal">
+                                    <i class="fas fa-key me-1"></i> Đổi mật khẩu
+                                </button>
+                            </div>
+                            
+                            <!-- Nút khi đang chỉnh sửa ảnh -->
+                            <div id="edit-avatar-buttons" class="d-none">
+                                <button type="button" class="btn btn-secondary me-2" onclick="cancelEditAvatar()">
+                                    <i class="fas fa-times me-1"></i> Hủy
+                                </button>
+                                <button type="button" class="btn btn-success" onclick="confirmUpdateAvatar()">
+                                    <i class="fas fa-check me-1"></i> Cập nhật ảnh
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -185,24 +204,40 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="passwordForm">
                         <div class="mb-3">
                             <label class="form-label">Mật khẩu hiện tại</label>
-                            <input type="password" class="form-control">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('currentPassword')">
+                                    <i class="fas fa-eye" id="currentPassword-icon"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Mật khẩu mới</label>
-                            <input type="password" class="form-control">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('newPassword')">
+                                    <i class="fas fa-eye" id="newPassword-icon"></i>
+                                </button>
+                            </div>
+                            <small class="text-muted">Mật khẩu phải có ít nhất 6 ký tự</small>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Xác nhận mật khẩu mới</label>
-                            <input type="password" class="form-control">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword')">
+                                    <i class="fas fa-eye" id="confirmPassword-icon"></i>
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Lưu mật khẩu</button>
+                    <button type="button" class="btn btn-primary" onclick="changePassword()">Lưu mật khẩu</button>
                 </div>
             </div>
         </div>
