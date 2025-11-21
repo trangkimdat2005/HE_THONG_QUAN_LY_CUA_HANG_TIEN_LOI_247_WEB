@@ -158,6 +158,8 @@
                 <td><input type="number" class="form-control form-control-sm quantity-input" value="${quantity}" min="1" data-price="${price}"></td>
                 <td>${formatter.format(price)}</td>
                 <td class="row-total">${formatter.format(price * quantity)}</td>
+                <td
+                </td>
                 <td class="text-center">
                     <button class="btn btn-danger btn-sm remove-item-btn">
                         <i class="bi bi-trash"></i>

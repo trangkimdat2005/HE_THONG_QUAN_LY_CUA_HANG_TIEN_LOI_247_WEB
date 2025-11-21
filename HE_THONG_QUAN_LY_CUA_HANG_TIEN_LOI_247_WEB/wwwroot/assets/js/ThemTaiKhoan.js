@@ -96,19 +96,35 @@ $(document).ready(function () {
             },
             error: function (jqXHR) {
                 var title = 'Đã xảy ra lỗi!';
-                var message = 'Lỗi máy chủ.';
+                var message = 'Lỗi máy chủ hoặc không thể kết nối.';
                 var response = jqXHR.responseJSON;
 
-                if (jqXHR.status === 400 && response && typeof response === 'object' && !response.message) {
-                    title = 'Dữ liệu không hợp lệ!';
-                    message = "";
-                    for (var key in response) {
-                        if (response.hasOwnProperty(key)) {
-                            message += response[key].join("<br>") + "<br>";
+                if (jqXHR.status === 400 && response) {
+                    if (response.errors) {
+                        title = 'Dữ liệu không hợp lệ!';
+                        message = "";
+                        for (var key in response.errors) {
+                            if (response.errors.hasOwnProperty(key) && Array.isArray(response.errors[key])) {
+                                message += response.errors[key].join("<br>") + "<br>";
+                            }
                         }
                     }
-                } else if (response && response.message) {
-                    message = response.message;
+                    else if (typeof response === 'object' && !response.message) {
+                        title = 'Dữ liệu không hợp lệ!';
+                        message = "";
+                        for (var key in response) {
+                            if (response.hasOwnProperty(key) && Array.isArray(response[key])) {
+                                message += response[key].join("<br>") + "<br>";
+                            }
+                        }
+                    }
+                    else if (response.message) {
+                        message = response.message;
+                    }
+                }
+                else if (jqXHR.responseText) {
+                    console.error("Chi tiết lỗi:", jqXHR.responseText);
+                    message = "Lỗi máy chủ (xem chi tiết trong Console F12).";
                 }
 
                 Swal.fire({

@@ -1,11 +1,13 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class SuaController : Controller
     {
@@ -20,16 +22,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _chinhSachHoanTraServices = chinhSachHoanTraServices;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Sua/SuaHoaDon")] 
         public IActionResult SuaHoaDon()
         {
             return View();
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/Sua/SuaHoanTra")]
         public IActionResult SuaHoanTra()
         {
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/Sua/SuaKhachHang")]
         public IActionResult SuaKhachHang(string id)
         {
@@ -59,6 +66,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             return View(khachHang);
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/Sua/SuaMaKhuyenMai")]
         public IActionResult SuaMaKhuyenMai(string id)
         {
@@ -100,7 +109,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 nhaCungCapEntity.Ten = data.Ten;
                 nhaCungCapEntity.SoDienThoai = data.SoDienThoai;
-                nhaCungCapEntity.Email = data.Email;
+                nhaCungCapEntity.Email = data.Email.ToLower();
                 nhaCungCapEntity.DiaChi = data.DiaChi;
                 nhaCungCapEntity.MaSoThue = data.MaSoThue;
 
@@ -221,6 +230,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View(nv);
         }
         [HttpPut]
+        [Route("/API/NhanVien/Update")]
         public async Task<IActionResult> UpdateNhanVien([FromForm] NhanVienUpdateDto dto)
         {
             if (!ModelState.IsValid)
@@ -262,7 +272,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 nhanVien.ChucVu = dto.ChucVu;
                 nhanVien.LuongCoBan = (decimal)dto.LuongCoBan; 
                 nhanVien.SoDienThoai = dto.SoDienThoai;
-                nhanVien.Email = dto.Email;
+                nhanVien.Email = dto.Email.ToLower();
                 nhanVien.DiaChi = dto.DiaChi;
                 nhanVien.NgayVaoLam = dto.NgayVaoLam;
                 nhanVien.TrangThai = dto.TrangThai;
@@ -581,7 +591,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Cập nhật thông tin
                 khachHang.HoTen = request.HoTen;
                 khachHang.SoDienThoai = request.SoDienThoai;
-                khachHang.Email = request.Email;
+                khachHang.Email = request.Email.ToLower();
                 khachHang.DiaChi = request.DiaChi ?? "";
                 khachHang.NgayDangKy = request.NgayDangKy ?? khachHang.NgayDangKy;
                 khachHang.TrangThai = request.TrangThai ?? khachHang.TrangThai;

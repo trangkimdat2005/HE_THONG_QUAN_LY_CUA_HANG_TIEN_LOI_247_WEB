@@ -1,9 +1,11 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class QuanLyKhoHangController : Controller
     {
@@ -16,6 +18,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _tonKhoServices = tonKhoServices;
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/DanhSachHangTonKho")]
         public IActionResult DanhSachHangTonKho()
         {
@@ -24,6 +27,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/DanhSachPhieuNhap")]
         public IActionResult DanhSachPhieuNhap()
         {
@@ -32,6 +36,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/DanhSachPhieuXuat")]
         public IActionResult DanhSachPhieuXuat()
         {
@@ -40,6 +45,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/DanhSachKiemKe")]
         public IActionResult KiemKeSanPham()
         {
@@ -48,6 +54,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/ViTriSanPham")]
         public IActionResult ViTriSanPham()
         {
@@ -60,6 +67,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/XemChiTietKiemKe/{id}")]
         public IActionResult XemChiTietKiemKe(string id)
         {
@@ -79,6 +87,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/XemChiTietPhieuXuat/{id}")]
         public IActionResult XemChiTietPhieuXuat(string id)
         {
@@ -100,6 +109,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/QuanLyKhoHang/XemNhapKho/{id}")]
         public IActionResult XemNhapKho(string id)
         {

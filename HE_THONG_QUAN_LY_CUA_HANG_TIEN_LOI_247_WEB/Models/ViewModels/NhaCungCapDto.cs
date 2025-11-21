@@ -20,6 +20,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels
         public string DiaChi { get; set; }
 
         [Required(ErrorMessage = "Mã số thuế không được để trống")]
+        [RegularExpression(@"^[0-9]{10,13}$", ErrorMessage = "Mã số thuế phải là số và có độ dài từ 10 đến 13 ký tự")]
         public string MaSoThue { get; set; }
     }
 }

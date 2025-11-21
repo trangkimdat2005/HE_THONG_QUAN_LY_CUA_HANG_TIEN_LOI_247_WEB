@@ -1,10 +1,12 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class QuanLyNhanSuController : Controller
     {
@@ -15,6 +17,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _quanLySevices = quanLySevices;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/QuanLyNhanSu/DanhSachNhanVien")]
         public IActionResult DanhSachNhanVien()
         {
@@ -22,6 +25,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstNhanVien"] = lstNhanVien;
             return View();
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/QuanLyNhanSu/LichLamViec")]
         public IActionResult LichLamViec()
         {
@@ -29,6 +34,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstChamCong"] = lstChamCong;
             return View();
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/QuanLyNhanSu/PhanCongCaLamViec")]
         public IActionResult PhanCongCaLamViec()
         {

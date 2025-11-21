@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("API")]
     [Area("Admin")]
@@ -23,7 +24,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         //=========================================LoadData=========================================================
-
+        
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHangHoa/DanhSachDanhMuc")]
         public IActionResult DanhSachDanhMuc()
         {
@@ -32,6 +34,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstDanhMuc"] = lstDanhMuc;
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHangHoa/DanhSachDonVi")]
         public IActionResult DanhSachDonVi()
         {
@@ -41,6 +45,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHangHoa/DanhSachNhanHieu")]
         public IActionResult DanhSachNhanHieu()
         {
@@ -50,6 +56,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHangHoa/DanhSachSanPham")]
         public IActionResult DanhSachSanPham()
         {
@@ -67,6 +75,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHangHoa/DanhSachHangHoa")]
         public IActionResult DanhSachHangHoa()
         {
@@ -84,6 +94,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             return View();
         }
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyHangHoa/LichSuGiaBan")]
         public IActionResult LichSuGiaBan()
         {

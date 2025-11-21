@@ -1,9 +1,11 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class GiaoDichHoanTraController : Controller
     {
@@ -23,7 +25,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _phieuDoiTraServices = phieuDoiTraServices;
             _chinhSachHoanTraServices = chinhSachHoanTraServices;
         }
-        
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/GiaoDichHoanTra/ChinhSachDoiTra")]
         public IActionResult ChinhSachDoiTra()
         {
@@ -33,7 +36,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             
             return View();
         }
-        
+
         [HttpPost]
         [Route("/GiaoDichHoanTra/DeleteChinhSach/{id}")]
         public IActionResult DeleteChinhSach(string id)
@@ -56,7 +59,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-        
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/GiaoDichHoanTra/GiaoDichThanhToan")]
         public IActionResult GiaoDichThanhToan()
         {
@@ -66,7 +70,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             
             return View();
         }
-        
+
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/GiaoDichHoanTra/PhieuDoiTra")]
         public IActionResult PhieuDoiTra()
         {
@@ -77,6 +82,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/GiaoDichHoanTra/XemChiTietGiaoDich/{id}")]
         public IActionResult XemChiTietGiaoDich(string id)
         {
@@ -108,6 +114,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/GiaoDichHoanTra/XemChiTietPhieuDoiTra/{id}")]
         public IActionResult XemChiTietPhieuDoiTra(string id)
         {

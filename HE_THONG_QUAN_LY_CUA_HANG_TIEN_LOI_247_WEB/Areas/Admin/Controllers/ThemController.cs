@@ -1,11 +1,13 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("API")]
     [Area("Admin")]
@@ -25,6 +27,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _quanLyServices = quanLyServices;
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/Them/ThemDanhMucViTRi")]
         public IActionResult ThemDanhMucViTRi()
         {
@@ -32,11 +35,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/Them/ThemHoaDon")]
         public IActionResult ThemHoaDon()
         {
             var lstKhachHang = _quanLyServices.GetList<KhachHang>()
-                .Where(kh => !kh.IsDelete && kh.TrangThai == "Active")
+                .Where(kh => !kh.IsDelete && kh.TrangThai == "Hoạt động")
                 .OrderBy(kh => kh.HoTen)
                 .ToList();
 
@@ -97,12 +101,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemHoanTra")]
         public IActionResult ThemHoanTra()
         {
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO,NV_BANHANG")]
         [Route("/Them/ThemKiemKe")]
         public IActionResult ThemKiemKe()
         {
@@ -113,6 +119,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/Them/ThemKhachHang")]
         public IActionResult ThemKhachHang()
         {
@@ -122,6 +129,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemMaKhuyenMai")]
         public IActionResult ThemMaKhuyenMai()
         {
@@ -132,6 +140,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemNCC")]
         public IActionResult ThemNCC()
         {
@@ -161,7 +170,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Id = newId,
                     Ten = data.Ten,
                     SoDienThoai = data.SoDienThoai,
-                    Email = data.Email,
+                    Email = data.Email.ToLower(),
                     DiaChi = data.DiaChi,
                     MaSoThue = data.MaSoThue,
                     IsDelete = false
@@ -190,6 +199,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return Task.FromResult<IActionResult>(Ok(new { NextId = _quanLyServices.GenerateNewId<NhaCungCap>(request["prefix"].ToString(), int.Parse(request["totalLength"].ToString())) }));
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemNhanSu")]
         public IActionResult ThemNhanSu()
         {
@@ -235,7 +245,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     ChucVu = dto.ChucVu,
                     LuongCoBan = (decimal)dto.LuongCoBan,
                     SoDienThoai = dto.SoDienThoai,
-                    Email = dto.Email,
+                    Email = dto.Email.ToLower(),
                     DiaChi = dto.DiaChi,
                     NgayVaoLam = dto.NgayVaoLam,
                     TrangThai = dto.TrangThai,
@@ -263,6 +273,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
+
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/Them/ThemNhapKho")]
         public IActionResult ThemNhapKho()
         {
@@ -273,6 +285,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemPhanCongCaLamViec")]
         public IActionResult ThemPhanCongCaLamViec()
         {
@@ -284,6 +297,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [HttpGet]
         [Route("/Them/ThemPhieuDoiTra")]
         public IActionResult ThemPhieuDoiTra()
@@ -294,6 +308,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [Route("/Them/ThemPhieuDoiTra")]
         public IActionResult ThemPhieuDoiTra(PhieuDoiTra phieuDoiTra)
@@ -353,6 +368,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         // ==================== CHÍNH SÁCH HOÀN TRẢ ====================
 
+        [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [HttpGet]
         [Route("/Them/ThemChinhSachHoanTra")]
         public IActionResult ThemChinhSachHoanTra()
@@ -361,6 +377,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         [Route("/Them/ThemChinhSachHoanTra")]
         public IActionResult ThemChinhSachHoanTra(
@@ -465,7 +482,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     Id = _quanLyServices.GenerateNewId<TaiKhoan>("TK", 6),
                     TenDangNhap = dto.TenDangNhap,
-                    Email = dto.Email,
+                    Email = dto.Email.ToLower(),
                     MatKhauHash = _quanLyServices.HashPassword(dto.MatKhau),
                     TrangThai = dto.TrangThai,
                     IsDelete = false
@@ -557,6 +574,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemTaiKhoan")]
         public IActionResult ThemTaiKhoan(string loai = "nhanvien")
         {
@@ -579,6 +598,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ADMIN,NV_KHO")]
         [Route("/Them/ThemViTriSanPham")]
         public IActionResult ThemViTriSanPham()
         {
@@ -828,6 +848,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         //=========================================API Thêm Chương Trình Khuyến Mãi=======================================================================
+
         [HttpPost]
         [Route("/API/add-CTKM")]
         public async Task<IActionResult> AddChuongTrinhKhuyenMai([FromBody] ChuongTrinhKhuyenMaiRequest request)
@@ -1029,7 +1050,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     ChucVu = request.ChucVu,
                     LuongCoBan = request.LuongCoBan,
                     SoDienThoai = request.SoDienThoai,
-                    Email = request.Email,
+                    Email = request.Email.ToLower(),
                     DiaChi = request.DiaChi ?? "",
                     NgayVaoLam = request.NgayVaoLam ?? DateTime.Now,
                     TrangThai = request.TrangThai ?? "HoatDong",
@@ -1260,7 +1281,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Id = _quanLyServices.GenerateNewId<KhachHang>("KH", 6),
                     HoTen = request.HoTen,
                     SoDienThoai = request.SoDienThoai,
-                    Email = request.Email,
+                    Email = request.Email.ToLower(),
                     DiaChi = request.DiaChi ?? "",
                     NgayDangKy = request.NgayDangKy ?? DateTime.Now,
                     TrangThai = request.TrangThai ?? "Active",

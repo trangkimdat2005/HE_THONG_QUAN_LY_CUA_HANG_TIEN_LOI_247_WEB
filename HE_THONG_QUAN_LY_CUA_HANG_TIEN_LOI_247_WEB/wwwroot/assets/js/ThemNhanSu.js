@@ -22,16 +22,12 @@ $(document).ready(function () {
         readURL(this);
     });
 
-    // Xử lý click nút LƯU (THÊM)
     $(document).on('click', '#btn-luu-nhan-vien', function (e) {
         e.preventDefault();
 
-        // Xóa cái alert này đi, nó dừng code
-        // alert("hi btn"); 
 
         var formData = new FormData();
 
-        // 1. XÓA DÒNG NÀY ĐI, KHÔNG GỬI ID KHI THÊM MỚI
         // formData.append("Id", $("#Id").val()) 
 
         formData.append("HoTen", $('#HoTen').val());
@@ -74,19 +70,30 @@ $(document).ready(function () {
                 var message = 'Lỗi máy chủ hoặc không thể kết nối.';
                 var response = jqXHR.responseJSON;
 
-                // Code này sẽ bắt lỗi validation (ví dụ "Họ tên không được để trống")
-                if (jqXHR.status === 400 && response && typeof response === 'object' && !response.message) {
-                    title = 'Dữ liệu không hợp lệ!';
-                    message = "";
-                    for (var key in response) {
-                        if (response.hasOwnProperty(key)) {
-                            message += response[key].join("<br>") + "<br>";
+                if (jqXHR.status === 400 && response) {
+                    if (response.errors) {
+                        title = 'Dữ liệu không hợp lệ!';
+                        message = "";
+                        for (var key in response.errors) {
+                            if (response.errors.hasOwnProperty(key) && Array.isArray(response.errors[key])) {
+                                message += response.errors[key].join("<br>") + "<br>";
+                            }
                         }
                     }
-                } else if (response && response.message) {
-                    message = response.message;
+                    else if (typeof response === 'object' && !response.message) {
+                        title = 'Dữ liệu không hợp lệ!';
+                        message = "";
+                        for (var key in response) {
+                            if (response.hasOwnProperty(key) && Array.isArray(response[key])) {
+                                message += response[key].join("<br>") + "<br>";
+                            }
+                        }
+                    } else if (response.message) {
+                        message = response.message;
+                    }
                 } else if (jqXHR.responseText) {
-                    message = "Lỗi máy chủ. Vui lòng kiểm tra console.";
+                    message = "Lỗi máy chủ (chi tiết trong console).";
+                    console.error(jqXHR.responseText);
                 }
 
                 Swal.fire({

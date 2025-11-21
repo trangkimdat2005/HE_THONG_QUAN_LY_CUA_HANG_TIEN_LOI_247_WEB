@@ -1,10 +1,12 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("API")]
     [Area("Admin")]
@@ -17,6 +19,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _quanLySevices = quanLySevices;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [Route("/QuanLyNhaCungCap/DanhSachNhaCungCap")]
         public IActionResult DanhSachNhaCungCap()
         {
@@ -24,6 +27,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstNCC"] = lstNCC;
             return View();
         }
+
+        [Authorize(Roles = "ADMIN")]
         [Route("/QuanLyNhaCungCap/LichSuGiaoDich")]
         public IActionResult LichSuGiaoDich()
         {
@@ -31,6 +36,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstLichSuGD"] = lstLichSuGD;
             return View();
         }
+
         //Do Minh Khoi lam
         [HttpDelete] // Dùng động từ DELETE
         [Route("/API/NhaCungCap/Delete/{id}")] // Route để nhận ID

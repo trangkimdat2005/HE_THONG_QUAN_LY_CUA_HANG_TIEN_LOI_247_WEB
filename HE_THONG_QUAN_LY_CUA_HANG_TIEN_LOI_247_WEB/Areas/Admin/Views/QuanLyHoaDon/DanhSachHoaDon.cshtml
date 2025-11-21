@@ -56,8 +56,8 @@
 										// Logic phân loại và chọn màu
 										if (trangThaiGoc.Contains("thanh toán", StringComparison.OrdinalIgnoreCase))
 										{
-											// Dùng Contains để bắt được cả "Đã thanh toán" và "Chờ thanh toán"
-											if (trangThaiGoc.StartsWith("Đã", StringComparison.OrdinalIgnoreCase))
+											// Dùng Contains để bắt được cả "Đã thanh toán" và "Chưa thanh toán"
+											if (trangThaiGoc.StartsWith("Đã thanh toán", StringComparison.OrdinalIgnoreCase))
 											{
 												trangThaiClass = "bg-success";
 											}
@@ -66,7 +66,7 @@
 												trangThaiClass = "bg-warning text-dark";
 											}
 										}
-										else if (trangThaiGoc.Contains("hủy", StringComparison.OrdinalIgnoreCase))
+										else if (trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
 										{
 											trangThaiClass = "bg-danger";
 										}
@@ -98,7 +98,7 @@
 													*@
 
 													@if (!trangThaiGoc.Contains("Đã thanh toán", StringComparison.OrdinalIgnoreCase) &&
-																							!trangThaiGoc.Contains("Đã hủy", StringComparison.OrdinalIgnoreCase))
+																							!trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
 													{
 														<a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
 															<i class="bi bi-wallet"></i>
