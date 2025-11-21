@@ -2,8 +2,11 @@
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
+    [ApiController]
+    [Route("API")]
     [Area("Admin")]
     public class QuanLyNhaCungCapController : Controller
     {
@@ -67,6 +70,33 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             // 4. Cả hai đều thất bại (hiếm, nhưng có thể xảy ra)
             return BadRequest(new { message = "Lỗi: Không thể thực hiện xóa cứng hoặc xóa mềm." });
+        }
+        [HttpGet]
+        [Route("GetGoodsReceiptById")]
+        public IActionResult GetGoodsReceiptById(string id)
+        {
+            var lichSuGiaoDich = _quanLySevices.GetById<LichSuGiaoDich>(id);
+
+            var result = new
+            {
+                lichSuGiaoDich.Id,
+                lichSuGiaoDich.NgayGd,
+                lichSuGiaoDich.TongTien,
+                lichSuGiaoDich.NhaCungCap.Ten,
+                lichSuGiaoDich.NhaCungCap.SoDienThoai,
+                lichSuGiaoDich.NhaCungCap.Email,
+                lichSuGiaoDich.NhaCungCap.DiaChi,
+                details = lichSuGiaoDich.ChiTietGiaoDichNccs.Select(ctdd => new
+                {
+                    tenSanPham = ctdd.SanPhamDonVi.SanPham.Ten,
+                    tenDonVi = ctdd.SanPhamDonVi.DonVi.Ten,
+                    ctdd.SoLuong,
+                    ctdd.DonGia,
+                    ctdd.ThanhTien
+                }).ToArray()
+            };
+
+            return Json(result);
         }
     }
 }
