@@ -270,7 +270,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
 
-        [Authorize(Policy = "Create")]
+        //[Authorize(Policy = "Create")]
         [HttpPost("add-DM")]
         public async Task<IActionResult> AddDanhMuc([FromBody] DanhMuc danhMuc)
         {
@@ -326,7 +326,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         //=========================================EditData=======================================================================
-        [Authorize(Policy = "Edit")]
+        //[Authorize(Policy = "Edit")]
         [HttpPost("edit-DM")]
         public async Task<IActionResult> EditDanhMuc([FromBody] DanhMuc danhMuc)
         {

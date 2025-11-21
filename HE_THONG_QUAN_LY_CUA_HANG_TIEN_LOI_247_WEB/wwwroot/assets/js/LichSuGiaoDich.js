@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(function() {
         const MOCK_DB = {
             'GDNCC001': {
                 general: {
@@ -23,39 +23,41 @@ $(document).ready(function() {
             }
         };
 
-        $('.js-view-detail').on('click', function() {
+        $('.js-view-detail').on('click', function() {       
             let transId = $(this).data('id');
-            let data = MOCK_DB[transId];
+            $.get('/API/GetGoodsReceiptById', { id: transId }, function (data) {
+                if (data) {
+                    $('#detail-transaction-id, #detail-trans-code').text(data.id);
+                    $('#detail-trans-date').text(data.ngayGd);
+                    $('#detail-total-amount').text(data.tongTien.toLocaleString('vi-VN') + ' ₫');
+                    $('#detail-ncc-name').text(data.ten);
+                    $('#detail-ncc-phone').text(data.soDienThoai);
+                    $('#detail-ncc-email').text(data.email);
+                    $('#detail-ncc-address').text(data.diaChi);
 
-            if (data) {
-                $('#detail-transaction-id, #detail-trans-code').text(transId);
-                $('#detail-trans-date').text(data.general.date);
-                $('#detail-total-amount').text(data.general.total.toLocaleString('vi-VN') + ' ₫');
-                $('#detail-ncc-name').text(data.general.supplier.name);
-                $('#detail-ncc-phone').text(data.general.supplier.phone);
-                $('#detail-ncc-email').text(data.general.supplier.email);
-                $('#detail-ncc-address').text(data.general.supplier.address);
-
-                let rowsHtml = '';
-                data.details.forEach((item, index) => {
-                    // QUAN TRỌNG: Đã thêm class c-* vào từng thẻ <td> để khớp với header <th>
-                    rowsHtml += `
+                    let rowsHtml = '';
+                    data.details.forEach((item, index) => {
+                        // QUAN TRỌNG: Đã thêm class c-* vào từng thẻ <td> để khớp với header <th>
+                        rowsHtml += `
                         <tr>
                             <td class="c-stt">${index + 1}</td>
-                            <td class="c-ten fw-medium">${item.name}</td>
-                            <td class="c-dvt">${item.unit}</td>
-                            <td class="c-sl">${item.qty.toLocaleString('vi-VN')}</td>
-                            <td class="c-gia">${item.price.toLocaleString('vi-VN')}</td>
-                            <td class="c-tien">${item.total.toLocaleString('vi-VN')}</td>
+                            <td class="c-ten fw-medium">${item.tenSanPham}</td>
+                            <td class="c-dvt">${item.tenDonVi}</td>
+                            <td class="c-sl">${item.soLuong.toLocaleString('vi-VN')}</td>
+                            <td class="c-gia">${item.donGia.toLocaleString('vi-VN')}</td>
+                            <td class="c-tien">${item.thanhTien.toLocaleString('vi-VN')}</td>
                         </tr>
                     `;
-                });
-                $('#detail-product-list').html(rowsHtml);
+                    });
+                    $('#detail-product-list').html(rowsHtml);
 
-                $('#section-transaction-history').fadeOut(200, function() {
-                    $('#section-transaction-detail').removeClass('d-none');
-                });
-            }
+                    $('#section-transaction-history').fadeOut(200, function () {
+                        $('#section-transaction-detail').removeClass('d-none');
+                    });
+                }
+            });
+
+            
         });
 
         $('.js-back-to-list').on('click', function() {
