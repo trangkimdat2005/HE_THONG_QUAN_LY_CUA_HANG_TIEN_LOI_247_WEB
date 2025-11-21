@@ -75,5 +75,29 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
 
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+
+                // Đăng xuất người dùng và xóa cookie
+                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+                // Xóa session nếu bạn đang sử dụng session
+                HttpContext.Session.Clear();
+
+                var redirectUrl = Url.Action("Login", "Account");
+
+                return Json(new { status = "SUCCESS", redirectUrl });
+            }
+            catch(Exception ex)
+            {
+                return Json(new { status = "error", message = "Lỗi đăng xuất", error = ex.ToString() });
+            }
+        }
+
     }
 }

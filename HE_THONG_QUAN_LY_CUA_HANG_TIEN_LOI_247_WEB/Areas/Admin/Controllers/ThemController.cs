@@ -1542,10 +1542,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 if (string.IsNullOrEmpty(khachHangId))
                 {
                     Console.WriteLine("KhachHangId is null - creating/using default customer...");
-                    
+
                     // Kiểm tra khách hàng mặc định có tồn tại không
-                    var khachLe = _quanLyServices.GetList<KhachHang>()
-                        .FirstOrDefault(kh => kh.Id == "KH_LE" && !kh.IsDelete);
+                    var khachLe = _quanLyServices.GetById<KhachHang>("KH_LE");
                     
                     if (khachLe == null)
                     {
