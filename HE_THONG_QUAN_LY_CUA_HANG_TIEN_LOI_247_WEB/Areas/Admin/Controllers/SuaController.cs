@@ -100,7 +100,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 nhaCungCapEntity.Ten = data.Ten;
                 nhaCungCapEntity.SoDienThoai = data.SoDienThoai;
-                nhaCungCapEntity.Email = data.Email;
+                nhaCungCapEntity.Email = data.Email.ToLower();
                 nhaCungCapEntity.DiaChi = data.DiaChi;
                 nhaCungCapEntity.MaSoThue = data.MaSoThue;
 
@@ -221,6 +221,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             return View(nv);
         }
         [HttpPut]
+        [Route("/API/NhanVien/Update")]
         public async Task<IActionResult> UpdateNhanVien([FromForm] NhanVienUpdateDto dto)
         {
             if (!ModelState.IsValid)
@@ -262,7 +263,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 nhanVien.ChucVu = dto.ChucVu;
                 nhanVien.LuongCoBan = (decimal)dto.LuongCoBan; 
                 nhanVien.SoDienThoai = dto.SoDienThoai;
-                nhanVien.Email = dto.Email;
+                nhanVien.Email = dto.Email.ToLower();
                 nhanVien.DiaChi = dto.DiaChi;
                 nhanVien.NgayVaoLam = dto.NgayVaoLam;
                 nhanVien.TrangThai = dto.TrangThai;
@@ -581,7 +582,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Cập nhật thông tin
                 khachHang.HoTen = request.HoTen;
                 khachHang.SoDienThoai = request.SoDienThoai;
-                khachHang.Email = request.Email;
+                khachHang.Email = request.Email.ToLower();
                 khachHang.DiaChi = request.DiaChi ?? "";
                 khachHang.NgayDangKy = request.NgayDangKy ?? khachHang.NgayDangKy;
                 khachHang.TrangThai = request.TrangThai ?? khachHang.TrangThai;
