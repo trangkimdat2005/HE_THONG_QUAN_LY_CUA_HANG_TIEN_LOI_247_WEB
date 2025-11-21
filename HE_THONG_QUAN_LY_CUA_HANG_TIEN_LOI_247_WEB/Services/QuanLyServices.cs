@@ -252,7 +252,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         {
             try
             {
-                string hashedPassword = /*password;*/ HashPassword(password);
+                string hashedPassword = password; /*HashPassword(password);*/
                 var user = _context.TaiKhoans.SingleOrDefault(t => t.TenDangNhap == username.ToLower().Trim() && t.MatKhauHash == hashedPassword && t.IsDelete == false);
                 return user;
             }
