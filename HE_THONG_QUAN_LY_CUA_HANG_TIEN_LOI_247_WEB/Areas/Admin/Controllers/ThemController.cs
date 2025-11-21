@@ -1598,12 +1598,15 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Console.WriteLine($"Using KhachHangId: {khachHangId}");
                 }
 
+                var NhanVienId = _quanLyServices.GetById<TaiKhoan>(User.FindFirst(ClaimTypes.NameIdentifier)?.Value).TaiKhoanNhanVien.NhanVienId;
+
+
                 // Tạo hóa đơn
                 HoaDon hoaDon = new HoaDon
                 {
                     Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6),
                     KhachHangId = khachHangId,
-                    NhanVienId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                    NhanVienId = NhanVienId,
                     NgayLap = request.NgayLap ?? DateTime.Now,
                     TrangThai = request.TrangThai ?? "Chưa thanh toán",
                     TongTien = 0, // Sẽ tính sau
