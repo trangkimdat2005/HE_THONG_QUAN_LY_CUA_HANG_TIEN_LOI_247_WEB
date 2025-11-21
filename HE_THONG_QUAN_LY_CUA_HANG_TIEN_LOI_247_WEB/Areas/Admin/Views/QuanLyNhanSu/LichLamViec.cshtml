@@ -32,23 +32,15 @@
             <div class="tile-body">
               <div class="row mb-3">
                 <div class="col-md-3">
-                  <label class="form-label">Tên nhân viên</label>
-                  <input
-                    class="form-control"
-                    type="text"
-                    placeholder="Tìm theo tên hoặc mã NV..."
-                  />
-                </div>
-                <div class="col-md-3">
                   <label class="form-label">Từ ngày</label>
-                  <input class="form-control" type="date" />
+                            <input class="form-control" type="date" id="min" />
                 </div>
                 <div class="col-md-3">
                   <label class="form-label">Đến ngày</label>
-                  <input class="form-control" type="date" />
+                            <input class="form-control" type="date" id="max" />
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                  <button class="btn btn-primary btn-add-khoi" type="button">
+                            <button class="btn btn-primary btn-add-khoi" type="button" id="btn-filter">
                     <i class="fas fa-filter"></i> Lọc
                   </button>
                 </div>
@@ -69,7 +61,7 @@
                       <th>Ghi Chú</th>
                     </tr>
                   </thead>
-                  <tbody>
+                            <tbody id="table-body-cham-cong">
                     @* <tr>
                       <td>CC001</td>
                       <td>John Doe</td>
@@ -103,6 +95,7 @@
         </div>
       </div>
     </main>
+<script src="~/assets/js/LicLamViecLoc.js" asp-append-version="true" defer></script>
 
 
 

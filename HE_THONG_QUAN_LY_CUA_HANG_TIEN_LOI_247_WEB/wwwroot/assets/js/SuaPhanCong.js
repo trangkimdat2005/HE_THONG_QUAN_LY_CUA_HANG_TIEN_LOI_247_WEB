@@ -61,4 +61,43 @@ $(document).ready(function () {
             }
         });
     });
+    const INDEX_COT_CA = 2;
+    const INDEX_COT_NGAY = 3; 
+
+    $.fn.dataTable.ext.search.push(
+        function (settings, data, dataIndex) {
+            var filterCa = $('#filter-ca').val();
+            var filterNgay = $('#filter-ngay').val(); 
+
+            var tableCa = data[INDEX_COT_CA] || "";
+            var tableNgay = data[INDEX_COT_NGAY] || ""; 
+
+            var checkCa = true;
+            if (filterCa !== "") {
+                if (tableCa !== filterCa) {
+                    checkCa = false;
+                }
+            }
+
+            var checkNgay = true;
+            if (filterNgay !== "") {
+                var parts = tableNgay.split("/");
+                if (parts.length === 3) {
+                    var formattedTableDate = parts[2] + "-" + parts[1] + "-" + parts[0];
+
+                    if (formattedTableDate !== filterNgay) {
+                        checkNgay = false;
+                    }
+                }
+            }
+
+            return checkCa && checkNgay;
+        }
+    );
+
+    var table = $('#sampleTable').DataTable();
+
+    $('#btn-loc-ca').click(function () {
+        table.draw();
+    });
 });

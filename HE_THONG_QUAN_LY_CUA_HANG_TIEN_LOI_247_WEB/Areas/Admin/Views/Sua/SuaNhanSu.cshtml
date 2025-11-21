@@ -22,8 +22,8 @@
   <main class="app-content">
     <div class="app-title">
       <div>
-        <h1><i class="bi bi-person-plus-fill"></i> Thêm Nhân Viên & Phân Ca</h1>
-        <p>Thêm nhân viên mới và xếp lịch làm việc ban đầu</p>
+        <h1><i class="bi bi-person-plus-fill"></i> Sửa thông tin nhân viên</h1>
+        <p>Sửa nhân viên mới và xếp lịch làm việc ban đầu</p>
       </div>
       <ul class="app-breadcrumb breadcrumb">
         <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
@@ -62,15 +62,6 @@
               <div class="mb-3">
                 <label class="form-label">Giới tính</label>
                 <div>
-                @*   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNam" value="Nam" checked>
-                    <label class="form-check-label" for="radioNam">Nam</label>
-                  </div>
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gioiTinh" id="radioNu" value="Nu">
-                    <label class="form-check-label" for="radioNu">Nữ</label>
-                  </div>
-                </div> *@
                                 @{
                                     bool isGT = Model.GioiTinh;
                                     if (isGT)
