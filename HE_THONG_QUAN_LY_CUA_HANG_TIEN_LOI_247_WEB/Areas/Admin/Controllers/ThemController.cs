@@ -2,6 +2,7 @@
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -1602,7 +1603,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6),
                     KhachHangId = khachHangId,
-                    NhanVienId = request.NhanVienId,
+                    NhanVienId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
                     NgayLap = request.NgayLap ?? DateTime.Now,
                     TrangThai = request.TrangThai ?? "Chưa thanh toán",
                     TongTien = 0, // Sẽ tính sau
