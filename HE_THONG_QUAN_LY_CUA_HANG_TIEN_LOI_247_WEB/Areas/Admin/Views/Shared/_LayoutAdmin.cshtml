@@ -135,6 +135,7 @@ https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.min.css
                     <li><a class="dropdown-item" ><i class="bi bi-gear me-2 fs-5"></i> Settings</a></li>
                     <li><a class="dropdown-item" asp-controller="ThongTinNhanVien" asp-action="ThongTinNhanVien"><i class="bi bi-person me-2 fs-5"></i> Profile</a></li>
                     <li>
+                        @Html.AntiForgeryToken()
                         <a class="dropdown-item" id="logout-user" style="display: block"><i class="bi bi-box-arrow-right me-2 fs-5"></i> Logout</a>
                     </li>
                 </ul>
