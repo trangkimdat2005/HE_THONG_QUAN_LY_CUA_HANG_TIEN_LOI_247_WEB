@@ -252,7 +252,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         {
             try
             {
-                string hashedPassword = password; /*HashPassword(password);*/
+                string hashedPassword = /*password;*/ HashPassword(password);
                 var user = _context.TaiKhoans.SingleOrDefault(t => t.TenDangNhap == username.ToLower().Trim() && t.MatKhauHash == hashedPassword && t.IsDelete == false);
                 if (user != null && user.TrangThai.Trim() == "Hoạt động")
                 {
@@ -278,12 +278,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 
         public bool VerifyPassword(string password, string hashedPassword)
         {
+            
             try
             {
-                if (string.IsNullOrEmpty(password) || string.IsNullOrEmpty(hashedPassword))
+                if (string.IsNullOrEmpty(HashPassword(password)) || string.IsNullOrEmpty(hashedPassword))
                 {
                     return false;
                 }
+                password = HashPassword(password);
 
                 return password == hashedPassword;
 
@@ -309,7 +311,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                     throw new ArgumentException("Mật khẩu mới phải có ít nhất 6 ký tự.");
                 }
 
-                var taiKhoan = _context.TaiKhoans.FirstOrDefault(t => t.Id == taiKhoanId && t.IsDelete == false);
+                var taiKhoan = GetById<TaiKhoan>(taiKhoanId);
 
                 if (taiKhoan == null)
                 {
@@ -321,7 +323,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                     throw new Exception("Mật khẩu hiện tại không đúng.");
                 }
 
-                taiKhoan.MatKhauHash = newPassword;
+                taiKhoan.MatKhauHash = HashPassword(newPassword); 
 
                 _context.SaveChanges();
                 return true;

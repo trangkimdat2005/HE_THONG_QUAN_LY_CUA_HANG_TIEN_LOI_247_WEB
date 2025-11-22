@@ -65,7 +65,7 @@
                                         List<NhanVien> nvs = ViewBag.lstNhanVien;
                                         foreach(var nv in nvs)
                                         {
-                                            bool isWorking = string.Equals(nv.TrangThai, "Đang làm", StringComparison.OrdinalIgnoreCase);
+                                            bool isWorking = string.Equals(nv.TrangThai, "Hoạt động", StringComparison.OrdinalIgnoreCase);
                                             <tr>
                                                 <td>@nv.Id</td>
                                                 <td>@nv.HoTen</td>

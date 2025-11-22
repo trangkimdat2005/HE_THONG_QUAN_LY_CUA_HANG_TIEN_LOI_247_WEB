@@ -31,7 +31,7 @@
                     <th>Mã Nhân Viên</th>
                     <th>Mã Khách Hàng</th>
                     <th>Tổng Tiền</th>
-                    <th>Trạng Thái</th>
+                    @* <th>Trạng Thái</th> *@
                     <th>Thao tác</th>
                   </tr>
                 </thead>
@@ -55,9 +55,7 @@
                           <td>@hd.NhanVienId</td>
                           <td>@hd.KhachHangId</td>
                           <td class="text-end fw-bold">@(hd.TongTien?.ToString("N0") ?? "0") đ</td>
-                          <td class="text-center">
-                            <span class="badge @statusClass">@statusText</span>
-                          </td>
+                          
                           <td class="text-center">
                             <a class="btn btn-info btn-sm" 
                                asp-controller="QuanLyDonHang" 
