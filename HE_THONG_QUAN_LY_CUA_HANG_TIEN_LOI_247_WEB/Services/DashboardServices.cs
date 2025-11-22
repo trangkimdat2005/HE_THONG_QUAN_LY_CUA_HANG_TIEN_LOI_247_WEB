@@ -21,9 +21,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 TongNhanVien = _context.NhanViens.Count(n => !n.IsDelete),
                 TongSanPham = _context.SanPhams.Count(s => !s.IsDelete),
                 TongHoaDon = _context.HoaDons.Count(h => !h.IsDelete),
-                TongDoanhThu = _context.HoaDons
-                    .Where(h => !h.IsDelete)
-                    .Sum(h => h.TongTien ?? 0),
+                TongDoanhThu = _context.ChiTietHoaDons
+                    .Where(ct => !ct.IsDelete && !ct.HoaDon.IsDelete)
+                    .Sum(ct => ct.SoLuong * ct.DonGia),
                 DonChoXuLy = _context.HoaDons
                     .Count(h => !h.IsDelete && h.TrangThai == "ChoXuLy")
             };
@@ -60,11 +60,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
             for (int i = days - 1; i >= 0; i--)
             {
                 var ngay = DateTime.Now.AddDays(-i).Date;
-                var ngayOnly = DateOnly.FromDateTime(ngay);
 
-                var doanhThu = _context.HoaDons
-                    .Where(h => !h.IsDelete && DateOnly.FromDateTime(h.NgayLap) == ngayOnly)
-                    .Sum(h => h.TongTien ?? 0);
+                // L?y doanh thu t? ChiTietHoaDons thay vì HoaDons
+                var doanhThu = _context.ChiTietHoaDons
+                    .Where(ct => !ct.IsDelete 
+                        && !ct.HoaDon.IsDelete 
+                        && DateOnly.FromDateTime(ct.HoaDon.NgayLap) == DateOnly.FromDateTime(ngay))
+                    .Sum(ct => ct.SoLuong * ct.DonGia);
 
                 revenueList.Add(new DailyRevenueViewModel
                 {

@@ -191,10 +191,16 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // Dữ liệu doanh thu 7 ngày
-        var doanhThuData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["DoanhThu7Ngay"]));
+        var doanhThuData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(ViewData["DoanhThu7Ngay"], new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
         
+        console.log('Dữ liệu doanh thu:', doanhThuData); // Debug để kiểm tra dữ liệu
+        
+        // Sử dụng lowercase để khớp với JSON camelCase serialization
         var labels = doanhThuData.map(item => item.ngay);
         var data = doanhThuData.map(item => item.doanhThu);
+        
+        console.log('Labels:', labels); // Debug
+        console.log('Data:', data); // Debug
         
         var ctx = document.getElementById('revenueChart').getContext('2d');
         var chart = new Chart(ctx, {
