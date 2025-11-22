@@ -42,12 +42,12 @@
                       List<HoaDon> hoaDons = ViewData["lstHoaDon"] as List<HoaDon>;
                       foreach (HoaDon hd in hoaDons)
                       {
-                        var statusClass = hd.TrangThai == "DaThanhToan" ? "bg-success" 
-                                        : hd.TrangThai == "ChuaThanhToan" ? "bg-warning" 
+                        var statusClass = hd.TrangThai == "Đã thanh toán" ? "bg-success" 
+                                        : hd.TrangThai == "Chưa thanh toán" ? "bg-warning" 
                                         : "bg-danger";
-                        var statusText = hd.TrangThai == "DaThanhToan" ? "Đã Thanh Toán" 
-                                       : hd.TrangThai == "ChuaThanhToan" ? "Chưa Thanh Toán" 
-                                       : "Đã Hủy";
+                                            var statusText = hd.TrangThai == "Đã thanh toán" ? "Đã Thanh Toán"
+                                            : hd.TrangThai == "Chưa thanh toán" ? "Chưa Thanh Toán"
+                                            : "Chưa Thanh Toán";
 
                         <tr>
                           <td>@hd.Id</td>
