@@ -47,12 +47,12 @@
         if (qrPanel) qrPanel.classList.add('d-none');
         
         // Hiện panel được chọn
-        if (normalizedType === 'tienmat' && cashPanel) {
-            cashPanel.classList.remove('d-none');
-            console.log('✅ Cash panel visible');
-        } else if (normalizedType !== 'tienmat' && qrPanel) {
+        if (normalizedType === 'qr' && cashPanel) {
             qrPanel.classList.remove('d-none');
             console.log('✅ QR panel visible');
+        } else if (normalizedType !== 'qr' && qrPanel) {
+            cashPanel.classList.remove('d-none');
+            console.log('✅ Cash panel visible');
         }
     }
 
@@ -118,7 +118,7 @@
         completePaymentBtnCash.addEventListener('click', function () {
             const normalizedType = selectedKenhThanhToanType.replace(/_/g, '').toLowerCase();
             
-            if (normalizedType !== 'tienmat') {
+            if (normalizedType !== 'tiền mặt') {
                 alert('Vui lòng chọn phương thức thanh toán Tiền Mặt!');
                 return;
             }
@@ -139,7 +139,7 @@
         completePaymentBtnQr.addEventListener('click', function () {
             const normalizedType = selectedKenhThanhToanType.replace(/_/g, '').toLowerCase();
             
-            if (normalizedType === 'tienmat') {
+            if (normalizedType === 'tiền mặt') {
                 alert('Vui lòng chọn phương thức thanh toán QR!');
                 return;
             }
@@ -223,7 +223,7 @@
         // Tìm nút Tiền Mặt (hỗ trợ cả "TienMat" và "tien_mat")
         const cashButton = Array.from(paymentMethodButtons).find(btn => {
             const type = (btn.dataset.type || '').replace(/_/g, '').toLowerCase().trim();
-            return type === 'tienmat';
+            return type === 'tiền mặt';
         });
 
         if (cashButton) {
