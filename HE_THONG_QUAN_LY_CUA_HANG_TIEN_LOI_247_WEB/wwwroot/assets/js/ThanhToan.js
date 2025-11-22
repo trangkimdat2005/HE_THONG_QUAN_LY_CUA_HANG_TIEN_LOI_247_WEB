@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formId.readOnly = false;
             form.reset();
             formPhiGiaoDich.value = '0.00';
-            formTrangThai.value = 'Active';
+            formTrangThai.value = 'Hoạt động';
             callApiGetNextIdKenh();
         } else if (mode === 'edit') {
             isEditMode = true;
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
             tbody.innerHTML = ''; // Xóa toàn bộ dữ liệu cũ
             
             data.forEach(kenh => {
-                const trangThaiBadge = kenh.trangThai === 'Active'
+                const trangThaiBadge = kenh.trangThai === 'Hoạt động'
                     ? '<span class="badge bg-success">Hoạt động</span>'
                     : '<span class="badge bg-danger">Không hoạt động</span>';
 
@@ -294,7 +294,7 @@ $(async function () {
             tableId: 'sampleTable',
             tbodyId: 'tbody-kenh-thanh-toan',
             buildRow: kenh => {
-                const trangThaiBadge = kenh.trangThai === 'Active'
+                const trangThaiBadge = kenh.trangThai === 'Hoạt động'
                     ? '<span class="badge bg-success">Hoạt động</span>'
                     : '<span class="badge bg-danger">Không hoạt động</span>';
 
