@@ -90,7 +90,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             // Load danh sách mã khuyến mãi đang active
             var lstMaKhuyenMai = _quanLyServices.GetList<MaKhuyenMai>()
-                .Where(mkm => !mkm.IsDelete && mkm.TrangThai == "Active")
+                .Where(mkm => !mkm.IsDelete && mkm.TrangThai == "Hoạt động")
                 .ToList();
 
             ViewData["DanhSachKhachHang"] = lstKhachHang;
@@ -1284,7 +1284,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Email = request.Email.ToLower(),
                     DiaChi = request.DiaChi ?? "",
                     NgayDangKy = request.NgayDangKy ?? DateTime.Now,
-                    TrangThai = request.TrangThai ?? "Active",
+                    TrangThai = request.TrangThai ?? "Hoạt động",
                     GioiTinh = request.GioiTinh,
                     AnhId = anhId,
                     IsDelete = false
@@ -1481,7 +1481,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 var maKhuyenMai = _quanLyServices.GetList<MaKhuyenMai>()
                     .FirstOrDefault(mkm => mkm.Code == request.MaGiamGia && 
                                           !mkm.IsDelete && 
-                                          mkm.TrangThai == "Active");
+                                          mkm.TrangThai == "Hoạt động");
 
                 if (maKhuyenMai == null)
                 {
@@ -1600,7 +1600,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             Email = null,
                             DiaChi = "",
                             NgayDangKy = DateTime.Now,
-                            TrangThai = "Active",
+                            TrangThai = "Hoạt động",
                             GioiTinh = false,
                             AnhId = "ANH_DEFAULT",
                             IsDelete = false

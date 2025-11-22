@@ -13,8 +13,8 @@
     var hangGold = theThanhVien?.Hang == "Vàng" ? "selected" : "";
     var hangPlatinum = theThanhVien?.Hang == "Bạch Kim" ? "selected" : "";
 
-    var trangThaiActive = Model.TrangThai == "Active" ? "selected" : "";
-    var trangThaiInactive = Model.TrangThai == "Inactive" ? "selected" : "";
+    var trangThaiActive = Model.TrangThai == "Hoạt động" ? "selected" : "";
+    var trangThaiInactive = Model.TrangThai == "Không hoạt động" ? "selected" : "";
 }
 
 <link rel="stylesheet" href="~/assets/lib/select2/dist/css/select2.min.css">
@@ -97,8 +97,8 @@
                         <div class="mb-3">
                             <label class="form-label">Trạng thái</label>
                             <select class="form-select" id="trang-thai">
-                                <option value="Active" @trangThaiActive>Active (Hoạt động)</option>
-                                <option value="Inactive" @trangThaiInactive>Inactive (Không hoạt động)</option>
+                                <option value="Hoạt động" @trangThaiActive>Hoạt động</option>
+                                <option value="Không hoạt động" @trangThaiInactive>Không hoạt động</option>
                             </select>
                         </div>
 

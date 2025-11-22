@@ -80,7 +80,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             // Load danh sách kênh thanh toán
             var lstKenhThanhToan = _quanLySevices.GetList<KenhThanhToan>()
-                .Where(k => !k.IsDelete && k.TrangThai == "Active")
+                .Where(k => !k.IsDelete && k.TrangThai == "Hoạt động")
                 .ToList();
 
             ViewData["HoaDon"] = hoaDon;

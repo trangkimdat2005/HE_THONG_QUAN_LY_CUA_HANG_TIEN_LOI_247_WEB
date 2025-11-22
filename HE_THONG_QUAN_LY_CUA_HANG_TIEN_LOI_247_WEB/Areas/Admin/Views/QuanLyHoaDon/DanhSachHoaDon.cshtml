@@ -96,9 +96,7 @@
 														<i class="fas fa-edit"></i>
 													</a>
 													*@
-
-													@if (!trangThaiGoc.Contains("Đã thanh toán", StringComparison.OrdinalIgnoreCase) &&
-																							!trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
+													@if (trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
 													{
 														<a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
 															<i class="bi bi-wallet"></i>

@@ -46,8 +46,8 @@
                             bool isFirstCashButton = true;
                             foreach (var kenh in lstKenhThanhToan)
                             {
-                                var isActiveCash = kenh.LoaiKenh == "tienmat" && isFirstCashButton ? "active" : "";
-                                if (kenh.LoaiKenh == "tienmat" && isFirstCashButton)
+                                var isActiveCash = kenh.LoaiKenh == "tiền mặt" && isFirstCashButton ? "active" : "";
+                                if (kenh.LoaiKenh == "tiền mặt" && isFirstCashButton)
                                 {
                                     isFirstCashButton = false;
                                 }
@@ -56,7 +56,7 @@
                                         data-id="@kenh.Id"
                                         data-type="@kenh.LoaiKenh"
                                         data-name="@kenh.TenKenh">
-                                    @if (kenh.LoaiKenh == "tienmat")
+                                    @if (kenh.LoaiKenh == "tiền mặt")
                                     {
                                         <i class="bi bi-cash-stack me-2"></i>
                                     }
