@@ -17,7 +17,26 @@
     let appliedDiscount = null;
     let discountValue = 0;
     let draftInvoices = JSON.parse(localStorage.getItem('draftInvoices') || '[]');
-
+    function removeVietnameseTones(str) {
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/đ/g, "d");
+        str = str.replace(/À|Á|Ạ|Ả|Ã|Â|Ầ|Ấ|Ậ|Ẩ|Ẫ|Ă|Ằ|Ắ|Ặ|Ẳ|Ẵ/g, "A");
+        str = str.replace(/È|É|Ẹ|Ẻ|Ẽ|Ê|Ề|Ế|Ệ|Ể|Ễ/g, "E");
+        str = str.replace(/Ì|Í|Ị|Ỉ|Ĩ/g, "I");
+        str = str.replace(/Ò|Ó|Ọ|Ỏ|Õ|Ô|Ồ|Ố|Ộ|Ổ|Ỗ|Ơ|Ờ|Ớ|Ợ|Ở|Ỡ/g, "O");
+        str = str.replace(/Ù|Ú|Ụ|Ủ|Ũ|Ư|Ừ|Ứ|Ự|Ử|Ữ/g, "U");
+        str = str.replace(/Ỳ|Ý|Ỵ|Ỷ|Ỹ/g, "Y");
+        str = str.replace(/Đ/g, "D");
+        // Bỏ các ký tự đặc biệt nếu cần
+        str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "");
+        str = str.replace(/\u02C6|\u0306|\u031B/g, "");
+        return str.trim().toLowerCase();
+    }
     // === ELEMENTS ===
     const productList = document.getElementById('product-list');
     const invoiceBody = document.getElementById('invoice-items-body');
@@ -57,39 +76,43 @@
 
     // === 1. LỌC SẢN PHẨM (TỐI ƯU) ===
     function filterProducts() {
-        // Lấy giá trị từ ô tìm kiếm và dropdown
-        const searchText = searchInput.value.toLowerCase().trim();
-        const category = categorySelect.value; // Dùng .value vẫn đúng
+        const rawKeyword = searchInput.value;
+        // Kiểm tra null trước khi xử lý
+        const searchText = rawKeyword ? removeVietnameseTones(rawKeyword) : "";
+
+        const category = categorySelect.value;
         const allProducts = productList.querySelectorAll('.product-item');
 
         let visibleCount = 0;
 
         allProducts.forEach(product => {
-            const productName = product.getAttribute('data-product-name')?.toLowerCase() || '';
-            const productId = product.getAttribute('data-product-id')?.toLowerCase() || '';
+            const rawName = product.getAttribute('data-product-name') || '';
+            const rawId = product.getAttribute('data-product-id') || '';
             const productCategory = product.getAttribute('data-category') || '';
 
-            // 1. Kiểm tra tìm kiếm
-            const matchesSearch = !searchText ||
-                productName.includes(searchText) ||
-                productId.includes(searchText);
+            const nameNormalized = removeVietnameseTones(rawName);
+            const idNormalized = removeVietnameseTones(rawId);
 
-            // 2. Kiểm tra danh mục
+            const matchesSearch = !searchText ||
+                nameNormalized.includes(searchText) ||
+                idNormalized.includes(searchText);
+
             const matchesCategory = !category || productCategory === category;
 
-            // 3. Ẩn/Hiện
             if (matchesSearch && matchesCategory) {
-                product.style.display = ''; // Dùng '' thay vì 'flex'
+                // HIỆN: Xóa d-none, Thêm lại d-flex để giữ layout đẹp
+                product.classList.remove('d-none');
+                product.classList.add('d-flex');
                 visibleCount++;
             } else {
-                product.style.display = 'none';
+                // ẨN: Xóa d-flex (để tránh xung đột), Thêm d-none
+                product.classList.remove('d-flex');
+                product.classList.add('d-none');
             }
         });
 
-        // Cập nhật thông báo "Không tìm thấy"
         updateProductListMessage(visibleCount);
     }
-
     function updateProductListMessage(count) {
         let messageEl = productList.querySelector('.no-products-message');
 
@@ -107,7 +130,6 @@
         }
     }
 
-    // === GẮN SỰ KIỆN LỌC ===
     const debouncedFilter = debounce(filterProducts, 300);
     searchInput.addEventListener('input', debouncedFilter);
 
