@@ -119,11 +119,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
 
             if (user == null)
             {
-                return Json(new { success = true }); // Bảo mật: không báo lỗi nếu sai email
+                return Json(new { success = true }); // để cho hacker không tạo tool dò email=)))
             }
 
             // 2. Tạo mật khẩu mới ngẫu nhiên
-            string newPassword = GenerateRandomPassword();
+            string newPassword = _quanLyServices.GenerateRandomPassword();
 
             // 3. Mã hóa Base64 để truyền qua URL an toàn (đây CHƯA PHẢI là Hash lưu DB)
             string encodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(newPassword));
@@ -176,12 +176,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
             {
                 return RedirectToAction("Login", new { status = "error" });
             }
-        }
-
-        // Hàm random (giữ nguyên hoặc dùng hàm Helper nếu có)
-        private string GenerateRandomPassword()
-        {
-            return "MatKhauMoi123@"; // Bạn nhớ thay bằng logic random thật nhé
         }
     }
 }

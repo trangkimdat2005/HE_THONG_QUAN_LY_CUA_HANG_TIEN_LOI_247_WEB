@@ -371,6 +371,52 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 return false;
             }
         }
+        public string GenerateRandomPassword()
+        {
+            string[] randomChars = new[] {
+            "ABCDEFGHJKLMNOPQRSTUVWXYZ",
+            "abcdefghijkmnopqrstuvwxyz",
+            "0123456789",
+            "!@$?"
+        };
+            Random rand = new Random();
+            List<char> chars = new List<char>();
+
+            chars.Insert(rand.Next(0, chars.Count), randomChars[0][rand.Next(0, randomChars[0].Length)]);
+            chars.Insert(rand.Next(0, chars.Count), randomChars[1][rand.Next(0, randomChars[1].Length)]);
+            chars.Insert(rand.Next(0, chars.Count), randomChars[2][rand.Next(0, randomChars[2].Length)]);
+            chars.Insert(rand.Next(0, chars.Count), randomChars[3][rand.Next(0, randomChars[3].Length)]);
+
+            for (int i = chars.Count; i < 10; i++)
+            {
+                string rcs = randomChars[rand.Next(0, randomChars.Length)];
+                chars.Insert(rand.Next(0, chars.Count), rcs[rand.Next(0, rcs.Length)]);
+            }
+
+            return new string(chars.ToArray());
+        }
+        public PhanCongCaLamViec GetPhanCong(string nhanVienId, DateTime ngay)
+        {
+            try
+            {
+                return _context.PhanCongCaLamViecs
+                               .FirstOrDefault(p => p.NhanVienId == nhanVienId
+                                                 && p.Ngay.Date == ngay.Date
+                                                 && !p.IsDelete);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error finding PhanCong: {ex.Message}");
+                return null;
+            }
+        }
+        public PhanCongCaLamViec GetPhanCongByDate(string nhanVienId, DateTime ngay)
+        {
+            return _context.PhanCongCaLamViecs
+                           .FirstOrDefault(p => p.NhanVienId == nhanVienId
+                                             && p.Ngay.Date == ngay.Date
+                                             && !p.IsDelete);
+        }
     }
 
 }

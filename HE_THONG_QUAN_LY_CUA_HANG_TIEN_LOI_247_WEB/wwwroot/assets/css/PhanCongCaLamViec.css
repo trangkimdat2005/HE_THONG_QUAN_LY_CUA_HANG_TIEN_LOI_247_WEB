@@ -1,0 +1,58 @@
+﻿.bg-header-custom {
+    background-color: #2c82c9; /* Màu xanh dương giống hình */
+    color: white;
+}
+
+/* Toolbar điều khiển */
+.control-toolbar {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-bottom: none; /* Liền mạch với bảng */
+}
+
+/* Tùy chỉnh bảng */
+.assignment-table thead th {
+    background-color: #3598dc; /* Màu xanh nhạt hơn header chút */
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    border-color: #5faee3;
+    padding: 15px 5px;
+}
+
+.assignment-table tbody td:first-child {
+    background-color: #f5f5f5; /* Màu xám nhạt cho cột tên ca */
+    font-weight: 600;
+    vertical-align: middle;
+    width: 180px;
+}
+
+.assignment-table tbody td {
+    text-align: center;
+    vertical-align: middle;
+    height: 60px;
+    border: 1px solid #eee;
+}
+
+/* Checkbox to và đẹp hơn */
+.custom-checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Ô bị disable (quá khứ) */
+.cell-disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+.date-display-box {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    background: #f8f9fa;
+    margin: 0 5px;
+    font-weight: 500;
+}

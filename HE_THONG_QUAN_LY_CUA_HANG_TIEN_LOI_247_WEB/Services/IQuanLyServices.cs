@@ -35,6 +35,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         public bool ChangePassword(string taiKhoanId, string oldPassword, string newPassword);
         public TaiKhoan GetByEmail(string email);
         public bool ResetPassword(string email, string newPasswordPlain);
-        //public string HashPassword(string password);
+        public string GenerateRandomPassword();
+        public PhanCongCaLamViec GetPhanCong(string nhanVienId, DateTime ngay);
+        public PhanCongCaLamViec GetPhanCongByDate(string nhanVienId, DateTime ngay);
     }
 }
