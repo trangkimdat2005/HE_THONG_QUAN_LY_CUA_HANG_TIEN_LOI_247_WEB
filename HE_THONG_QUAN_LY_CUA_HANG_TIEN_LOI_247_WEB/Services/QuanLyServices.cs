@@ -334,6 +334,43 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 throw;
             }
         }
+        public TaiKhoan GetByEmail(string email)
+        {
+            try
+            {
+                // Tìm tài khoản theo email, chưa bị xóa
+                return _context.TaiKhoans.FirstOrDefault(t => t.Email == email && t.IsDelete == false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting user by email: {ex.Message}");
+                return null;
+            }
+        }
+
+        public bool ResetPassword(string email, string newPasswordPlain)
+        {
+            try
+            {
+                var user = GetByEmail(email);
+                if (user == null) return false;
+
+                // Băm mật khẩu mới bằng hàm có sẵn của bạn
+                string newHash = HashPassword(newPasswordPlain);
+
+                user.MatKhauHash = newHash;
+
+                // Cập nhật vào DB
+                _context.Update(user);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error resetting password: {ex.Message}");
+                return false;
+            }
+        }
     }
 
 }
