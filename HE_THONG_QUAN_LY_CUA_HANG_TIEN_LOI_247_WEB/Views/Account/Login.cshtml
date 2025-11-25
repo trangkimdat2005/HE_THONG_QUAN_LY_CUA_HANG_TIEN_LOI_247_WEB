@@ -36,26 +36,26 @@
                     <label class="form-label">Mật Khẩu</label>
                     <input class="form-control" type="password" id="password" placeholder="Mật khẩu">
                 </div>
-                @* <div class="mb-3">
+                <div class="mb-3">
                     <div class="utility">
                         <p class="semibold-text text-end"><a href="#" data-toggle="flip">Quên Mật Khẩu ?</a></p>
                     </div>
-                </div> *@
+                </div>
                 <div class="mb-3 btn-container d-grid">
                     <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-box-arrow-in-right me-2 fs-5"></i>ĐĂNG NHẬP</button>
                 </div>
             </form>
-            <form class="forget-form">
-                <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>Forgot Password ?</h3>
+            <form class="forget-form" id="forgot_form">
+                <h3 class="login-head"><i class="bi bi-person-lock me-2"></i>Quên mật khẩu rồi ?</h3>
                 <div class="mb-3">
-                    <label class="form-label">Tên Đăng Nhập</label>
-                    <input class="form-control" type="text" placeholder="Tên đăng nhập">
+                    <label class="form-label">Email của bạn</label>
+                    <input class="form-control" type="text" id="forgot_email" placeholder="Nhập email">
                 </div>
                 <div class="mb-3 btn-container d-grid">
-                    <button class="btn btn-primary btn-block"><i class="bi bi-unlock me-2 fs-5"></i>RESET</button>
+                    <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-unlock me-2 fs-5"></i>Gửi</button>
                 </div>
                 <div class="mb-3 mt-3">
-                    <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="bi bi-chevron-left me-1"></i> Back to Login</a></p>
+                    <p class="semibold-text mb-0"><a href="#" data-toggle="flip"><i class="bi bi-chevron-left me-1"></i> Trở về trang đăng nhập</a></p>
                 </div>
             </form>
         </div>
@@ -65,7 +65,6 @@
     <script src="~/assets/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/assets/lib/bootstrap/js/main.js"></script>
     <script src="~/assets/js/Login.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.3/dist/sweetalert2.all.min.js"></script>
     <script type="text/javascript">
         // Login Page Flipbox control
@@ -74,5 +73,6 @@
           return false;
         });
     </script>
+    <script src="~/assets/js/QuenMK.js"></script>
 </body>
 </html>
