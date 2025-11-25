@@ -1,103 +1,90 @@
 @using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
-
 @{
-
     ViewData["title"] = "Lịch Làm Việc";
+    var lstNhanVien = ViewData["lstNhanVien"] as List<NhanVien>;
 }
-  <!-- Main sidebar ở đây nha -->
 
+<link href="~/assets/css/LichLamViec.css" rel="stylesheet">
 
-
-
-
-
-    <main class="app-content">
-      <div class="app-title">
+<main class="app-content">
+    <div class="app-title">
         <div>
-          <h1>
-            <i class="bi bi-calendar-check"></i> Chấm Công
-          </h1>
-          <p>Theo dõi lịch sử chấm công của nhân viên</p>
+            <h1><i class="bi bi-calendar-week"></i> Lịch Làm Việc Nhân Viên</h1>
+            <p>Xem và quản lý phân công theo tuần</p>
         </div>
         <ul class="app-breadcrumb breadcrumb side">
-          <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-          <li class="breadcrumb-item">Quản lý nhân sự</li>
-          <li class="breadcrumb-item active"><a href="#">Lịch làm việc</a></li>
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Quản lý nhân sự</li>
+            <li class="breadcrumb-item active"><a href="#">Lịch làm việc</a></li>
         </ul>
-      </div>
+    </div>
 
-      <div class="row">
+    <div class="row">
         <div class="col-md-12">
-          <div class="tile">
-            <div class="tile-body">
-              <div class="row mb-3">
-                <div class="col-md-3">
-                  <label class="form-label">Từ ngày</label>
-                            <input class="form-control" type="date" id="min" />
+            <div class="tile">
+                <div class="tile-title-w-btn bg-primary text-white p-3 rounded-top mb-0">
+                    <h3 class="title mb-0 text-uppercase fs-5">Lịch làm việc nhân viên</h3>
                 </div>
-                <div class="col-md-3">
-                  <label class="form-label">Đến ngày</label>
-                            <input class="form-control" type="date" id="max" />
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                            <button class="btn btn-primary btn-add-khoi" type="button" id="btn-filter">
-                    <i class="fas fa-filter"></i> Lọc
-                  </button>
-                </div>
-              </div>
 
-              <div class="table-responsive">
-                <table
-                  class="table table-hover table-bordered"
-                  id="sampleTable"
-                >
-                  <thead>
-                    <tr>
-                      <th>Mã Chấm Công</th>
-                      <th>Tên Nhân Viên</th>
-                      <th>Ngày</th>
-                      <th>Giờ Vào</th>
-                      <th>Giờ Ra</th>
-                      <th>Ghi Chú</th>
-                    </tr>
-                  </thead>
-                            <tbody id="table-body-cham-cong">
-                    @* <tr>
-                      <td>CC001</td>
-                      <td>John Doe</td>
-                      <td>02/11/2025</td>
-                      <td>07:58:10</td>
-                      <td>17:02:30</td>
-                      <td>(Không)</td>
-                    </tr> *@
-                                @{
-                                    if (ViewData["lstChamCong"] != null)
-                                    {
-                                        List<ChamCong> ccs = ViewBag.lstChamCong;
-                                        foreach(var cc in ccs)
+                <div class="tile-body border border-top-0 p-3">
+                    <div class="filter-toolbar">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 mb-2 mb-md-0">
+                                <div class="d-flex align-items-center">
+                                    <label class="fw-bold me-2 text-nowrap">Nhân viên:</label>
+                                    <select class="form-select" id="employeeSelect">
+                                        <option value="all">--- Tất cả nhân viên ---</option>
+                                        @if (lstNhanVien != null)
                                         {
-                                            <tr>
-                                                <td>@cc.Id</td>
-                                                <td>@cc.NhanVien.HoTen</td>
-                                                <td>@cc.Ngay.ToString("dd/MM/yyyy")</td>
-                                                <td>@cc.GioVao</td>
-                                                <td>@cc.GioRa</td>
-                                                <td>@(cc.GhiChu == "" ? "(Không)" : cc.GhiChu)</td>
-                                            </tr>
+                                            foreach (var nv in lstNhanVien)
+                                            {
+                                                <option value="@nv.Id">@nv.HoTen - @nv.Id</option>
+                                            }
                                         }
-                                    }
-                                }
-                  </tbody>
-                </table>
-              </div>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-5 mb-2 mb-md-0">
+                                <div class="date-navigator">
+                                    <button class="btn btn-outline-secondary btn-sm" id="btnPrevWeek">Tuần trước</button>
+                                    <div class="date-display">
+                                        <i class="bi bi-calendar3 me-2"></i>
+                                        <span id="dateRangeDisplay">...</span>
+                                    </div>
+                                    <button class="btn btn-outline-secondary btn-sm" id="btnNextWeek">Tuần sau</button>
+                                </div>
+                            </div>
+
+                            @* <div class="col-md-3 text-end">
+                                <button class="btn btn-success w-100" id="btnFilter">
+                                    <i class="bi bi-search me-1"></i> Xem lịch
+                                </button>
+                            </div> *@
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <a class="btn btn-success me-2" asp-controller="QuanLyNhanSu" asp-action="PhanCongCaLamViec">
+                            <i class="bi bi-pencil-square"></i> Chỉnh sửa lịch
+                        </a>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered calendar-table mb-0" id="scheduleTable">
+                            <thead>
+                                <tr id="headerRow">
+                                    <th>Ca làm việc</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyRows">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </main>
+    </div>
+</main>
+
 <script src="~/assets/js/LicLamViecLoc.js" asp-append-version="true" defer></script>
-
-
-
-
-

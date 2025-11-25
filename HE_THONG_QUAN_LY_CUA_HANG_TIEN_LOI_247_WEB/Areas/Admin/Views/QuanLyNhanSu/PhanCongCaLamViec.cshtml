@@ -3,123 +3,80 @@
 @{
 
     ViewData["title"] = "Phân Công Ca Làm Việc";
+    var lstNhanVien = ViewData["lstNhanVien"] as List<NhanVien> ?? new List<NhanVien>();
 }
   <!-- Main sidebar ở đây nha -->
+<link href="~/assets/css/phancongcalamviec.css" rel="stylesheet">
 
 
-
-
-
-
-    <main class="app-content">
-      <div class="app-title">
+<main class="app-content">
+    <div class="app-title">
         <div>
-          <h1><i class="bi bi-calendar-plus"></i> Phân Công Ca Làm Việc</h1>
-          <p>Sắp xếp lịch làm việc cho nhân viên</p>
+            <h1><i class="bi bi-calendar-check"></i> Phân Công Ca Làm Việc</h1>
+            <p>Chế độ chỉnh sửa chi tiết</p>
         </div>
-        <ul class="app-breadcrumb breadcrumb side">
-          <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
-          <li class="breadcrumb-item">Quản lý nhân sự</li>
-          <li class="breadcrumb-item active">
-            <a href="#">Phân công ca làm việc</a>
-          </li>
+        <ul class="app-breadcrumb breadcrumb">
+            <li class="breadcrumb-item"><i class="bi bi-house-door fs-6"></i></li>
+            <li class="breadcrumb-item">Quản lý nhân sự</li>
+            <li class="breadcrumb-item active"><a href="#">Phân công ca</a></li>
         </ul>
-      </div>
+    </div>
 
-      <div class="row">
+    <div class="row">
         <div class="col-md-12">
-          <div class="tile">
-            <div
-              class="tile-title-w-btn d-flex justify-content-between align-items-center"
-            >
-              <h3 class="title" style="margin-bottom: 0">Lịch Phân Công</h3>
-                    <a class="btn btn-primary btn-add-khoi" asp-controller="Them" asp-action="ThemPhanCongCaLamViec" >
-                <i class="fas fa-plus"></i> Thêm phân công mới
-              </a>
-            </div>
+            <div class="tile p-0">
+                <div class="bg-header-custom p-3">
+                    <h4 class="m-0 text-uppercase fs-5">Phân công ca làm việc</h4>
+                </div>
 
-            <div class="tile-body" >
-              <div class="row mb-3">
-                <div class="col-md-3">
-                  <label class="form-label">Tên ca</label>
-                            <select class="form-select" id="filter-ca">
-                    <option value="">Tất cả các ca</option>
-                                @{
-                                    if (ViewData["lstCaLamViec"] != null)
-                                    {
-                                        List<CaLamViec> clvs = ViewBag.lstCaLamViec;
-                                        foreach(var clv in clvs)
-                                        {
-                                            <option value="@clv.TenCa">@clv.TenCa</option>
-                                        }
-                                    }
+                <div class="control-toolbar">
+                    <div class="row align-items-center">
+                        <div class="col-md-5 d-flex align-items-center mb-2 mb-md-0">
+                            <label class="fw-bold me-2 text-nowrap">Chọn NV:</label>
+                            <select class="form-select w-75" id="employeeSelect">
+                                @foreach (var nv in lstNhanVien)
+                                {
+                                    <option value="@nv.Id">@nv.Id - @nv.HoTen</option>
                                 }
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label class="form-label">Chọn ngày</label>
-                            <input class="form-control" type="date" id="filter-ngay" />
-                </div>
-                <div class="col-md-3 d-flex align-items-end">
-                            <button class="btn btn-primary btn-add-khoi" type="button" id="btn-loc-ca">
-                    <i class="fas fa-filter"></i> Lọc
-                  </button>
-                </div>
-              </div>
+                            </select>
+                        </div>
 
-              <div class="table-responsive">
-                <table
-                  class="table table-hover table-bordered"
-                  id="sampleTable"
-                >
-                  <thead>
-                    <tr>
-                      <th>Ngày</th>
-                      <th>Tên Nhân Viên</th>
-                      <th>Tên Ca</th>
-                      <th>Giờ Bắt Đầu</th>
-                      <th>Giờ Kết Thúc</th>
-                      <th>Thao tác</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                                @{
-                                    if (ViewData["lstPhanCong"] != null)
-                                    {
-                                        List<PhanCongCaLamViec> pcs = ViewBag.lstPhanCong;
-                                        foreach (var pc in pcs)
-                                        {
-                                            <tr>
-                                                <td>@pc.Ngay</td>
-                                                <td>@pc.NhanVien.HoTen</td>
-                                                <td>@pc.CaLamViec.TenCa</td>
-                                                <td>@pc.CaLamViec.ThoiGianBatDau</td>
-                                                <td>@pc.CaLamViec.ThoiGianKetThuc</td>
-                                                <td class="text-center">
-                                                    <a class="btn btn-info btn-sm me-1 btn-edit-khoi " 
-                                                       asp-controller="Sua" asp-action="SuaPhanCongCaLamViec" asp-route-id="@pc.Id"
-                                                       title="Sửa">
-                                                        <i class="fas fa-edit"></i>
-                                                    </a>
-                                                    <a class="btn btn-danger btn-sm btn-delete-khoi btn-xoa-phan-cong" data-id="@pc.Id" href="#" title="Xóa">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                }
-       
-             
-                  </tbody>
-                </table>
-              </div>
+                        <div class="col-md-4 text-center mb-2 mb-md-0">
+                            <button class="btn btn-outline-secondary btn-sm" id="btnPrevWeek">Tuần trước</button>
+                            <div class="date-display-box" id="currentWeekDisplay">...</div>
+                            <button class="btn btn-outline-secondary btn-sm" id="btnNextWeek">Tuần sau</button>
+                        </div>
+
+                        <div class="col-md-3 text-end">
+                            <button class="btn btn-info text-white me-1" id="btnAutoAssign" title="Lấy lịch tuần trước">
+                                <i class="bi bi-magic"></i> Tự động
+                            </button>
+                            <button class="btn btn-success me-1" id="btnSave">
+                                <i class="bi bi-save"></i> Lưu
+                            </button>
+                            <a class="btn btn-danger" href="/QuanLyNhanSu/LichLamViec">
+                                <i class="bi bi-x-circle"></i> Hủy
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table mb-0 assignment-table">
+                        <thead>
+                            <tr id="tableHeaderRow">
+                                <th>Ca làm việc</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                        </tbody>
+                    </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </main>
-
-    <script src="~/assets/js/SuaPhanCong.js" asp-append-version="true" defer></script>
+    </div>
+</main>
+<script src="~/assets/js/phancongcalamviec.js" asp-append-version="true" defer></script>
+<script src="~/assets/js/SuaPhanCong.js" asp-append-version="true" defer></script>
     <script src="~/assets/js/DanhSachPC.js" asp-append-version="true" defer></script>
 

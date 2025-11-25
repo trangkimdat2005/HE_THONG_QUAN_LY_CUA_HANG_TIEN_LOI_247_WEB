@@ -13,7 +13,7 @@
 
         Swal.fire({
             title: 'Bạn có muốn reset mật khẩu không?',
-            text: "Mật khẩu sẽ được đặt lại thành '123456'.",
+            text: "Mật khẩu sẽ được kích hoạt khi bạn ấn link được gửi đến email của bạn.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
