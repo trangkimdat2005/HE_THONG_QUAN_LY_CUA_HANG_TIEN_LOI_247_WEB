@@ -54,24 +54,29 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     return BadRequest(new { message = "ID khách hàng không hợp lệ." });
                 }
+                await _quanLySevices.BeginTransactionAsync();
 
                 var khachHang = _quanLySevices.GetById<KhachHang>(request.Id);
                 
                 if (khachHang == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy khách hàng." });
                 }
 
                 // Soft delete
-                if (_quanLySevices.SoftDelete<KhachHang>(khachHang))
+                _quanLySevices.SoftDelete<KhachHang>(khachHang);
+
+                if(!await _quanLySevices.CommitAsync())
                 {
-                    return Ok(new { message = "Xóa khách hàng thành công!" });
+                    return BadRequest(new { message = "Không thể xóa khách hàng." });
                 }
 
                 return BadRequest(new { message = "Không thể xóa khách hàng." });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 Console.WriteLine($"Error deleting KhachHang: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi khi xóa khách hàng: {ex.Message}" });
             }
@@ -168,18 +173,23 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Thiếu thông tin bắt buộc." });
                 }
 
+                await _quanLySevices.BeginTransactionAsync();
+
                 // Kiểm tra khách hàng đã có thẻ chưa
                 var existingCard = _quanLySevices.GetList<TheThanhVien>()
                     .FirstOrDefault(t => t.KhachHangId == theThanhVien.KhachHangId && !t.IsDelete);
 
                 if (existingCard != null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return BadRequest(new { message = "Khách hàng đã có thẻ thành viên." });
                 }
 
                 theThanhVien.IsDelete = false;
 
-                if (_quanLySevices.Add<TheThanhVien>(theThanhVien))
+                _quanLySevices.Add<TheThanhVien>(theThanhVien);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = "Thêm thẻ thành viên thành công!" });
                 }
@@ -188,6 +198,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi thêm thẻ thành viên: {ex.Message}" });
             }
         }
@@ -204,10 +215,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Dữ liệu không hợp lệ." });
                 }
 
+                await _quanLySevices.BeginTransactionAsync();
+
                 var existing = _quanLySevices.GetById<TheThanhVien>(theThanhVien.Id);
                 
                 if (existing == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy thẻ thành viên." });
                 }
 
@@ -216,7 +230,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 existing.DiemTichLuy = theThanhVien.DiemTichLuy;
                 existing.NgayCap = theThanhVien.NgayCap;
 
-                if (_quanLySevices.Update<TheThanhVien>(existing))
+                _quanLySevices.Update(existing);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = "Sửa thẻ thành viên thành công!" });
                 }
@@ -225,6 +241,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi sửa thẻ thành viên: {ex.Message}" });
             }
         }
@@ -236,14 +253,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var theThanhVien = _quanLySevices.GetById<TheThanhVien>(id);
                 
                 if (theThanhVien == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy thẻ thành viên." });
                 }
 
-                if (_quanLySevices.SoftDelete<TheThanhVien>(theThanhVien))
+                _quanLySevices.SoftDelete(theThanhVien);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = "Xóa thành công!" });
                 }
@@ -252,6 +273,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
             }
         }

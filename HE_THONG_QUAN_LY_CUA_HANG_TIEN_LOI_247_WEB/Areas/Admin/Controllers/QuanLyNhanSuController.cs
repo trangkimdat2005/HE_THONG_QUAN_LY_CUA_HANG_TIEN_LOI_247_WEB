@@ -3,6 +3,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -151,7 +152,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
         [HttpPost]
         [Route("/API/QuanLyNhanSu/SavePhanCong")]
-        public IActionResult SavePhanCong([FromBody] SavePhanCongModel model)
+        public async Task<IActionResult> SavePhanCong([FromBody] SavePhanCongModel model)
         {
             try
             {
@@ -184,6 +185,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                     bool needAddNew = false;
 
+                    
+
                     if (existingItem != null)
                     {
                         if (existingItem.CaLamViecId == item.CaLamViecId)
@@ -192,7 +195,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         }
                         else
                         {
-                            if (!_quanLySevices.HardDelete(existingItem))
+                            await _quanLySevices.BeginTransactionAsync();
+                            _quanLySevices.HardDelete(existingItem);
+                            if (!await _quanLySevices.CommitAsync())
                             {
                                 return BadRequest(new { message = $"Lỗi: Không thể xóa lịch cũ ngày {item.Ngay} để cập nhật mới." });
                             }
@@ -217,7 +222,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             IsDelete = false
                         };
 
-                        if (!_quanLySevices.Add(newPC))
+                        await _quanLySevices.BeginTransactionAsync();
+
+                        _quanLySevices.Add(newPC);
+
+                        if (!await _quanLySevices.CommitAsync())
                         {
                             return BadRequest(new { message = $"Lỗi: Không thể thêm phân công ngày {item.Ngay}" });
                         }
@@ -238,9 +247,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                     if (!stillExists)
                     {
-                        if (!_quanLySevices.HardDelete(dbItem))
+                        await _quanLySevices.BeginTransactionAsync();
+                        _quanLySevices.HardDelete(dbItem);
+                        if (!await _quanLySevices.CommitAsync())
                         {
+                            await _quanLySevices.BeginTransactionAsync();
                             _quanLySevices.SoftDelete(dbItem);
+                            if (!await _quanLySevices.CommitAsync())
+                            {
+                                return BadRequest(new { message = $"Lỗi: Không thể xóa phân công ngày {dbItem.Ngay:yyyy-MM-dd}" });
+                            }
                         }
                     }
                 }
@@ -249,6 +265,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return BadRequest(new { message = "Lỗi hệ thống: " + ex.Message });
             }
         }
@@ -270,34 +287,104 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
         [HttpDelete]
         [Route("/API/NhanVien/Delete/{id}")]
-        public IActionResult DeleteNhanVien([FromRoute] string id)
+        public async Task<IActionResult> DeleteNhanVien([FromRoute] string id)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(id))
+                {
+                    return BadRequest(new { message = "ID nhân viên không hợp lệ." });
+                }
+
+                await _quanLySevices.BeginTransactionAsync();
+
+                var nhanVien = _quanLySevices.GetById<NhanVien>(id);
+
+                if (nhanVien == null)
+                {
+                    await _quanLySevices.RollbackAsync();
+                    return NotFound(new { message = $"Không tìm thấy nhân viên (ID: {id}) hoặc đã bị xóa." });
+                }
+
+                _quanLySevices.HardDelete<NhanVien>(nhanVien);
+
+                if (!await _quanLySevices.CommitAsync())
+                {
+                    await _quanLySevices.BeginTransactionAsync();
+                    _quanLySevices.SoftDelete<NhanVien>(nhanVien);
+                    if (!await _quanLySevices.CommitAsync())
+                    {
+                        return BadRequest(new { message = "Lỗi: Không thể thực hiện xóa." });
+                    }
+                    else
+                    {
+                        return Ok(new
+                        {
+                            message = $"Đã xoá mềm nhân viên '{nhanVien.HoTen}'."
+                        });
+                    }
+                }
+                else
+                {
+                    return Ok(new { message = $"Đã xoá vĩnh viễn nhân viên '{nhanVien.HoTen}'." });
+                }
+            }
+            catch (Exception ex)
+            {
+                await _quanLySevices.RollbackAsync();
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
+
+        }
+        [HttpDelete]
+        [Route("/API/PhanCong/Delete/{id}")]
+        public async Task<IActionResult> DeletePhanCongCaLamViec([FromRoute] string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return BadRequest(new { message = "ID nhân viên không hợp lệ." });
+                return BadRequest(new { message = "ID ca phân công không hợp lệ." });
             }
 
-            var nhanVien = _quanLySevices.GetById<NhanVien>(id);
-
-            if (nhanVien == null)
+            try
             {
-                return NotFound(new { message = $"Không tìm thấy nhân viên (ID: {id}) hoặc đã bị xóa." });
-            }
+                await _quanLySevices.BeginTransactionAsync();
+                var phanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
+                                    .FirstOrDefault(x => x.Id == id);
 
-            if (_quanLySevices.HardDelete<NhanVien>(nhanVien))
-            {
-                return Ok(new { message = $"Đã xoá vĩnh viễn nhân viên '{nhanVien.HoTen}'." });
-            }
-
-            if (_quanLySevices.SoftDelete<NhanVien>(nhanVien))
-            {
-                return Ok(new
+                if (phanCong == null)
                 {
-                    message = $"Đã xoá mềm nhân viên '{nhanVien.HoTen}'."
-                });
-            }
+                    await _quanLySevices.RollbackAsync();
+                    return NotFound(new { message = $"Không tìm thấy ca phân công (ID: {id}) hoặc đã bị xóa." });
+                }
 
-            return BadRequest(new { message = "Lỗi: Không thể thực hiện xóa." });
+                _quanLySevices.HardDelete<PhanCongCaLamViec>(phanCong);
+
+                if (!await _quanLySevices.CommitAsync())
+                {
+                    await _quanLySevices.BeginTransactionAsync();
+                    _quanLySevices.SoftDelete<PhanCongCaLamViec>(phanCong);
+                    if (!await _quanLySevices.CommitAsync())
+                    {
+                        return BadRequest(new { message = "Lỗi: Không thể thực hiện xóa." });
+                    }
+                    else
+                    {
+                        return Ok(new
+                        {
+                            message = "Đã xoá mềm ca phân công."
+                        });
+                    }
+                }
+                else
+                {
+                    return Ok(new { message = "Đã xoá vĩnh viễn ca phân công." });
+                }
+            }
+            catch (Exception ex)
+            {
+                await _quanLySevices.RollbackAsync();
+                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+            }
         }
     }
 }

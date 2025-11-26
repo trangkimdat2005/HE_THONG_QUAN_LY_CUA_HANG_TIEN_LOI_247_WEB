@@ -3,6 +3,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
@@ -80,7 +81,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
         [HttpPost]
         [Route("/API/TaiKhoan/ToggleLock/{id}")]
-        public IActionResult ToggleLockState(string id)
+        public async Task<IActionResult> ToggleLockState(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -89,11 +90,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var taiKhoan = _quanLySevices.GetList<TaiKhoan>()
                                 .FirstOrDefault(tk => tk.Id == id && !tk.IsDelete);
 
                 if (taiKhoan == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy tài khoản này." });
                 }
 
@@ -108,24 +111,27 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 }
 
                 taiKhoan.TrangThai = newStatus;
+                _quanLySevices.Update<TaiKhoan>(taiKhoan);
 
-                if (_quanLySevices.Update<TaiKhoan>(taiKhoan))
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = $"Đã cập nhật trạng thái tài khoản '{taiKhoan.TenDangNhap}' thành '{newStatus}'." });
                 }
                 else
                 {
+                    await _quanLySevices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi cập nhật trạng thái." });
                 }
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
         [HttpPost]
         [Route("/API/PhanQuyen/ThemRole")]
-        public IActionResult AddRole([FromBody] RoleCreateDto dto)
+        public async Task<IActionResult> AddRole([FromBody] RoleCreateDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -134,11 +140,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var existingRole = _quanLySevices.GetList<Role>()
                                     .FirstOrDefault(r => r.Code == dto.Code && !r.IsDelete);
 
                 if (existingRole != null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return BadRequest(new { message = $"Mã vai trò '{dto.Code}' đã tồn tại." });
                 }
 
@@ -152,10 +160,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                if (!_quanLySevices.Add<Role>(newRole))
-                {
-                    return BadRequest(new { message = "Lỗi: Không thể lưu vai trò." });
-                }
+                _quanLySevices.Add<Role>(newRole);
 
                 if (dto.PermissionIds != null && dto.PermissionIds.Any())
                 {
@@ -172,10 +177,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     }
                 }
 
+                if (!await _quanLySevices.CommitAsync())
+                {
+                    return BadRequest(new { message = "Lỗi: Không thể lưu quyền cho vai trò." });
+                }
+
                 return Ok(new { message = $"Thêm vai trò '{newRole.Ten}' thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
@@ -198,7 +209,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         [HttpPut]
         [Route("/API/PhanQuyen/UpdateRole")]
-        public IActionResult UpdateRole([FromBody] RoleUpdateDto dto)
+        public async Task<IActionResult> UpdateRole([FromBody] RoleUpdateDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -207,11 +218,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
+
                 var role = _quanLySevices.GetList<Role>()
                                 .FirstOrDefault(r => r.Id == dto.Id && !r.IsDelete);
 
                 if (role == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy vai trò để cập nhật." });
                 }
 
@@ -244,23 +258,27 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     _quanLySevices.Add<RolePermission>(newRolePerm);
                 }
 
-                if (_quanLySevices.Update<Role>(role))
+                _quanLySevices.Update<Role>(role);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = $"Cập nhật vai trò '{role.Ten}' thành công!" });
                 }
                 else
                 {
+                    await _quanLySevices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi cập nhật vai trò." });
                 }
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
         [HttpDelete]
         [Route("/API/PhanQuyen/DeleteRole/{id}")]
-        public IActionResult DeleteRole(string id)
+        public async Task<IActionResult> DeleteRole(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -269,11 +287,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var role = _quanLySevices.GetList<Role>()
                                 .FirstOrDefault(r => r.Id == id && !r.IsDelete);
 
                 if (role == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = $"Không tìm thấy vai trò (ID: {id}) hoặc đã bị xóa." });
                 }
 
@@ -291,17 +311,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     _quanLySevices.SoftDelete<RolePermission>(rp);
                 }
 
-                if (_quanLySevices.SoftDelete<Role>(role))
+                _quanLySevices.SoftDelete<Role>(role);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = $"Đã xóa vai trò '{role.Ten}' và các liên kết." });
                 }
                 else
                 {
+                    await _quanLySevices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi xóa vai trò." });
                 }
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }

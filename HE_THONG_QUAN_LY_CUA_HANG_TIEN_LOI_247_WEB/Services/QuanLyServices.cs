@@ -2,16 +2,20 @@
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 {
     public class QuanLyServices : IQuanLyServices
     {
         private readonly ApplicationDbContext _context;
+        private readonly IRealtimeNotifier _notifier;
+        private IDbContextTransaction? _currentTransaction;
 
-        public QuanLyServices(ApplicationDbContext context)
+        public QuanLyServices(ApplicationDbContext context, IRealtimeNotifier notifier)
         {
             _context = context;
+            _notifier = notifier;
         }
 
         public List<T> GetList<T>() where T : class
@@ -38,6 +42,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 return new List<T>();
             }
         }
+
         public T GetById<T>(params object[] keyValues) where T : class
         {
             try
@@ -61,127 +66,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred while retrieving entity of type {typeof(T).Name} with ID {keyValues}: {ex.Message}");
-                return null;
-            }
-        }
-        public bool Add<T>(T entity) where T : class
-        {
-            try
-            {
-                _context.Set<T>().Add(entity);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while adding entity of type {typeof(T).Name}: {ex.Message}");
-                return false;
-            }
-        }
-        public bool Update<T>(T entity) where T : class
-        {
-            try
-            {
-                var entry = _context.Entry(entity);
-                if (entry.State == EntityState.Detached)
-                {
-                    _context.Set<T>().Attach(entity);
-                }
-
-                // Đánh dấu thực thể là đã thay đổi
-                entry.State = EntityState.Modified;
-
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while updating entity of type {typeof(T).Name}: {ex.Message}");
-                return false;
-            }
-        }
-        public bool SoftDelete<T>(T entity) where T : class
-        {
-            try
-            {
-                var entry = _context.Entry(entity);
-                if (entry.State == EntityState.Detached)
-                {
-                    _context.Set<T>().Attach(entity);
-                }
-
-                var property = typeof(T).GetProperty("IsDelete"); // hoặc "isDelete"
-                if (property != null && property.CanWrite)
-                {
-                    property.SetValue(entity, true); // Set vào ENTITY
-                    entry.State = EntityState.Modified; // Đánh dấu là đã thay đổi
-                    _context.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine("No 'IsDelete' property found in entity.");
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while soft deleting entity of type {typeof(T).Name}: {ex.Message}");
-                return false;
-            }
-        }
-
-        public bool HardDelete<T>(T entity) where T : class
-        {
-            try
-            {
-                var entry = _context.Entry(entity);
-                if (entry.State == EntityState.Detached)
-                {
-                    _context.Set<T>().Attach(entity);
-                }
-
-                _context.Set<T>().Remove(entity);
-                _context.SaveChanges();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (you can use a logging framework here)
-                Console.WriteLine($"An error occurred while deleting entity of type {typeof(T).Name}: {ex.Message}");
-                return false;
-            }
-        }
-
-        public string GenerateNewId<T>(string prefix, int totalLength) where T : class
-        {
-            try
-            {
-                var lastEntity = _context.Set<T>()
-                    .AsNoTracking()
-                    .Where(e => EF.Property<string>(e, "Id").StartsWith(prefix))
-                    .OrderByDescending(e => EF.Property<string>(e, "Id"))
-                    .FirstOrDefault();
-                int newNumericPart = 1;
-                if (lastEntity != null)
-                {
-                    var lastId = lastEntity.GetType().GetProperty("Id")?.GetValue(lastEntity) as string;
-                    if (lastId != null)
-                    {
-                        var numericPart = lastId.Substring(prefix.Length);
-                        if (int.TryParse(numericPart, out int lastNumericPart))
-                        {
-                            newNumericPart = lastNumericPart + 1;
-                        }
-                    }
-
-                }
-                string newId = prefix + newNumericPart.ToString().PadLeft(totalLength - prefix.Length, '0');
-                return newId;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while generating new ID for type {typeof(T).Name}: {ex.Message}");
                 return null;
             }
         }
@@ -278,7 +162,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 
         public bool VerifyPassword(string password, string hashedPassword)
         {
-            
+
             try
             {
                 if (string.IsNullOrEmpty(HashPassword(password)) || string.IsNullOrEmpty(hashedPassword))
@@ -323,7 +207,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                     throw new Exception("Mật khẩu hiện tại không đúng.");
                 }
 
-                taiKhoan.MatKhauHash = HashPassword(newPassword); 
+                taiKhoan.MatKhauHash = HashPassword(newPassword);
 
                 _context.SaveChanges();
                 return true;
@@ -417,6 +301,190 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                                              && p.Ngay.Date == ngay.Date
                                              && !p.IsDelete);
         }
-    }
 
+
+        #region Transaction Management
+
+        private Dictionary<string, int> _generatedIdCounters = new Dictionary<string, int>();
+
+        public async Task BeginTransactionAsync()
+        {
+            if (_currentTransaction != null)
+                throw new InvalidOperationException("Transaction đã được bắt đầu!");
+
+            _currentTransaction = await _context.Database.BeginTransactionAsync();
+            _generatedIdCounters.Clear();
+        }
+
+        public string GenerateNewId<T>(string prefix, int totalLength) where T : class
+        {
+            try
+            {
+                // ✅ Nếu chưa có counter cho prefix này
+                if (!_generatedIdCounters.ContainsKey(prefix))
+                {
+                    // Query DB để lấy ID lớn nhất
+                    var lastEntity = _context.Set<T>()
+                        .AsNoTracking()
+                        .Where(e => EF.Property<string>(e, "Id").StartsWith(prefix)) // ← EF.Property CHỈ dùng TRONG query
+                        .OrderByDescending(e => EF.Property<string>(e, "Id"))
+                        .Select(e => EF.Property<string>(e, "Id")) // ← SELECT chỉ Id
+                        .FirstOrDefault();
+
+                    int lastNumber = 0;
+                    if (lastEntity != null) // ← lastEntity GIỜ LÀ string, không phải object
+                    {
+                        var numericPart = lastEntity.Substring(prefix.Length);
+                        if (int.TryParse(numericPart, out int lastNumericPart))
+                        {
+                            lastNumber = lastNumericPart;
+                        }
+                    }
+
+                    _generatedIdCounters[prefix] = lastNumber;
+                }
+
+                // ✅ Tăng counter
+                _generatedIdCounters[prefix]++;
+                int newNumericPart = _generatedIdCounters[prefix];
+
+                string newId = prefix + newNumericPart.ToString().PadLeft(totalLength - prefix.Length, '0');
+                return newId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error generating ID for {typeof(T).Name}: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<bool> CommitAsync(string? notifyKey = null)
+        {
+            try
+            {
+                if (_currentTransaction == null)
+                    throw new InvalidOperationException("Chưa có transaction!");
+
+                await _context.SaveChangesAsync();
+                await _currentTransaction.CommitAsync();
+
+                if (!string.IsNullOrEmpty(notifyKey))
+                {
+                    await _notifier.NotifyReloadAsync(notifyKey);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Commit failed: {ex.Message}");
+                await RollbackAsync();
+                return false;
+            }
+            finally
+            {
+                await DisposeTransactionAsync();
+                _generatedIdCounters.Clear(); // ← Clear counter
+            }
+        }
+
+        public async Task RollbackAsync()
+        {
+            var transaction = _currentTransaction;
+
+            if (transaction != null)
+            {
+                _currentTransaction = null;
+                _generatedIdCounters.Clear(); // ← Clear counter
+
+                try
+                {
+                    await transaction.RollbackAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Rollback warning: {ex.Message}");
+                }
+                finally
+                {
+                    try
+                    {
+                        await transaction.DisposeAsync();
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private async Task DisposeTransactionAsync()
+        {
+            if (_currentTransaction != null)
+            {
+                try
+                {
+                    await _currentTransaction.DisposeAsync();
+                }
+                catch { }
+                finally
+                {
+                    _currentTransaction = null;
+                }
+            }
+        }
+
+        #endregion
+
+        #region CRUD Operations (Không SaveChanges)
+
+        // ✅ Add - KHÔNG SaveChanges
+        public void Add<T>(T entity) where T : class
+        {
+            _context.Set<T>().Add(entity);
+        }
+
+        // ✅ Update - KHÔNG SaveChanges
+        public void Update<T>(T entity) where T : class
+        {
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                _context.Set<T>().Attach(entity);
+            }
+            entry.State = EntityState.Modified;
+        }
+
+        // ✅ SoftDelete - KHÔNG SaveChanges
+        public void SoftDelete<T>(T entity) where T : class
+        {
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                _context.Set<T>().Attach(entity);
+            }
+
+            var property = typeof(T).GetProperty("IsDelete");
+            if (property != null && property.CanWrite)
+            {
+                property.SetValue(entity, true);
+                entry.State = EntityState.Modified;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Entity {typeof(T).Name} không có property 'IsDelete'");
+            }
+        }
+
+        // ✅ HardDelete - KHÔNG SaveChanges
+        public void HardDelete<T>(T entity) where T : class
+        {
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                _context.Set<T>().Attach(entity);
+            }
+            _context.Set<T>().Remove(entity);
+        }
+
+        #endregion
+    }
 }

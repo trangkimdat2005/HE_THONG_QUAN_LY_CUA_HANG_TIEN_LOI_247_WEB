@@ -124,21 +124,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 kenh.IsDelete = false;
 
+                await _quanLyServices.BeginTransactionAsync();
+
                 Console.WriteLine("Adding kenh to database...");
-                if (!_quanLyServices.Add<KenhThanhToan>(kenh))
+                if (!await _quanLyServices.CommitAsync("KenhThanhToan"))
                 {
                     Console.WriteLine("ERROR: Add failed");
                     return BadRequest(new { message = "Không thể thêm kênh thanh toán." });
                 }
 
-                Console.WriteLine(" SUCCESS");
-               
-                await _notifier.NotifyReloadAsync("KenhThanhToan");
-
                 return Ok(new { message = "Thêm kênh thanh toán thành công!", kenhId = kenh.Id });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 Console.WriteLine($" EXCEPTION: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi khi thêm kênh thanh toán: {ex.Message}" });
             }
@@ -183,21 +182,24 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 existingKenh.TrangThai = kenh.TrangThai;
                 existingKenh.CauHinh = kenh.CauHinh;
 
+                await _quanLyServices.BeginTransactionAsync();
+
+                _quanLyServices.Update<KenhThanhToan>(existingKenh);
+
                 Console.WriteLine("Updating kenh in database...");
-                if (!_quanLyServices.Update<KenhThanhToan>(existingKenh))
+                if (!await _quanLyServices.CommitAsync("KenhThanhToan"))
                 {
                     Console.WriteLine("ERROR: Update failed");
                     return BadRequest(new { message = "Không thể cập nhật kênh thanh toán." });
                 }
 
                 Console.WriteLine(" SUCCESS");
-                
-                await _notifier.NotifyReloadAsync("KenhThanhToan");
 
                 return Ok(new { message = "Cập nhật kênh thanh toán thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 Console.WriteLine($" EXCEPTION: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi khi cập nhật kênh thanh toán: {ex.Message}" });
             }
@@ -223,22 +225,22 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Console.WriteLine($"ERROR: Kenh '{id}' not found");
                     return NotFound(new { message = "Không tìm thấy kênh thanh toán." });
                 }
-
+                await _quanLyServices.BeginTransactionAsync();
+                _quanLyServices.SoftDelete<KenhThanhToan>(kenh);
                 Console.WriteLine("Soft deleting kenh...");
-                if (!_quanLyServices.SoftDelete<KenhThanhToan>(kenh))
+                if (!await _quanLyServices.CommitAsync("KenhThanhToan"))
                 {
                     Console.WriteLine("ERROR: Delete failed");
                     return BadRequest(new { message = "Không thể xóa kênh thanh toán." });
                 }
 
                 Console.WriteLine(" SUCCESS");
-                
-                await _notifier.NotifyReloadAsync("KenhThanhToan");
 
                 return Ok(new { message = "Xóa kênh thanh toán thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 Console.WriteLine($" EXCEPTION: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi khi xóa kênh thanh toán: {ex.Message}" });
             }

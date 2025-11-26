@@ -94,20 +94,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     maDinhDanh.DuongDan = "/images/default-code.png";
                 }
+                await _quanLySevices.BeginTransactionAsync();
 
                 Console.WriteLine("Adding to database...");
-                if (!_quanLySevices.Add<MaDinhDanhSanPham>(maDinhDanh))
+                _quanLySevices.Add<MaDinhDanhSanPham>(maDinhDanh);
+                if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
                 {
                     return BadRequest(new { message = "Không thể thêm mã định danh." });
                 }
 
                 Console.WriteLine("Success, sending SignalR notification...");
-                await _notifier.NotifyReloadAsync("MaDinhDanh");
-
                 return Ok(new { message = "Thêm mã định danh thành công!", id = maDinhDanh.Id });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { message = $"Lỗi khi thêm mã định danh: {ex.Message}" });
@@ -141,17 +142,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Mã code không được để trống." });
                 }
 
-                if (!_quanLySevices.Update<MaDinhDanhSanPham>(maDinhDanh))
+                await _quanLySevices.BeginTransactionAsync();
+
+                _quanLySevices.Update<MaDinhDanhSanPham>(maDinhDanh);
+
+                if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
                 {
                     return BadRequest(new { message = "Không thể cập nhật mã định danh." });
                 }
 
-                await _notifier.NotifyReloadAsync("MaDinhDanh");
 
                 return Ok(new { message = "Sửa mã định danh thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi sửa mã định danh: {ex.Message}" });
             }
         }
@@ -167,18 +172,19 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     return NotFound(new { message = "Không tìm thấy mã định danh." });
                 }
-
-                if (!_quanLySevices.SoftDelete<MaDinhDanhSanPham>(maDinhDanh))
+                await _quanLySevices.BeginTransactionAsync();
+                _quanLySevices.SoftDelete<MaDinhDanhSanPham>(maDinhDanh);
+                if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
                 {
                     return BadRequest(new { message = "Không thể xóa mã định danh." });
                 }
 
-                await _notifier.NotifyReloadAsync("MaDinhDanh");
 
                 return Ok(new { message = "Xóa thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi xóa mã định danh: {ex.Message}" });
             }
         }
@@ -288,20 +294,23 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     temNhan.NgayIn = DateTime.Now;
                 }
+                await _quanLySevices.BeginTransactionAsync();
 
                 Console.WriteLine("Adding to database...");
-                if (!_quanLySevices.Add<TemNhan>(temNhan))
+                _quanLySevices.Add<TemNhan>(temNhan);
+
+                if (!await _quanLySevices.CommitAsync("TemNhan"))
                 {
                     return BadRequest(new { message = "Không thể thêm tem nhãn." });
                 }
 
                 Console.WriteLine("Success, sending SignalR notification...");
-                await _notifier.NotifyReloadAsync("TemNhan");
 
                 return Ok(new { message = "Thêm tem nhãn thành công!", id = temNhan.Id });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 Console.WriteLine($"EXCEPTION: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { message = $"Lỗi khi thêm tem nhãn: {ex.Message}" });
@@ -330,17 +339,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Nội dung tem không được để trống." });
                 }
 
-                if (!_quanLySevices.Update<TemNhan>(temNhan))
+                await _quanLySevices.BeginTransactionAsync();
+
+                _quanLySevices.Update<TemNhan>(temNhan);
+
+                if (!await _quanLySevices.CommitAsync("TemNhan"))
                 {
                     return BadRequest(new { message = "Không thể cập nhật tem nhãn." });
                 }
-
-                await _notifier.NotifyReloadAsync("TemNhan");
 
                 return Ok(new { message = "Sửa tem nhãn thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi sửa tem nhãn: {ex.Message}" });
             }
         }
@@ -357,17 +369,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return NotFound(new { message = "Không tìm thấy tem nhãn." });
                 }
 
-                if (!_quanLySevices.SoftDelete<TemNhan>(temNhan))
+                await _quanLySevices.BeginTransactionAsync();
+
+                _quanLySevices.SoftDelete<TemNhan>(temNhan);
+
+                if (!await _quanLySevices.CommitAsync("TemNhan"))
                 {
                     return BadRequest(new { message = "Không thể xóa tem nhãn." });
                 }
-
-                await _notifier.NotifyReloadAsync("TemNhan");
 
                 return Ok(new { message = "Xóa thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi xóa tem nhãn: {ex.Message}" });
             }
         }

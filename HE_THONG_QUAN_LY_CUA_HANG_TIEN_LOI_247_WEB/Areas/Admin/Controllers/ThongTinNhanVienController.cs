@@ -19,7 +19,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             _quanLyServices = quanLyServices;
         }
 
-        [Authorize(Roles = "ADMIN")]
         [Route("/ThongTinNhanVien")]
         public IActionResult ThongTinNhanVien()
         {
@@ -173,7 +172,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return NotFound();
                 }
 
-                string contentType = "image/jpeg"; 
+                string contentType = "image/jpeg";
                 if (hinhAnh.TenAnh != null)
                 {
                     if (hinhAnh.TenAnh.EndsWith(".png", StringComparison.OrdinalIgnoreCase))
@@ -204,6 +203,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             try
             {
+
                 var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
                 if (string.IsNullOrEmpty(userId))
@@ -244,6 +244,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 string oldAnhId = nhanVien.AnhId;
                 string newAnhId = null;
 
+                await _quanLyServices.BeginTransactionAsync();
+
                 if (string.IsNullOrEmpty(nhanVien.AnhId))
                 {
                     // Tạo mới hình ảnh
@@ -254,14 +256,17 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         TenAnh = avatar.FileName
                     };
 
-                    if (_quanLyServices.Add<HinhAnh>(newHinhAnh))
-                    {
-                        newAnhId = newHinhAnh.Id;
-                        nhanVien.AnhId = newAnhId;
-                        _quanLyServices.Update(nhanVien);
+                    _quanLyServices.Add<HinhAnh>(newHinhAnh);
 
-                        return Ok(new { 
-                            message = "Cập nhật ảnh đại diện thành công!", 
+
+                    newAnhId = newHinhAnh.Id;
+                    nhanVien.AnhId = newAnhId;
+                    _quanLyServices.Update(nhanVien);
+                    if (await _quanLyServices.CommitAsync())
+                    {
+                        return Ok(new
+                        {
+                            message = "Cập nhật ảnh đại diện thành công!",
                             anhId = newAnhId,
                             imageUrl = $"/API/getHinhAnh/{newAnhId}"
                         });
@@ -276,12 +281,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         existingAnh.Anh = anhData;
                         existingAnh.TenAnh = avatar.FileName;
                         _quanLyServices.Update(existingAnh);
-
-                        return Ok(new { 
-                            message = "Cập nhật ảnh đại diện thành công!", 
-                            anhId = nhanVien.AnhId,
-                            imageUrl = $"/API/getHinhAnh/{nhanVien.AnhId}?t={DateTime.Now.Ticks}"
-                        });
+                        
+                        if (await _quanLyServices.CommitAsync())
+                        {
+                            return Ok(new
+                            {
+                                message = "Cập nhật ảnh đại diện thành công!",
+                                anhId = nhanVien.AnhId,
+                                imageUrl = $"/API/getHinhAnh/{nhanVien.AnhId}?t={DateTime.Now.Ticks}"
+                            });
+                        }
                     }
                 }
 
@@ -289,6 +298,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = "Lỗi khi cập nhật ảnh: " + ex.Message });
             }
         }

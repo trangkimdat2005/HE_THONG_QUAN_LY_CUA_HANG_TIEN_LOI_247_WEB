@@ -3,6 +3,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
@@ -23,7 +24,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        [Route("/Sua/SuaHoaDon")] 
+        [Route("/Sua/SuaHoaDon")]
         public IActionResult SuaHoaDon()
         {
             return View();
@@ -75,7 +76,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["DanhMucs"] = _quanLySevices.GetList<DanhMuc>();
             ViewData["SanPhams"] = _quanLySevices.GetList<SanPham>();
             ViewData["ChuongTrinhId"] = id;
-            
+
             return View();
         }
         [Route("/Sua/SuaNCC")]
@@ -89,9 +90,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             return View(ncc);
         }
-        [HttpPut] 
+        [HttpPut]
         [Route("/API/NhaCungCap/Update")]
-        public IActionResult UpdateNhaCungCap([FromBody] NhaCungCapDto data)
+        public async Task<IActionResult> UpdateNhaCungCap([FromBody] NhaCungCapDto data)
         {
             if (!ModelState.IsValid)
             {
@@ -100,10 +101,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var nhaCungCapEntity = _quanLySevices.GetById<NhaCungCap>(data.Id);
 
                 if (nhaCungCapEntity == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy nhà cung cấp này để cập nhật." });
                 }
 
@@ -113,9 +116,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 nhaCungCapEntity.DiaChi = data.DiaChi;
                 nhaCungCapEntity.MaSoThue = data.MaSoThue;
 
-                bool success = _quanLySevices.Update<NhaCungCap>(nhaCungCapEntity);
+                _quanLySevices.Update<NhaCungCap>(nhaCungCapEntity);
 
-                if (success)
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = $"Cập nhật nhà cung cấp '{data.Ten}' thành công!" });
                 }
@@ -126,59 +129,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
-        //[HttpPut]
-        //[Route("/API/PhanCong/Update")]
-        //public IActionResult UpdatePhanCongCaLamViec([FromBody] PhanCongCaLamViecUpdateDto dto)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    try
-        //    {
-        //        var phanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
-        //                            .FirstOrDefault(x => x.Id == dto.Id); 
-
-        //        if (phanCong == null)
-        //        {
-        //            return NotFound(new { message = "Không tìm thấy ca phân công để cập nhật." });
-        //        }
-
-        //        var existingPhanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
-        //            .FirstOrDefault(p =>
-        //                p.NhanVienId == dto.NhanVienId &&
-        //                p.CaLamViecId == dto.CaLamViecId &&
-        //                p.Ngay.Date == dto.Ngay.Value.Date &&
-        //                p.Id != dto.Id && 
-        //                !p.IsDelete); 
-
-        //        if (existingPhanCong != null)
-        //        {
-        //            return BadRequest(new { message = "Nhân viên này đã được phân công ca này trong ngày đã chọn." });
-        //        }
-
-        //        phanCong.NhanVienId = dto.NhanVienId;
-        //        phanCong.CaLamViecId = dto.CaLamViecId;
-        //        phanCong.Ngay = dto.Ngay.Value;
-
-        //        if (_quanLySevices.Update<PhanCongCaLamViec>(phanCong))
-        //        {
-        //            return Ok(new { message = "Cập nhật phân công thành công!" });
-        //        }
-        //        else
-        //        {
-        //            return BadRequest(new { message = "Lỗi khi cập nhật phân công." });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
-        //    }
-        //}
         [HttpGet]
         [Route("/API/HinhAnh/{id}")]
         public IActionResult GetHinhAnh(string id)
@@ -240,14 +194,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var nhanVien = _quanLySevices.GetById<NhanVien>(dto.Id);
                 if (nhanVien == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy nhân viên để cập nhật." });
                 }
 
                 string oldAnhId = nhanVien.AnhId;
-                string newAnhId = oldAnhId; 
+                string newAnhId = oldAnhId;
 
                 if (dto.AnhDaiDien != null && dto.AnhDaiDien.Length > 0)
                 {
@@ -259,27 +215,29 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         Anh = anhBytes
                     };
 
-                    if (_quanLySevices.Add<HinhAnh>(newHinhAnh))
-                    {
-                        newAnhId = newHinhAnh.Id;
+                    _quanLySevices.Add<HinhAnh>(newHinhAnh);
 
-                        var oldAnh = _quanLySevices.GetById<HinhAnh>(oldAnhId);
-                        if (oldAnh != null) _quanLySevices.HardDelete(oldAnh);
-                    }
+                    newAnhId = newHinhAnh.Id;
+
+                    var oldAnh = _quanLySevices.GetById<HinhAnh>(oldAnhId);
+                    if (oldAnh != null) _quanLySevices.HardDelete(oldAnh);
+
                 }
 
                 nhanVien.HoTen = dto.HoTen;
                 nhanVien.ChucVu = dto.ChucVu;
-                nhanVien.LuongCoBan = (decimal)dto.LuongCoBan; 
+                nhanVien.LuongCoBan = (decimal)dto.LuongCoBan;
                 nhanVien.SoDienThoai = dto.SoDienThoai;
                 nhanVien.Email = dto.Email.ToLower();
                 nhanVien.DiaChi = dto.DiaChi;
                 nhanVien.NgayVaoLam = dto.NgayVaoLam;
                 nhanVien.TrangThai = dto.TrangThai;
                 nhanVien.GioiTinh = dto.GioiTinh;
-                nhanVien.AnhId = newAnhId; 
+                nhanVien.AnhId = newAnhId;
 
-                if (_quanLySevices.Update<NhanVien>(nhanVien))
+                _quanLySevices.Update<NhanVien>(nhanVien);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = $"Cập nhật nhân viên {nhanVien.HoTen} thành công!" });
                 }
@@ -290,6 +248,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
@@ -333,7 +292,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
         [HttpPut]
         [Route("/API/TaiKhoan/Update")]
-        public IActionResult UpdateTaiKhoan([FromBody] TaiKhoanUpdateDto dto)
+        public async Task<IActionResult> UpdateTaiKhoan([FromBody] TaiKhoanUpdateDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -342,11 +301,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLySevices.BeginTransactionAsync();
                 var taiKhoan = _quanLySevices.GetList<TaiKhoan>()
                                 .FirstOrDefault(tk => tk.Id == dto.TaiKhoanId && !tk.IsDelete);
 
                 if (taiKhoan == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy tài khoản để cập nhật." });
                 }
 
@@ -378,8 +339,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     };
                     _quanLySevices.Add<UserRole>(newUserRole);
                 }
-
-                if (_quanLySevices.Update<TaiKhoan>(taiKhoan))
+                _quanLySevices.Update<TaiKhoan>(taiKhoan);
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = $"Cập nhật tài khoản '{taiKhoan.TenDangNhap}' thành công!" });
                 }
@@ -390,6 +351,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
@@ -400,7 +362,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public IActionResult SuaChinhSachHoanTra(string id)
         {
             var chinhSach = _chinhSachHoanTraServices.GetChinhSachById(id);
-            
+
             if (chinhSach == null)
             {
                 TempData["ErrorMessage"] = "Không tìm thấy chính sách hoàn trả!";
@@ -415,11 +377,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Sua/SuaChinhSachHoanTra/{id}")]
         public IActionResult SuaChinhSachHoanTra(
             string id,
-            string TenChinhSach, 
-            int? ThoiHan, 
-            string DieuKien, 
-            bool ApDungToanBo, 
-            DateTime ApDungTuNgay, 
+            string TenChinhSach,
+            int? ThoiHan,
+            string DieuKien,
+            bool ApDungToanBo,
+            DateTime ApDungTuNgay,
             DateTime ApDungDenNgay,
             List<string> DanhMucIds)
         {
@@ -471,7 +433,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 };
 
                 var result = _chinhSachHoanTraServices.UpdateChinhSach(chinhSach);
-                
+
                 if (result)
                 {
                     // Cập nhật danh mục
@@ -525,7 +487,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //        pc=x
         //    });
         //}
-        
+
         //=========================================API Sửa Chương Trình Khuyến Mãi=======================================================================
         [HttpPost]
         [Route("/API/edit-CTKM")]
@@ -542,8 +504,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     return BadRequest(new { message = "Tên chương trình không được để trống." });
                 }
+                await _quanLySevices.BeginTransactionAsync();
 
-                if (_quanLySevices.Update<ChuongTrinhKhuyenMai>(chuongTrinh))
+                _quanLySevices.Update<ChuongTrinhKhuyenMai>(chuongTrinh);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = "Sửa chương trình khuyến mãi thành công!" });
                 }
@@ -552,6 +517,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi sửa chương trình khuyến mãi: {ex.Message}" });
             }
         }
@@ -598,10 +564,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 khachHang.GioiTinh = request.GioiTinh;
                 // AnhId giữ nguyên hoặc cập nhật sau khi upload ảnh
 
-                if (!_quanLySevices.Update<KhachHang>(khachHang))
-                {
-                    return BadRequest(new { message = "Không thể cập nhật khách hàng." });
-                }
+                await _quanLySevices.BeginTransactionAsync();
+                _quanLySevices.Update<KhachHang>(khachHang);
 
                 // Cập nhật hoặc tạo thẻ thành viên nếu có
                 if (request.UpdateMemberCard && request.TheThanhVien != null)
@@ -616,10 +580,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         existingCard.DiemTichLuy = request.TheThanhVien.DiemTichLuy;
                         existingCard.NgayCap = request.TheThanhVien.NgayCap ?? existingCard.NgayCap;
 
-                        if (!_quanLySevices.Update<TheThanhVien>(existingCard))
-                        {
-                            return BadRequest(new { message = "Cập nhật khách hàng thành công nhưng không thể cập nhật thẻ thành viên." });
-                        }
+                        _quanLySevices.Update<TheThanhVien>(existingCard);
                     }
                     else
                     {
@@ -634,17 +595,22 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             IsDelete = false
                         };
 
-                        if (!_quanLySevices.Add<TheThanhVien>(newCard))
-                        {
-                            return BadRequest(new { message = "Cập nhật khách hàng thành công nhưng không thể tạo thẻ thành viên." });
-                        }
+                        _quanLySevices.Add<TheThanhVien>(newCard);
                     }
                 }
 
-                return Ok(new { message = "Cập nhật khách hàng thành công!" });
+                if( await _quanLySevices.CommitAsync())
+                {
+                    return Ok(new { message = "Cập nhật khách hàng thành công!" });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Lỗi khi cập nhật khách hàng." });
+                }
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi cập nhật khách hàng: {ex.Message}" });
             }
         }

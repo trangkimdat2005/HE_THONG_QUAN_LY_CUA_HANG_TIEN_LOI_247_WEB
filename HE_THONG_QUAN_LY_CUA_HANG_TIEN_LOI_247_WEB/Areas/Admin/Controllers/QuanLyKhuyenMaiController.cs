@@ -37,15 +37,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             try
             {
+                await _quanLyServices.BeginTransactionAsync();
                 var chuongTrinh = _quanLyServices.GetById<ChuongTrinhKhuyenMai>(id);
                 if (chuongTrinh == null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy chương trình khuyến mãi." });
                 }
 
-                if (_quanLyServices.SoftDelete<ChuongTrinhKhuyenMai>(chuongTrinh))
+                _quanLyServices.SoftDelete(chuongTrinh);
+
+                if (await _quanLyServices.CommitAsync("ChuongTrinhKhuyenMai"))
                 {
-                    await _notifier.NotifyReloadAsync("ChuongTrinhKhuyenMai");
                     return Ok(new { message = "Xóa chương trình khuyến mãi thành công!" });
                 }
 
@@ -53,6 +56,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi xóa chương trình khuyến mãi: {ex.Message}" });
             }
         }

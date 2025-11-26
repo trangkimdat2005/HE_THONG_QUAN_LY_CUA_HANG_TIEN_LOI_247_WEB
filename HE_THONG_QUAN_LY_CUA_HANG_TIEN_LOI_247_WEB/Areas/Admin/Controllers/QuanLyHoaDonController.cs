@@ -117,7 +117,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Cập nhật trạng thái hóa đơn
                 hoaDon.TrangThai = "Đã thanh toán";
 
-                if (!_quanLySevices.Update<HoaDon>(hoaDon))
+                await _quanLySevices.BeginTransactionAsync();
+
+                _quanLySevices.Update<HoaDon>(hoaDon);
+
+                if (!await _quanLySevices.CommitAsync())
                 {
                     return BadRequest(new { message = "Không thể cập nhật trạng thái hóa đơn." });
                 }
@@ -143,6 +147,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi thanh toán: {ex.Message}" });
             }
         }

@@ -72,7 +72,24 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                redirectUrl = Url.Action("Index", "HomeAdmin", new { area = "Admin" });
+                if(user.UserRoles.Any(ur => ur.Role.Code == "ADMIN"))
+                {
+                    redirectUrl = Url.Action("Index", "HomeAdmin", new { area = "Admin" });
+
+                }
+                else if (user.UserRoles.Any(ur => ur.Role.Code == "NV_KHO"))
+                {
+                    redirectUrl = Url.Action("DanhSachHangTonKho", "QuanLyKhoHang", new { area = "Admin" });
+                }
+                else if (user.UserRoles.Any(ur => ur.Role.Code == "NV_BANHANG"))
+                {
+                    redirectUrl = Url.Action("DanhSachSanPham", "QuanLyHangHoa", new { area = "Admin" });
+                }
+                else if (user.UserRoles.Any(ur => ur.Role.Code == "KHACHHANG"))
+                {
+                    redirectUrl = Url.Action("Index", "HomeKhachHang", new { area = "User" });
+                }
+
 
                 return Json(new { status = "SUCCESS", redirectUrl });
             }
