@@ -50,5 +50,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         PhanCongCaLamViec GetPhanCong(string nhanVienId, DateTime ngay);
 
         PhanCongCaLamViec GetPhanCongByDate(string nhanVienId, DateTime ngay);
+        string GenerateRecoveryToken(string email);
+        bool ExecuteResetPassword(string email, string token, string newPasswordPlain);
     }
 }

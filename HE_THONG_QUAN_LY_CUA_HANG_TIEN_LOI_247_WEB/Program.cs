@@ -62,6 +62,7 @@ builder.Services.AddScoped<IRealtimeNotifier, RealtimeNotifier>();
 builder.Services.AddScoped<IPermissionServices, PermissionServices>();
 // ??ng ký Email Service
 builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddMemoryCache();
 
 builder.Services.AddAuthorization(options =>
 {
