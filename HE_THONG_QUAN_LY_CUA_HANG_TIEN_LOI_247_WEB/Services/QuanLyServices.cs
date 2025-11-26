@@ -162,7 +162,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 
         public bool VerifyPassword(string password, string hashedPassword)
         {
-            
+
             try
             {
                 if (string.IsNullOrEmpty(HashPassword(password)) || string.IsNullOrEmpty(hashedPassword))
@@ -207,7 +207,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                     throw new Exception("Mật khẩu hiện tại không đúng.");
                 }
 
-                taiKhoan.MatKhauHash = HashPassword(newPassword); 
+                taiKhoan.MatKhauHash = HashPassword(newPassword);
 
                 _context.SaveChanges();
                 return true;
@@ -218,6 +218,90 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
                 throw;
             }
         }
+        public TaiKhoan GetByEmail(string email)
+        {
+            try
+            {
+                // Tìm tài khoản theo email, chưa bị xóa
+                return _context.TaiKhoans.FirstOrDefault(t => t.Email == email && t.IsDelete == false);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting user by email: {ex.Message}");
+                return null;
+            }
+        }
+
+        public bool ResetPassword(string email, string newPasswordPlain)
+        {
+            try
+            {
+                var user = GetByEmail(email);
+                if (user == null) return false;
+
+                // Băm mật khẩu mới bằng hàm có sẵn của bạn
+                string newHash = HashPassword(newPasswordPlain);
+
+                user.MatKhauHash = newHash;
+
+                // Cập nhật vào DB
+                _context.Update(user);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error resetting password: {ex.Message}");
+                return false;
+            }
+        }
+        public string GenerateRandomPassword()
+        {
+            string[] randomChars = new[] {
+            "ABCDEFGHJKLMNOPQRSTUVWXYZ",
+            "abcdefghijkmnopqrstuvwxyz",
+            "0123456789",
+            "!@$?"
+        };
+            Random rand = new Random();
+            List<char> chars = new List<char>();
+
+            chars.Insert(rand.Next(0, chars.Count), randomChars[0][rand.Next(0, randomChars[0].Length)]);
+            chars.Insert(rand.Next(0, chars.Count), randomChars[1][rand.Next(0, randomChars[1].Length)]);
+            chars.Insert(rand.Next(0, chars.Count), randomChars[2][rand.Next(0, randomChars[2].Length)]);
+            chars.Insert(rand.Next(0, chars.Count), randomChars[3][rand.Next(0, randomChars[3].Length)]);
+
+            for (int i = chars.Count; i < 10; i++)
+            {
+                string rcs = randomChars[rand.Next(0, randomChars.Length)];
+                chars.Insert(rand.Next(0, chars.Count), rcs[rand.Next(0, rcs.Length)]);
+            }
+
+            return new string(chars.ToArray());
+        }
+        public PhanCongCaLamViec GetPhanCong(string nhanVienId, DateTime ngay)
+        {
+            try
+            {
+                return _context.PhanCongCaLamViecs
+                               .FirstOrDefault(p => p.NhanVienId == nhanVienId
+                                                 && p.Ngay.Date == ngay.Date
+                                                 && !p.IsDelete);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error finding PhanCong: {ex.Message}");
+                return null;
+            }
+        }
+        public PhanCongCaLamViec GetPhanCongByDate(string nhanVienId, DateTime ngay)
+        {
+            return _context.PhanCongCaLamViecs
+                           .FirstOrDefault(p => p.NhanVienId == nhanVienId
+                                             && p.Ngay.Date == ngay.Date
+                                             && !p.IsDelete);
+        }
+
 
         #region Transaction Management
 

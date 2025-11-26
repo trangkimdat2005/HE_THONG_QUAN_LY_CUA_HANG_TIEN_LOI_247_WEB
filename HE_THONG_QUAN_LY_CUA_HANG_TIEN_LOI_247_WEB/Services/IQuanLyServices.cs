@@ -39,5 +39,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         Task<bool> CommitAsync(string? notifyKey = null);
         Task RollbackAsync();
 
+        //bool ChangePassword(string taiKhoanId, string oldPassword, string newPassword);
+
+        TaiKhoan GetByEmail(string email);
+
+        bool ResetPassword(string email, string newPasswordPlain);
+
+        string GenerateRandomPassword();
+
+        PhanCongCaLamViec GetPhanCong(string nhanVienId, DateTime ngay);
+
+        PhanCongCaLamViec GetPhanCongByDate(string nhanVienId, DateTime ngay);
     }
 }

@@ -1,0 +1,61 @@
+﻿.calendar-table thead th {
+        background-color: #007bff; /* Màu xanh dương giống hình */
+        color: white;
+        vertical-align: middle;
+        text-align: center;
+        border-color: #006fe6;
+    }
+
+    /* Style cho cột Ca làm việc (Cột đầu tiên của body) */
+    .calendar-table tbody td:first-child {
+        background-color: #007bff;
+        color: white;
+        vertical-align: middle;
+        text-align: center;
+        font-weight: bold;
+        width: 150px; /* Độ rộng cố định cho cột tên ca */
+    }
+
+    /* Định dạng ô nội dung */
+    .calendar-table tbody td {
+        vertical-align: middle;
+        text-align: center;
+        height: 80px; /* Chiều cao tối thiểu cho ô */
+    }
+
+    /* Ô trống */
+    .cell-empty {
+        color: #999;
+        font-style: italic;
+    }
+
+    /* Ô có nhân viên */
+    .cell-staff {
+        color: #333;
+        font-weight: 500;
+    }
+
+    /* Thanh công cụ filter */
+    .filter-toolbar {
+        background-color: #fff;
+        padding: 15px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+        box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+        border: 1px solid #ddd;
+    }
+    
+    .date-navigator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .date-display {
+        background: #fff;
+        border: 1px solid #ced4da;
+        padding: 6px 12px;
+        border-radius: 4px;
+        font-weight: 500;
+    }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -17,15 +18,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         private readonly IPhieuDoiTraServices _phieuDoiTraServices;
         private readonly IChinhSachHoanTraServices _chinhSachHoanTraServices;
         private readonly IQuanLyServices _quanLyServices;
+        private readonly IEmailService _emailService;
 
         public ThemController(
             IPhieuDoiTraServices phieuDoiTraServices,
             IChinhSachHoanTraServices chinhSachHoanTraServices,
-            IQuanLyServices quanLyServices)
+            IQuanLyServices quanLyServices,
+            IEmailService emailService)
         {
             _phieuDoiTraServices = phieuDoiTraServices;
             _chinhSachHoanTraServices = chinhSachHoanTraServices;
             _quanLyServices = quanLyServices;
+            _emailService = emailService;
         }
 
         [Authorize(Roles = "ADMIN,NV_KHO")]
@@ -546,6 +550,43 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
+        //[HttpPost]
+        //[Route("/API/TaiKhoan/ResetPassword/{id}")]
+        //public IActionResult ResetPassword(string id)
+        //{
+        //    if (string.IsNullOrEmpty(id))
+        //    {
+        //        return BadRequest(new { message = "ID tài khoản không hợp lệ." });
+        //    }
+
+        //    try
+        //    {
+        //        var taiKhoan = _quanLyServices.GetList<TaiKhoan>()
+        //                        .FirstOrDefault(tk => tk.Id == id && !tk.IsDelete);
+
+        //        if (taiKhoan == null)
+        //        {
+        //            return NotFound(new { message = "Không tìm thấy tài khoản này." });
+        //        }
+
+        //        string newPasswordHash = _quanLyServices.HashPassword("123456");
+
+        //        taiKhoan.MatKhauHash = newPasswordHash;
+
+        //        if (_quanLyServices.Update<TaiKhoan>(taiKhoan))
+        //        {
+        //            return Ok(new { message = $"Đã đặt lại mật khẩu cho '{taiKhoan.TenDangNhap}' thành '123456'." });
+        //        }
+        //        else
+        //        {
+        //            return BadRequest(new { message = "Lỗi khi cập nhật mật khẩu." });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
+        //    }
+        //}
         [HttpPost]
         [Route("/API/TaiKhoan/ResetPassword/{id}")]
         public async Task<IActionResult> ResetPassword(string id)
@@ -567,6 +608,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     await _quanLyServices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy tài khoản này." });
                 }
+                if (string.IsNullOrEmpty(taiKhoan.Email))
+                {
+                    return BadRequest(new { message = "Tài khoản này chưa cập nhật Email, không thể gửi mật khẩu." });
+                }
+
 
                 string newPasswordHash = _quanLyServices.HashPassword("123456");
 
@@ -574,15 +620,26 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 _quanLyServices.Update<TaiKhoan>(taiKhoan);
 
-                if (await _quanLyServices.CommitAsync())
+                string newPassword = _quanLyServices.GenerateRandomPassword();
+
+                string encodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(newPassword));
+
+                var callbackUrl = Url.Action("ConfirmReset", "Account",
+                    new { area = "", email = taiKhoan.Email, newPassword = encodedPassword }, Request.Scheme);
+
+                await _emailService.SendEmailAsync(taiKhoan.Email, "Admin đã cấp lại mật khẩu cho bạn",
+                    $"<h3>Yêu cầu đặt lại mật khẩu từ Quản trị viên</h3>" +
+                    $"<p>Tài khoản <b>{taiKhoan.TenDangNhap}</b> vừa được yêu cầu cấp lại mật khẩu.</p>" +
+                    $"<p>Mật khẩu mới tạm thời: <strong style='color:red; font-size:18px'>{newPassword}</strong></p>" +
+                    $"<p>Vui lòng <a href='{callbackUrl}'>BẤM VÀO ĐÂY</a> để kích hoạt mật khẩu này.</p>" +
+                    $"<p><i>Lưu ý: Mật khẩu cũ vẫn có hiệu lực cho đến khi bạn bấm link trên.</i></p>");
+
+                if(!await _quanLyServices.CommitAsync())
                 {
-                    return Ok(new { message = $"Đã đặt lại mật khẩu cho '{taiKhoan.TenDangNhap}' thành '123456'." });
-                }
-                else
-                {
-                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi cập nhật mật khẩu." });
                 }
+
+                return Ok(new { message = $"Đã gửi email xác nhận và mật khẩu mới tới {taiKhoan.Email}." });
             }
             catch (Exception ex)
             {
@@ -590,7 +647,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
-
         [Authorize(Roles = "ADMIN")]
         [Route("/Them/ThemTaiKhoan")]
         public IActionResult ThemTaiKhoan(string loai = "nhanvien")

@@ -133,62 +133,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
-        [HttpPut]
-        [Route("/API/PhanCong/Update")]
-        public async Task<IActionResult> UpdatePhanCongCaLamViec([FromBody] PhanCongCaLamViecUpdateDto dto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _quanLySevices.BeginTransactionAsync();
-                var phanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
-                                    .FirstOrDefault(x => x.Id == dto.Id);
-
-                if (phanCong == null)
-                {
-                    await _quanLySevices.RollbackAsync();
-                    return NotFound(new { message = "Không tìm thấy ca phân công để cập nhật." });
-                }
-
-                var existingPhanCong = _quanLySevices.GetList<PhanCongCaLamViec>()
-                    .FirstOrDefault(p =>
-                        p.NhanVienId == dto.NhanVienId &&
-                        p.CaLamViecId == dto.CaLamViecId &&
-                        p.Ngay.Date == dto.Ngay.Value.Date &&
-                        p.Id != dto.Id &&
-                        !p.IsDelete);
-
-                if (existingPhanCong != null)
-                {
-                    await _quanLySevices.RollbackAsync();
-                    return BadRequest(new { message = "Nhân viên này đã được phân công ca này trong ngày đã chọn." });
-                }
-
-                phanCong.NhanVienId = dto.NhanVienId;
-                phanCong.CaLamViecId = dto.CaLamViecId;
-                phanCong.Ngay = dto.Ngay.Value;
-
-                _quanLySevices.Update<PhanCongCaLamViec>(phanCong);
-
-                if (await _quanLySevices.CommitAsync())
-                {
-                    return Ok(new { message = "Cập nhật phân công thành công!" });
-                }
-                else
-                {
-                    return BadRequest(new { message = "Lỗi khi cập nhật phân công." });
-                }
-            }
-            catch (Exception ex)
-            {
-                await _quanLySevices.RollbackAsync();
-                return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
-            }
-        }
         [HttpGet]
         [Route("/API/HinhAnh/{id}")]
         public IActionResult GetHinhAnh(string id)

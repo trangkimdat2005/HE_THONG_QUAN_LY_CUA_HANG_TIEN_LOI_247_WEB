@@ -4,6 +4,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -42,7 +43,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/QuanLyBaoMat/DanhSachTaiKhoanNhanVien")]
         public IActionResult DanhSachTaiKhoanNhanVien()
         {
-            var lstTKNV = _quanLySevices.GetList<TaiKhoanNhanVien>();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var lstTKNV = _quanLySevices.GetList<TaiKhoanNhanVien>().Where(t=>t.TaiKhoanId!= userId).ToList();
             ViewData["lstTKNV"] = lstTKNV;
             return View();
         }
