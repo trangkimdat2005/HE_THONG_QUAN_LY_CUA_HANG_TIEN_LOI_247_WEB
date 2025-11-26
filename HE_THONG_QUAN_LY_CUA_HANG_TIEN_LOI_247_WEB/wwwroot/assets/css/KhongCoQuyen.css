@@ -1,0 +1,134 @@
+﻿body {
+    background-color: #f0f8ff; /* Màu xanh nhạt dịu mắt */
+    font-family: 'Fredoka', sans-serif;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Phần nền trang trí */
+.bg-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.1;
+    background-image: radial-gradient(#ff6b6b 2px, transparent 2px);
+    background-size: 30px 30px;
+}
+
+.error-card {
+    background: white;
+    padding: 3rem;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    border: 4px solid #fff;
+}
+
+/* Logo nằm ở góc trên */
+.store-logo {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-weight: bold;
+    color: #ff6b6b;
+    font-size: 1.2rem;
+    border: 2px solid #ffde7d;
+    white-space: nowrap;
+}
+
+/* Icon chính (Chú mèo bảo vệ) */
+.mascot-icon {
+    font-size: 8rem;
+    color: #ffde7d; /* Màu vàng dễ thương */
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+    text-shadow: 2px 2px 0px #ffb347;
+}
+
+.stop-sign {
+    position: absolute;
+    font-size: 3rem;
+    color: #ff6b6b;
+    top: 80px;
+    right: 80px;
+    transform: rotate(15deg);
+    animation: shake 2s infinite;
+}
+
+h1 {
+    color: #ff6b6b;
+    font-weight: 600;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #6c757d;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Nút bấm */
+.btn-custom {
+    background-color: #4ecdc4;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
+    margin-top: 15px;
+}
+
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(78, 205, 196, 0.6);
+        background-color: #3dbdb4;
+        color: white;
+    }
+
+/* Hiệu ứng trôi nổi */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Hiệu ứng rung nhẹ biển báo */
+@keyframes shake {
+    0% {
+        transform: rotate(15deg);
+    }
+
+    50% {
+        transform: rotate(25deg);
+    }
+
+    100% {
+        transform: rotate(15deg);
+    }
+}
