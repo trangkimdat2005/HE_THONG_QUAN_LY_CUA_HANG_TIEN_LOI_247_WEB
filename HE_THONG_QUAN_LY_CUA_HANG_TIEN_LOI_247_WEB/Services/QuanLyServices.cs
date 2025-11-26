@@ -3,6 +3,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
 {
@@ -11,11 +12,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         private readonly ApplicationDbContext _context;
         private readonly IRealtimeNotifier _notifier;
         private IDbContextTransaction? _currentTransaction;
+        private readonly IMemoryCache _cache;
 
-        public QuanLyServices(ApplicationDbContext context, IRealtimeNotifier notifier)
+        public QuanLyServices(ApplicationDbContext context, IRealtimeNotifier notifier, IMemoryCache cache)
         {
             _context = context;
             _notifier = notifier;
+            _cache = cache;
         }
 
         public List<T> GetList<T>() where T : class
@@ -486,5 +489,46 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services
         }
 
         #endregion
+
+        public string GenerateRecoveryToken(string email)
+        {
+            var user = GetByEmail(email);
+            if (user == null) return null;
+
+            // Tạo Token và Key
+            string token = Guid.NewGuid().ToString();
+            string cacheKey = $"ResetToken_{email}";
+
+            // Cấu hình tự hủy sau 5 phút
+            var cacheOptions = new MemoryCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(5));
+
+            // Lưu vào RAM
+            _cache.Set(cacheKey, token, cacheOptions);
+
+            return token;
+        }
+
+        public bool ExecuteResetPassword(string email, string token, string newPasswordPlain)
+        {
+            string cacheKey = $"ResetToken_{email}";
+
+            // 1. Check Token trong RAM
+            if (!_cache.TryGetValue(cacheKey, out string storedToken)) return false; // Hết hạn hoặc ko tồn tại
+            if (storedToken != token) return false; // Token sai
+
+            // 2. Đổi mật khẩu trong DB
+            var user = GetByEmail(email);
+            if (user == null) return false;
+
+            user.MatKhauHash = HashPassword(newPasswordPlain); // Nhớ dùng hàm Hash cũ của bạn
+            _context.Update(user);
+            _context.SaveChanges();
+
+            // 3. Xóa Token ngay lập tức (Chống dùng lại)
+            _cache.Remove(cacheKey);
+
+            return true;
+        }
     }
 }
