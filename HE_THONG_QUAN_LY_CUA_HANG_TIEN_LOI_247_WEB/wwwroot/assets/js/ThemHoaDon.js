@@ -73,7 +73,31 @@
             timeout = setTimeout(later, wait);
         };
     }
+    function renderKhuyenMaiOptions() {
+        // 1. Kiểm tra dữ liệu
+        if (typeof danhSachKhuyenMai === 'undefined') {
+            return '<option value="" data-val="0">-- Chọn KM --</option>';
+        }
 
+        let options = '<option value="" data-val="0">-- Chọn KM --</option>';
+
+        danhSachKhuyenMai.forEach(km => {
+            let hienThiGiam = (km.loaiGiam === "Phần trăm")
+                ? (km.giaTri * 100) + "%"
+                : formatter.format(km.giaTri);
+
+            options += `<option value="${km.id}" 
+                        data-val="${km.giaTri}" 
+                        data-type="${km.loaiGiam}" 
+                        data-min="${km.toithieu}" 
+                        data-max="${km.toida}"
+                        data-start="${km.ngayBatDau}" 
+                        data-end="${km.ngayKetThuc}">
+                        ${km.ma} - Giảm ${hienThiGiam}
+                    </option>`;
+        });
+        return options;
+    }
     // === 1. LỌC SẢN PHẨM (TỐI ƯU) ===
     function filterProducts() {
         const rawKeyword = searchInput.value;
@@ -156,7 +180,7 @@
     });
 
     function addProductToInvoice(id, name, price, quantity = 1) {
-        const emptyRow = invoiceBody.querySelector('tr td[colspan="5"]');
+        const emptyRow = invoiceBody.querySelector('tr td[colspan="6"]');
         if (emptyRow) {
             emptyRow.closest('tr').remove();
         }
@@ -177,11 +201,18 @@
             row.setAttribute('data-id', id);
             row.innerHTML = `
                 <td>${name}</td>
-                <td><input type="number" class="form-control form-control-sm quantity-input" value="${quantity}" min="1" data-price="${price}"></td>
-                <td>${formatter.format(price)}</td>
-                <td class="row-total">${formatter.format(price * quantity)}</td>
-                <td
+                <td>
+                    <input type="number" class="form-control form-control-sm quantity-input" value="${quantity}" min="1" data-price="${price}">
                 </td>
+                <td>${formatter.format(price)}</td>
+                
+                <td>
+                    <select class="form-control form-control-sm discount-select" style="width: 150px;">
+                        ${renderKhuyenMaiOptions()}
+                    </select>
+                </td>
+
+                <td class="row-total">${formatter.format(price * quantity)}</td>
                 <td class="text-center">
                     <button class="btn btn-danger btn-sm remove-item-btn">
                         <i class="bi bi-trash"></i>
@@ -203,13 +234,21 @@
         }
     });
 
+    invoiceBody.addEventListener('change', function (e) {
+        if (e.target.classList.contains('discount-select')) {
+            const row = e.target.closest('tr');
+            updateRowTotal(row);
+            updateInvoiceTotal();
+        }
+    });
+
     invoiceBody.addEventListener('click', function (e) {
         const removeButton = e.target.closest('.remove-item-btn');
         if (removeButton) {
             if (confirm('Xóa sản phẩm này khỏi hóa đơn?')) {
                 removeButton.closest('tr').remove();
                 if (invoiceBody.querySelectorAll('tr[data-id]').length === 0) {
-                    invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="5">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
+                    invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="6x`">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
                 }
                 updateInvoiceTotal();
             }
@@ -220,64 +259,123 @@
         const qtyInput = row.querySelector('.quantity-input');
         const price = parseFloat(qtyInput.getAttribute('data-price'));
         const quantity = parseInt(qtyInput.value);
-        const total = price * quantity;
-        row.querySelector('.row-total').textContent = formatter.format(total);
+
+        let rawTotal = price * quantity;
+
+        const discountSelect = row.querySelector('.discount-select');
+        let discountAmount = 0;
+
+        let warningMsg = "";
+
+        if (discountSelect && discountSelect.selectedIndex > 0) {
+            const selectedOption = discountSelect.options[discountSelect.selectedIndex];
+
+            const val = parseFloat(selectedOption.getAttribute('data-val')) || 0;
+            const type = selectedOption.getAttribute('data-type');
+            const minOrder = parseFloat(selectedOption.getAttribute('data-min')) || 0;
+            const maxDiscount = parseFloat(selectedOption.getAttribute('data-max')) || 999999999;
+
+            const today = new Date();
+            const start = selectedOption.getAttribute('data-start');
+            const end = selectedOption.getAttribute('data-end');
+            if (start && end && (today < new Date(start) || today > new Date(end))) {
+                warningMsg = "Mã đã hết hạn!";
+            }
+            else if (rawTotal < minOrder) {
+                warningMsg = `Cần mua tối thiểu ${formatter.format(minOrder)}`;
+            }
+            else {
+                if (type === "Phần trăm") {
+                    discountAmount = rawTotal * val;
+                    if (discountAmount > maxDiscount) discountAmount = maxDiscount;
+                } else {
+                    discountAmount = val;
+                }
+            }
+        }
+
+        if (discountAmount > rawTotal) discountAmount = rawTotal;
+
+        let finalTotal = rawTotal - discountAmount;
+
+        row.querySelector('.row-total').textContent = formatter.format(finalTotal);
+
+        let errorSpan = row.querySelector('.discount-error-msg');
+        if (!errorSpan) {
+            errorSpan = document.createElement('small');
+            errorSpan.className = 'discount-error-msg text-danger d-block mt-1';
+            errorSpan.style.fontSize = '11px';
+            if (discountSelect) discountSelect.parentNode.appendChild(errorSpan);
+        }
+        errorSpan.textContent = warningMsg;
+        row.setAttribute('data-original-total', rawTotal);
+        row.setAttribute('data-discount-amt', discountAmount);
+        row.setAttribute('data-row-total', finalTotal);
+
+        updateInvoiceTotal(); 
     }
 
+    // --- TÍNH TỔNG CẢ HÓA ĐƠN ---
     function updateInvoiceTotal() {
-        let subTotal = 0;
+        let totalOriginal = 0; // Tổng tiền hàng 
+        let totalDiscount = 0; // Tổng tiền giảm giá
+
         const allRows = invoiceBody.querySelectorAll('tr[data-id]');
+
         allRows.forEach(row => {
-            const qtyInput = row.querySelector('.quantity-input');
-            if (qtyInput) {
-                const price = parseFloat(qtyInput.getAttribute('data-price'));
-                const quantity = parseInt(qtyInput.value);
-                subTotal += price * quantity;
-            }
+            const rowOriginal = parseFloat(row.getAttribute('data-original-total')) || 0;
+            const rowDiscount = parseFloat(row.getAttribute('data-discount-amt')) || 0;
+
+            totalOriginal += rowOriginal;
+            totalDiscount += rowDiscount;
         });
-        const total = subTotal - discountValue;
-        subTotalEl.textContent = formatter.format(subTotal);
-        discountEl.textContent = formatter.format(discountValue);
-        totalEl.textContent = formatter.format(total);
+
+        const finalTotal = totalOriginal - totalDiscount;
+
+        $('#sub-total').text(formatter.format(totalOriginal));
+
+        $('#discount-amount').text(formatter.format(totalDiscount));
+
+        $('#total-amount').text(formatter.format(finalTotal));
     }
 
-    // === 4. ÁP DỤNG MÃ GIẢM GIÁ ===
-    applyDiscountBtn.addEventListener('click', async function () {
-        const code = discountInput.value.trim();
-        if (!code) {
-            showDiscountMessage('Vui lòng nhập mã giảm giá', 'danger');
-            return;
-        }
-        const subTotal = calculateSubTotal();
-        try {
-            applyDiscountBtn.disabled = true;
-            applyDiscountBtn.innerHTML = '<i class="spinner-border spinner-border-sm"></i>';
-            const response = await fetch('/API/apply-discount', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ MaGiamGia: code, TongTien: subTotal })
-            });
-            const result = await response.json();
-            if (response.ok) {
-                appliedDiscount = result;
-                discountValue = result.giaTri;
-                updateInvoiceTotal();
-                showDiscountMessage(`✓ Áp dụng thành công: ${result.ten} (-${formatter.format(result.giaTri)})`, 'success');
-                discountInput.disabled = true;
-                applyDiscountBtn.textContent = 'Đã áp dụng';
-                applyDiscountBtn.classList.replace('btn-outline-primary', 'btn-success');
-            } else {
-                showDiscountMessage(result.message, 'danger');
-                applyDiscountBtn.disabled = false;
-                applyDiscountBtn.textContent = 'Áp dụng';
-            }
-        } catch (error) {
-            showDiscountMessage('Lỗi khi áp dụng mã giảm giá', 'danger');
-            console.error(error);
-            applyDiscountBtn.disabled = false;
-            applyDiscountBtn.textContent = 'Áp dụng';
-        }
-    });
+    //// === 4. ÁP DỤNG MÃ GIẢM GIÁ ===
+    //applyDiscountBtn.addEventListener('click', async function () {
+    //    const code = discountInput.value.trim();
+    //    if (!code) {
+    //        showDiscountMessage('Vui lòng nhập mã giảm giá', 'danger');
+    //        return;
+    //    }
+    //    const subTotal = calculateSubTotal();
+    //    try {
+    //        applyDiscountBtn.disabled = true;
+    //        applyDiscountBtn.innerHTML = '<i class="spinner-border spinner-border-sm"></i>';
+    //        const response = await fetch('/API/apply-discount', {
+    //            method: 'POST',
+    //            headers: { 'Content-Type': 'application/json' },
+    //            body: JSON.stringify({ MaGiamGia: code, TongTien: subTotal })
+    //        });
+    //        const result = await response.json();
+    //        if (response.ok) {
+    //            appliedDiscount = result;
+    //            discountValue = result.giaTri;
+    //            updateInvoiceTotal();
+    //            showDiscountMessage(`✓ Áp dụng thành công: ${result.ten} (-${formatter.format(result.giaTri)})`, 'success');
+    //            discountInput.disabled = true;
+    //            applyDiscountBtn.textContent = 'Đã áp dụng';
+    //            applyDiscountBtn.classList.replace('btn-outline-primary', 'btn-success');
+    //        } else {
+    //            showDiscountMessage(result.message, 'danger');
+    //            applyDiscountBtn.disabled = false;
+    //            applyDiscountBtn.textContent = 'Áp dụng';
+    //        }
+    //    } catch (error) {
+    //        showDiscountMessage('Lỗi khi áp dụng mã giảm giá', 'danger');
+    //        console.error(error);
+    //        applyDiscountBtn.disabled = false;
+    //        applyDiscountBtn.textContent = 'Áp dụng';
+    //    }
+    //});
 
     function showDiscountMessage(message, type) {
         discountMessage.textContent = message;
@@ -396,25 +494,70 @@
     }
 
     // === 7. THANH TOÁN NGAY ===
+    //completeInvoiceBtn.addEventListener('click', async function () {
+    //    const allRows = invoiceBody.querySelectorAll('tr[data-id]');
+    //    if (allRows.length === 0) {
+    //        alert('Chưa có sản phẩm nào trong hóa đơn!');
+    //        return;
+    //    }
+    //    if (!confirm('Chuyển sang trang thanh toán?')) {
+    //        return;
+    //    }
+    //    console.log('Bắt đầu lưu hóa đơn...');
+    //    const hoaDonId = await saveInvoice('Chưa thanh toán');
+    //    console.log('Kết quả saveInvoice:', hoaDonId);
+    //    if (hoaDonId) {
+    //        const redirectUrl = `/Admin/QuanLyHoaDon/ThanhToanHoaDon/${hoaDonId}`;
+    //        console.log('Chuyển đến:', redirectUrl);
+    //        window.location.href = redirectUrl;
+    //    } else {
+    //        console.error('Không nhận được hoaDonId từ API');
+    //        alert('Không thể chuyển sang trang thanh toán. Vui lòng kiểm tra console.');
+    //    }
+    //});
     completeInvoiceBtn.addEventListener('click', async function () {
+        // 1. Kiểm tra sản phẩm
         const allRows = invoiceBody.querySelectorAll('tr[data-id]');
         if (allRows.length === 0) {
             alert('Chưa có sản phẩm nào trong hóa đơn!');
             return;
         }
-        if (!confirm('Chuyển sang trang thanh toán?')) {
+
+        // 2. Xác nhận
+        if (!confirm('Xác nhận tạo hóa đơn và chuyển sang thanh toán?')) {
             return;
         }
-        console.log('Bắt đầu lưu hóa đơn...');
-        const hoaDonId = await saveInvoice('Chưa thanh toán');
-        console.log('Kết quả saveInvoice:', hoaDonId);
-        if (hoaDonId) {
-            const redirectUrl = `/Admin/QuanLyHoaDon/ThanhToanHoaDon/${hoaDonId}`;
-            console.log('Chuyển đến:', redirectUrl);
-            window.location.href = redirectUrl;
-        } else {
-            console.error('Không nhận được hoaDonId từ API');
-            alert('Không thể chuyển sang trang thanh toán. Vui lòng kiểm tra console.');
+
+        // 3. Hiệu ứng loading nút bấm
+        const originalText = completeInvoiceBtn.innerHTML;
+        completeInvoiceBtn.disabled = true;
+        completeInvoiceBtn.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Đang xử lý...';
+
+        try {
+            console.log('--- BẮT ĐẦU THANH TOÁN ---');
+
+            // Gọi hàm lưu với trạng thái 'Chưa thanh toán' (để sang trang kia thanh toán nốt)
+            // Hoặc sửa thành 'Đã thanh toán' nếu muốn chốt đơn luôn
+            const hoaDonId = await saveInvoice('Chưa thanh toán');
+
+            console.log('ID Hóa đơn nhận được:', hoaDonId);
+
+            if (hoaDonId) {
+                // THÀNH CÔNG -> CHUYỂN TRANG
+                // Đảm bảo đường dẫn này đúng với Controller của bạn
+                window.location.href = `/Admin/QuanLyHoaDon/ThanhToanHoaDon/${hoaDonId}`;
+            } else {
+                // THẤT BẠI (saveInvoice trả về null do lỗi API)
+                // Lỗi cụ thể đã được hàm saveInvoice alert ra rồi, ở đây chỉ cần reset nút
+                console.error('Lưu thất bại.');
+            }
+        } catch (e) {
+            console.error('Lỗi JS:', e);
+            alert('Có lỗi xảy ra: ' + e.message);
+        } finally {
+            // Mở lại nút bấm
+            completeInvoiceBtn.disabled = false;
+            completeInvoiceBtn.innerHTML = originalText;
         }
     });
 
@@ -444,46 +587,66 @@
         console.log('Trạng thái:', trangThai);
         const allRows = invoiceBody.querySelectorAll('tr[data-id]');
         console.log('Số sản phẩm:', allRows.length);
+        
         const chiTietHoaDon = [];
+        
         allRows.forEach(row => {
             const qtyInput = row.querySelector('.quantity-input');
+            const discountSelect = row.querySelector('.discount-select');
+            
+            let giamGia = parseFloat(row.getAttribute('data-discount-amt')) || 0;
+            let maKhuyenMaiId = null;
+            
+            if (discountSelect && discountSelect.value) {
+                maKhuyenMaiId = discountSelect.value;
+            }
+            
             const item = {
-                SanPhamDonViId: row.getAttribute('data-id'),
+                SanPhamDonViId: row.getAttribute('data-id'),    
                 SoLuong: parseInt(qtyInput.value),
                 DonGia: parseFloat(qtyInput.getAttribute('data-price')),
-                GiamGia: 0
+                GiamGia: giamGia,
+                MaKhuyenMaiId: maKhuyenMaiId
             };
             chiTietHoaDon.push(item);
-        });
+            
+            console.log('Chi tiết sản phẩm:', item);
+        });     
+        
         const requestData = {
             KhachHangId: customerSelect.val() || null,
-            NhanVienId: currentUserId,
             NgayLap: new Date().toISOString(),
             TrangThai: trangThai,
-            MaKhuyenMaiId: appliedDiscount?.id || null,
-            TongGiamGia: discountValue,
             ChiTietHoaDon: chiTietHoaDon
         };
+        
+        console.log('Request data:', requestData);
+        
         try {
             saveDraftBtn.disabled = true;
             completeInvoiceBtn.disabled = true;
             completeInvoiceBtn.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Đang xử lý...';
+            
             const response = await fetch('/API/add-HoaDon', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestData)
             });
+            
             const result = await response.json();
+            
             if (response.ok) {
                 console.log(' Hóa đơn đã tạo thành công:', result.hoaDonId);
+                console.log('Tổng tiền:', result.tongTien);
+                console.log('Tổng giảm giá:', result.tongGiamGia);
                 return result.hoaDonId;
             } else {
-                console.error(' Lỗi từ server:', result.message);
+                console.error('❌ Lỗi từ server:', result.message);
                 alert('Lỗi: ' + result.message);
                 return null;
             }
         } catch (error) {
-            console.error(' Exception khi lưu hóa đơn:', error);
+            console.error('❌ Exception khi lưu hóa đơn:', error);
             alert('Lỗi khi lưu hóa đơn: ' + error.message);
             return null;
         } finally {

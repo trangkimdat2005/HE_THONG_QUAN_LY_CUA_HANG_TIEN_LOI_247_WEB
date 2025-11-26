@@ -60,29 +60,20 @@
                     <th>Sản phẩm</th>
                     <th style="width: 100px;">Số lượng</th>
                     <th>Đơn giá</th>
+                    <th>Mã giảm giá</th>
                     <th>Thành tiền</th>
                     <th style="width: 50px;">Xoá</th>
                   </tr>
                 </thead>
                 <tbody id="invoice-items-body">
                   <tr class="text-center text-muted">
-                    <td colspan="5">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td>
+                    <td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td>
                   </tr>
                 </tbody>
               </table>
             </div>
 
-            <div class="row mt-3">
-              <div class="col-md-6">
-                <div class="mb-3">
-                  <label class="form-label">Mã giảm giá</label>
-                  <div class="input-group">
-                    <input class="form-control" id="discount-code-input" type="text" placeholder="Nhập mã~">
-                    <button class="btn btn-outline-primary" type="button" id="apply-discount-btn">Áp dụng</button>
-                  </div>
-                  <small class="text-muted" id="discount-message"></small>
-                </div>
-              </div>
+            <div class="row mt-3 justify-content-end">
               <div class="col-md-6">
                 <h5 class="fw-normal">Tạm tính: <span id="sub-total" class="float-end">0 đ</span></h5>
                 <h5>Giảm giá: <span id="discount-amount" class="float-end text-danger">0 đ</span></h5>
@@ -141,7 +132,6 @@
                       var tenHienThi = string.IsNullOrEmpty(tenDonVi) ? tenSanPham : $"{tenSanPham} ({tenDonVi})";
                       var giaBan = sp.GiaBan;
                       
-                      // Lấy danh mục đầu tiên của sản phẩm (để filter)
                       var danhMucId = sp.SanPham?.SanPhamDanhMucs?.FirstOrDefault()?.DanhMucId ?? "";
                       
                       <li class="list-group-item d-flex justify-content-between align-items-center product-item"
@@ -191,7 +181,37 @@
 
       </div>
     </div>
+    <script>
+        var danhSachKhuyenMai = @Html.Raw(Json.Serialize(
+            (lstMaKhuyenMai != null) ? lstMaKhuyenMai
+            
+                .Where(x => !x.IsDelete 
+                            && x.TrangThai == "Hoạt động" 
+                            && x.SoLanSuDung > 0
+                            && (x.ChuongTrinh == null || (DateTime.Now >= x.ChuongTrinh.NgayBatDau && DateTime.Now <= x.ChuongTrinh.NgayKetThuc)))
+            
+                .Select(x => {
+               
+                    var dieuKien = x.ChuongTrinh?.DieuKienApDungs?.FirstOrDefault();
+                    var ct = x.ChuongTrinh; 
 
+                    return new {
+                        id = x.Id,
+                        ma = x.Code,
+                        giaTri = x.GiaTri, 
+                    
+                        loaiGiam = dieuKien?.GiamTheo ?? "Giá tiền", 
+                        toithieu = dieuKien?.GiaTriToiThieu ?? 0,   
+                        toida = dieuKien?.GiaTriToiDa ?? 999999999,  
+                    
+                        // Lấy ngày tháng từ biến ct đã khai báo
+                        ngayBatDau = ct?.NgayBatDau, 
+                        ngayKetThuc = ct?.NgayKetThuc
+                    };
+                }) 
+                : new List<object>()
+        ));
+    </script>
     <!-- Hidden data for JavaScript -->
   </main>
 

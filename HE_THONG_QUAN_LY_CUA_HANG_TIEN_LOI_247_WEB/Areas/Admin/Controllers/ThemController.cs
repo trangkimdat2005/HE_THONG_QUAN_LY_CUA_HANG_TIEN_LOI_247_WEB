@@ -1076,7 +1076,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Email = request.Email.ToLower(),
                     DiaChi = request.DiaChi ?? "",
                     NgayVaoLam = request.NgayVaoLam ?? DateTime.Now,
-                    TrangThai = request.TrangThai ?? "HoatDong",
+                    TrangThai = request.TrangThai ?? "Hoạt động",
                     GioiTinh = request.GioiTinh,
                     AnhId = request.AnhId ?? "ANH_DEFAULT", // Cần tạo ảnh mặc định
                     IsDelete = false
@@ -1502,7 +1502,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             try
             {
-                Console.WriteLine("=== API APPLY DISCOUNT CALLED ===");
                 Console.WriteLine($"Code: {request.MaGiamGia}, TongTien: {request.TongTien}");
 
                 if (string.IsNullOrWhiteSpace(request.MaGiamGia))
@@ -1545,7 +1544,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 decimal giaTri = maKhuyenMai.GiaTri;
 
-                Console.WriteLine($"✅ Mã hợp lệ. Giá trị giảm: {giaTri}");
+                Console.WriteLine($" Mã hợp lệ. Giá trị giảm: {giaTri}");
 
                 return Ok(new
                 {
@@ -1558,164 +1557,392 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+                Console.WriteLine($" EXCEPTION: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi khi áp dụng mã giảm giá: {ex.Message}" });
             }
         }
 
-        public class ApplyDiscountRequest
-        {
-            public string MaGiamGia { get; set; }
-            public decimal TongTien { get; set; }
-        }
+
 
         //=========================================API Thêm Hóa Đơn=======================================================================
+        //[HttpPost]
+        //[Route("/API/add-HoaDon")]
+        //public async Task<IActionResult> AddHoaDon([FromBody] HoaDonRequest request)
+        //{
+        //    try
+        //    {
+        //        Console.WriteLine("=== API ADD HÓA ĐƠN CALLED ===");
+        //        Console.WriteLine($"Request: {System.Text.Json.JsonSerializer.Serialize(request)}");
+
+        //        if (request == null)
+        //        {
+        //            return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+        //        }
+
+        //        // Validate
+        //        if (request.ChiTietHoaDon == null || !request.ChiTietHoaDon.Any())
+        //        {
+        //            return BadRequest(new { message = "Hóa đơn phải có ít nhất một sản phẩm." });
+        //        }
+
+        //        // Xử lý KhachHangId - nếu null thì tạo hoặc dùng khách lẻ mặc định
+        //        string khachHangId = request.KhachHangId;
+
+        //        await _quanLyServices.BeginTransactionAsync();
+
+        //        if (string.IsNullOrEmpty(khachHangId))
+        //        {
+        //            Console.WriteLine("KhachHangId is null - creating/using default customer...");
+
+        //            // Kiểm tra khách hàng mặc định có tồn tại không
+        //            var khachLe = _quanLyServices.GetById<KhachHang>("KH_LE");
+
+        //            if (khachLe == null)
+        //            {
+        //                Console.WriteLine("Creating default customer KH_LE...");
+
+        //                // Tạo ảnh mặc định nếu chưa có
+        //                var defaultImage = _quanLyServices.GetList<HinhAnh>()
+        //                    .FirstOrDefault(ha => ha.Id == "ANH_DEFAULT");
+
+        //                if (defaultImage == null)
+        //                {
+        //                    byte[] defaultImageBytes = Convert.FromBase64String(
+        //                        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
+        //                    );
+
+        //                    defaultImage = new HinhAnh
+        //                    {
+        //                        Id = "ANH_DEFAULT",
+        //                        TenAnh = "Default Avatar",
+        //                        Anh = defaultImageBytes
+        //                    };
+
+        //                    _quanLyServices.Add<HinhAnh>(defaultImage);
+        //                }
+
+        //                // Tạo khách hàng lẻ mặc định
+        //                khachLe = new KhachHang
+        //                {
+        //                    Id = "KH_LE",
+        //                    HoTen = "Khách lẻ",
+        //                    SoDienThoai = "0000000000",
+        //                    Email = null,
+        //                    DiaChi = "",
+        //                    NgayDangKy = DateTime.Now,
+        //                    TrangThai = "Hoạt động",
+        //                    GioiTinh = false,
+        //                    AnhId = "ANH_DEFAULT",
+        //                    IsDelete = false
+        //                };
+
+
+
+        //                _quanLyServices.Add<KhachHang>(khachLe);
+
+        //                Console.WriteLine("✅ Created default customer KH_LE");
+        //            }
+
+        //            khachHangId = "KH_LE";
+        //            Console.WriteLine($"Using KhachHangId: {khachHangId}");
+        //        }
+
+        //        var NhanVienId = _quanLyServices.GetById<TaiKhoan>(User.FindFirst(ClaimTypes.NameIdentifier)?.Value).TaiKhoanNhanVien.NhanVienId;
+
+
+        //        // Tạo hóa đơn
+        //        HoaDon hoaDon = new HoaDon
+        //        {
+        //            Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6),
+        //            KhachHangId = khachHangId,
+        //            NhanVienId = NhanVienId,
+        //            NgayLap = request.NgayLap ?? DateTime.Now,
+        //            TrangThai = request.TrangThai ?? "Chưa thanh toán",
+        //            TongTien = 0, // Sẽ tính sau
+        //            IsDelete = false
+        //        };
+
+        //        Console.WriteLine($"Generated HoaDon ID: {hoaDon.Id}, TrangThai: {hoaDon.TrangThai}, KhachHangId: {hoaDon.KhachHangId}");
+
+        //        _quanLyServices.Add<HoaDon>(hoaDon);
+
+        //        decimal tongTien = 0;
+        //        decimal tongGiamGia = 0;
+
+        //        // Danh sách mã khuyến mãi đã sử dụng để giảm số lần sử dụng sau
+        //        var maKhuyenMaiDaSuDung = new HashSet<string>();
+
+        //        // Thêm chi tiết hóa đơn và xử lý tồn kho
+        //        foreach (var chiTiet in request.ChiTietHoaDon)
+        //        {
+        //            // Kiểm tra tồn kho
+        //            var tonKho = _quanLyServices.GetList<TonKho>()
+        //                .FirstOrDefault(tk => tk.SanPhamDonViId == chiTiet.SanPhamDonViId && !tk.IsDelete);
+
+        //            if (tonKho == null)
+        //            {
+        //                await _quanLyServices.RollbackAsync();
+        //                var sanPham = _quanLyServices.GetById<SanPhamDonVi>(chiTiet.SanPhamDonViId);
+        //                var tenSP = sanPham?.SanPham?.Ten ?? chiTiet.SanPhamDonViId;
+        //                return BadRequest(new { message = $"Sản phẩm '{tenSP}' chưa có trong kho." });
+        //            }
+
+        //            if (tonKho.SoLuongTon < chiTiet.SoLuong)
+        //            {
+        //                await _quanLyServices.RollbackAsync();
+        //                var sanPham = _quanLyServices.GetById<SanPhamDonVi>(chiTiet.SanPhamDonViId);
+        //                var tenSP = sanPham?.SanPham?.Ten ?? chiTiet.SanPhamDonViId;
+        //                return BadRequest(new { 
+        //                    message = $"Sản phẩm '{tenSP}' không đủ số lượng trong kho. Tồn kho: {tonKho.SoLuongTon}, Yêu cầu: {chiTiet.SoLuong}" 
+        //                });
+        //            }
+
+        //            decimal thanhTienGoc = chiTiet.SoLuong * chiTiet.DonGia;
+        //            decimal giamGia = chiTiet.GiamGia ?? 0;
+
+        //            // Cộng vào tổng giảm giá
+        //            tongGiamGia += giamGia;
+
+        //            decimal thanhTienSauGiam = Math.Max(0, thanhTienGoc - giamGia);
+        //            tongTien += thanhTienSauGiam;
+
+        //            ChiTietHoaDon ctHoaDon = new ChiTietHoaDon
+        //            {
+        //                HoaDonId = hoaDon.Id,
+        //                SanPhamDonViId = chiTiet.SanPhamDonViId,
+        //                SoLuong = chiTiet.SoLuong,
+        //                DonGia = chiTiet.DonGia,
+        //                GiamGia = giamGia,
+        //                TongTien = thanhTienSauGiam,
+        //                IsDelete = false
+        //            };
+
+        //            Console.WriteLine($"Adding ChiTietHoaDon: SanPham={chiTiet.SanPhamDonViId}, SL={chiTiet.SoLuong}, DonGia={chiTiet.DonGia}, GiamGia={giamGia}, TongTien={thanhTienSauGiam}");
+
+        //            _quanLyServices.Add<ChiTietHoaDon>(ctHoaDon);
+
+        //            // Giảm tồn kho
+        //            tonKho.SoLuongTon -= chiTiet.SoLuong;
+        //            _quanLyServices.Update<TonKho>(tonKho);
+
+        //            Console.WriteLine($"Updated TonKho: SanPham={chiTiet.SanPhamDonViId}, SoLuongTon còn lại={tonKho.SoLuongTon}");
+
+        //            if (giamGia > 0 && !string.IsNullOrEmpty(chiTiet.MaKhuyenMaiId))
+        //            {
+        //                // Tìm mã khuyến mãi
+        //                var maKhuyenMai = _quanLyServices.GetById<MaKhuyenMai>(chiTiet.MaKhuyenMaiId);
+
+        //                if (maKhuyenMai != null && !maKhuyenMai.IsDelete)
+        //                {
+        //                    // Lưu chi tiết hóa đơn khuyến mãi
+        //                    ChiTietHoaDonKhuyenMai cthdKhuyenMai = new ChiTietHoaDonKhuyenMai
+        //                    {
+        //                        Id = _quanLyServices.GenerateNewId<ChiTietHoaDonKhuyenMai>("CTHDKM", 10),
+        //                        HoaDonId = hoaDon.Id,
+        //                        SanPhamDonViId = chiTiet.SanPhamDonViId,
+        //                        MaKhuyenMaiId = chiTiet.MaKhuyenMaiId,
+        //                        GiaTriApDung = giamGia,
+        //                        IsDelete = false
+        //                    };
+
+        //                    _quanLyServices.Add<ChiTietHoaDonKhuyenMai>(cthdKhuyenMai);
+
+        //                    // Đánh dấu mã này đã được sử dụng
+        //                    maKhuyenMaiDaSuDung.Add(chiTiet.MaKhuyenMaiId);
+
+        //                    Console.WriteLine($"Added ChiTietHoaDonKhuyenMai: MaKM={chiTiet.MaKhuyenMaiId}, GiaTri={giamGia}");
+        //                }
+        //            }
+        //        }
+
+        //        // Cập nhật tổng tiền cho hóa đơn
+        //        hoaDon.TongTien = tongTien;
+        //        _quanLyServices.Update<HoaDon>(hoaDon);
+
+        //        Console.WriteLine($"Updated HoaDon: TongTien={tongTien}, TongGiamGia={tongGiamGia}");
+
+        //        // Giảm số lần sử dụng của các mã khuyến mãi đã dùng
+        //        foreach (var maKhuyenMaiId in maKhuyenMaiDaSuDung)
+        //        {
+        //            var maKhuyenMai = _quanLyServices.GetById<MaKhuyenMai>(maKhuyenMaiId);
+
+        //            if (maKhuyenMai != null && !maKhuyenMai.IsDelete)
+        //            {
+        //                // Giảm số lần sử dụng
+        //                maKhuyenMai.SoLanSuDung -= 1;
+
+        //                // Nếu hết lượt sử dụng, đổi trạng thái thành "Hết hạn"
+        //                if (maKhuyenMai.SoLanSuDung <= 0)
+        //                {
+        //                    maKhuyenMai.TrangThai = "Hết hạn";
+        //                    Console.WriteLine($"MaKhuyenMai {maKhuyenMaiId} đã hết lượt sử dụng, chuyển trạng thái sang 'Hết hạn'");
+        //                }
+
+        //                _quanLyServices.Update<MaKhuyenMai>(maKhuyenMai);
+
+        //                Console.WriteLine($"Updated MaKhuyenMai: ID={maKhuyenMaiId}, SoLanSuDung còn lại={maKhuyenMai.SoLanSuDung}");
+        //            }
+        //        }
+
+        //        if(await _quanLyServices.CommitAsync() == false)
+        //        {
+        //            await _quanLyServices.RollbackAsync();
+        //            return BadRequest(new { message = "Không thể tạo hóa đơn." });
+        //        }
+
+        //        Console.WriteLine("=== SUCCESS: Tạo hóa đơn thành công ===");
+
+        //        return Ok(new
+        //        {
+        //            message = "Tạo hóa đơn thành công!",
+        //            hoaDonId = hoaDon.Id,
+        //            tongTien = tongTien,
+        //            tongGiamGia = tongGiamGia
+        //        });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        await _quanLyServices.RollbackAsync();
+        //        Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+        //        Console.WriteLine($"Stack trace: {ex.StackTrace}");
+        //        return StatusCode(500, new { message = $"Lỗi khi tạo hóa đơn: {ex.Message}" });
+        //    }
+        //}
         [HttpPost]
         [Route("/API/add-HoaDon")]
         public async Task<IActionResult> AddHoaDon([FromBody] HoaDonRequest request)
         {
             try
             {
-                Console.WriteLine("=== API ADD HÓA ĐƠN CALLED ===");
-                Console.WriteLine($"Request: {System.Text.Json.JsonSerializer.Serialize(request)}");
-
-                if (request == null)
+                // 1. Validate đầu vào
+                if (request == null || request.ChiTietHoaDon == null || !request.ChiTietHoaDon.Any())
                 {
-                    return BadRequest(new { message = "Dữ liệu không hợp lệ." });
+                    return BadRequest(new { message = "Dữ liệu hóa đơn không hợp lệ (Chưa có sản phẩm)." });
                 }
-
-                // Validate
-                if (request.ChiTietHoaDon == null || !request.ChiTietHoaDon.Any())
-                {
-                    return BadRequest(new { message = "Hóa đơn phải có ít nhất một sản phẩm." });
-                }
-
-                // Xử lý KhachHangId - nếu null thì tạo hoặc dùng khách lẻ mặc định
-                string khachHangId = request.KhachHangId;
 
                 await _quanLyServices.BeginTransactionAsync();
 
+                string khachHangId = request.KhachHangId;
                 if (string.IsNullOrEmpty(khachHangId))
                 {
-                    Console.WriteLine("KhachHangId is null - creating/using default customer...");
-
-                    // Kiểm tra khách hàng mặc định có tồn tại không
                     var khachLe = _quanLyServices.GetById<KhachHang>("KH_LE");
-
                     if (khachLe == null)
                     {
-                        Console.WriteLine("Creating default customer KH_LE...");
+                        khachLe = new KhachHang { Id = "KH_LE", HoTen = "Khách lẻ", SoDienThoai = "0000000000", TrangThai = "Hoạt động", AnhId = "ANH_DEFAULT", IsDelete = false };
+                        _quanLyServices.Add(khachLe);
 
-                        // Tạo ảnh mặc định nếu chưa có
-                        var defaultImage = _quanLyServices.GetList<HinhAnh>()
-                            .FirstOrDefault(ha => ha.Id == "ANH_DEFAULT");
+                        if (!await _quanLyServices.CommitAsync()) throw new Exception("Lỗi tạo khách lẻ.");
 
-                        if (defaultImage == null)
-                        {
-                            byte[] defaultImageBytes = Convert.FromBase64String(
-                                "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
-                            );
-
-                            defaultImage = new HinhAnh
-                            {
-                                Id = "ANH_DEFAULT",
-                                TenAnh = "Default Avatar",
-                                Anh = defaultImageBytes
-                            };
-
-                            _quanLyServices.Add<HinhAnh>(defaultImage);
-                        }
-
-                        // Tạo khách hàng lẻ mặc định
-                        khachLe = new KhachHang
-                        {
-                            Id = "KH_LE",
-                            HoTen = "Khách lẻ",
-                            SoDienThoai = "0000000000",
-                            Email = null,
-                            DiaChi = "",
-                            NgayDangKy = DateTime.Now,
-                            TrangThai = "Hoạt động",
-                            GioiTinh = false,
-                            AnhId = "ANH_DEFAULT",
-                            IsDelete = false
-                        };
-
-
-
-                        _quanLyServices.Add<KhachHang>(khachLe);
-
-                        Console.WriteLine("✅ Created default customer KH_LE");
+                        await _quanLyServices.BeginTransactionAsync();
                     }
-
                     khachHangId = "KH_LE";
-                    Console.WriteLine($"Using KhachHangId: {khachHangId}");
                 }
 
-                var NhanVienId = _quanLyServices.GetById<TaiKhoan>(User.FindFirst(ClaimTypes.NameIdentifier)?.Value).TaiKhoanNhanVien.NhanVienId;
+                var nhanVienId = _quanLyServices.GetById<TaiKhoan>(User.FindFirst(ClaimTypes.NameIdentifier)?.Value)?.TaiKhoanNhanVien?.NhanVienId;
 
-
-                // Tạo hóa đơn
                 HoaDon hoaDon = new HoaDon
                 {
-                    Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6),
+                    Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6), 
                     KhachHangId = khachHangId,
-                    NhanVienId = NhanVienId,
+                    NhanVienId = nhanVienId,
                     NgayLap = request.NgayLap ?? DateTime.Now,
                     TrangThai = request.TrangThai ?? "Chưa thanh toán",
-                    TongTien = 0, // Sẽ tính sau
-                    IsDelete = false
+                    IsDelete = false,
+
+                    ChiTietHoaDons = new List<ChiTietHoaDon>()
                 };
 
-                Console.WriteLine($"Generated HoaDon ID: {hoaDon.Id}, TrangThai: {hoaDon.TrangThai}, KhachHangId: {hoaDon.KhachHangId}");
-
-                _quanLyServices.Add<HoaDon>(hoaDon);
-
                 decimal tongTien = 0;
+                decimal tongGiamGia = 0;
 
-                // Thêm chi tiết hóa đơn
-                foreach (var chiTiet in request.ChiTietHoaDon)
+                foreach (var item in request.ChiTietHoaDon)
                 {
-                    decimal thanhTien = chiTiet.SoLuong * chiTiet.DonGia;
-                    tongTien += thanhTien;
+                    var tonKho = _quanLyServices.GetList<TonKho>()
+                        .FirstOrDefault(tk => tk.SanPhamDonViId == item.SanPhamDonViId && !tk.IsDelete);
 
-                    ChiTietHoaDon ctHoaDon = new ChiTietHoaDon
+                    if (tonKho == null || tonKho.SoLuongTon < item.SoLuong)
                     {
-                        HoaDonId = hoaDon.Id,
-                        SanPhamDonViId = chiTiet.SanPhamDonViId,
-                        SoLuong = chiTiet.SoLuong,
-                        DonGia = chiTiet.DonGia,
-                        GiamGia = chiTiet.GiamGia ?? 0,
-                        TongTien = thanhTien,
+                        await _quanLyServices.RollbackAsync();
+                        return BadRequest(new { message = $"Sản phẩm {item.SanPhamDonViId} không đủ hàng (Còn: {tonKho?.SoLuongTon ?? 0})." });
+                    }
+
+                    // Trừ kho
+                    tonKho.SoLuongTon -= item.SoLuong;
+                    _quanLyServices.Update(tonKho);
+
+                    decimal donGia = item.DonGia;
+                    decimal giamGia = item.GiamGia ?? 0;
+                    decimal thanhTienSauGiam = Math.Max(0, (item.SoLuong * donGia) - giamGia);
+
+                    tongTien += thanhTienSauGiam;
+                    tongGiamGia += giamGia;
+
+                    var chiTiet = new ChiTietHoaDon
+                    {
+
+                        SanPhamDonViId = item.SanPhamDonViId,
+                        SoLuong = item.SoLuong,
+                        DonGia = donGia,
+                        GiamGia = giamGia,
+                        TongTien = thanhTienSauGiam,
                         IsDelete = false
                     };
 
-                    Console.WriteLine($"Adding ChiTietHoaDon: SanPham={chiTiet.SanPhamDonViId}, SL={chiTiet.SoLuong}, DonGia={chiTiet.DonGia}");
+                    hoaDon.ChiTietHoaDons.Add(chiTiet);
 
-                    _quanLyServices.Add<ChiTietHoaDon>(ctHoaDon);
+                    if (!string.IsNullOrEmpty(item.MaKhuyenMaiId) && giamGia > 0)
+                    {
+                        var maKM = _quanLyServices.GetById<MaKhuyenMai>(item.MaKhuyenMaiId);
+                        if (maKM != null)
+                        {
+                            var chiTietKM = new ChiTietHoaDonKhuyenMai
+                            {
+                                Id = _quanLyServices.GenerateNewId<ChiTietHoaDonKhuyenMai>("CTKM", 8),
+                                // ✅ Gắn thẳng Object cha vào đây (Thay vì gán ID)
+                                HoaDon = hoaDon,
+                                SanPhamDonViId = item.SanPhamDonViId,
+                                MaKhuyenMaiId = item.MaKhuyenMaiId,
+                                GiaTriApDung = giamGia,
+                                IsDelete = false
+                            };
+
+                            _quanLyServices.Add(chiTietKM);
+
+                            if (maKM.SoLanSuDung > 0)
+                            {
+                                maKM.SoLanSuDung -= 1;
+                                _quanLyServices.Update(maKM);
+                            }
+                        }
+                    }
                 }
 
+                hoaDon.TongTien = tongTien;
 
+                _quanLyServices.Add(hoaDon);
 
-                if(await _quanLyServices.CommitAsync() == false)
+                if (await _quanLyServices.CommitAsync())
+                {
+                    return Ok(new
+                    {
+                        message = "Tạo hóa đơn thành công!",
+                        hoaDonId = hoaDon.Id,
+                        tongTien = tongTien,
+                        tongGiamGia = tongGiamGia
+                    });
+                }
+                else
                 {
                     await _quanLyServices.RollbackAsync();
-                    return BadRequest(new { message = "Không thể tạo hóa đơn." });
+                    return BadRequest(new { message = "Lỗi Database: Không thể lưu hóa đơn." });
                 }
-
-                return Ok(new
-                {
-                    message = "Tạo hóa đơn thành công!",
-                    hoaDonId = hoaDon.Id,
-                    tongTien = tongTien
-                });
             }
             catch (Exception ex)
             {
                 await _quanLyServices.RollbackAsync();
-                Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
-                Console.WriteLine($"Stack trace: {ex.StackTrace}");
-                return StatusCode(500, new { message = $"Lỗi khi tạo hóa đơn: {ex.Message}" });
+                Console.WriteLine($"❌ ERROR AddHoaDon: {ex.Message}");
+                // Hiển thị lỗi Inner để biết chi tiết nếu có
+                return StatusCode(500, new { message = "Lỗi hệ thống: " + (ex.InnerException?.Message ?? ex.Message) });
             }
         }
 
@@ -1726,8 +1953,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
 
 
-
-
+        public class ApplyDiscountRequest
+        {
+            public string MaGiamGia { get; set; }
+            public decimal TongTien { get; set; }
+        }
         public class PhieuNhapFormData
         {
             public string NhaCungCapId { get; set; }
@@ -1791,13 +2021,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public class HoaDonRequest
         {
             public string KhachHangId { get; set; }
-            public string NhanVienId { get; set; }
+            //public string NhanVienId { get; set; }
             public DateTime? NgayLap { get; set; }
             public string TrangThai { get; set; }
-            public string MaKhuyenMaiId { get; set; }
-            public string KenhThanhToanId { get; set; }
-            public string MoTaThanhToan { get; set; }
-            public decimal? TongGiamGia { get; set; }
+            //public string MaKhuyenMaiId { get; set; }
+            //public string KenhThanhToanId { get; set; }
+            //public string MoTaThanhToan { get; set; }
+            //public decimal? TongGiamGia { get; set; }
             public List<ChiTietHoaDonRequest> ChiTietHoaDon { get; set; }
         }
 
@@ -1807,6 +2037,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public int SoLuong { get; set; }
             public decimal DonGia { get; set; }
             public decimal? GiamGia { get; set; }
+            public string MaKhuyenMaiId { get; set; }
         }
         public class NhanVienRequest
         {
