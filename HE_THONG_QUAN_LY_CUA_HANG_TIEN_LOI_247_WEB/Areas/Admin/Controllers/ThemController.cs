@@ -4,6 +4,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -54,16 +55,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 if (!string.IsNullOrEmpty(spDonVi.SanPhamId))
                 {
                     spDonVi.SanPham = _quanLyServices.GetById<SanPham>(spDonVi.SanPhamId);
-                    
+
                     // Load danh mục của sản phẩm
                     if (spDonVi.SanPham != null)
                     {
                         var sanPhamDanhMuc = _quanLyServices.GetList<SanPhamDanhMuc>()
                             .Where(spdm => spdm.SanPhamId == spDonVi.SanPhamId && !spdm.IsDelete)
                             .ToList();
-                        
+
                         spDonVi.SanPham.SanPhamDanhMucs = sanPhamDanhMuc;
-                        
+
                         // Load thông tin danh mục
                         foreach (var spdm in sanPhamDanhMuc)
                         {
@@ -74,7 +75,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         }
                     }
                 }
-                
+
                 // Load thông tin đơn vị đo lường
                 if (!string.IsNullOrEmpty(spDonVi.DonViId))
                 {
@@ -115,7 +116,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             // Load danh sách nhân viên và sản phẩm cho phiếu kiểm kê
             ViewData["DanhSachNhanVien"] = _quanLyServices.GetList<NhanVien>();
             ViewData["DanhSachSanPhamDonVi"] = _quanLyServices.GetList<SanPhamDonVi>();
-            
+
             return View();
         }
 
@@ -149,7 +150,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("/API/ThemNCC/Add")]
-        public IActionResult AddNhaCungCap([FromBody] NhaCungCapDto data)
+        public async Task<IActionResult> AddNhaCungCap([FromBody] NhaCungCapDto data)
         {
             if (!ModelState.IsValid)
             {
@@ -158,10 +159,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLyServices.BeginTransactionAsync();
+
                 var newId = _quanLyServices.GenerateNewId<NhaCungCap>("NCC", 7);
 
                 if (string.IsNullOrEmpty(newId))
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Không thể tạo ID mới cho nhà cung cấp." });
                 }
 
@@ -176,23 +180,25 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                bool success = _quanLyServices.Add<NhaCungCap>(nhaCungCapEntity);
+                _quanLyServices.Add<NhaCungCap>(nhaCungCapEntity);
 
-                if (success)
+                if (await _quanLyServices.CommitAsync())
                 {
                     return Ok(new { message = $"Thêm nhà cung cấp '{data.Ten}' thành công!", newId = newId });
                 }
                 else
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi: Không thể lưu nhà cung cấp vào cơ sở dữ liệu." });
                 }
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
-        
+
         [HttpPost("get-next-id-NCC")]
         public Task<IActionResult> GetNextIdNCC([FromBody] Dictionary<string, object> request)
         {
@@ -224,6 +230,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             HinhAnh newHinhAnh = null;
             try
             {
+                await _quanLyServices.BeginTransactionAsync();
                 byte[] anhBytes = await _quanLyServices.ConvertImageToByteArray(dto.AnhDaiDien);
 
                 newHinhAnh = new HinhAnh
@@ -233,10 +240,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Anh = anhBytes
                 };
 
-                if (!_quanLyServices.Add<HinhAnh>(newHinhAnh))
-                {
-                    return BadRequest(new { message = "Lỗi: Không thể lưu hình ảnh vào cơ sở dữ liệu." });
-                }
+                _quanLyServices.Add<HinhAnh>(newHinhAnh);
 
                 var nhanVien = new NhanVien
                 {
@@ -254,22 +258,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                if (_quanLyServices.Add<NhanVien>(nhanVien))
+                _quanLyServices.Add<NhanVien>(nhanVien);
+
+                if (await _quanLyServices.CommitAsync())
                 {
                     return Ok(new { message = $"Thêm nhân viên {nhanVien.HoTen} thành công!", newId = nhanVien.Id });
                 }
                 else
                 {
-                    _quanLyServices.HardDelete<HinhAnh>(newHinhAnh);
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi lưu thông tin nhân viên." });
                 }
             }
             catch (Exception ex)
             {
-                if (newHinhAnh != null && !string.IsNullOrEmpty(newHinhAnh.Id))
-                {
-                    _quanLyServices.HardDelete<HinhAnh>(newHinhAnh);
-                }
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
@@ -293,7 +296,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             ViewData["lstNhanVien"] = lstNhanVien;
 
             var lstCaLamViec = _quanLyServices.GetList<CaLamViec>();
-            ViewData["lstCaLamViec"]= lstCaLamViec;
+            ViewData["lstCaLamViec"] = lstCaLamViec;
             return View();
         }
 
@@ -461,7 +464,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
         [HttpPost]
         [Route("/API/TaiKhoan/Them")]
-        public IActionResult CreateTaiKhoan([FromBody] TaiKhoanCreateDto dto)
+        public async Task<IActionResult> CreateTaiKhoan([FromBody] TaiKhoanCreateDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -470,10 +473,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLyServices.BeginTransactionAsync();
                 var existingUser = _quanLyServices.GetList<TaiKhoan>()
                                     .FirstOrDefault(t => t.TenDangNhap == dto.TenDangNhap && !t.IsDelete);
                 if (existingUser != null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     ModelState.AddModelError("TenDangNhap", "Tên đăng nhập đã tồn tại.");
                     return BadRequest(ModelState);
                 }
@@ -488,10 +493,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                if (!_quanLyServices.Add<TaiKhoan>(newTaiKhoan))
-                {
-                    return BadRequest(new { message = "Lỗi khi tạo tài khoản chính." });
-                }
+                _quanLyServices.Add<TaiKhoan>(newTaiKhoan);
 
                 if (dto.AccountType == "NhanVien")
                 {
@@ -530,16 +532,23 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     }
                 }
 
+                if (!await _quanLyServices.CommitAsync())
+                {
+                    await _quanLyServices.RollbackAsync();
+                    return BadRequest(new { message = "Lỗi khi tạo tài khoản." });
+                }
+
                 return Ok(new { message = "Tạo tài khoản thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
         [HttpPost]
         [Route("/API/TaiKhoan/ResetPassword/{id}")]
-        public IActionResult ResetPassword(string id)
+        public async Task<IActionResult> ResetPassword(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
@@ -548,11 +557,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLyServices.BeginTransactionAsync();
+
                 var taiKhoan = _quanLyServices.GetList<TaiKhoan>()
                                 .FirstOrDefault(tk => tk.Id == id && !tk.IsDelete);
 
                 if (taiKhoan == null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy tài khoản này." });
                 }
 
@@ -560,17 +572,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 taiKhoan.MatKhauHash = newPasswordHash;
 
-                if (_quanLyServices.Update<TaiKhoan>(taiKhoan))
+                _quanLyServices.Update<TaiKhoan>(taiKhoan);
+
+                if (await _quanLyServices.CommitAsync())
                 {
                     return Ok(new { message = $"Đã đặt lại mật khẩu cho '{taiKhoan.TenDangNhap}' thành '123456'." });
                 }
                 else
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi cập nhật mật khẩu." });
                 }
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
@@ -646,10 +662,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                if (!_quanLyServices.Add<PhieuNhap>(phieuNhap))
-                {
-                    return BadRequest(new { message = "Không thể thêm phiếu nhập" });
-                }
+                await _quanLyServices.BeginTransactionAsync();
+
+                _quanLyServices.Add<PhieuNhap>(phieuNhap);
 
                 decimal tongTien = 0;
 
@@ -677,23 +692,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         IsDelete = false
                     };
 
-                    if (!_quanLyServices.Add<ChiTietPhieuNhap>(chiTietPhieuNhap))
-                    {
-                        return BadRequest(new { message = $"Không thể thêm chi tiết phiếu nhập cho sản phẩm {chiTiet.SanPhamDonViId}" });
-                    }
+                    _quanLyServices.Add<ChiTietPhieuNhap>(chiTietPhieuNhap);
                 }
 
-                // Cập nhật tổng tiền cho phiếu nhập
-                phieuNhap.TongTien = tongTien;
-                if (!_quanLyServices.Update<PhieuNhap>(phieuNhap))
+                if(!await _quanLyServices.CommitAsync())
                 {
-                    return BadRequest(new { message = "Không thể cập nhật tổng tiền phiếu nhập" });
+                    await _quanLyServices.RollbackAsync();
+                    return BadRequest(new { message = "Lỗi khi lưu phiếu nhập." });
                 }
 
                 return Ok(new { message = "Thêm phiếu nhập thành công!", phieuNhapId = phieuNhap.Id });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi thêm phiếu nhập: {ex.Message}" });
             }
         }
@@ -721,6 +733,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Phải có ít nhất một sản phẩm để gán vị trí." });
                 }
 
+                await _quanLyServices.BeginTransactionAsync();
+
                 // Thêm từng chi tiết gán vị trí
                 foreach (var chiTiet in request.ChiTietGanViTri)
                 {
@@ -741,10 +755,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     {
                         // Nếu đã tồn tại, cập nhật số lượng
                         existingSPVT.SoLuong += chiTiet.SoLuong;
-                        if (!_quanLyServices.Update<SanPhamViTri>(existingSPVT))
-                        {
-                            return BadRequest(new { message = $"Không thể cập nhật số lượng cho sản phẩm {chiTiet.SanPhamDonViId}" });
-                        }
+                        _quanLyServices.Update<SanPhamViTri>(existingSPVT);
                     }
                     else
                     {
@@ -758,17 +769,21 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             IsDelete = false
                         };
 
-                        if (!_quanLyServices.Add<SanPhamViTri>(sanPhamViTri))
-                        {
-                            return BadRequest(new { message = $"Không thể gán vị trí cho sản phẩm {chiTiet.SanPhamDonViId}" });
-                        }
+                        _quanLyServices.Add<SanPhamViTri>(sanPhamViTri);
                     }
+                }
+
+                if (!await _quanLyServices.CommitAsync())
+                {
+                    await _quanLyServices.RollbackAsync();
+                    return BadRequest(new { message = "Lỗi khi gán vị trí sản phẩm." });
                 }
 
                 return Ok(new { message = "Gán vị trí sản phẩm thành công!" });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi gán vị trí sản phẩm: {ex.Message}" });
             }
         }
@@ -809,6 +824,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 if (existingViTri != null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     Console.WriteLine($"ERROR: MaViTri '{viTri.MaViTri}' already exists (ID: {existingViTri.Id})");
                     return BadRequest(new { message = $"Mã vị trí '{viTri.MaViTri}' đã tồn tại trong hệ thống." });
                 }
@@ -821,11 +837,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 viTri.IsDelete = false;
 
                 Console.WriteLine("Calling Add service...");
-                var addResult = _quanLyServices.Add<ViTri>(viTri);
-                Console.WriteLine($"Add result: {addResult}");
+                _quanLyServices.Add<ViTri>(viTri);
 
-                if (!addResult)
+                if (!await _quanLyServices.CommitAsync())
                 {
+                    await _quanLyServices.RollbackAsync();
                     Console.WriteLine("ERROR: Add service returned false");
                     return BadRequest(new { message = "Không thể thêm vị trí mới. Vui lòng kiểm tra kết nối database." });
                 }
@@ -835,6 +851,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 Console.WriteLine($" EXCEPTION in AddViTri: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
 
@@ -888,10 +905,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                if (!_quanLyServices.Add<ChuongTrinhKhuyenMai>(chuongTrinh))
-                {
-                    return BadRequest(new { message = "Không thể thêm chương trình khuyến mãi." });
-                }
+                await _quanLyServices.BeginTransactionAsync();
+
+                _quanLyServices.Add<ChuongTrinhKhuyenMai>(chuongTrinh);
 
                 // Thêm Điều kiện áp dụng
                 if (request.DieuKienApDung != null)
@@ -907,10 +923,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         IsDelete = false
                     };
 
-                    if (!_quanLyServices.Add<DieuKienApDung>(dieuKien))
-                    {
-                        return BadRequest(new { message = "Không thể thêm điều kiện áp dụng." });
-                    }
+                    _quanLyServices.Add<DieuKienApDung>(dieuKien);
 
                     // Thêm áp dụng theo phạm vi
                     if (request.PhamViApDung == "DanhMuc" && request.DanhMucIds != null && request.DanhMucIds.Any())
@@ -925,10 +938,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                                 IsDelete = false
                             };
 
-                            if (!_quanLyServices.Add<DieuKienApDungDanhMuc>(dkadDanhMuc))
-                            {
-                                return BadRequest(new { message = "Không thể thêm điều kiện áp dụng danh mục." });
-                            }
+                            _quanLyServices.Add<DieuKienApDungDanhMuc>(dkadDanhMuc);
                         }
                     }
                     else if (request.PhamViApDung == "SanPham" && request.SanPhamIds != null && request.SanPhamIds.Any())
@@ -943,10 +953,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                                 IsDelete = false
                             };
 
-                            if (!_quanLyServices.Add<DieuKienApDungSanPham>(dkadSanPham))
-                            {
-                                return BadRequest(new { message = "Không thể thêm điều kiện áp dụng sản phẩm." });
-                            }
+                            _quanLyServices.Add<DieuKienApDungSanPham>(dkadSanPham);
                         }
                     }
                     else if (request.PhamViApDung == "ToanBo")
@@ -959,10 +966,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             IsDelete = false
                         };
 
-                        if (!_quanLyServices.Add<DieuKienApDungToanBo>(dkadToanBo))
-                        {
-                            return BadRequest(new { message = "Không thể thêm điều kiện áp dụng toàn bộ." });
-                        }
+                        _quanLyServices.Add<DieuKienApDungToanBo>(dkadToanBo);
                     }
                 }
 
@@ -980,16 +984,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         IsDelete = false
                     };
 
-                    if (!_quanLyServices.Add<MaKhuyenMai>(maKhuyenMai))
-                    {
-                        return BadRequest(new { message = "Không thể thêm mã khuyến mãi." });
-                    }
+                    _quanLyServices.Add<MaKhuyenMai>(maKhuyenMai);
+                }
+
+                if(!await _quanLyServices.CommitAsync())
+                {
+                    await _quanLyServices.RollbackAsync();
+                    return BadRequest(new { message = "Lỗi khi lưu chương trình khuyến mãi." });
                 }
 
                 return Ok(new { message = "Thêm chương trình khuyến mãi thành công!", chuongTrinhId = chuongTrinh.Id });
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi thêm chương trình khuyến mãi: {ex.Message}" });
             }
         }
@@ -1042,6 +1050,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Chức vụ không được để trống." });
                 }
 
+                await _quanLyServices.BeginTransactionAsync();
+
                 // Tạo Nhân viên
                 NhanVien nhanVien = new NhanVien
                 {
@@ -1059,8 +1069,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     IsDelete = false
                 };
 
-                if (!_quanLyServices.Add<NhanVien>(nhanVien))
+                _quanLyServices.Add<NhanVien>(nhanVien);
+
+                if (!await _quanLyServices.CommitAsync())
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Không thể thêm nhân viên." });
                 }
 
@@ -1068,6 +1081,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi thêm nhân viên: {ex.Message}" });
             }
         }
@@ -1100,6 +1114,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Vui lòng chọn ngày phân công." });
                 }
 
+                await _quanLyServices.BeginTransactionAsync();
+
                 // Kiểm tra xem nhân viên đã được phân công ca này trong ngày chưa
                 var existingPhanCong = _quanLyServices.GetList<PhanCongCaLamViec>()
                     .FirstOrDefault(pc => pc.NhanVienId == request.NhanVienId &&
@@ -1109,6 +1125,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 if (existingPhanCong != null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Nhân viên đã được phân công ca này trong ngày đã chọn." });
                 }
 
@@ -1121,9 +1138,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Ngay = request.Ngay,
                     IsDelete = false
                 };
-
-                if (!_quanLyServices.Add<PhanCongCaLamViec>(phanCong))
+                _quanLyServices.Add<PhanCongCaLamViec>(phanCong);
+                if (!await _quanLyServices.CommitAsync())
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Không thể thêm phân công ca làm việc." });
                 }
 
@@ -1131,11 +1149,12 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi khi phân công ca làm việc: {ex.Message}" });
             }
         }
 
-        
+
         [HttpPost]
         [Route("/API/get-next-id-NV")]
         public Task<IActionResult> GetNextIdNV([FromBody] Dictionary<string, object> request)
@@ -1151,7 +1170,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         }
         [HttpPost]
         [Route("/API/PhanCong/Them")]
-        public IActionResult AddPhanCongCaLamViec([FromBody] PhanCongCaLamViecCreateDto dto)
+        public async Task<IActionResult> AddPhanCongCaLamViec([FromBody] PhanCongCaLamViecCreateDto dto)
         {
             if (!ModelState.IsValid)
             {
@@ -1160,6 +1179,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
             try
             {
+                await _quanLyServices.BeginTransactionAsync();
                 // Kiểm tra xem nhân viên này đã bị phân công ca này trong ngày này chưa
                 var existingPhanCong = _quanLyServices.GetList<PhanCongCaLamViec>()
                     .FirstOrDefault(p =>
@@ -1170,6 +1190,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 if (existingPhanCong != null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Nhân viên này đã được phân công ca này trong ngày đã chọn." });
                 }
 
@@ -1184,17 +1205,22 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 };
 
                 // Lưu
-                if (_quanLyServices.Add<PhanCongCaLamViec>(phanCong))
+
+                _quanLyServices.Add<PhanCongCaLamViec>(phanCong);
+
+                if (await _quanLyServices.CommitAsync())
                 {
                     return Ok(new { message = "Thêm phân công thành công!" });
                 }
                 else
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi lưu phân công vào cơ sở dữ liệu." });
                 }
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 return StatusCode(500, new { message = $"Lỗi máy chủ: {ex.Message}" });
             }
         }
@@ -1228,6 +1254,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Số điện thoại không được để trống." });
                 }
 
+                await _quanLyServices.BeginTransactionAsync();
+
                 // Kiểm tra số điện thoại đã tồn tại chưa
                 Console.WriteLine("Checking if phone number exists...");
                 var existingKH = _quanLyServices.GetList<KhachHang>()
@@ -1235,6 +1263,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 if (existingKH != null)
                 {
+                    await _quanLyServices.RollbackAsync();
                     Console.WriteLine($"ERROR: Phone number '{request.SoDienThoai}' already exists");
                     return BadRequest(new { message = $"Số điện thoại '{request.SoDienThoai}' đã được sử dụng." });
                 }
@@ -1264,11 +1293,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         };
 
                         Console.WriteLine("Creating default image...");
-                        if (!_quanLyServices.Add<HinhAnh>(defaultImage))
-                        {
-                            Console.WriteLine("ERROR: Cannot create default image");
-                            return BadRequest(new { message = "Không thể tạo ảnh mặc định." });
-                        }
+                        _quanLyServices.Add<HinhAnh>(defaultImage);
                     }
 
                     anhId = "ANH_DEFAULT";
@@ -1293,13 +1318,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 Console.WriteLine($"Generated KhachHang ID: {khachHang.Id}");
                 Console.WriteLine("Adding KhachHang to database...");
 
-                if (!_quanLyServices.Add<KhachHang>(khachHang))
-                {
-                    Console.WriteLine("ERROR: Cannot add KhachHang");
-                    return BadRequest(new { message = "Không thể thêm khách hàng." });
-                }
+                _quanLyServices.Add<KhachHang>(khachHang);
 
-                Console.WriteLine("KhachHang added successfully");
 
                 // Nếu có thông tin thẻ thành viên, tạo thẻ
                 if (request.CreateMemberCard && request.TheThanhVien != null)
@@ -1329,13 +1349,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Console.WriteLine($"Generated TheThanhVien ID: {theThanhVien.Id}");
                     Console.WriteLine("Adding TheThanhVien to database...");
 
-                    if (!_quanLyServices.Add<TheThanhVien>(theThanhVien))
-                    {
-                        Console.WriteLine("ERROR: Cannot add TheThanhVien");
-                        return BadRequest(new { message = "Thêm khách hàng thành công nhưng không thể tạo thẻ thành viên." });
-                    }
+                    _quanLyServices.Add<TheThanhVien>(theThanhVien);
 
                     Console.WriteLine("TheThanhVien added successfully");
+                }
+
+                if (!await _quanLyServices.CommitAsync())
+                {
+                    await _quanLyServices.RollbackAsync();
+                    Console.WriteLine("ERROR: CommitAsync returned false");
+                    return BadRequest(new { message = "Không thể thêm khách hàng." });
                 }
 
                 Console.WriteLine("=== SUCCESS: All operations completed ===");
@@ -1343,6 +1366,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 Console.WriteLine($"EXCEPTION: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 if (ex.InnerException != null)
@@ -1416,21 +1440,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                     Console.WriteLine($"Adding KiemKe: ID={kiemKe.Id}, SanPham={chiTiet.SanPhamDonViId}");
 
-                    if (!_quanLyServices.Add<KiemKe>(kiemKe))
-                    {
-                        Console.WriteLine($"❌ ERROR: Cannot add KiemKe for {chiTiet.SanPhamDonViId}");
-                        failCount++;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"✅ KiemKe added successfully");
-                        successCount++;
-                    }
+                    await _quanLyServices.BeginTransactionAsync();
+
+                    _quanLyServices.Add<KiemKe>(kiemKe);
+
+                    
                 }
 
                 Console.WriteLine($"=== RESULT: {successCount} success, {failCount} failed ===");
 
-                if (successCount > 0)
+                if (await _quanLyServices.CommitAsync())
                 {
                     string message = failCount > 0
                         ? $"Tạo phiếu kiểm kê thành công {successCount} sản phẩm, {failCount} thất bại."
@@ -1440,6 +1459,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 }
                 else
                 {
+                    await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Không thể tạo phiếu kiểm kê." });
                 }
             }
@@ -1465,7 +1485,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //=========================================API Áp Dụng Mã Khuyến Mãi=======================================================================
         [HttpPost]
         [Route("/API/apply-discount")]
-        public async Task<IActionResult> ApplyDiscount([FromBody] ApplyDiscountRequest request)
+        public IActionResult ApplyDiscount([FromBody] ApplyDiscountRequest request)
         {
             try
             {
@@ -1479,8 +1499,8 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 // Tìm mã khuyến mãi
                 var maKhuyenMai = _quanLyServices.GetList<MaKhuyenMai>()
-                    .FirstOrDefault(mkm => mkm.Code == request.MaGiamGia && 
-                                          !mkm.IsDelete && 
+                    .FirstOrDefault(mkm => mkm.Code == request.MaGiamGia &&
+                                          !mkm.IsDelete &&
                                           mkm.TrangThai == "Hoạt động");
 
                 if (maKhuyenMai == null)
@@ -1498,7 +1518,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 if (!string.IsNullOrEmpty(maKhuyenMai.ChuongTrinhId))
                 {
                     maKhuyenMai.ChuongTrinh = _quanLyServices.GetById<ChuongTrinhKhuyenMai>(maKhuyenMai.ChuongTrinhId);
-                    
+
                     // Kiểm tra thời hạn chương trình
                     if (maKhuyenMai.ChuongTrinh != null)
                     {
@@ -1559,38 +1579,40 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 // Xử lý KhachHangId - nếu null thì tạo hoặc dùng khách lẻ mặc định
                 string khachHangId = request.KhachHangId;
-                
+
+                await _quanLyServices.BeginTransactionAsync();
+
                 if (string.IsNullOrEmpty(khachHangId))
                 {
                     Console.WriteLine("KhachHangId is null - creating/using default customer...");
 
                     // Kiểm tra khách hàng mặc định có tồn tại không
                     var khachLe = _quanLyServices.GetById<KhachHang>("KH_LE");
-                    
+
                     if (khachLe == null)
                     {
                         Console.WriteLine("Creating default customer KH_LE...");
-                        
+
                         // Tạo ảnh mặc định nếu chưa có
                         var defaultImage = _quanLyServices.GetList<HinhAnh>()
                             .FirstOrDefault(ha => ha.Id == "ANH_DEFAULT");
-                        
+
                         if (defaultImage == null)
                         {
                             byte[] defaultImageBytes = Convert.FromBase64String(
                                 "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=="
                             );
-                            
+
                             defaultImage = new HinhAnh
                             {
                                 Id = "ANH_DEFAULT",
                                 TenAnh = "Default Avatar",
                                 Anh = defaultImageBytes
                             };
-                            
+
                             _quanLyServices.Add<HinhAnh>(defaultImage);
                         }
-                        
+
                         // Tạo khách hàng lẻ mặc định
                         khachLe = new KhachHang
                         {
@@ -1605,15 +1627,14 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             AnhId = "ANH_DEFAULT",
                             IsDelete = false
                         };
-                        
-                        if (!_quanLyServices.Add<KhachHang>(khachLe))
-                        {
-                            return BadRequest(new { message = "Không thể tạo khách hàng mặc định." });
-                        }
-                        
+
+
+
+                        _quanLyServices.Add<KhachHang>(khachLe);
+
                         Console.WriteLine("✅ Created default customer KH_LE");
                     }
-                    
+
                     khachHangId = "KH_LE";
                     Console.WriteLine($"Using KhachHangId: {khachHangId}");
                 }
@@ -1635,10 +1656,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 Console.WriteLine($"Generated HoaDon ID: {hoaDon.Id}, TrangThai: {hoaDon.TrangThai}, KhachHangId: {hoaDon.KhachHangId}");
 
-                if (!_quanLyServices.Add<HoaDon>(hoaDon))
-                {
-                    return BadRequest(new { message = "Không thể tạo hóa đơn." });
-                }
+                _quanLyServices.Add<HoaDon>(hoaDon);
 
                 decimal tongTien = 0;
 
@@ -1661,23 +1679,16 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                     Console.WriteLine($"Adding ChiTietHoaDon: SanPham={chiTiet.SanPhamDonViId}, SL={chiTiet.SoLuong}, DonGia={chiTiet.DonGia}");
 
-                    if (!_quanLyServices.Add<ChiTietHoaDon>(ctHoaDon))
-                    {
-                        return BadRequest(new { message = $"Không thể thêm sản phẩm {chiTiet.SanPhamDonViId}" });
-                    }
+                    _quanLyServices.Add<ChiTietHoaDon>(ctHoaDon);
                 }
 
-                
 
-                // Cập nhật tổng tiền
-                // Cập nhật tổng tiền
-                decimal tongGiamGia = request.TongGiamGia ?? 0;
-                hoaDon.TongTien = tongTien - tongGiamGia; 
-                if (!_quanLyServices.Update<HoaDon>(hoaDon))
+
+                if(await _quanLyServices.CommitAsync() == false)
                 {
-                    return BadRequest(new { message = "Không thể cập nhật tổng tiền hóa đơn." });
+                    await _quanLyServices.RollbackAsync();
+                    return BadRequest(new { message = "Không thể tạo hóa đơn." });
                 }
-                Console.WriteLine($"✅ SUCCESS: Created invoice {hoaDon.Id} with total {tongTien}");
 
                 return Ok(new
                 {
@@ -1688,6 +1699,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
+                await _quanLyServices.RollbackAsync();
                 Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
                 Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { message = $"Lỗi khi tạo hóa đơn: {ex.Message}" });
@@ -1742,7 +1754,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string MoTa { get; set; }
             public DieuKienApDungRequest DieuKienApDung { get; set; }
             public MaKhuyenMaiRequest MaKhuyenMai { get; set; }
-            public string PhamViApDung { get; set; } 
+            public string PhamViApDung { get; set; }
             public List<string> DanhMucIds { get; set; }
             public List<string> SanPhamIds { get; set; }
         }
@@ -1768,7 +1780,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string KhachHangId { get; set; }
             public string NhanVienId { get; set; }
             public DateTime? NgayLap { get; set; }
-            public string TrangThai { get; set; } 
+            public string TrangThai { get; set; }
             public string MaKhuyenMaiId { get; set; }
             public string KenhThanhToanId { get; set; }
             public string MoTaThanhToan { get; set; }
@@ -1813,7 +1825,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             public string TrangThai { get; set; }
             public bool GioiTinh { get; set; }
             public string AnhId { get; set; }
-            public bool CreateMemberCard { get; set; } 
+            public bool CreateMemberCard { get; set; }
             public TheThanhVienRequest TheThanhVien { get; set; }
         }
 

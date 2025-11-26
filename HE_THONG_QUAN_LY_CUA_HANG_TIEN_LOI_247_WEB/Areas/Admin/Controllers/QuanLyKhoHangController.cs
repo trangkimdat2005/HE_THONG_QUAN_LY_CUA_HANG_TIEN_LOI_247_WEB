@@ -2,6 +2,7 @@
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -60,10 +61,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             var lstSanPhamViTri = _quanLySevices.GetList<SanPhamViTri>();
             var lstViTri = _quanLySevices.GetList<ViTri>(); // ← Thêm dòng này
-            
+
             ViewData["lstSanPhamViTri"] = lstSanPhamViTri;
             ViewData["lstViTri"] = lstViTri; // ← Thêm dòng này
-            
+
             return View();
         }
 
@@ -153,7 +154,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 // Lấy SanPhamViTri hiện tại với composite key
                 var sanPhamViTri = _quanLySevices.GetById<SanPhamViTri>(request.SanPhamDonViId, request.ViTriIdCu);
-                
+
                 if (sanPhamViTri == null)
                 {
                     return NotFound(new { message = "Không tìm thấy sản phẩm tại vị trí này!" });
@@ -164,10 +165,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     // Xóa mềm bản ghi cũ
                     _quanLySevices.SoftDelete(sanPhamViTri);
-                    
+
                     // Kiểm tra xem sản phẩm đã có ở vị trí mới chưa
                     var existingAtNewLocation = _quanLySevices.GetById<SanPhamViTri>(request.SanPhamDonViId, request.ViTriIdMoi);
-                    
+
                     if (existingAtNewLocation != null && !existingAtNewLocation.IsDelete)
                     {
                         // Nếu đã tồn tại ở vị trí mới, cộng dồn số lượng
@@ -185,7 +186,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             SoLuong = request.SoLuong,
                             IsDelete = false
                         };
-                        
+
                         _quanLySevices.Add(sanPhamViTriMoi);
                     }
                 }
@@ -208,7 +209,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //xóa vị trí sane phẩm
         [HttpPost]
         [Route("/XoaSanPhamViTri")]
-        public IActionResult XoaSanPhamViTri([FromBody] XoaSPVTRequest request)
+        public async Task<IActionResult> XoaSanPhamViTri([FromBody] XoaSPVTRequest request)
         {
             try
             {
@@ -217,24 +218,29 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Thiếu thông tin!" });
                 }
 
+                await _quanLySevices.BeginTransactionAsync();
+
                 var sanPhamViTri = _quanLySevices.GetById<SanPhamViTri>(request.SanPhamDonViId, request.ViTriId);
-                
+
                 if (sanPhamViTri == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy!" });
                 }
 
-                var result = _quanLySevices.SoftDelete(sanPhamViTri);
-                
-                if (result)
+                _quanLySevices.SoftDelete(sanPhamViTri);
+
+                if (!await _quanLySevices.CommitAsync())
                 {
-                    return Ok(new { message = "Xóa thành công!" });
+                    return BadRequest(new { message = "Không thể xóa!" });
                 }
-                
-                return BadRequest(new { message = "Không thể xóa!" });
+
+                return Ok(new { message = "Xóa thành công!" });
+
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 Console.WriteLine($"Error in XoaSanPhamViTri: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
             }
@@ -243,7 +249,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //  cập nhật vị trí
         [HttpPost]
         [Route("/CapNhatViTri")]
-        public IActionResult CapNhatViTri([FromBody] CapNhatViTriRequest request)
+        public async Task<IActionResult> CapNhatViTri([FromBody] CapNhatViTriRequest request)
         {
             try
             {
@@ -252,10 +258,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Thiếu ID vị trí!" });
                 }
 
+                await _quanLySevices.BeginTransactionAsync();
+
                 var viTri = _quanLySevices.GetById<ViTri>(request.Id);
-                
+
                 if (viTri == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy vị trí!" });
                 }
 
@@ -264,9 +273,10 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     var existingMaViTri = _quanLySevices.GetList<ViTri>()
                         .FirstOrDefault(vt => vt.MaViTri == request.MaViTri && vt.Id != request.Id);
-                    
+
                     if (existingMaViTri != null)
                     {
+                        await _quanLySevices.RollbackAsync();
                         return BadRequest(new { message = "Mã vị trí đã tồn tại!" });
                     }
                 }
@@ -275,17 +285,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 viTri.LoaiViTri = request.LoaiViTri;
                 viTri.MoTa = request.MoTa;
 
-                var result = _quanLySevices.Update(viTri);
-                
-                if (result)
+                _quanLySevices.Update(viTri);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = "Cập nhật thành công!" });
                 }
-                
+                await _quanLySevices.RollbackAsync();
                 return BadRequest(new { message = "Không thể cập nhật!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 Console.WriteLine($"Error in CapNhatViTri: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
             }
@@ -294,7 +305,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         //xóa vị trí
         [HttpPost]
         [Route("/XoaViTri")]
-        public IActionResult XoaViTri([FromBody] XoaViTriRequest request)
+        public async Task<IActionResult> XoaViTri([FromBody] XoaViTriRequest request)
         {
             try
             {
@@ -302,34 +313,39 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     return BadRequest(new { message = "Thiếu ID vị trí!" });
                 }
+                await _quanLySevices.BeginTransactionAsync();
 
                 var viTri = _quanLySevices.GetById<ViTri>(request.Id);
-                
+
                 if (viTri == null)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return NotFound(new { message = "Không tìm thấy vị trí!" });
                 }
 
                 // Kiểm tra xem vị trí có đang được sử dụng không
                 var sanPhamViTris = _quanLySevices.GetList<SanPhamViTri>();
                 var dangSuDung = sanPhamViTris.Any(sp => sp.ViTriId == request.Id);
-                
+
                 if (dangSuDung)
                 {
+                    await _quanLySevices.RollbackAsync();
                     return BadRequest(new { message = "Vị trí đang được sử dụng, không thể xóa!" });
                 }
 
-                var result = _quanLySevices.SoftDelete(viTri);
-                
-                if (result)
+                _quanLySevices.SoftDelete(viTri);
+
+                if (await _quanLySevices.CommitAsync())
                 {
                     return Ok(new { message = "Xóa thành công!" });
                 }
-                
+
+                await _quanLySevices.RollbackAsync();
                 return BadRequest(new { message = "Không thể xóa!" });
             }
             catch (Exception ex)
             {
+                await _quanLySevices.RollbackAsync();
                 Console.WriteLine($"Error in XoaViTri: {ex.Message}");
                 return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
             }
