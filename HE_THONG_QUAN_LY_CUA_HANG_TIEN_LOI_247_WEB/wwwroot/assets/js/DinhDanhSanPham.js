@@ -14,7 +14,7 @@ $(document).ready(function () {
     const identifierForm = $('#identifier-form');
     const formTitle = $('#form-title');
     const formImagePreview = $('#form-image-preview');
-    const formImageUpload = $('#form-image-upload');
+    const barcodePreviewContainer = $('#barcode-preview-container');
 
     // Các trường input
     const inputId = $('#form-id');
@@ -48,7 +48,7 @@ $(document).ready(function () {
             formTitle.text('Tạo Mã Mới');
             identifierForm[0].reset(); // Xoá trắng form
             selectSanPham.val('').trigger('change');
-            formImagePreview.attr('src', 'https://via.placeholder.com/200?text=Ảnh+Code');
+            barcodePreviewContainer.hide(); // Ẩn preview khi thêm mới
 
             // Lấy ID tự động
             callApiGetNextIdMDD();
@@ -61,7 +61,14 @@ $(document).ready(function () {
             // Điền dữ liệu
             inputId.val(data.id);
             inputMaCode.val(data.maCode);
-            formImagePreview.attr('src', data.duongDan || 'https://via.placeholder.com/200?text=Ảnh+Code');
+            
+            // Hiển thị ảnh barcode/QR nếu có
+            if (data.duongDan && data.duongDan !== '/images/default-code.png') {
+                formImagePreview.attr('src', data.duongDan);
+                barcodePreviewContainer.show();
+            } else {
+                barcodePreviewContainer.hide();
+            }
 
             // Điền trạng thái (radio)
             $(`input[name="form-loai-ma"][value="${data.loaiMa}"]`).prop('checked', true);
@@ -101,7 +108,7 @@ $(document).ready(function () {
         identifierForm.removeClass('form-readonly');
         identifierForm[0].reset();
         selectSanPham.val('').trigger('change');
-        formImagePreview.attr('src', 'https://via.placeholder.com/200?text=Ảnh+Code');
+        barcodePreviewContainer.hide();
         currentData = null;
         currentMode = null;
     }
@@ -133,18 +140,6 @@ $(document).ready(function () {
             callApiAddMDD();
         } else if (currentMode === 'edit') {
             callApiEditMDD();
-        }
-    });
-
-    // --- CẬP NHẬT: LOGIC PREVIEW ẢNH KHI UPLOAD ---
-    formImageUpload.on('change', function () {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                formImagePreview.attr('src', e.target.result);
-            }
-            reader.readAsDataURL(file);
         }
     });
 
@@ -210,7 +205,7 @@ $(document).ready(function () {
     async function callApiGetNextIdMDD() {
         const dataToSend = {
             prefix: "MDD",
-            totalLength: 7  // Thay đổi từ 8 thành 6 (MDD + 3 số = MDD001)
+            totalLength: 7
         };
         try {
             const response = await fetch('/API/get-next-id-MDD', {
@@ -236,8 +231,8 @@ $(document).ready(function () {
                 Id: inputId.val(),
                 SanPhamDonViId: selectSanPham.val(),
                 LoaiMa: $('input[name="form-loai-ma"]:checked').val(),
-                MaCode: inputMaCode.val(),
-                DuongDan: formImagePreview.attr('src')
+                MaCode: inputMaCode.val()
+                // Không cần gửi DuongDan - sẽ tự động tạo ở server
             };
 
             console.log('Sending data:', duLieu);
@@ -262,10 +257,10 @@ $(document).ready(function () {
             const result = await response.json();
 
             if (response.ok) {
-                alert('Thêm thành công!');
+                alert('Thêm mã định danh thành công! Ảnh barcode/QR đã được tự động tạo.');
                 closeForm();
                 
-                // Fallback: Reload table manually
+                // Reload table
                 await reloadTable();
             } else {
                 alert('Lỗi: ' + result.message);
@@ -283,8 +278,8 @@ $(document).ready(function () {
                 SanPhamDonViId: selectSanPham.val(),
                 LoaiMa: $('input[name="form-loai-ma"]:checked').val(),
                 MaCode: inputMaCode.val(),
-                DuongDan: formImagePreview.attr('src'),
                 IsDelete: false
+                // Không cần gửi DuongDan - sẽ tự động tạo lại nếu MaCode thay đổi
             };
 
             console.log('Updating data:', duLieu);
@@ -309,10 +304,10 @@ $(document).ready(function () {
             const result = await response.json();
 
             if (response.ok) {
-                alert('Sửa thành công!');
+                alert('Cập nhật thành công! Ảnh barcode/QR đã được tự động cập nhật.');
                 closeForm();
                 
-                // Fallback: Reload table manually
+                // Reload table
                 await reloadTable();
             } else {
                 alert('Lỗi: ' + result.message);
@@ -335,7 +330,7 @@ $(document).ready(function () {
                 alert('Xóa thành công!');
                 closeForm();
                 
-                // Fallback: Reload table manually
+                // Reload table
                 await reloadTable();
             } else {
                 alert('Lỗi: ' + result.message);
@@ -357,6 +352,10 @@ $(document).ready(function () {
             tbody.empty();
             
             data.forEach(mdd => {
+                const imageHtml = mdd.duongDan && mdd.duongDan !== '/images/default-code.png' 
+                    ? `<img src="${mdd.duongDan}" alt="${mdd.loaiMa} Code" style="max-width: 100px; max-height: 50px;">` 
+                    : '<span class="text-muted">Chưa có</span>';
+                
                 const row = `
                     <tr data-id="${mdd.id}" 
                         data-san-pham-don-vi-id="${mdd.sanPhamDonViId}" 
@@ -372,9 +371,7 @@ $(document).ready(function () {
                             </span>
                         </td>
                         <td>${mdd.maCode}</td>
-                        <td>
-                            ${mdd.duongDan ? `<small>${mdd.duongDan}</small>` : '<span class="text-muted">Chưa có</span>'}
-                        </td>
+                        <td>${imageHtml}</td>
                         <td class="text-center">
                             <a class="btn btn-info btn-sm me-1 btn-edit-khoi" 
                                href="#" 
@@ -393,20 +390,24 @@ $(document).ready(function () {
                 tbody.append(row);
             });
             
-            console.log(' Table reloaded successfully');
+            console.log('✓ Table reloaded successfully');
         } catch (error) {
             console.error('Error reloading table:', error);
         }
     }
 
     // Tích hợp SignalR để reload table khi có thay đổi từ server
-    $(async function () {
+    (async function () {
         await appRealtimeList.initEntityTable({
-            key: 'MaDinhDanh',  // key SignalR
-            apiUrl: '/API/get-all-MDD',  // API lấy dữ liệu
+            key: 'MaDinhDanh',
+            apiUrl: '/API/get-all-MDD',
             tableId: 'sampleTable',
-            tbodyId: 'sampleTable tbody',  // Chỉ định chính xác tbody để không mất header
+            tbodyId: 'sampleTable tbody',
             buildRow: mdd => {
+                const imageHtml = mdd.duongDan && mdd.duongDan !== '/images/default-code.png'
+                    ? `<img src="${mdd.duongDan}" alt="${mdd.loaiMa} Code" style="max-width: 100px; max-height: 50px;">`
+                    : '<span class="text-muted">Chưa có</span>';
+                
                 return `
                     <tr data-id="${mdd.id}" 
                         data-san-pham-don-vi-id="${mdd.sanPhamDonViId}" 
@@ -422,9 +423,7 @@ $(document).ready(function () {
                             </span>
                         </td>
                         <td>${mdd.maCode}</td>
-                        <td>
-                            ${mdd.duongDan ? `<small>${mdd.duongDan}</small>` : '<span class="text-muted">Chưa có</span>'}
-                        </td>
+                        <td>${imageHtml}</td>
                         <td class="text-center">
                             <a class="btn btn-info btn-sm me-1 btn-edit-khoi" 
                                href="#" 
@@ -442,6 +441,6 @@ $(document).ready(function () {
                     </tr>`;
             }
         });
-    });
+    })();
 
 });

@@ -1,7 +1,9 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
+using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
@@ -88,23 +90,72 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Mã code không được để trống." });
                 }
 
-                // Set default values
-                maDinhDanh.IsDelete = false;
-                if (string.IsNullOrEmpty(maDinhDanh.DuongDan))
-                {
-                    maDinhDanh.DuongDan = "/images/default-code.png";
-                }
                 await _quanLySevices.BeginTransactionAsync();
 
-                Console.WriteLine("Adding to database...");
-                _quanLySevices.Add<MaDinhDanhSanPham>(maDinhDanh);
-                if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
+                try
                 {
-                    return BadRequest(new { message = "Không thể thêm mã định danh." });
-                }
+                    // Tự động tạo ảnh barcode/QR code từ mã code
+                    byte[] imageBytes = null;
+                    string tenAnh = "";
 
-                Console.WriteLine("Success, sending SignalR notification...");
-                return Ok(new { message = "Thêm mã định danh thành công!", id = maDinhDanh.Id });
+                    if (maDinhDanh.LoaiMa.ToUpper() == "BARCODE")
+                    {
+                        // Tạo barcode
+                        imageBytes = BarcodeHelper.GenerateCODE128(maDinhDanh.MaCode, 400, 200);
+                        tenAnh = $"Barcode_{maDinhDanh.MaCode}_{DateTime.Now:yyyyMMddHHmmss}.png";
+                    }
+                    else if (maDinhDanh.LoaiMa.ToUpper() == "QR")
+                    {
+                        // Tạo QR code
+                        imageBytes = QRCodeHelper.GenerateQRCode(maDinhDanh.MaCode, 20);
+                        tenAnh = $"QRCode_{maDinhDanh.MaCode}_{DateTime.Now:yyyyMMddHHmmss}.png";
+                    }
+
+                    if (imageBytes != null && imageBytes.Length > 0)
+                    {
+                        // Tạo ID cho hình ảnh
+                        string anhId = _quanLySevices.GenerateNewId<HinhAnh>("IMG", 10);
+
+                        // Lưu ảnh vào bảng HinhAnh
+                        var hinhAnh = new HinhAnh
+                        {
+                            Id = anhId,
+                            TenAnh = tenAnh,
+                            Anh = imageBytes
+                        };
+
+                        _quanLySevices.Add<HinhAnh>(hinhAnh);
+
+                        // Cập nhật AnhId và DuongDan cho MaDinhDanhSanPham
+                        maDinhDanh.AnhId = anhId;
+                        maDinhDanh.DuongDan = $"/api/image/{anhId}"; // Đường dẫn để hiển thị ảnh
+                    }
+                    else
+                    {
+                        maDinhDanh.DuongDan = "/images/default-code.png";
+                    }
+
+                    // Set default values
+                    maDinhDanh.IsDelete = false;
+
+                    Console.WriteLine("Adding to database...");
+                    _quanLySevices.Add<MaDinhDanhSanPham>(maDinhDanh);
+                    
+                    if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
+                    {
+                        return BadRequest(new { message = "Không thể thêm mã định danh." });
+                    }
+
+                    Console.WriteLine("Success, sending SignalR notification...");
+                    return Ok(new { message = "Thêm mã định danh thành công!", id = maDinhDanh.Id });
+                }
+                catch (Exception ex)
+                {
+                    await _quanLySevices.RollbackAsync();
+                    Console.WriteLine($"❌ EXCEPTION trong quá trình tạo barcode: {ex.Message}");
+                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                    return StatusCode(500, new { message = $"Lỗi khi tạo barcode: {ex.Message}" });
+                }
             }
             catch (Exception ex)
             {
@@ -144,15 +195,85 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 await _quanLySevices.BeginTransactionAsync();
 
-                _quanLySevices.Update<MaDinhDanhSanPham>(maDinhDanh);
-
-                if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
+                try
                 {
-                    return BadRequest(new { message = "Không thể cập nhật mã định danh." });
+                    // Lấy mã định danh hiện tại
+                    var existingMaDinhDanh = _quanLySevices.GetById<MaDinhDanhSanPham>(maDinhDanh.Id);
+                    if (existingMaDinhDanh == null)
+                    {
+                        return NotFound(new { message = "Không tìm thấy mã định danh." });
+                    }
+
+                    // Kiểm tra xem MaCode có thay đổi không
+                    bool maCodeChanged = existingMaDinhDanh.MaCode != maDinhDanh.MaCode;
+                    bool loaiMaChanged = existingMaDinhDanh.LoaiMa != maDinhDanh.LoaiMa;
+
+                    if (maCodeChanged || loaiMaChanged)
+                    {
+                        // Tạo lại ảnh barcode/QR code mới
+                        byte[] imageBytes = null;
+                        string tenAnh = "";
+
+                        if (maDinhDanh.LoaiMa.ToUpper() == "BARCODE")
+                        {
+                            imageBytes = BarcodeHelper.GenerateCODE128(maDinhDanh.MaCode, 400, 200);
+                            tenAnh = $"Barcode_{maDinhDanh.MaCode}_{DateTime.Now:yyyyMMddHHmmss}.png";
+                        }
+                        else if (maDinhDanh.LoaiMa.ToUpper() == "QR")
+                        {
+                            imageBytes = QRCodeHelper.GenerateQRCode(maDinhDanh.MaCode, 20);
+                            tenAnh = $"QRCode_{maDinhDanh.MaCode}_{DateTime.Now:yyyyMMddHHmmss}.png";
+                        }
+
+                        if (imageBytes != null && imageBytes.Length > 0)
+                        {
+                            // Xóa ảnh cũ nếu có
+                            if (!string.IsNullOrEmpty(existingMaDinhDanh.AnhId))
+                            {
+                                var oldImage = _quanLySevices.GetById<HinhAnh>(existingMaDinhDanh.AnhId);
+                                if (oldImage != null)
+                                {
+                                    _quanLySevices.HardDelete<HinhAnh>(oldImage);
+                                }
+                            }
+
+                            // Tạo ảnh mới
+                            string anhId = _quanLySevices.GenerateNewId<HinhAnh>("IMG", 10);
+                            var hinhAnh = new HinhAnh
+                            {
+                                Id = anhId,
+                                TenAnh = tenAnh,
+                                Anh = imageBytes
+                            };
+
+                            _quanLySevices.Add<HinhAnh>(hinhAnh);
+
+                            maDinhDanh.AnhId = anhId;
+                            maDinhDanh.DuongDan = $"/api/image/{anhId}";
+                        }
+                    }
+                    else
+                    {
+                        // Giữ nguyên AnhId và DuongDan cũ
+                        maDinhDanh.AnhId = existingMaDinhDanh.AnhId;
+                        maDinhDanh.DuongDan = existingMaDinhDanh.DuongDan;
+                    }
+
+                    _quanLySevices.Update<MaDinhDanhSanPham>(maDinhDanh);
+
+                    if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
+                    {
+                        return BadRequest(new { message = "Không thể cập nhật mã định danh." });
+                    }
+
+                    return Ok(new { message = "Sửa mã định danh thành công!" });
                 }
-
-
-                return Ok(new { message = "Sửa mã định danh thành công!" });
+                catch (Exception ex)
+                {
+                    await _quanLySevices.RollbackAsync();
+                    Console.WriteLine($"❌ EXCEPTION trong quá trình cập nhật barcode: {ex.Message}");
+                    return StatusCode(500, new { message = $"Lỗi khi cập nhật barcode: {ex.Message}" });
+                }
             }
             catch (Exception ex)
             {
@@ -442,6 +563,28 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = $"Lỗi: {ex.Message}" });
+            }
+        }
+
+        // Thêm API endpoint để hiển thị ảnh từ database
+        [HttpGet("image/{id}")]
+        [AllowAnonymous]
+        public IActionResult GetImage(string id)
+        {
+            try
+            {
+                var hinhAnh = _quanLySevices.GetById<HinhAnh>(id);
+                if (hinhAnh == null || hinhAnh.Anh == null || hinhAnh.Anh.Length == 0)
+                {
+                    return NotFound();
+                }
+
+                return File(hinhAnh.Anh, "image/png");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting image: {ex.Message}");
+                return NotFound();
             }
         }
     }

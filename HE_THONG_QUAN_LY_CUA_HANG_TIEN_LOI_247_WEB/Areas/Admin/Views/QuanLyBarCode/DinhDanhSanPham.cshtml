@@ -39,7 +39,7 @@
                     <th>Sản Phẩm Đơn Vị ID</th>
                     <th>Loại Mã</th>
                     <th>Mã Code</th>
-                    <th>Đường Dẫn</th>
+                    <th>Hình ảnh</th>
                     <th>Thao tác</th>
                   </tr>
                 </thead>
@@ -66,7 +66,7 @@
                           <td>
                             @if (!string.IsNullOrEmpty(mdd.DuongDan))
                             {
-                              <small>@mdd.DuongDan</small>
+                              <img src="@mdd.DuongDan" alt="@mdd.LoaiMa Code" style="max-width: 100px; max-height: 50px;" />
                             }
                             else
                             {
@@ -98,10 +98,13 @@
           <div class="tile-body">
             <form id="identifier-form">
 
-              <div class="image-upload-container">
-                <img class="image-preview" id="form-image-preview" src="https://via.placeholder.com/200?text=Ảnh+Code" alt="Ảnh Code">
-                <input class="image-edit-input" type="file" id="form-image-upload" accept=".png, .jpg, .jpeg">
-                <label class="image-edit-label" for="form-image-upload"><i class="bi bi-camera-fill"></i></label>
+              <!-- Preview ảnh barcode/QR tự động tạo (chỉ hiển thị khi xem/sửa) -->
+              <div class="image-preview-container text-center mb-3" id="barcode-preview-container" style="display: none;">
+                <label class="form-label">Hình ảnh Barcode/QR (Tự động tạo)</label>
+                <div class="border rounded p-2 bg-light">
+                  <img class="image-preview" id="form-image-preview" src="" alt="Barcode/QR Preview" style="max-width: 100%; max-height: 200px;">
+                </div>
+                <small class="text-muted">Ảnh sẽ được tự động tạo khi nhập mã barcode</small>
               </div>
 
               <div class="mb-3">
@@ -138,11 +141,13 @@
                     <label class="form-check-label" for="radio-qr">QR Code</label>
                   </div>
                 </div>
+                <small class="text-muted">Ảnh barcode/QR sẽ tự động được tạo từ mã code bên dưới</small>
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Mã Code (Dữ liệu)</label>
+                <label class="form-label">Mã Code (Dữ liệu) <span class="text-danger">*</span></label>
                 <input class="form-control" type="text" id="form-ma-code" placeholder="V.d: 8935049001438" required>
+                <small class="text-muted">Nhập mã barcode số. Ảnh sẽ tự động được tạo khi lưu.</small>
               </div>
 
             </form>
