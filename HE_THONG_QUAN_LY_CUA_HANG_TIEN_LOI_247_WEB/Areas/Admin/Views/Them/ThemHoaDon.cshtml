@@ -104,10 +104,22 @@
         <div class="tile">
           <h3 class="tile-title">Danh sách Sản phẩm</h3>
 
-          <div class="mb-3">
-            <input type="text" class="form-control" id="product-search-input"
-              placeholder="Tìm kiếm sản phẩm (tên hoặc mã)~">
-          </div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="product-search-input" placeholder="Tìm kiếm sản phẩm (tên hoặc mã)~">
+            <button class="btn btn-outline-primary" type="button" id="btn-scan-barcode" title="Quét mã vạch">
+                <i class="bi bi-qr-code-scan"></i> </button>
+        </div>
+
+        <div id="scanner-container" class="card mb-3" style="display:none;">
+            <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                <span><i class="bi bi-camera-video"></i> Quét Mã Vạch</span>
+                <button type="button" class="btn-close btn-close-white" id="btn-close-camera" aria-label="Close"></button>
+            </div>
+            <div class="card-body p-0">
+                <div id="reader" style="width: 100%;"></div>
+            </div>
+        </div>
+
           <div class="mb-3">
             <select class="form-control" id="selectDanhMuc">
               <option value="">Tất cả danh mục</option>
@@ -219,3 +231,5 @@
   <script src="~/assets/lib/jquery/jquery-3.7.0.min.js"></script>
   <script src="~/assets/lib/select2/dist/js/select2.min.js"></script>
   <script src="~/assets/js/ThemHoaDon.js" asp-append-version="true" defer></script>
+  @* quét mã *@
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>

@@ -660,4 +660,104 @@
     renderDraftList();
     updateInvoiceTotal();
     console.log('=== READY ===');
+
+
+
+
+
+    // CHỨC NĂNG QUÉT MÃ VẠCH (LIÊN TỤC)
+    let html5QrCode = null;
+    let isScanningProcessing = false;
+
+    // 1. Bật Camera
+    $('#btn-scan-barcode').click(function () {
+        $('#scanner-container').slideDown();
+
+        if (html5QrCode === null) {
+            html5QrCode = new Html5Qrcode("reader");
+        }
+
+        const config = {
+            fps: 10,
+            qrbox: { width: 250, height: 150 },
+            formatsToSupport: [
+                Html5QrcodeSupportedFormats.EAN_13,
+                Html5QrcodeSupportedFormats.EAN_8,
+                Html5QrcodeSupportedFormats.CODE_128,
+                Html5QrcodeSupportedFormats.QR_CODE
+            ]
+        };
+
+        html5QrCode.start(
+            { facingMode: "environment" },
+            config,
+            onScanSuccess,
+            (errorMessage) => { /* Bỏ qua lỗi đang quét */ }
+        ).catch(err => {
+            console.error("Lỗi camera:", err);
+            alert("Lỗi mở Camera: " + err);
+            $('#scanner-container').hide();
+        });
+    });
+
+    // 2. Tắt Camera (Chỉ tắt khi ấn nút X)
+    $('#btn-close-camera').click(function () {
+        stopScanner();
+    });
+
+    // 3. Xử lý khi quét thành công
+    function onScanSuccess(decodedText, decodedResult) {
+        // Nếu đang xử lý mã trước đó thì bỏ qua (Chống spam)
+        if (isScanningProcessing) return;
+
+        // Khóa quét tạm thời
+        isScanningProcessing = true;
+        console.log("Quét được:", decodedText);
+
+        // A. Thay thế mã cũ bằng mã mới trong ô tìm kiếm
+        searchInput.value = decodedText;
+
+        // B. Lọc danh sách ngay lập tức để hiển thị sản phẩm tương ứng
+        filterProducts();
+
+        // C. Tự động thêm sản phẩm đầu tiên tìm thấy
+        const firstVisibleItem = productList.querySelector('.product-item:not(.d-none)');
+
+        if (firstVisibleItem) {
+            const addButton = firstVisibleItem.querySelector('.add-product-btn');
+            if (addButton) {
+                const id = addButton.getAttribute('data-id');
+                const name = addButton.getAttribute('data-name');
+                const price = parseFloat(addButton.getAttribute('data-price'));
+
+                // Thêm vào hóa đơn
+                addProductToInvoice(id, name, price);
+
+                addButton.classList.add('btn-success');
+                setTimeout(() => addButton.classList.remove('btn-success'), 200);
+
+                 new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
+            }
+        } else {
+            // Dùng Toast hoặc ghi log nhỏ thay vì Alert để không chặn màn hình quét
+            console.warn('Không tìm thấy sản phẩm: ' + decodedText);
+        }
+
+        // D. Mở khóa quét sau 2 giây (Để nhân viên kịp đưa sản phẩm khác vào)
+        setTimeout(() => {
+            isScanningProcessing = false;
+        }, 2000);
+    }
+
+    function stopScanner() {
+        if (html5QrCode && html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => {
+                $('#scanner-container').slideUp();
+                html5QrCode.clear();
+                isScanningProcessing = false; // Reset cờ khi tắt
+            }).catch(err => console.log("Lỗi tắt cam:", err));
+        } else {
+            $('#scanner-container').slideUp();
+        }
+    }
 });
