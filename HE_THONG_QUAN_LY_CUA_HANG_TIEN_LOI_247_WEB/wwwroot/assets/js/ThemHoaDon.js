@@ -560,19 +560,24 @@
     renderDraftList();
     updateInvoiceTotal();
 
+    // --- BẮT ĐẦU ĐOẠN CODE XỬ LÝ CAMERA MỚI ---
+
     let html5QrCode = null;
     let isScanningProcessing = false;
 
-    $('#btn-scan-barcode').click(function () {
-        $('#scanner-container').slideDown();
-
-        if (html5QrCode === null) {
-            html5QrCode = new Html5Qrcode("reader");
+    // Hàm khởi động quét với Camera ID cụ thể
+    function startScanning(cameraId) {
+        // Nếu đang quét thì dừng lại trước
+        if (html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => {
+                startScanning(cameraId); // Gọi lại chính nó sau khi dừng xong
+            }).catch(err => console.error("Lỗi dừng cam cũ:", err));
+            return;
         }
 
         const config = {
             fps: 10,
-            qrbox: { width: 250, height: 150 },
+            qrbox: { width: 450, height: 300 },
             formatsToSupport: [
                 Html5QrcodeSupportedFormats.EAN_13,
                 Html5QrcodeSupportedFormats.EAN_8,
@@ -582,16 +587,60 @@
         };
 
         html5QrCode.start(
-            { facingMode: "environment" },
+            cameraId,
             config,
             onScanSuccess,
             (errorMessage) => { }
         ).catch(err => {
             alert("Lỗi mở Camera: " + err);
-            $('#scanner-container').hide();
+        });
+    }
+
+    // Sự kiện khi bấm nút Mở Camera
+    $('#btn-scan-barcode').click(function () {
+        $('#scanner-container').slideDown();
+
+        if (html5QrCode === null) {
+            html5QrCode = new Html5Qrcode("reader");
+        }
+
+        // Lấy danh sách Camera
+        Html5Qrcode.getCameras().then(devices => {
+            const cameraSelect = $('#camera-select');
+            cameraSelect.empty(); // Xóa danh sách cũ
+
+            if (devices && devices.length) {
+                // Đổ danh sách vào Select box
+                devices.forEach((device, index) => {
+                    // Tạo option
+                    const option = $('<option></option>').val(device.id).text(device.label || `Camera ${index + 1}`);
+                    cameraSelect.append(option);
+                });
+
+                cameraSelect.show(); // Hiện ô chọn cam
+
+                // Mặc định chọn camera đầu tiên (thường là webcam laptop)
+                // Nếu muốn ưu tiên DroidCam thì thêm logic tìm chuỗi "DroidCam" ở đây để set val
+                const currentCameraId = devices[0].id;
+                startScanning(currentCameraId);
+            } else {
+                cameraSelect.hide();
+                alert("Không tìm thấy camera nào!");
+            }
+        }).catch(err => {
+            alert("Lỗi lấy danh sách camera: " + err);
         });
     });
 
+    // Sự kiện khi người dùng CHỌN camera khác trong danh sách
+    $('#camera-select').change(function () {
+        const newCameraId = $(this).val();
+        if (html5QrCode && newCameraId) {
+            startScanning(newCameraId);
+        }
+    });
+
+    // Sự kiện đóng camera
     $('#btn-close-camera').click(function () {
         stopScanner();
     });
@@ -599,11 +648,13 @@
     function onScanSuccess(decodedText, decodedResult) {
         if (isScanningProcessing) return;
         isScanningProcessing = true;
+
+        // --- XỬ LÝ KẾT QUẢ ---
         searchInput.value = decodedText;
-        filterProducts();
+        filterProducts(); // Gọi hàm lọc sản phẩm
 
+        // Tự động thêm vào giỏ nếu tìm thấy
         const firstVisibleItem = productList.querySelector('.product-item:not(.d-none)');
-
         if (firstVisibleItem) {
             const addButton = firstVisibleItem.querySelector('.add-product-btn');
             if (addButton) {
@@ -612,10 +663,14 @@
                 const price = parseFloat(addButton.getAttribute('data-price'));
                 addProductToInvoice(id, name, price);
 
+                // Hiệu ứng nháy nút
                 addButton.classList.add('btn-success');
                 setTimeout(() => addButton.classList.remove('btn-success'), 200);
+                new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
             }
         }
+
+        // Delay 2s để không bị quét trùng liên tục
         setTimeout(() => {
             isScanningProcessing = false;
         }, 2000);
