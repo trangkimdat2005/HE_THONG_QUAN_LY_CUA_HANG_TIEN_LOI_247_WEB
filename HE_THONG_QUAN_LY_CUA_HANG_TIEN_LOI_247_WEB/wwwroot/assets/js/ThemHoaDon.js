@@ -157,7 +157,6 @@
     const debouncedFilter = debounce(filterProducts, 300);
     searchInput.addEventListener('input', debouncedFilter);
 
-    // **SỬA LỖI Ở ĐÂY:** Dùng cú pháp jQuery .on() cho Select2
     $('#selectDanhMuc').on('change', filterProducts);
 
 
@@ -248,7 +247,7 @@
             if (confirm('Xóa sản phẩm này khỏi hóa đơn?')) {
                 removeButton.closest('tr').remove();
                 if (invoiceBody.querySelectorAll('tr[data-id]').length === 0) {
-                    invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="6x`">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
+                    invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
                 }
                 updateInvoiceTotal();
             }
@@ -469,7 +468,14 @@
             }
         } else if (draftEl) {
             const index = parseInt(draftEl.getAttribute('data-draft-index'));
+
             loadDraftInvoice(draftInvoices[index]);
+
+            draftInvoices.splice(index, 1);
+
+            localStorage.setItem('draftInvoices', JSON.stringify(draftInvoices));
+
+            renderDraftList();
         }
     });
 
@@ -536,19 +542,13 @@
         try {
             console.log('--- BẮT ĐẦU THANH TOÁN ---');
 
-            // Gọi hàm lưu với trạng thái 'Chưa thanh toán' (để sang trang kia thanh toán nốt)
-            // Hoặc sửa thành 'Đã thanh toán' nếu muốn chốt đơn luôn
             const hoaDonId = await saveInvoice('Chưa thanh toán');
 
             console.log('ID Hóa đơn nhận được:', hoaDonId);
 
             if (hoaDonId) {
-                // THÀNH CÔNG -> CHUYỂN TRANG
-                // Đảm bảo đường dẫn này đúng với Controller của bạn
                 window.location.href = `/Admin/QuanLyHoaDon/ThanhToanHoaDon/${hoaDonId}`;
             } else {
-                // THẤT BẠI (saveInvoice trả về null do lỗi API)
-                // Lỗi cụ thể đã được hàm saveInvoice alert ra rồi, ở đây chỉ cần reset nút
                 console.error('Lưu thất bại.');
             }
         } catch (e) {
@@ -567,20 +567,34 @@
             clearInvoice();
         }
     });
-
     function clearInvoice() {
-        invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="5">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
-        customerSelect.val('').trigger('change');
-        discountInput.value = '';
-        discountInput.disabled = false;
-        applyDiscountBtn.textContent = 'Áp dụng';
-        applyDiscountBtn.disabled = false;
-        applyDiscountBtn.classList.replace('btn-success', 'btn-outline-primary');
+        invoiceBody.innerHTML = '<tr class="empty-row text-center text-muted"><td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
+
+        if (customerSelect && customerSelect.length) {
+            customerSelect.val('').trigger('change');
+        }
+
+        if (discountInput) {
+            discountInput.value = '';
+            discountInput.disabled = false;
+        }
+
+        if (applyDiscountBtn) {
+            applyDiscountBtn.textContent = 'Áp dụng';
+            applyDiscountBtn.disabled = false;
+            applyDiscountBtn.classList.replace('btn-success', 'btn-outline-primary');
+        }
+
+        if (discountMessage) {
+            discountMessage.textContent = '';
+        }
+
         appliedDiscount = null;
         discountValue = 0;
-        discountMessage.textContent = '';
+
         updateInvoiceTotal();
     }
+
 
     // === 9. LƯU HÓA ĐƠN VÀO DATABASE (GỌI API) ===
     async function saveInvoice(trangThai) {
