@@ -203,17 +203,11 @@ document.addEventListener('DOMContentLoaded', function () {
             
             // Lấy thông tin phiếu nhập
             const nhaCungCapId = document.getElementById('select-nha-cung-cap').value;
-            const nhanVienId = document.getElementById('select-nhan-vien').value;
             const ngayNhap = document.getElementById('input-ngay-nhap').value;
 
             // Validate
             if (!nhaCungCapId) {
                 alert('Vui lòng chọn nhà cung cấp!');
-                return;
-            }
-
-            if (!nhanVienId) {
-                alert('Vui lòng chọn nhân viên nhập!');
                 return;
             }
 
@@ -230,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
             // Tạo object request
             const requestData = {
                 nhaCungCapId: nhaCungCapId,
-                nhanVienId: nhanVienId,
                 ngayNhap: new Date(ngayNhap).toISOString(),
                 chiTietPhieuNhap: chiTietList
             };
