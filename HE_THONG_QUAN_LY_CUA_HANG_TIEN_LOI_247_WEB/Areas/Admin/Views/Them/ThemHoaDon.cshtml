@@ -140,39 +140,52 @@
             <ul class="list-group" id="product-list">
               @if (lstSanPhamDonVi != null && lstSanPhamDonVi.Any())
               {
-                  foreach (var sp in lstSanPhamDonVi)
-                  {
-                      var tenSanPham = sp.SanPham?.Ten ?? sp.Id;
-                      var tenDonVi = sp.DonVi?.Ten ?? "";
-                      var tenHienThi = string.IsNullOrEmpty(tenDonVi) ? tenSanPham : $"{tenSanPham} ({tenDonVi})";
-                      var giaBan = sp.GiaBan;
-                      
-                      var danhMucId = sp.SanPham?.SanPhamDanhMucs?.FirstOrDefault()?.DanhMucId ?? "";
-                      var barcode = sp.MaDinhDanhSanPhams?.FirstOrDefault(x => x.LoaiMa == "Barcode")?.MaCode ?? "";
-                      <li class="list-group-item d-flex justify-content-between align-items-center product-item"
-                          data-category="@danhMucId"
-                          data-product-id="@sp.Id"
-                          data-product-name="@tenHienThi"
-                          data-product-price="@giaBan"
-                      data-product-barcodeId="@barcode">
-                        <div>
-                          <h6 class="mb-0">@tenSanPham</h6>
-                          <small class="text-muted">
-                              @giaBan.ToString("N0") đ
-                              @if (!string.IsNullOrEmpty(tenDonVi))
-                              {
-                                  <text> / @tenDonVi</text>
-                              }
-                          </small>
+                @foreach (var sp in lstSanPhamDonVi)
+                {
+                    var tenSanPham = sp.SanPham?.Ten ?? sp.Id;
+                    var tenDonVi = sp.DonVi?.Ten ?? "";
+                    var tenHienThi = string.IsNullOrEmpty(tenDonVi) ? tenSanPham : $"{tenSanPham} ({tenDonVi})";
+                    var giaBan = sp.GiaBan;
+                    var danhMucId = sp.SanPham?.SanPhamDanhMucs?.FirstOrDefault()?.DanhMucId ?? "";
+
+                    // --- SỬA LOGIC LẤY MÃ VẠCH ---
+                    // Lấy tất cả mã vạch của sản phẩm này, nối lại thành 1 chuỗi string ví dụ: "893001 893002"
+                    var listBarcodes = sp.MaDinhDanhSanPhams?
+                                        .Where(x => x.LoaiMa == "Barcode" && !string.IsNullOrEmpty(x.MaCode))
+                                        .Select(x => x.MaCode)
+                                        .ToList();
+    
+                    // Nối thành chuỗi để gán vào data attribute cho dễ tìm kiếm
+                    var barcodeString = (listBarcodes != null && listBarcodes.Any()) 
+                                        ? string.Join(" ", listBarcodes) 
+                                        : "";
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center product-item"
+                        data-category="@danhMucId"
+                        data-product-id="@sp.Id"
+                        data-product-name="@tenHienThi"
+                        data-product-price="@giaBan"
+                        data-product-barcodeId="@barcodeString"> <div>
+                            <h6 class="mb-0">@tenSanPham</h6>
+                            <small class="text-muted">
+                                @giaBan.ToString("N0") đ
+                                @if (!string.IsNullOrEmpty(tenDonVi))
+                                {
+                                    <text> / @tenDonVi</text>
+                                }
+                            </small>
+                            @if(listBarcodes != null && listBarcodes.Any()){
+                                 <br><small class="text-secondary" style="font-size: 0.75rem;"><i class="bi bi-upc"></i> @listBarcodes.First() ...</small>
+                            }
                         </div>
                         <button class="btn btn-primary btn-sm add-product-btn" 
                                 data-id="@sp.Id"
                                 data-name="@tenHienThi"
                                 data-price="@giaBan">
-                          <i class="bi bi-plus-lg"></i>
+                            <i class="bi bi-plus-lg"></i>
                         </button>
-                      </li>
-                  }
+                    </li>
+                }
               }
               else
               {

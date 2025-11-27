@@ -1,19 +1,16 @@
 ﻿document.addEventListener('DOMContentLoaded', function () {
-    $('#selectKhachHang').select2({
-        width: '100%',
-        placeholder: 'Chọn khách hàng',
-        allowClear: true
-    });
-    $('#selectDanhMuc').select2({
-        width: '100%',
-        placeholder: 'Tất cả danh mục',
-        allowClear: true
-    });
+    console.log('=== POS SYSTEM LOADED ===');
 
+    // 1. KHỞI TẠO CÁC THƯ VIỆN
+    $('#selectKhachHang').select2({ width: '100%', placeholder: 'Chọn khách hàng', allowClear: true });
+    $('#selectDanhMuc').select2({ width: '100%', placeholder: 'Tất cả danh mục', allowClear: true });
+
+    // 2. BIẾN TOÀN CỤC
     let appliedDiscount = null;
     let discountValue = 0;
     let draftInvoices = JSON.parse(localStorage.getItem('draftInvoices') || '[]');
 
+    // 3. CÁC HÀM TIỆN ÍCH
     function removeVietnameseTones(str) {
         str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
         str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -34,26 +31,7 @@
         return str.trim().toLowerCase();
     }
 
-    const productList = document.getElementById('product-list');
-    const invoiceBody = document.getElementById('invoice-items-body');
-    const subTotalEl = document.getElementById('sub-total');
-    const discountEl = document.getElementById('discount-amount');
-    const totalEl = document.getElementById('total-amount');
-    const searchInput = document.getElementById('product-search-input');
-    const categorySelect = document.getElementById('selectDanhMuc');
-    const customerSelect = $('#selectKhachHang');
-    const discountInput = document.getElementById('discount-code-input');
-    const applyDiscountBtn = document.getElementById('apply-discount-btn');
-    const discountMessage = document.getElementById('discount-message');
-    const saveDraftBtn = document.getElementById('save-draft-btn');
-    const cancelInvoiceBtn = document.getElementById('cancel-invoice-btn');
-    const completeInvoiceBtn = document.getElementById('complete-invoice-btn');
-    const draftList = document.getElementById('draft-list');
-
-    const formatter = new Intl.NumberFormat('vi-VN', {
-        style: 'currency',
-        currency: 'VND'
-    });
+    const formatter = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' });
 
     function debounce(func, wait) {
         let timeout;
@@ -67,31 +45,32 @@
         };
     }
 
+    // 4. DOM ELEMENTS
+    const productList = document.getElementById('product-list');
+    const invoiceBody = document.getElementById('invoice-items-body');
+    const searchInput = document.getElementById('product-search-input');
+    const categorySelect = document.getElementById('selectDanhMuc');
+    const customerSelect = $('#selectKhachHang');
+    const discountInput = document.getElementById('discount-code-input');
+    const applyDiscountBtn = document.getElementById('apply-discount-btn');
+    const discountMessage = document.getElementById('discount-message');
+    const saveDraftBtn = document.getElementById('save-draft-btn');
+    const cancelInvoiceBtn = document.getElementById('cancel-invoice-btn');
+    const completeInvoiceBtn = document.getElementById('complete-invoice-btn');
+    const draftList = document.getElementById('draft-list');
+
+    // 5. RENDER OPTION KHUYẾN MÃI
     function renderKhuyenMaiOptions() {
-        if (typeof danhSachKhuyenMai === 'undefined') {
-            return '<option value="" data-val="0">-- Chọn KM --</option>';
-        }
-
+        if (typeof danhSachKhuyenMai === 'undefined') return '<option value="" data-val="0">-- Chọn KM --</option>';
         let options = '<option value="" data-val="0">-- Chọn KM --</option>';
-
         danhSachKhuyenMai.forEach(km => {
-            let hienThiGiam = (km.loaiGiam === "Phần trăm")
-                ? (km.giaTri) + "%"
-                : formatter.format(km.giaTri);
-
-            options += `<option value="${km.id}" 
-                        data-val="${km.giaTri}" 
-                        data-type="${km.loaiGiam}" 
-                        data-min="${km.toithieu}" 
-                        data-max="${km.toida}"
-                        data-start="${km.ngayBatDau}" 
-                        data-end="${km.ngayKetThuc}">
-                        ${km.ma} - Giảm ${hienThiGiam}
-                    </option>`;
+            let hienThiGiam = (km.loaiGiam === "Phần trăm") ? (km.giaTri) + "%" : formatter.format(km.giaTri); // Fix hiển thị %
+            options += `<option value="${km.id}" data-val="${km.giaTri}" data-type="${km.loaiGiam}" data-min="${km.toithieu}" data-max="${km.toida}" data-start="${km.ngayBatDau}" data-end="${km.ngayKetThuc}">${km.ma} - Giảm ${hienThiGiam}</option>`;
         });
         return options;
     }
 
+    // 6. LỌC SẢN PHẨM (HỖ TRỢ TÌM TRONG CHUỖI NHIỀU MÃ VẠCH)
     function filterProducts() {
         const rawKeyword = searchInput.value;
         const searchText = rawKeyword ? removeVietnameseTones(rawKeyword) : "";
@@ -103,6 +82,7 @@
             const rawName = product.getAttribute('data-product-name') || '';
             const rawId = product.getAttribute('data-product-id') || '';
             const productCategory = product.getAttribute('data-category') || '';
+            // Lấy chuỗi mã vạch (đã nối ở View)
             const productBarcodeId = product.getAttribute('data-product-barcodeId') || '';
 
             const nameNormalized = removeVietnameseTones(rawName);
@@ -112,7 +92,7 @@
             const matchesSearch = !searchText ||
                 nameNormalized.includes(searchText) ||
                 idNormalized.includes(searchText) ||
-                barcodeNormalized.includes(searchText);
+                barcodeNormalized.includes(searchText); // Tìm trong chuỗi mã vạch
 
             const matchesCategory = !category || productCategory === category;
 
@@ -125,7 +105,6 @@
                 product.classList.add('d-none');
             }
         });
-
         updateProductListMessage(visibleCount);
     }
 
@@ -138,10 +117,8 @@
                 messageEl.textContent = 'Không tìm thấy sản phẩm nào';
                 productList.appendChild(messageEl);
             }
-        } else {
-            if (messageEl) {
-                messageEl.remove();
-            }
+        } else if (messageEl) {
+            messageEl.remove();
         }
     }
 
@@ -149,6 +126,7 @@
     searchInput.addEventListener('input', debouncedFilter);
     $('#selectDanhMuc').on('change', filterProducts);
 
+    // 7. SỰ KIỆN CLICK THÊM SẢN PHẨM (THỦ CÔNG)
     productList.addEventListener('click', function (e) {
         const addButton = e.target.closest('.add-product-btn');
         if (addButton) {
@@ -156,90 +134,102 @@
             const id = addButton.getAttribute('data-id');
             const name = addButton.getAttribute('data-name');
             const price = parseFloat(addButton.getAttribute('data-price'));
-            addProductToInvoice(id, name, price);
+
+            // Thêm thủ công thì không có scannedCode
+            addProductToInvoice(id, name, price, 1, null);
 
             addButton.classList.add('btn-success');
-            setTimeout(() => {
-                addButton.classList.remove('btn-success');
-            }, 200);
+            setTimeout(() => addButton.classList.remove('btn-success'), 200);
         }
     });
 
-    function addProductToInvoice(id, name, price, quantity = 1) {
+    // 8. HÀM THÊM VÀO HÓA ĐƠN (CÓ XỬ LÝ MÃ VẠCH VỪA QUÉT)
+    function addProductToInvoice(id, name, price, quantity = 1, scannedCode = null) {
         const emptyRow = invoiceBody.querySelector('tr td[colspan="6"]');
-        if (emptyRow) {
-            emptyRow.closest('tr').remove();
-        }
+        if (emptyRow) emptyRow.closest('tr').remove();
 
         const existingRow = document.querySelector(`#invoice-items-body tr[data-id="${id}"]`);
 
         if (existingRow) {
+            // Nếu đã có dòng này -> Tăng số lượng
             const qtyInput = existingRow.querySelector('.quantity-input');
             qtyInput.value = parseInt(qtyInput.value) + quantity;
-            updateRowTotal(existingRow);
 
+            // Cập nhật hiển thị mã vừa quét (nếu có)
+            if (scannedCode) {
+                const codeDisplay = existingRow.querySelector('.scanned-code-display');
+                if (codeDisplay) codeDisplay.textContent = `Mã: ${scannedCode}`;
+                existingRow.setAttribute('data-scanned-code', scannedCode);
+            }
+
+            updateRowTotal(existingRow);
             existingRow.classList.add('table-success');
-            setTimeout(() => {
-                existingRow.classList.remove('table-success');
-            }, 500);
+            setTimeout(() => existingRow.classList.remove('table-success'), 500);
         } else {
+            // Nếu chưa có -> Thêm dòng mới
             const row = invoiceBody.insertRow();
             row.setAttribute('data-id', id);
+            // Lưu mã quét vào attribute
+            row.setAttribute('data-scanned-code', scannedCode || '');
+
             row.innerHTML = `
-                <td>${name}</td>
+                <td>
+                    <div class="fw-bold">${name}</div>
+                    <small class="text-muted fst-italic scanned-code-display" style="font-size: 0.8rem;">
+                        ${scannedCode ? 'Mã: ' + scannedCode : ''}
+                    </small>
+                </td>
                 <td>
                     <input type="number" class="form-control form-control-sm quantity-input" value="${quantity}" min="1" data-price="${price}">
                 </td>
                 <td>${formatter.format(price)}</td>
                 <td>
-                    <select class="form-control form-control-sm discount-select" style="width: 150px;">
+                    <select class="form-control form-control-sm discount-select" style="width: 100%;">
                         ${renderKhuyenMaiOptions()}
                     </select>
                 </td>
                 <td class="row-total">${formatter.format(price * quantity)}</td>
                 <td class="text-center">
-                    <button class="btn btn-danger btn-sm remove-item-btn">
-                        <i class="bi bi-trash"></i>
-                    </button>
+                    <button class="btn btn-danger btn-sm remove-item-btn"><i class="bi bi-trash"></i></button>
                 </td>
             `;
-
+            // GỌI NGAY ĐỂ TÍNH TIỀN LÚC MỚI THÊM
             updateRowTotal(row);
         }
         updateInvoiceTotal();
     }
 
+    // Sự kiện thay đổi số lượng
     invoiceBody.addEventListener('input', function (e) {
         const qtyInput = e.target.closest('.quantity-input');
         if (qtyInput) {
             if (qtyInput.value < 1) qtyInput.value = 1;
-            const row = qtyInput.closest('tr');
-            updateRowTotal(row);
+            updateRowTotal(qtyInput.closest('tr'));
             updateInvoiceTotal();
         }
     });
 
+    // Sự kiện chọn mã giảm giá trên dòng
     invoiceBody.addEventListener('change', function (e) {
         if (e.target.classList.contains('discount-select')) {
-            const row = e.target.closest('tr');
-            updateRowTotal(row);
+            updateRowTotal(e.target.closest('tr'));
             updateInvoiceTotal();
         }
     });
 
+    // Sự kiện xóa dòng
     invoiceBody.addEventListener('click', function (e) {
         const removeButton = e.target.closest('.remove-item-btn');
-        if (removeButton) {
-            if (confirm('Xóa sản phẩm này khỏi hóa đơn?')) {
-                removeButton.closest('tr').remove();
-                if (invoiceBody.querySelectorAll('tr[data-id]').length === 0) {
-                    invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
-                }
-                updateInvoiceTotal();
+        if (removeButton && confirm('Xóa sản phẩm này khỏi hóa đơn?')) {
+            removeButton.closest('tr').remove();
+            if (invoiceBody.querySelectorAll('tr[data-id]').length === 0) {
+                invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
             }
+            updateInvoiceTotal();
         }
     });
 
+    // 9. TÍNH TOÁN TIỀN TỪNG DÒNG
     function updateRowTotal(row) {
         const qtyInput = row.querySelector('.quantity-input');
         const price = parseFloat(qtyInput.getAttribute('data-price'));
@@ -261,14 +251,12 @@
             const end = selectedOption.getAttribute('data-end');
 
             if (start && end && (today < new Date(start) || today > new Date(end))) {
-                warningMsg = "Mã đã hết hạn!";
-            }
-            else if (rawTotal < minOrder) {
-                warningMsg = `Cần mua tối thiểu ${formatter.format(minOrder)}`;
-            }
-            else {
+                warningMsg = "Mã hết hạn";
+            } else if (rawTotal < minOrder) {
+                warningMsg = `Mua tối thiểu ${formatter.format(minOrder)}`;
+            } else {
                 if (type === "Phần trăm") {
-                    discountAmount = rawTotal * val;
+                    discountAmount = rawTotal * (val/100);
                     if (discountAmount > maxDiscount) discountAmount = maxDiscount;
                 } else {
                     discountAmount = val;
@@ -283,30 +271,25 @@
 
         let errorSpan = row.querySelector('.discount-error-msg');
         if (!errorSpan) {
-            errorSpan = document.createElement('small');
-            errorSpan.className = 'discount-error-msg text-danger d-block mt-1';
-            errorSpan.style.fontSize = '11px';
+            errorSpan = document.createElement('div');
+            errorSpan.className = 'discount-error-msg text-danger small fst-italic';
             if (discountSelect) discountSelect.parentNode.appendChild(errorSpan);
         }
         errorSpan.textContent = warningMsg;
+
         row.setAttribute('data-original-total', rawTotal);
         row.setAttribute('data-discount-amt', discountAmount);
         row.setAttribute('data-row-total', finalTotal);
     }
 
+    // 10. TÍNH TỔNG HÓA ĐƠN
     function updateInvoiceTotal() {
         let totalOriginal = 0;
         let totalDiscount = 0;
-
-        const allRows = invoiceBody.querySelectorAll('tr[data-id]');
-
-        allRows.forEach(row => {
-            const rowOriginal = parseFloat(row.getAttribute('data-original-total')) || 0;
-            const rowDiscount = parseFloat(row.getAttribute('data-discount-amt')) || 0;
-            totalOriginal += rowOriginal;
-            totalDiscount += rowDiscount;
+        invoiceBody.querySelectorAll('tr[data-id]').forEach(row => {
+            totalOriginal += parseFloat(row.getAttribute('data-original-total')) || 0;
+            totalDiscount += parseFloat(row.getAttribute('data-discount-amt')) || 0;
         });
-
         const finalTotal = totalOriginal - totalDiscount;
 
         $('#sub-total').text(formatter.format(totalOriginal));
@@ -316,18 +299,14 @@
 
     function calculateSubTotal() {
         let subTotal = 0;
-        const allRows = invoiceBody.querySelectorAll('tr[data-id]');
-        allRows.forEach(row => {
-            const qtyInput = row.querySelector('.quantity-input');
-            if (qtyInput) {
-                const price = parseFloat(qtyInput.getAttribute('data-price'));
-                const quantity = parseInt(qtyInput.value);
-                subTotal += price * quantity;
-            }
+        invoiceBody.querySelectorAll('tr[data-id]').forEach(row => {
+            const qty = row.querySelector('.quantity-input');
+            if (qty) subTotal += parseFloat(qty.getAttribute('data-price')) * parseInt(qty.value);
         });
         return subTotal;
     }
 
+    // 11. XỬ LÝ LƯU TẠM (DRAFT) - Logic lưu trước khi tải mới
     function saveCurrentToDraftList() {
         const allRows = invoiceBody.querySelectorAll('tr[data-id]');
         if (allRows.length === 0) return false;
@@ -345,12 +324,15 @@
 
         allRows.forEach(row => {
             const qtyInput = row.querySelector('.quantity-input');
-            const nameCell = row.cells[0];
+            const nameDiv = row.cells[0].querySelector('.fw-bold'); // Lấy đúng thẻ tên
+            const scannedCode = row.getAttribute('data-scanned-code');
+
             draftData.items.push({
                 id: row.getAttribute('data-id'),
-                name: nameCell.textContent,
+                name: nameDiv ? nameDiv.textContent : row.cells[0].textContent,
                 quantity: parseInt(qtyInput.value),
-                price: parseFloat(qtyInput.getAttribute('data-price'))
+                price: parseFloat(qtyInput.getAttribute('data-price')),
+                scannedCode: scannedCode // Lưu cả mã quét vào draft
             });
         });
 
@@ -384,9 +366,7 @@
                     <small class="text-muted">${new Date(draft.timestamp).toLocaleString('vi-VN')}</small>
                     <div><strong>${formatter.format(draft.total)}</strong></div>
                 </div>
-                <button class="btn btn-sm btn-danger remove-draft-btn" data-draft-index="${index}">
-                    <i class="bi bi-trash"></i>
-                </button>
+                <button class="btn btn-sm btn-danger remove-draft-btn" data-draft-index="${index}"><i class="bi bi-trash"></i></button>
             `;
             draftList.appendChild(li);
         });
@@ -398,8 +378,8 @@
 
         if (removeBtn) {
             e.stopPropagation();
-            const index = parseInt(removeBtn.getAttribute('data-draft-index'));
             if (confirm('Xóa hóa đơn tạm này?')) {
+                const index = parseInt(removeBtn.getAttribute('data-draft-index'));
                 draftInvoices.splice(index, 1);
                 localStorage.setItem('draftInvoices', JSON.stringify(draftInvoices));
                 renderDraftList();
@@ -408,10 +388,12 @@
             const index = parseInt(draftEl.getAttribute('data-draft-index'));
             const selectedDraft = draftInvoices[index];
 
+            // Lưu hóa đơn hiện tại trước khi load cái mới
             saveCurrentToDraftList();
 
             loadDraftInvoice(selectedDraft);
 
+            // Xóa cái vừa load khỏi danh sách
             draftInvoices.splice(index, 1);
             localStorage.setItem('draftInvoices', JSON.stringify(draftInvoices));
             renderDraftList();
@@ -420,34 +402,26 @@
 
     function loadDraftInvoice(draft) {
         clearInvoice();
-        if (draft.customerId) {
-            customerSelect.val(draft.customerId).trigger('change');
-        }
+        if (draft.customerId) customerSelect.val(draft.customerId).trigger('change');
+
         draft.items.forEach(item => {
-            addProductToInvoice(item.id, item.name, item.price, item.quantity);
+            // Load lại sản phẩm kèm theo mã đã quét
+            addProductToInvoice(item.id, item.name, item.price, item.quantity, item.scannedCode);
         });
+
         if (draft.discount) {
             appliedDiscount = draft.discount;
             discountValue = draft.discountValue;
-            discountInput.value = draft.discount.code || '';
-            discountInput.disabled = true;
-            applyDiscountBtn.textContent = 'Đã áp dụng';
-            applyDiscountBtn.disabled = true;
-            applyDiscountBtn.classList.replace('btn-outline-primary', 'btn-success');
+            if (discountInput) discountInput.value = draft.discount.code || '';
         }
         updateInvoiceTotal();
     }
 
+    // 12. THANH TOÁN (GỌI API)
     completeInvoiceBtn.addEventListener('click', async function () {
         const allRows = invoiceBody.querySelectorAll('tr[data-id]');
-        if (allRows.length === 0) {
-            alert('Chưa có sản phẩm nào trong hóa đơn!');
-            return;
-        }
-
-        if (!confirm('Xác nhận tạo hóa đơn và chuyển sang thanh toán?')) {
-            return;
-        }
+        if (allRows.length === 0) return alert('Chưa có sản phẩm nào!');
+        if (!confirm('Xác nhận tạo hóa đơn và thanh toán?')) return;
 
         const originalText = completeInvoiceBtn.innerHTML;
         completeInvoiceBtn.disabled = true;
@@ -455,70 +429,34 @@
 
         try {
             const hoaDonId = await saveInvoice('Chưa thanh toán');
-            if (hoaDonId) {
-                window.location.href = `/Admin/QuanLyHoaDon/ThanhToanHoaDon/${hoaDonId}`;
-            } else {
-                console.error('Lưu thất bại.');
-            }
+            if (hoaDonId) window.location.href = `/Admin/QuanLyHoaDon/ThanhToanHoaDon/${hoaDonId}`;
         } catch (e) {
-            console.error('Lỗi JS:', e);
-            alert('Có lỗi xảy ra: ' + e.message);
+            console.error(e);
+            alert('Lỗi: ' + e.message);
         } finally {
             completeInvoiceBtn.disabled = false;
             completeInvoiceBtn.innerHTML = originalText;
         }
     });
 
-    cancelInvoiceBtn.addEventListener('click', function () {
-        if (confirm('Bạn có chắc muốn hủy hóa đơn này? Mọi dữ liệu sẽ bị mất.')) {
-            clearInvoice();
-        }
-    });
-
-    function clearInvoice() {
-        invoiceBody.innerHTML = '<tr class="empty-row text-center text-muted"><td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
-        if (customerSelect && customerSelect.length) {
-            customerSelect.val('').trigger('change');
-        }
-        if (discountInput) {
-            discountInput.value = '';
-            discountInput.disabled = false;
-        }
-        if (applyDiscountBtn) {
-            applyDiscountBtn.textContent = 'Áp dụng';
-            applyDiscountBtn.disabled = false;
-            applyDiscountBtn.classList.replace('btn-success', 'btn-outline-primary');
-        }
-        if (discountMessage) {
-            discountMessage.textContent = '';
-        }
-        appliedDiscount = null;
-        discountValue = 0;
-        updateInvoiceTotal();
-    }
-
     async function saveInvoice(trangThai) {
-        const allRows = invoiceBody.querySelectorAll('tr[data-id]');
         const chiTietHoaDon = [];
-
-        allRows.forEach(row => {
+        invoiceBody.querySelectorAll('tr[data-id]').forEach(row => {
             const qtyInput = row.querySelector('.quantity-input');
             const discountSelect = row.querySelector('.discount-select');
-            let giamGia = parseFloat(row.getAttribute('data-discount-amt')) || 0;
-            let maKhuyenMaiId = null;
 
-            if (discountSelect && discountSelect.value) {
-                maKhuyenMaiId = discountSelect.value;
-            }
+            // Lấy mã vạch vừa quét để gửi lên server
+            const maVachDaQuet = row.getAttribute('data-scanned-code');
 
-            const item = {
+            chiTietHoaDon.push({
                 SanPhamDonViId: row.getAttribute('data-id'),
                 SoLuong: parseInt(qtyInput.value),
                 DonGia: parseFloat(qtyInput.getAttribute('data-price')),
-                GiamGia: giamGia,
-                MaKhuyenMaiId: maKhuyenMaiId
-            };
-            chiTietHoaDon.push(item);
+                GiamGia: parseFloat(row.getAttribute('data-discount-amt')) || 0,
+                MaKhuyenMaiId: (discountSelect && discountSelect.value) ? discountSelect.value : null,
+                // Gửi mã vạch vào cột GhiChu
+                GhiChu: maVachDaQuet ? `Scan: ${maVachDaQuet}` : ""
+            });
         });
 
         const requestData = {
@@ -528,132 +466,92 @@
             ChiTietHoaDon: chiTietHoaDon
         };
 
-        try {
-            saveDraftBtn.disabled = true;
-            completeInvoiceBtn.disabled = true;
-            completeInvoiceBtn.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Đang xử lý...';
+        const response = await fetch('/API/add-HoaDon', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestData)
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message);
+        return result.hoaDonId;
+    }
 
-            const response = await fetch('/API/add-HoaDon', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(requestData)
-            });
+    cancelInvoiceBtn.addEventListener('click', function () {
+        if (confirm('Hủy hóa đơn hiện tại?')) clearInvoice();
+    });
 
-            const result = await response.json();
-
-            if (response.ok) {
-                return result.hoaDonId;
-            } else {
-                alert('Lỗi: ' + result.message);
-                return null;
-            }
-        } catch (error) {
-            alert('Lỗi khi lưu hóa đơn: ' + error.message);
-            return null;
-        } finally {
-            saveDraftBtn.disabled = false;
-            completeInvoiceBtn.disabled = false;
-            completeInvoiceBtn.innerHTML = '<i class="bi bi-wallet me-2"></i>Thanh toán ngay';
-        }
+    function clearInvoice() {
+        invoiceBody.innerHTML = '<tr class="text-center text-muted"><td colspan="6">Chưa có sản phẩm nào. Hãy thêm sản phẩm từ danh sách bên phải.</td></tr>';
+        customerSelect.val('').trigger('change');
+        appliedDiscount = null;
+        discountValue = 0;
+        updateInvoiceTotal();
     }
 
     renderDraftList();
     updateInvoiceTotal();
 
-    // --- BẮT ĐẦU ĐOẠN CODE XỬ LÝ CAMERA MỚI ---
-
+    // ==========================================
+    // 13. XỬ LÝ CAMERA (SCAN BARCODE)
+    // ==========================================
     let html5QrCode = null;
     let isScanningProcessing = false;
 
-    // Hàm khởi động quét với Camera ID cụ thể
     function startScanning(cameraId) {
-        // Nếu đang quét thì dừng lại trước
         if (html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => {
-                startScanning(cameraId); // Gọi lại chính nó sau khi dừng xong
-            }).catch(err => console.error("Lỗi dừng cam cũ:", err));
+            html5QrCode.stop().then(() => startScanning(cameraId)).catch(err => console.error(err));
             return;
         }
-
-        const config = {
-            fps: 10,
-            qrbox: { width: 450, height: 300 },
-            formatsToSupport: [
-                Html5QrcodeSupportedFormats.EAN_13,
-                Html5QrcodeSupportedFormats.EAN_8,
-                Html5QrcodeSupportedFormats.CODE_128,
-                Html5QrcodeSupportedFormats.QR_CODE
-            ]
-        };
-
         html5QrCode.start(
             cameraId,
-            config,
+            { fps: 10, qrbox: { width: 450, height: 250 } },
             onScanSuccess,
-            (errorMessage) => { }
-        ).catch(err => {
-            alert("Lỗi mở Camera: " + err);
-        });
+            () => { }
+        ).catch(err => alert("Lỗi mở Camera: " + err));
     }
 
-    // Sự kiện khi bấm nút Mở Camera
     $('#btn-scan-barcode').click(function () {
         $('#scanner-container').slideDown();
+        if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
 
-        if (html5QrCode === null) {
-            html5QrCode = new Html5Qrcode("reader");
-        }
-
-        // Lấy danh sách Camera
         Html5Qrcode.getCameras().then(devices => {
             const cameraSelect = $('#camera-select');
-            cameraSelect.empty(); // Xóa danh sách cũ
-
+            cameraSelect.empty();
             if (devices && devices.length) {
-                // Đổ danh sách vào Select box
-                devices.forEach((device, index) => {
-                    // Tạo option
-                    const option = $('<option></option>').val(device.id).text(device.label || `Camera ${index + 1}`);
-                    cameraSelect.append(option);
+                devices.forEach((device, i) => {
+                    cameraSelect.append($('<option>').val(device.id).text(device.label || `Camera ${i + 1}`));
                 });
-
-                cameraSelect.show(); // Hiện ô chọn cam
-
-                // Mặc định chọn camera đầu tiên (thường là webcam laptop)
-                // Nếu muốn ưu tiên DroidCam thì thêm logic tìm chuỗi "DroidCam" ở đây để set val
-                const currentCameraId = devices[0].id;
-                startScanning(currentCameraId);
+                cameraSelect.show();
+                startScanning(devices[0].id);
             } else {
-                cameraSelect.hide();
-                alert("Không tìm thấy camera nào!");
+                alert("Không tìm thấy camera!");
             }
-        }).catch(err => {
-            alert("Lỗi lấy danh sách camera: " + err);
-        });
+        }).catch(err => alert("Lỗi camera: " + err));
     });
 
-    // Sự kiện khi người dùng CHỌN camera khác trong danh sách
     $('#camera-select').change(function () {
-        const newCameraId = $(this).val();
-        if (html5QrCode && newCameraId) {
-            startScanning(newCameraId);
-        }
+        if (html5QrCode) startScanning($(this).val());
     });
 
-    // Sự kiện đóng camera
     $('#btn-close-camera').click(function () {
-        stopScanner();
+        if (html5QrCode && html5QrCode.isScanning) {
+            html5QrCode.stop().then(() => {
+                $('#scanner-container').slideUp();
+                html5QrCode.clear();
+            });
+        } else {
+            $('#scanner-container').slideUp();
+        }
     });
 
     function onScanSuccess(decodedText, decodedResult) {
         if (isScanningProcessing) return;
         isScanningProcessing = true;
 
-        // --- XỬ LÝ KẾT QUẢ ---
         searchInput.value = decodedText;
-        filterProducts(); // Gọi hàm lọc sản phẩm
+        filterProducts(); // Lọc danh sách theo mã quét
 
-        // Tự động thêm vào giỏ nếu tìm thấy
+        // Tự động chọn sản phẩm đầu tiên tìm thấy
         const firstVisibleItem = productList.querySelector('.product-item:not(.d-none)');
         if (firstVisibleItem) {
             const addButton = firstVisibleItem.querySelector('.add-product-btn');
@@ -661,30 +559,18 @@
                 const id = addButton.getAttribute('data-id');
                 const name = addButton.getAttribute('data-name');
                 const price = parseFloat(addButton.getAttribute('data-price'));
-                addProductToInvoice(id, name, price);
 
-                // Hiệu ứng nháy nút
+                // QUAN TRỌNG: Truyền mã vừa quét vào hàm thêm
+                addProductToInvoice(id, name, price, 1, decodedText);
+
                 addButton.classList.add('btn-success');
                 setTimeout(() => addButton.classList.remove('btn-success'), 200);
                 new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
             }
-        }
-
-        // Delay 2s để không bị quét trùng liên tục
-        setTimeout(() => {
-            isScanningProcessing = false;
-        }, 2000);
-    }
-
-    function stopScanner() {
-        if (html5QrCode && html5QrCode.isScanning) {
-            html5QrCode.stop().then(() => {
-                $('#scanner-container').slideUp();
-                html5QrCode.clear();
-                isScanningProcessing = false;
-            }).catch(err => console.log("Lỗi tắt cam:", err));
         } else {
-            $('#scanner-container').slideUp();
+            console.warn("Không tìm thấy sản phẩm:", decodedText);
         }
+
+        setTimeout(() => isScanningProcessing = false, 2000); // Delay 2s tránh double scan
     }
 });
