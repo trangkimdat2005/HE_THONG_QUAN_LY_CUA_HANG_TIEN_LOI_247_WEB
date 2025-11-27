@@ -131,61 +131,65 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SendResetRequest(string email)
         {
-            // 1. Dùng Service để tìm user
-            var user = _quanLyServices.GetByEmail(email);
+            // BƯỚC 1: Gọi hàm mới để tạo Token và lưu vào RAM (hạn 5p)
+            // Hàm này trả về null nếu email không tồn tại
+            string token = _quanLyServices.GenerateRecoveryToken(email);
 
-            if (user == null)
+            if (token == null)
             {
-                return Json(new { success = true }); // để cho hacker không tạo tool dò email=)))
+                // Email không tồn tại -> Vẫn báo success để bảo mật
+                return Json(new { success = true });
             }
 
-            // 2. Tạo mật khẩu mới ngẫu nhiên
+            // BƯỚC 2: Tạo mật khẩu mới ngẫu nhiên (Chỉ để hiển thị, CHƯA LƯU DB)
             string newPassword = _quanLyServices.GenerateRandomPassword();
 
-            // 3. Mã hóa Base64 để truyền qua URL an toàn (đây CHƯA PHẢI là Hash lưu DB)
+            // Mã hóa để truyền qua URL
             string encodedPassword = Convert.ToBase64String(Encoding.UTF8.GetBytes(newPassword));
+            string encodedToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(token)); // Mã hóa cả Token
 
+            // BƯỚC 3: Tạo Link (Bây giờ phải kèm theo cả TOKEN)
             var callbackUrl = Url.Action("ConfirmReset", "Account",
-                new { email = email, newPassword = encodedPassword }, Request.Scheme);
+                new { email = email, newPassword = encodedPassword, token = encodedToken }, Request.Scheme);
 
+            // BƯỚC 4: Gửi Email
             await _emailService.SendEmailAsync(email, "Xác nhận cấp mật khẩu mới",
                 $"<h3>Yêu cầu cấp lại mật khẩu</h3>" +
-                $"<p>Mật khẩu tạm thời: <strong style='color:red; font-size:18px'>{newPassword}</strong></p>" +
+                $"<p>Mật khẩu tạm thời của bạn là: <strong style='color:red; font-size:18px'>{newPassword}</strong></p>" +
+                $"<p>Link này chỉ có hiệu lực trong vòng <b>5 phút</b> và chỉ dùng được <b>1 lần</b>.</p>" +
                 $"<p>Vui lòng <a href='{callbackUrl}'>BẤM VÀO ĐÂY</a> để kích hoạt mật khẩu này.</p>");
 
             return Json(new { success = true });
         }
 
+        // 2. HÀM XÁC NHẬN TỪ LINK EMAIL (SỬA LẠI)
         [HttpGet]
-        public IActionResult ConfirmReset(string email, string newPassword)
+        public IActionResult ConfirmReset(string email, string newPassword, string token)
         {
-            if (email == null || newPassword == null)
-            {
-                return RedirectToAction("Login", new { status = "error" });
-            }
-
-            // Kiểm tra user tồn tại bằng Service
-            var user = _quanLyServices.GetByEmail(email);
-            if (user == null)
+            // Phải có đủ 3 cái này mới làm việc được
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(token))
             {
                 return RedirectToAction("Login", new { status = "error" });
             }
 
             try
             {
-                // Giải mã Base64 lấy mật khẩu trần
+                // Giải mã
                 var decodedPlainPassword = Encoding.UTF8.GetString(Convert.FromBase64String(newPassword));
+                var decodedToken = Encoding.UTF8.GetString(Convert.FromBase64String(token));
 
-                // 4. GỌI SERVICE ĐỂ RESET MẬT KHẨU
-                // Service sẽ tự lo việc Hash mật khẩu trước khi lưu
-                bool result = _quanLyServices.ResetPassword(email, decodedPlainPassword);
+                // BƯỚC 5: GỌI HÀM MỚI ĐỂ CHECK TOKEN & ĐỔI PASS
+                // Hàm này sẽ tự vào RAM kiểm tra xem Token còn sống không, đúng không?
+                bool result = _quanLyServices.ExecuteResetPassword(email, decodedToken, decodedPlainPassword);
 
                 if (result)
                 {
+                    // Thành công -> Token trong RAM đã bị xóa ngay lập tức
                     return RedirectToAction("Login", new { status = "reset_success" });
                 }
                 else
                 {
+                    // Thất bại (Do hết hạn 5p hoặc link đã bấm rồi nên token bị xóa mất)
                     return RedirectToAction("Login", new { status = "error" });
                 }
             }

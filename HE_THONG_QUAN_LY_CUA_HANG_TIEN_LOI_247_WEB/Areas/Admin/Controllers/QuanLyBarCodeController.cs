@@ -1,6 +1,7 @@
 ﻿using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.Entities;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing;
@@ -197,16 +198,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 try
                 {
-                    // Lấy mã định danh hiện tại
+                    // Lấy entity hiện tại bằng GetById (được tracked)
                     var existingMaDinhDanh = _quanLySevices.GetById<MaDinhDanhSanPham>(maDinhDanh.Id);
+
                     if (existingMaDinhDanh == null)
                     {
                         return NotFound(new { message = "Không tìm thấy mã định danh." });
                     }
 
-                    // Kiểm tra xem MaCode có thay đổi không
+                    // Lưu các giá trị cần kiểm tra
                     bool maCodeChanged = existingMaDinhDanh.MaCode != maDinhDanh.MaCode;
                     bool loaiMaChanged = existingMaDinhDanh.LoaiMa != maDinhDanh.LoaiMa;
+                    string oldAnhId = existingMaDinhDanh.AnhId;
 
                     if (maCodeChanged || loaiMaChanged)
                     {
@@ -228,9 +231,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         if (imageBytes != null && imageBytes.Length > 0)
                         {
                             // Xóa ảnh cũ nếu có
-                            if (!string.IsNullOrEmpty(existingMaDinhDanh.AnhId))
+                            if (!string.IsNullOrEmpty(oldAnhId))
                             {
-                                var oldImage = _quanLySevices.GetById<HinhAnh>(existingMaDinhDanh.AnhId);
+                                var oldImage = _quanLySevices.GetById<HinhAnh>(oldAnhId);
                                 if (oldImage != null)
                                 {
                                     _quanLySevices.HardDelete<HinhAnh>(oldImage);
@@ -248,18 +251,18 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                             _quanLySevices.Add<HinhAnh>(hinhAnh);
 
-                            maDinhDanh.AnhId = anhId;
-                            maDinhDanh.DuongDan = $"/api/image/{anhId}";
+                            existingMaDinhDanh.AnhId = anhId;
+                            existingMaDinhDanh.DuongDan = $"/api/image/{anhId}";
                         }
                     }
-                    else
-                    {
-                        // Giữ nguyên AnhId và DuongDan cũ
-                        maDinhDanh.AnhId = existingMaDinhDanh.AnhId;
-                        maDinhDanh.DuongDan = existingMaDinhDanh.DuongDan;
-                    }
 
-                    _quanLySevices.Update<MaDinhDanhSanPham>(maDinhDanh);
+                    // Cập nhật các thuộc tính khác
+                    existingMaDinhDanh.SanPhamDonViId = maDinhDanh.SanPhamDonViId;
+                    existingMaDinhDanh.LoaiMa = maDinhDanh.LoaiMa;
+                    existingMaDinhDanh.MaCode = maDinhDanh.MaCode;
+
+                    // Không cần gọi Update vì entity đã được tracked
+                    // _quanLySevices.Update<MaDinhDanhSanPham>(existingMaDinhDanh);
 
                     if (!await _quanLySevices.CommitAsync("MaDinhDanh"))
                     {
@@ -409,25 +412,45 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Nội dung tem không được để trống." });
                 }
 
-                // Set default values
-                temNhan.IsDelete = false;
-                if (temNhan.NgayIn == default(DateTime))
-                {
-                    temNhan.NgayIn = DateTime.Now;
-                }
                 await _quanLySevices.BeginTransactionAsync();
 
-                Console.WriteLine("Adding to database...");
-                _quanLySevices.Add<TemNhan>(temNhan);
-
-                if (!await _quanLySevices.CommitAsync("TemNhan"))
+                try
                 {
-                    return BadRequest(new { message = "Không thể thêm tem nhãn." });
+                    // Lấy thông tin mã định danh để lấy AnhId
+                    var maDinhDanh = _quanLySevices.GetById<MaDinhDanhSanPham>(temNhan.MaDinhDanhId);
+                    if (maDinhDanh == null)
+                    {
+                        return BadRequest(new { message = "Không tìm thấy mã định danh." });
+                    }
+
+                    // Sử dụng AnhId từ mã định danh (barcode/QR đã được tạo sẵn)
+                    temNhan.AnhId = maDinhDanh.AnhId;
+
+                    // Set default values
+                    temNhan.IsDelete = false;
+                    if (temNhan.NgayIn == default(DateTime))
+                    {
+                        temNhan.NgayIn = DateTime.Now;
+                    }
+
+                    Console.WriteLine($"Adding to database with AnhId: {temNhan.AnhId}");
+                    _quanLySevices.Add<TemNhan>(temNhan);
+
+                    if (!await _quanLySevices.CommitAsync("TemNhan"))
+                    {
+                        return BadRequest(new { message = "Không thể thêm tem nhãn." });
+                    }
+
+                    Console.WriteLine("Success, sending SignalR notification...");
+                    return Ok(new { message = "Thêm tem nhãn thành công! Ảnh barcode/QR được sử dụng từ mã định danh.", id = temNhan.Id });
                 }
-
-                Console.WriteLine("Success, sending SignalR notification...");
-
-                return Ok(new { message = "Thêm tem nhãn thành công!", id = temNhan.Id });
+                catch (Exception ex)
+                {
+                    await _quanLySevices.RollbackAsync();
+                    Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+                    Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                    return StatusCode(500, new { message = $"Lỗi khi thêm tem nhãn: {ex.Message}" });
+                }
             }
             catch (Exception ex)
             {
@@ -462,14 +485,53 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 await _quanLySevices.BeginTransactionAsync();
 
-                _quanLySevices.Update<TemNhan>(temNhan);
-
-                if (!await _quanLySevices.CommitAsync("TemNhan"))
+                try
                 {
-                    return BadRequest(new { message = "Không thể cập nhật tem nhãn." });
-                }
+                    // Lấy entity hiện tại bằng GetById (được tracked)
+                    var existingTemNhan = _quanLySevices.GetById<TemNhan>(temNhan.Id);
 
-                return Ok(new { message = "Sửa tem nhãn thành công!" });
+                    if (existingTemNhan == null)
+                    {
+                        return NotFound(new { message = "Không tìm thấy tem nhãn." });
+                    }
+
+                    // Lưu giá trị cần giữ
+                    bool maDinhDanhChanged = existingTemNhan.MaDinhDanhId != temNhan.MaDinhDanhId;
+
+                    // Kiểm tra nếu MaDinhDanhId thay đổi
+                    if (maDinhDanhChanged)
+                    {
+                        // Lấy AnhId mới từ mã định danh mới
+                        var maDinhDanh = _quanLySevices.GetById<MaDinhDanhSanPham>(temNhan.MaDinhDanhId);
+
+                        if (maDinhDanh == null)
+                        {
+                            return BadRequest(new { message = "Không tìm thấy mã định danh mới." });
+                        }
+                        existingTemNhan.AnhId = maDinhDanh.AnhId;
+                    }
+
+                    // Cập nhật các thuộc tính khác
+                    existingTemNhan.MaDinhDanhId = temNhan.MaDinhDanhId;
+                    existingTemNhan.NoiDungTem = temNhan.NoiDungTem;
+                    existingTemNhan.NgayIn = temNhan.NgayIn;
+
+                    // Không cần gọi Update vì entity đã được tracked
+                    // _quanLySevices.Update<TemNhan>(existingTemNhan);
+
+                    if (!await _quanLySevices.CommitAsync("TemNhan"))
+                    {
+                        return BadRequest(new { message = "Không thể cập nhật tem nhãn." });
+                    }
+
+                    return Ok(new { message = "Sửa tem nhãn thành công!" });
+                }
+                catch (Exception ex)
+                {
+                    await _quanLySevices.RollbackAsync();
+                    Console.WriteLine($"❌ EXCEPTION: {ex.Message}");
+                    return StatusCode(500, new { message = $"Lỗi khi cập nhật tem nhãn: {ex.Message}" });
+                }
             }
             catch (Exception ex)
             {
@@ -526,12 +588,20 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return NotFound(new { message = "Không tìm thấy tem nhãn" });
                 }
 
+                // Lấy đường dẫn ảnh từ mã định danh
+                string duongDanAnh = "";
+                if (temNhan.MaDinhDanh != null)
+                {
+                    duongDanAnh = temNhan.MaDinhDanh.DuongDan ?? "";
+                }
+
                 return Ok(new
                 {
                     id = temNhan.Id,
                     maDinhDanhId = temNhan.MaDinhDanhId,
                     noiDungTem = temNhan.NoiDungTem,
-                    ngayIn = temNhan.NgayIn.ToString("yyyy-MM-dd")
+                    ngayIn = temNhan.NgayIn.ToString("yyyy-MM-dd"),
+                    duongDanAnh = duongDanAnh
                 });
             }
             catch (Exception ex)
@@ -554,7 +624,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         maDinhDanhId = tn.MaDinhDanhId,
                         noiDungTem = tn.NoiDungTem,
                         ngayIn = tn.NgayIn.ToString("yyyy-MM-dd"),
-                        maCode = tn.MaDinhDanh != null ? tn.MaDinhDanh.MaCode : ""
+                        maCode = tn.MaDinhDanh != null ? tn.MaDinhDanh.MaCode : "",
+                        duongDanAnh = tn.MaDinhDanh != null ? tn.MaDinhDanh.DuongDan : "",
+                        loaiMa = tn.MaDinhDanh != null ? tn.MaDinhDanh.LoaiMa : ""
                     })
                     .ToList();
 
