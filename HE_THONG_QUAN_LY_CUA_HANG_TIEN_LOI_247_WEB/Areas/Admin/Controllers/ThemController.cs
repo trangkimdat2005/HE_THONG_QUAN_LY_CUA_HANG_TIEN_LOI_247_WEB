@@ -309,8 +309,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemPhieuDoiTra")]
         public IActionResult ThemPhieuDoiTra()
         {
-            ViewData["DanhSachHoaDon"] = _phieuDoiTraServices.GetAllHoaDons();
-            ViewData["DanhSachChinhSach"] = _phieuDoiTraServices.GetAllChinhSachs();
+            var hoaDons = _quanLyServices.GetList<HoaDon>().Where(x => x.TrangThai == "Đã thanh toán").ToList();
+            ViewData["DanhSachHoaDon"] = hoaDons;
+            ViewData["DanhSachChinhSach"] = _quanLyServices.GetList<ChinhSachHoanTra>();
 
             return View();
         }

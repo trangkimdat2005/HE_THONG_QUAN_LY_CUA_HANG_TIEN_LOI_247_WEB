@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     GiamTheo: hinhThucGiam, // Giờ 'Loai' và 'GiamTheo' đã đồng nhất
 
                     // SỬA 2: Nếu là 'SoTien', GiaTriToiDa phải là 0.
-                    GiaTriToiDa: hinhThucGiam === 'Phần trăm' ? (parseFloat(giamToiDaInput.value) || 0) : 0
+                    GiaTriToiDa: hinhThucGiam === 'Phần trăm' ? (parseFloat(giamToiDaInput.value) || 0) : 999999999
                 },
                 MaKhuyenMai: {
                     Code: maCodeInput.value.trim(),
