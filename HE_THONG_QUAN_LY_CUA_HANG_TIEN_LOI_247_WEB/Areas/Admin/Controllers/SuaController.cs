@@ -331,7 +331,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     var newUserRole = new UserRole
                     {
-                        Id = _quanLySevices.GenerateNewId<UserRole>("UR", 7),
+                        Id = _quanLySevices.GenerateNewId<UserRole>("UR", 6),
                         TaiKhoanId = dto.TaiKhoanId,
                         RoleId = roleId,
                         HieuLucTu = DateTime.Now,
@@ -587,7 +587,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         // Tạo thẻ mới
                         TheThanhVien newCard = new TheThanhVien
                         {
-                            Id = _quanLySevices.GenerateNewId<TheThanhVien>("TTV", 8),
+                            Id = _quanLySevices.GenerateNewId<TheThanhVien>("TTV", 7),
                             KhachHangId = khachHang.Id,
                             Hang = request.TheThanhVien.Hang ?? "Bronze",
                             DiemTichLuy = request.TheThanhVien.DiemTichLuy,
