@@ -30,88 +30,79 @@
 
 					</div>
 
-					<div class="table-responsive">
-						<table class="table table-hover table-bordered" id="sampleTable">
-							<thead>
-								<tr>
-									<th>Mã Hóa Đơn</th>
-									<th>Ngày Lập</th>
-									<th>Nhân Viên Lập</th>
-									<th>Khách Hàng</th>
-									<th>Tổng Tiền</th>
-									<th>Trạng Thái</th>
-									<th>Thao tác</th>
-								</tr>
-							</thead>
-							@{
-								if (ViewData["lstHoaDon"] != null)
-								{
-									List<HoaDon> hoaDons = ViewBag.lstHoaDon;
-									foreach (HoaDon hoaDon in hoaDons)
-									{
-										string trangThaiGoc = hoaDon.TrangThai;
-										string trangThaiHienThi = trangThaiGoc; // Giữ nguyên giá trị DB
-										string trangThaiClass = "bg-secondary"; // Mặc định là xám
+                    <div class="table-responsive">
+                        <table class="table table-hover table-bordered" id="sampleTable">
+                            <thead>
+                                <tr>
+                                    <th>Mã Hóa Đơn</th>
+                                    <th>Ngày Lập</th>
+                                    <th>Nhân Viên Lập</th>
+                                    <th>Khách Hàng</th>
+                                    <th>Tổng Tiền</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
 
-										// Logic phân loại và chọn màu
-										if (trangThaiGoc.Contains("thanh toán", StringComparison.OrdinalIgnoreCase))
-										{
-											// Dùng Contains để bắt được cả "Đã thanh toán" và "Chưa thanh toán"
-											if (trangThaiGoc.StartsWith("Đã thanh toán", StringComparison.OrdinalIgnoreCase))
-											{
-												trangThaiClass = "bg-success";
-											}
-											else
-											{
-												trangThaiClass = "bg-warning text-dark";
-											}
-										}
-										else if (trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
-										{
-											trangThaiClass = "bg-danger";
-										}
-										// ---------------------------------------------
+                            <tbody>
+                                @{
+                                    if (ViewData["lstHoaDon"] != null)
+                                    {
+                                        List<HoaDon> hoaDons = ViewBag.lstHoaDon;
+                                        foreach (HoaDon hoaDon in hoaDons)
+                                        {
+                                            string trangThaiGoc = hoaDon.TrangThai;
+                                            string trangThaiHienThi = trangThaiGoc;
+                                            string trangThaiClass = "bg-secondary";
 
-										<tbody>
-											<tr>
-												<td>@hoaDon.Id</td>
-												<td>@hoaDon.NgayLap.ToString("dd/MM/yyyy")</td>
-												<td>@(hoaDon.NhanVien != null ? hoaDon.NhanVien.HoTen : "N/A")</td>
-												<td>@(hoaDon.KhachHang != null ? hoaDon.KhachHang.HoTen : "Khách lẻ")</td>
-												<td>@String.Format("{0:N0}", hoaDon.TongTien) đ</td>
+                                            if (trangThaiGoc.Contains("thanh toán", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                if (trangThaiGoc.StartsWith("Đã thanh toán", StringComparison.OrdinalIgnoreCase))
+                                                {
+                                                    trangThaiClass = "bg-success";
+                                                }
+                                                else
+                                                {
+                                                    trangThaiClass = "bg-warning text-dark";
+                                                }
+                                            }
+                                            else if (trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
+                                            {
+                                                trangThaiClass = "bg-danger";
+                                            }
 
-												<td>
-													<span class="badge @trangThaiClass">
-														@trangThaiHienThi
-													</span>
-												</td>
+                                            // BƯỚC 2: Chỉ giữ lại thẻ tr trong vòng lặp
+                                            <tr>
+                                                <td>@hoaDon.Id</td>
+                                                <td>@hoaDon.NgayLap.ToString("dd/MM/yyyy")</td>
+                                                <td>@(hoaDon.NhanVien != null ? hoaDon.NhanVien.HoTen : "N/A")</td>
+                                                <td>@(hoaDon.KhachHang != null ? hoaDon.KhachHang.HoTen : "Khách lẻ")</td>
+                                                <td>@String.Format("{0:N0}", hoaDon.TongTien) đ</td>
 
-												<td class="text-center">
-													<a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon" asp-route-id="@hoaDon.Id" title="Xem chi tiết">
-														<i class="fas fa-eye"></i>
-													</a>
+                                                <td>
+                                                    <span class="badge @trangThaiClass">
+                                                        @trangThaiHienThi
+                                                    </span>
+                                                </td>
 
-													@*
-													<a class="btn btn-info btn-sm me-1 btn-edit-khoi" asp-controller="Sua" asp-action="SuaHoaDon" asp-route-id="@hoaDon.Id" title="Sửa">
-														<i class="fas fa-edit"></i>
-													</a>
-													*@
-													@if (trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
-													{
-														<a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
-															<i class="bi bi-wallet"></i>
-														</a>
-													}
-												</td>
-											</tr>
-										</tbody>
-
-									}
-								}
-							}
-
-						</table>
-					</div>
+                                                <td class="text-center">
+                                                    <a class="btn btn-info btn-sm" asp-controller="QuanLyDonHang" asp-action="XemChiTietHoaDon" asp-route-id="@hoaDon.Id" title="Xem chi tiết">
+                                                        <i class="fas fa-eye"></i>
+                                                    </a>
+                                                    @if (trangThaiGoc.Contains("Chưa thanh toán", StringComparison.OrdinalIgnoreCase))
+                                                    {
+                                                        <a class="btn btn-info btn-sm" asp-controller="QuanLyHoaDon" asp-action="ThanhToanHoaDon" asp-route-id="@hoaDon.Id" title="Thanh toán">
+                                                            <i class="bi bi-wallet"></i>
+                                                        </a>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
 				</div>
 			</div>
 		</div>
