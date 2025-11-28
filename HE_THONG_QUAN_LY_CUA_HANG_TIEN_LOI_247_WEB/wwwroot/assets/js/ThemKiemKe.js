@@ -113,17 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 // Lấy dữ liệu từ form
-                const nhanVienId = $('#select-nhan-vien').val();
+
                 const ngayKiemKe = document.getElementById('input-ngay-kiem-ke').value;
 
-                console.log('Form data:', { nhanVienId, ngayKiemKe });
+                console.log('Form data:', { ngayKiemKe });
 
-                // Validate
-                if (!nhanVienId) {
-                    alert('Vui lòng chọn nhân viên thực hiện!');
-                    $('#select-nhan-vien').focus();
-                    return;
-                }
 
                 if (!ngayKiemKe) {
                     alert('Vui lòng chọn ngày kiểm kê!');
@@ -156,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Tạo request object
                 const requestData = {
-                    NhanVienId: nhanVienId,
                     NgayKiemKe: ngayKiemKe,
                     ChiTietKiemKe: chiTietKiemKe
                 };
