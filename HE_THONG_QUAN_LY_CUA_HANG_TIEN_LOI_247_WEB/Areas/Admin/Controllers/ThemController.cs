@@ -1852,7 +1852,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6), 
                     KhachHangId = khachHangId,
                     NhanVienId = nhanVienId,
-                    NgayLap = request.NgayLap ?? DateTime.Now,
+                    NgayLap = DateTime.Now,
                     TrangThai = request.TrangThai ?? "Chưa thanh toán",
                     IsDelete = false,
 

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // --- LOGIC 1: THAY ĐỔI HÌNH THỨC GIẢM (%) HOẶC (VND) ---
     selectHinhThucGiam.addEventListener('change', function () {
-        if (this.value === 'PhanTram') {
+        if (this.value === 'Phần trăm') {
             // Nếu là %, hiển thị ô "Giảm tối đa" và đổi nhãn
             labelGiaTri.textContent = 'Giá trị giảm (%) ';
             fieldGiamToiDa.classList.remove('form-field-hidden');
@@ -141,12 +141,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 NgayKetThuc: ngayKetThucInput.value,
                 MoTa: moTaInput.value.trim() || null,
                 DieuKienApDung: {
-                    DieuKien: `Giam ${hinhThucGiam === 'PhanTram' ? giaTriGiam + '%' : giaTriGiam + 'VND'}`,
+                    DieuKien: `Giam ${hinhThucGiam === 'Phần trăm' ? giaTriGiam + '%' : giaTriGiam + 'VND'}`,
                     GiaTriToiThieu: parseFloat(donHangToiThieuInput.value) || 0,
                     GiamTheo: hinhThucGiam, // Giờ 'Loai' và 'GiamTheo' đã đồng nhất
 
                     // SỬA 2: Nếu là 'SoTien', GiaTriToiDa phải là 0.
-                    GiaTriToiDa: hinhThucGiam === 'PhanTram' ? (parseFloat(giamToiDaInput.value) || 0) : 0
+                    GiaTriToiDa: hinhThucGiam === 'Phần trăm' ? (parseFloat(giamToiDaInput.value) || 0) : 0
                 },
                 MaKhuyenMai: {
                     Code: maCodeInput.value.trim(),

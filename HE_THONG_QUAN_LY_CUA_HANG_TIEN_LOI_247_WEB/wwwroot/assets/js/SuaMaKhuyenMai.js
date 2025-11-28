@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // --- LOGIC: THAY ĐỔI HÌNH THỨC GIẢM ---
     if (selectHinhThucGiam) {
         selectHinhThucGiam.addEventListener('change', function () {
-            if (this.value === 'PhanTram') {
+            if (this.value === 'Phần trăm') {
                 labelGiaTri.textContent = 'Giá trị giảm (%) ';
                 fieldGiamToiDa.classList.remove('form-field-hidden');
             } else {
@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Loại khuyến mãi
             if (data.loai && selectHinhThucGiam) {
                 if (data.loai.toLowerCase().includes('phan tram') || data.loai.toLowerCase().includes('phần trăm')) {
-                    selectHinhThucGiam.value = 'PhanTram';
+                    selectHinhThucGiam.value = 'Phần trăm';
                 } else {
                     selectHinhThucGiam.value = 'SoTien';
                 }
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Lấy dữ liệu từ form
                 const tenChuongTrinh = tenChuongTrinhInput.value.trim();
                 const moTa = moTaInput.value.trim();
-                const loai = selectHinhThucGiam.value === 'PhanTram' ? 'Phan tram' : 'So tien';
+                const loai = selectHinhThucGiam.value === 'Phần trăm' ? 'Phần trăm' : 'Số tiền';
                 const ngayBatDau = ngayBatDauInput.value;
                 const ngayKetThuc = ngayKetThucInput.value;
 

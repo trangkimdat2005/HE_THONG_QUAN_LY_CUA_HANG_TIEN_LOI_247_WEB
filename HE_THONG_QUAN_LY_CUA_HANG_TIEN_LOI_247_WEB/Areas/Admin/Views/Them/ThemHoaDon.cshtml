@@ -112,7 +112,10 @@
 
         <div id="scanner-container" class="card mb-3" style="display:none;">
             <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-camera-video"></i> Quét Mã Vạch</span>
+                <div class="d-flex align-items-center">
+                    <span><i class="bi bi-camera-video"></i> Quét Mã: </span>
+                    <select id="camera-select" class="form-select form-select-sm ms-2 text-dark" style="max-width: 250px; display: none;"></select>
+                </div>
                 <button type="button" class="btn-close btn-close-white" id="btn-close-camera" aria-label="Close"></button>
             </div>
             <div class="card-body p-0">
@@ -145,12 +148,13 @@
                       var giaBan = sp.GiaBan;
                       
                       var danhMucId = sp.SanPham?.SanPhamDanhMucs?.FirstOrDefault()?.DanhMucId ?? "";
-                      
+                      var barcode = sp.MaDinhDanhSanPhams?.FirstOrDefault(x => x.LoaiMa == "Barcode")?.MaCode ?? "";
                       <li class="list-group-item d-flex justify-content-between align-items-center product-item"
                           data-category="@danhMucId"
                           data-product-id="@sp.Id"
                           data-product-name="@tenHienThi"
-                          data-product-price="@giaBan">
+                          data-product-price="@giaBan"
+                      data-product-barcodeId="@barcode">
                         <div>
                           <h6 class="mb-0">@tenSanPham</h6>
                           <small class="text-muted">
