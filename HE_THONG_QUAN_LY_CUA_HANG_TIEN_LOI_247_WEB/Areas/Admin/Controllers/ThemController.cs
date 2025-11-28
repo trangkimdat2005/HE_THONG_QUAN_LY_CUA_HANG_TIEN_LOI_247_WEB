@@ -1835,7 +1835,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     var khachLe = _quanLyServices.GetById<KhachHang>("KH_LE");
                     if (khachLe == null)
                     {
-                        khachLe = new KhachHang { Id = "KH_LE", HoTen = "Khách lẻ", SoDienThoai = "0000000000", TrangThai = "Hoạt động", AnhId = "ANH_DEFAULT", IsDelete = false };
+                        khachLe = new KhachHang { Id = "KH_LE", HoTen = "Khách lẻ", SoDienThoai = "0000000000",DiaChi = " " , TrangThai = "Hoạt động", IsDelete = false };
                         _quanLyServices.Add(khachLe);
 
                         if (!await _quanLyServices.CommitAsync()) throw new Exception("Lỗi tạo khách lẻ.");
