@@ -3,7 +3,7 @@ using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Models.ViewModels;
 using HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using System.Threading.Tasks;   
 using System.Security.Claims;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers

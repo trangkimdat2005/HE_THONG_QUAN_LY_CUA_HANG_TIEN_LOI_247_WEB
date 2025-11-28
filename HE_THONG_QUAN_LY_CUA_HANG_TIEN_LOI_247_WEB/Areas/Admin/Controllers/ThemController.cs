@@ -653,7 +653,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 // Validate dữ liệu đầu vào
                 if (string.IsNullOrEmpty(request.NhaCungCapId) ||
-                    string.IsNullOrEmpty(request.NhanVienId) ||
                     request.NgayNhap == default(DateTime))
                 {
                     return BadRequest(new { message = "Thiếu thông tin nhà cung cấp, nhân viên hoặc ngày nhập." });
@@ -664,20 +663,25 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     return BadRequest(new { message = "Phiếu nhập phải có ít nhất một sản phẩm." });
                 }
 
+
+                await _quanLyServices.BeginTransactionAsync();
+
+                TaiKhoan taiKhoan = _quanLyServices.GetById<TaiKhoan>(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
                 // Tạo phiếu nhập
                 PhieuNhap phieuNhap = new PhieuNhap
                 {
                     Id = _quanLyServices.GenerateNewId<PhieuNhap>("PN", 6),
                     NhaCungCapId = request.NhaCungCapId,
-                    NhanVienId = request.NhanVienId,
+                    NhanVienId = taiKhoan.TaiKhoanNhanVien.NhanVienId,
                     NgayNhap = request.NgayNhap,
                     TongTien = 0, // Sẽ được tính sau
                     IsDelete = false
                 };
 
-                await _quanLyServices.BeginTransactionAsync();
+                phieuNhap.ChiTietPhieuNhaps = new List<ChiTietPhieuNhap>();
 
-                _quanLyServices.Add<PhieuNhap>(phieuNhap);
+
 
                 decimal tongTien = 0;
 
@@ -705,10 +709,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         IsDelete = false
                     };
 
-                    _quanLyServices.Add<ChiTietPhieuNhap>(chiTietPhieuNhap);
+                    phieuNhap.ChiTietPhieuNhaps.Add(chiTietPhieuNhap);
+
                 }
 
-                if(!await _quanLyServices.CommitAsync())
+                _quanLyServices.Add(phieuNhap);
+
+                if (!await _quanLyServices.CommitAsync())
                 {
                     await _quanLyServices.RollbackAsync();
                     return BadRequest(new { message = "Lỗi khi lưu phiếu nhập." });
@@ -1845,7 +1852,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     Id = _quanLyServices.GenerateNewId<HoaDon>("HD", 6), 
                     KhachHangId = khachHangId,
                     NhanVienId = nhanVienId,
-                    NgayLap = request.NgayLap ?? DateTime.Now,
+                    NgayLap = DateTime.Now,
                     TrangThai = request.TrangThai ?? "Chưa thanh toán",
                     IsDelete = false,
 
@@ -1961,7 +1968,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         public class PhieuNhapFormData
         {
             public string NhaCungCapId { get; set; }
-            public string NhanVienId { get; set; }
             public DateTime NgayNhap { get; set; }
             public List<ChiTietPhieuNhapFormData> ChiTietPhieuNhap { get; set; }
         }

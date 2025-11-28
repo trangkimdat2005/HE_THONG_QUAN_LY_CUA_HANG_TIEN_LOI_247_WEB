@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("API")]
     [Area("Admin")]
+    [Authorize]
     public class QuanLyNhaCungCapController : Controller
     {
         private readonly IQuanLyServices _quanLySevices;
