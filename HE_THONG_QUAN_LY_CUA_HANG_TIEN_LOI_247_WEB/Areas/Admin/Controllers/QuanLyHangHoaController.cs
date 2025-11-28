@@ -197,7 +197,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Tạo SanPhamDonVi
                 var spdv = new SanPhamDonVi
                 {
-                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 7),
+                    Id = _quanLySevices.GenerateNewId<SanPhamDonVi>("SPDV", 8),
                     SanPhamId = request.SanPhamId,
                     DonViId = request.DonViId,
                     GiaBan = request.GiaBan,
