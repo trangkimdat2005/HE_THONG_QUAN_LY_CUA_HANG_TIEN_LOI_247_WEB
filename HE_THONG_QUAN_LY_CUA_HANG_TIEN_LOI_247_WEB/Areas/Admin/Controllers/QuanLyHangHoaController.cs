@@ -164,7 +164,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     {
                         SanPhamId = request.Id,
                         DanhMucId = danhMucId,
-                        Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 7)
+                        Id = _quanLySevices.GenerateNewId<SanPhamDanhMuc>("SPDM", 8)
                     };
                     _quanLySevices.Add(sanPhamDanhMuc);
                 }

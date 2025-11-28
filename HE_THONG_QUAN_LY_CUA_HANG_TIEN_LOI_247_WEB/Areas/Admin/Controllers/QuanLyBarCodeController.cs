@@ -115,7 +115,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     if (imageBytes != null && imageBytes.Length > 0)
                     {
                         // Tạo ID cho hình ảnh
-                        string anhId = _quanLySevices.GenerateNewId<HinhAnh>("IMG", 10);
+                        string anhId = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7);
 
                         // Lưu ảnh vào bảng HinhAnh
                         var hinhAnh = new HinhAnh
@@ -241,7 +241,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                             }
 
                             // Tạo ảnh mới
-                            string anhId = _quanLySevices.GenerateNewId<HinhAnh>("IMG", 10);
+                            string anhId = _quanLySevices.GenerateNewId<HinhAnh>("ANH", 7);
                             var hinhAnh = new HinhAnh
                             {
                                 Id = anhId,

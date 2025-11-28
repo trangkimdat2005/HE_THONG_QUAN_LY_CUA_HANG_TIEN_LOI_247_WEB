@@ -152,7 +152,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
                 var newRole = new Role
                 {
-                    Id = _quanLySevices.GenerateNewId<Role>("ROLE", 5),
+                    Id = _quanLySevices.GenerateNewId<Role>("ROLE", 8),
                     Code = dto.Code,
                     Ten = dto.Ten,
                     MoTa = dto.MoTa,
@@ -168,7 +168,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     {
                         var newRolePerm = new RolePermission
                         {
-                            Id = _quanLySevices.GenerateNewId<RolePermission>("RP", 7),
+                            Id = _quanLySevices.GenerateNewId<RolePermission>("RP", 6),
                             RoleId = newRole.Id,
                             PermissionId = permId,
                             IsDelete = false
@@ -250,7 +250,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 {
                     var newRolePerm = new RolePermission
                     {
-                        Id = _quanLySevices.GenerateNewId<RolePermission>("RP", 7),
+                        Id = _quanLySevices.GenerateNewId<RolePermission>("RP", 6),
                         RoleId = role.Id,
                         PermissionId = permId,
                         IsDelete = false

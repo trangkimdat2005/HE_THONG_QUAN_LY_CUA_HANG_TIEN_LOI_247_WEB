@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function callApiGetNextIdTTV() {
         const dataToSend = {
             prefix: "TTV",
-            totalLength: 8
+            totalLength: 7
         };
         
         try {

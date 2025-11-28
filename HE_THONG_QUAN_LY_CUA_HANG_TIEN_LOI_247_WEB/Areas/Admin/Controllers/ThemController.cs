@@ -526,7 +526,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                     {
                         var newUserRole = new UserRole
                         {
-                            Id = _quanLyServices.GenerateNewId<UserRole>("UR", 7),
+                            Id = _quanLyServices.GenerateNewId<UserRole>("UR", 6),
                             TaiKhoanId = newTaiKhoan.Id,
                             RoleId = roleId,
                             HieuLucTu = DateTime.Now,
@@ -1075,7 +1075,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Tạo Nhân viên
                 NhanVien nhanVien = new NhanVien
                 {
-                    Id = _quanLyServices.GenerateNewId<NhanVien>("NV", 8),
+                    Id = _quanLyServices.GenerateNewId<NhanVien>("NV", 6),
                     HoTen = request.HoTen,
                     ChucVu = request.ChucVu,
                     LuongCoBan = request.LuongCoBan,
@@ -1152,7 +1152,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                 // Tạo Phân công ca làm việc
                 PhanCongCaLamViec phanCong = new PhanCongCaLamViec
                 {
-                    Id = _quanLyServices.GenerateNewId<PhanCongCaLamViec>("PCCLV", 10),
+                    Id = _quanLyServices.GenerateNewId<PhanCongCaLamViec>("PCCLV", 9),
                     NhanVienId = request.NhanVienId,
                     CaLamViecId = request.CaLamViecId,
                     Ngay = request.Ngay,
