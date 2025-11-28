@@ -39,16 +39,6 @@
           <h3 class="tile-title">Thông Tin Chung</h3>
           <div class="tile-body">
             <div class="row">
-              <div class="col-md-6">
-                <label class="form-label">Nhân viên thực hiện <span class="text-danger">*</span></label>
-                <select class="form-control" id="select-nhan-vien">
-                  <option value="">-- Chọn nhân viên --</option>
-                  @foreach (var nv in danhSachNhanVien)
-                  {
-                      <option value="@nv.Id">@nv.HoTen (@nv.ChucVu)</option>
-                  }
-                </select>
-              </div>
 
               <div class="col-md-6">
                 <label class="form-label">Ngày Kiểm Kê <span class="text-danger">*</span></label>

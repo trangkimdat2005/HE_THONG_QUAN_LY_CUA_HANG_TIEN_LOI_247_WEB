@@ -309,8 +309,9 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         [Route("/Them/ThemPhieuDoiTra")]
         public IActionResult ThemPhieuDoiTra()
         {
-            ViewData["DanhSachHoaDon"] = _phieuDoiTraServices.GetAllHoaDons();
-            ViewData["DanhSachChinhSach"] = _phieuDoiTraServices.GetAllChinhSachs();
+            var hoaDons = _quanLyServices.GetList<HoaDon>().Where(x => x.TrangThai == "Đã thanh toán").ToList();
+            ViewData["DanhSachHoaDon"] = hoaDons;
+            ViewData["DanhSachChinhSach"] = _quanLyServices.GetList<ChinhSachHoanTra>();
 
             return View();
         }
@@ -1404,20 +1405,11 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
         {
             try
             {
-                Console.WriteLine("=== API ADD KIEM KE CALLED ===");
-                Console.WriteLine($"Request: {System.Text.Json.JsonSerializer.Serialize(request)}");
 
                 if (request == null)
                 {
                     Console.WriteLine("ERROR: Request is null");
                     return BadRequest(new { message = "Dữ liệu không hợp lệ." });
-                }
-
-                // Validate
-                if (string.IsNullOrWhiteSpace(request.NhanVienId))
-                {
-                    Console.WriteLine("ERROR: NhanVienId is empty");
-                    return BadRequest(new { message = "Vui lòng chọn nhân viên thực hiện." });
                 }
 
                 if (request.NgayKiemKe == default(DateTime))
@@ -1447,12 +1439,13 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
                         continue;
                     }
 
+                    var taiKhoanId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                     // Tạo bản ghi KiemKe
                     KiemKe kiemKe = new KiemKe
                     {
                         Id = _quanLyServices.GenerateNewId<KiemKe>("KK", 6),
                         NgayKiemKe = request.NgayKiemKe,
-                        NhanVienId = request.NhanVienId,
+                        NhanVienId = _quanLyServices.GetById<TaiKhoan>(taiKhoanId).TaiKhoanNhanVien.NhanVienId,
                         SanPhamDonViId = chiTiet.SanPhamDonViId,
                         KetQua = chiTiet.KetQua ?? "",
                         IsDelete = false
@@ -2088,7 +2081,6 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         public class KiemKeRequest
         {
-            public string NhanVienId { get; set; }
             public DateTime NgayKiemKe { get; set; }
             public List<ChiTietKiemKeRequest> ChiTietKiemKe { get; set; }
         }

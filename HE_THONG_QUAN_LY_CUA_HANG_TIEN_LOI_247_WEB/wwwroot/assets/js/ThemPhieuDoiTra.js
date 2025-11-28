@@ -3,21 +3,21 @@ $(document).ready(function() {
         document.getElementById('input-ngay-tra').valueAsDate = new Date();
 
         // --- 1. MOCK DATABASE (GIẢ LẬP SERVER) ---
-        const DB_HOADON = {
-            'HD001': {
-                khachHang: 'Nguyễn Văn A (VIP Silver)', khachHangId: 'KH001',
-                sanPham: [
-                    { id: 'SP01', ten: 'Mì Hảo Hảo Tôm Chua Cay', gia: 4500, daMua: 10 },
-                    { id: 'SP02', ten: 'Nước ngọt Coca Cola 330ml', gia: 10000, daMua: 5 }
-                ]
-            },
-            'HD002': {
-                khachHang: 'Trần Thị B (Khách lẻ)', khachHangId: 'KH002',
-                sanPham: [
-                    { id: 'SP03', ten: 'Combo Gội Xả Sunsilk Óng Mượt', gia: 108500, daMua: 1 }
-                ]
-            }
-        };
+        //const DB_HOADON = {
+        //    'HD001': {
+        //        khachHang: 'Nguyễn Văn A (VIP Silver)', khachHangId: 'KH001',
+        //        sanPham: [
+        //            { id: 'SP01', ten: 'Mì Hảo Hảo Tôm Chua Cay', gia: 4500, daMua: 10 },
+        //            { id: 'SP02', ten: 'Nước ngọt Coca Cola 330ml', gia: 10000, daMua: 5 }
+        //        ]
+        //    },
+        //    'HD002': {
+        //        khachHang: 'Trần Thị B (Khách lẻ)', khachHangId: 'KH002',
+        //        sanPham: [
+        //            { id: 'SP03', ten: 'Combo Gội Xả Sunsilk Óng Mượt', gia: 108500, daMua: 1 }
+        //        ]
+        //    }
+        //};
 
         // --- 2. XỬ LÝ TÌM HÓA ĐƠN ---
         $('#btn-check-hd').click(function() {
