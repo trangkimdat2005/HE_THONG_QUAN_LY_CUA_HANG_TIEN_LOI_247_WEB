@@ -18,7 +18,7 @@ namespace HE_THONG_QUAN_LY_CUA_HANG_TIEN_LOI_247_WEB.Areas.Admin.Controllers
 
         [Authorize(Roles = "ADMIN,NV_BANHANG")]
         [Route("/QuanLyKhachHang/DanhSachKhachHang")]
-        public IActionResult DanhSachKhachHang()
+        public IActionResult DanhSachKhachHang()    
         {
             var lstKhachHang = _quanLySevices.GetList<KhachHang>();
             ViewData["lstKhachHang"] = lstKhachHang;
